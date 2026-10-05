@@ -27,7 +27,7 @@ The synthesizer can be connected to a MIDI keyboard, and played live, or it can 
 ## Nexys DDR4 Audio Output Specs
 
 -  Pin A11 is connected to AUD_PWM, which is  the input to an analog low-pass filter
-[image](docs/ddr4_output_filtering.png)
+![plot of filtering strength in proportion to frequency of a low-pass filter](docs/ddr4_output_filtering.png)
 
 generating a signal is as simple as connecting the output to a PWM generator and setting the duty cycle of the PWM to what frequency we want to produce. sample verilog code included below
 
