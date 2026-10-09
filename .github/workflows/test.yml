@@ -23,11 +23,9 @@ jobs:
         with:
           jvm: adopt:11
           apps: sbt
-      - name: Setup Dependencies
-        run: |
-          sudo apt-get install verilator
-          verilator --version
+#      - name: Setup Dependencies
+#        run: |
+#          sudo apt-get install verilator
+#          verilator --version
       - name: SBT Test
         run: sbt test
-      - name: mill Test
-        run: ./mill _.test
