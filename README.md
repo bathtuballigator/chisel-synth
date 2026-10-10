@@ -25,28 +25,28 @@ The synthesizer can be connected to a MIDI keyboard, and played live, or it can 
 
 ## Glossary
 
-| Term                   | shorthand | Description                                                                                 |
-| ---------------------- | --------- | ------------------------------------------------------------------------------------------- |
-| Amplitude              | amp       | Peak magnitude of a wave; perceived as loudness                                             |
-| Sample rate            | fs        | Samples produced per second (Hz)                                                            |
-| Sample                 |           | Signed int value of the audio wave at one point in time; one per sample period              |
-| Phase                  |           | Current position within one wave period, 0 to 2π (or 0 to max of the phase counter)         |
-| Phase accumulator      |           | Counter incremented by the tuning word each sample; its value is the phase                  |
-| Tuning word            |           | Phase increment per sample; sets output frequency: $f = inc \cdot fs / 2^N (N = acc.width)$ |
-| Nyquist frequency      | Nyquist   | fs / 2; highest frequency representable without aliasing                                    |
-| Aliasing               |           | Content above Nyquist folding back as false lower frequencies                               |
-| Pulse-Width-Modulation | pwm       | 1-bit output whose average (duty cycle) encodes an analog level                             |
-| Duty cycle             |           | Fraction of a PWM period the output is high                                                 |
-| Low-pass filter        | LPF       | Attenuates frequencies above a cutoff; turns PWM into an analog waveform                    |
-| pwm frequency          | pwm       | The frequency of off and on-duty cycle                                                          |
-| Oscillator             | osc       | Generates a periodic waveform (sine, square, sawtooth, triangle) at a given frequency       |
-| Voice                  |           | One independently playable sound: oscillator + envelope                                     |
-| Envelope               | ADSR      | Amplitude shape over a note's life: Attack, Decay, Sustain, Release                         |
-| Attack                 | A         | Time to rise from 0 to peak after note-on                                                   |
-| Decay                  | D         | Time to fall from peak to sustain level                                                     |
-| Sustain                | S         | Level (not time) held while the note is on                                                  |
-| Release                | R         | Time to fall from sustain to 0 after note-off                                               |
-| MIDI                   |           | Serial protocol (31.25 kbaud) for note-on/off, pitch and velocity messages                  |
+| Term                   | shorthand | Description                                                                                                                  |
+| ---------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Amplitude              | amp       | Peak magnitude of a wave; perceived as loudness                                                                              |
+| Sample rate            | fs        | Samples produced per second (Hz)                                                                                             |
+| Sample                 |           | Signed int value of the audio wave at one point in time; one per sample period                                               |
+| Phase                  |           | Current position within one wave period, 0 to 2π (or 0 to max of the phase counter)                                          |
+| Phase accumulator      |           | Counter incremented by the tuning word each sample; its value is the phase                                                   |
+| Tuning word            |           | Phase increment per sample; sets output frequency: $f = inc \cdot fs / 2^N (N = acc.width)$                                  |
+| Nyquist frequency      | Nyquist   | fs / 2; highest frequency representable without aliasing                                                                     |
+| Aliasing               |           | Content above Nyquist folding back as false lower frequencies                                                                |
+| Pulse-Width-Modulation | pwm       | 1-bit output whose average (duty cycle) encodes an analog level                                                              |
+| Duty cycle             |           | Fraction of a PWM period the output is high                                                                                  |
+| Low-pass filter        | LPF       | Attenuates frequencies above a cutoff; turns PWM into an analog waveform                                                     |
+| pwm frequency          | pwm       | The frequency of off and on-duty cycle. `counter_size` in PWM. Should be 10 times the desired audio frequency (sample rate). |
+| Oscillator             | osc       | Generates a periodic waveform (sine, square, sawtooth, triangle) at a given frequency                                        |
+| Voice                  |           | One independently playable sound: oscillator + envelope                                                                      |
+| Envelope               | ADSR      | Amplitude shape over a note's life: Attack, Decay, Sustain, Release                                                          |
+| Attack                 | A         | Time to rise from 0 to peak after note-on                                                                                    |
+| Decay                  | D         | Time to fall from peak to sustain level                                                                                      |
+| Sustain                | S         | Level (not time) held while the note is on                                                                                   |
+| Release                | R         | Time to fall from sustain to 0 after note-off                                                                                |
+| MIDI                   |           | Serial protocol (31.25 kbaud) for note-on/off, pitch and velocity messages                                                   |
 
 
 
