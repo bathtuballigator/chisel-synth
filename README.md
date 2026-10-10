@@ -1,6 +1,6 @@
-Group 13 - Parameterizable Live Controlled Synthesizer
+# Group 13 - Parameterizable Live Controlled Synthesizer
 =======================
-### Dependencies
+## Dependencies
 
 #### JDK 11 or newer
 
@@ -23,10 +23,25 @@ This project will use chisel generators, combined with a spreadsheet of required
 
 The synthesizer can be connected to a MIDI keyboard, and played live, or it can be connected to a computer and play a sequence of pre-programmed notes.
 
+## Glossary
+
+| Term                   | shorthand | Description                                                                       |
+| ---------------------- | --------- | --------------------------------------------------------------------------------- |
+| Amplitude              | amp       |                                                                                   |
+| Sample rate            |           |                                                                                   |
+| Sample                 |           | Signed int value representing audio wave at a single point during the sample rate |
+| Phase                  |           |                                                                                   |
+| Nyquist frequency      | Nyquist   |                                                                                   |
+| Pulse-Width-Modulation | pwm       |                                                                                   |
+|                        |           |                                                                                   |
+|                        |           |                                                                                   |
+
+
+
 
 ## Nexys DDR4 Audio Output Specs
 
--  Pin A11 is connected to AUD_PWM, which is  the input to an analog low-pass filter
+-  Pin A11 is connected to AUD_PWM, which is  the input to an analog low-pass filter$[^1]$
 ![plot of filtering strength in proportion to frequency of a low-pass filter](docs/ddr4_output_filtering.png)
 
 generating a signal is as simple as connecting the output to a PWM generator and setting the duty cycle of the PWM to what frequency we want to produce. sample verilog code included below
@@ -51,3 +66,18 @@ endmodule
 ```
 
 - no hard specs on what frequencies need to be met by hardware, the only caveat is that the datasheet recommends that our PWM frequency be at least one order of magnitude higher than anything we want the audio output to produce. using a system clock of 100MHz to drive the PWM should meet this constraint with plenty of room. 
+
+
+
+
+
+## Interfaces
+
+![image](docs/interfaces.drawio.svg)
+
+
+## Sources
+
+[^1] https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual
+https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual#pulse-width_modulation
+
