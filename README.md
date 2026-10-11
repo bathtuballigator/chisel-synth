@@ -38,7 +38,7 @@ The synthesizer can be connected to a MIDI keyboard, and played live, or it can 
 | Pulse-Width-Modulation | pwm       | 1-bit output whose average (duty cycle) encodes an analog level                                                                                                |
 | Duty cycle             |           | Fraction of a PWM period the output is high                                                                                                                    |
 | Low-pass filter        | LPF       | Attenuates frequencies above a cutoff; turns PWM into an analog waveform                                                                                       |
-| pwm frequency          | pwm       | The frequency of off and on-duty cycle. `counter_size` in PWM. Should be 10 times the desired audio frequency (sample rate) $counter\_size \propto sampleWid$. |
+| pwm frequency          | pwm       | The frequency of off and on-duty cycle. `counter_size` in PWM. Should be 10 times the desired audio frequency (sample rate) $\text{counter\_size} \propto sampleWid$. |
 | Oscillator             | osc       | Generates a periodic waveform (sine, square, sawtooth, triangle) at a given frequency                                                                          |
 | Voice                  |           | One independently playable sound: oscillator + envelope                                                                                                        |
 | Envelope               | ADSR      | Amplitude shape over a note's life: Attack, Decay, Sustain, Release                                                                                            |
