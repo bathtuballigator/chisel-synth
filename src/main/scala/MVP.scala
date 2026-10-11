@@ -3,22 +3,26 @@ import chisel3.util.log2Ceil
 
 class MVP(
     amp: Int = 256,
-    phaseWid: Int = 16,
     sampleWid: Int = 8,
-    pwmFrequency: Int
+    phaseWid: Int = 16,
+    frequency: Int = 440 // Frequency to play square wave in Hz
 ) extends Module {
   val io = IO(
     new Bundle {
-      val on = Input(Bool()) // Whether to play sound or not
+      val play = Input(Bool()) // Whether to play sound or not
       val out = Output(
         Bool()
       ) // Linked to AUD_PWM  // TODO: FIXME: Should be tristate floating instead of 1
     }
   )
   val sampleRate = 48000 // 48kHz
-  val frequency = 440 // 440Hz
+  val pwmFrequency = sampleRate * 10
   require(log2Ceil(sampleRate) <= sampleWid)
-
+  require(frequency >= 0, "Frequency must be non-negative")
+  require(
+    frequency < sampleRate / 2,
+    "Frequency must be less than Nyquist frequency"
+  )
   val squareOsc =
     new SquareOscillator(amp = amp, sampleWid = sampleWid, phaseWid = phaseWid)
 
@@ -36,9 +40,9 @@ class MVP(
       squareOsc.io.sample,
       sampleWid
     )
-  val silenceOrSample = // sample or 50% duty cycle
-    Mux(io.on, dutyCycle, 1.U)
-  pwm.io.PWM_in := silenceOrSample // ???
+  val sampleOrSilence = // sample or 0% duty cycle
+    Mux(io.play, dutyCycle, 0.U)
+  pwm.io.PWM_in := sampleOrSilence // ???
   io.out := pwm.io.PWM_out
 }
 
