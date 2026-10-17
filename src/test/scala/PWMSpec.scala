@@ -54,4 +54,54 @@ class PWMSpec extends AnyFlatSpec with ChiselScalatestTester {
     dut.clock.step()
     dut.io.PWM_out.expect(false.B)
   })
+
+  it should "be off for PWM_in cycles, then on for counter_size-PWM_in cycles" in test(
+    new PWM(3) {
+      dut =>
+      // off for 0/3 cycle
+
+      dut.io.PWM_in.poke(0.U)
+      dut.io.PWM_out.expect(true.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(true.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(true.B)
+
+      // off for 1/3 cycle
+      dut.io.PWM_in.poke(1.U)
+      dut.clock.step()
+      dut.io.PWM_out.expect(false.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(true.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(true.B)
+      dut.clock.step()
+
+      dut.io.PWM_out.expect(false.B) // restart counter
+      dut.clock.step()
+      dut.io.PWM_out.expect(true.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(true.B)
+
+      // off for 2/3 cycle
+      dut.io.PWM_in.poke(2.U)
+      dut.clock.step()
+      dut.io.PWM_out.expect(false.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(false.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(true.B)
+
+      // off for 2/3 cycle
+      dut.clock.step()
+      dut.io.PWM_in.poke(3.U)
+      dut.io.PWM_out.expect(false.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(false.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(false.B)
+      dut.clock.step()
+      dut.io.PWM_out.expect(false.B)
+    }
+  )
 }
