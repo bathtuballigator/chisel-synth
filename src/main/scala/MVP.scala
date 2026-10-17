@@ -6,17 +6,17 @@ class MVP(
     amp: Int = 256,
     sampleWid: Int = 8,
     phaseWid: Int = 16,
-    frequency: Int = 440 // Frequency to play square wave in Hz
+    frequency: Int = 440, // Frequency to play square wave in Hz,
+    sampleRate: Int = 48_000,
 ) extends Module {
   val io = IO(
     new Bundle {
       val play = Input(Bool()) // Whether to play sound or not
       val out = Output(
         Bool()
-      ) // Linked to AUD_PWM  // TODO: FIXME: Should be tristate floating instead of 1
+      ) // Linked to AUD_PWM  // TODO: FIXME: Should be tristate floating instead of 1??
     }
   )
-  val sampleRate = 48000 // 48kHz
   val pwmFrequency = sampleRate * 10
   require(log2Ceil(sampleRate) <= sampleWid)
   require(frequency >= 0, "Frequency must be non-negative")

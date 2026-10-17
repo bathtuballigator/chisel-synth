@@ -8,7 +8,7 @@ class SquareOscillator( // class for an oscillator that uses an accumulator to g
 {
     // require non-neg values
     require(amp>=0, "Amplitude must not be negative") // I allowed zero amplitude, which will just output a constant 0
-    require(sampleWid>0, "Sample width must be positive") // number of bits
+    require(sampleWid>1, "Sample width must be >1") // number of bits
     require(phaseWid>0, "Phase width must be positive") // number of bits
     require(amp<(1<<(sampleWid-1)), "Amplitude must fit in signed sample width") // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
 

@@ -4,19 +4,19 @@
 
 #### JDK 11 or newer
 
-We recommend using Java 11 or later LTS releases. While Chisel itself works with Java 8, our preferred build tool Mill requires Java 11. You can install the JDK as your operating system recommends, or use the prebuilt binaries from [Adoptium](https://adoptium.net/) (formerly AdoptOpenJDK).
+We recommend using Java 11 or later LTS releases. While Chisel itself works with Java 8, our preferred build tool Mill requires Java 11. You can install the JDK as your operating system recommends, or use the prebuilt binaries from [Adoptium](https:
 
 #### SBT or mill
 
-SBT is the most common build tool in the Scala community. You can download it [here](https://www.scala-sbt.org/download.html).
+SBT is the most common build tool in the Scala community. You can download it [here](https:
 Mill is another Scala/Java build tool preferred by Chisel's developers.
 This repository includes a bootstrap script `./mill` so that no installation is necessary.
-You can read more about Mill on its website: https://mill-build.org.
+You can read more about Mill on its website: https:
 
 #### Verilator
 
 The test with `svsim` needs Verilator installed.
-See Verilator installation instructions [here](https://verilator.org/guide/latest/install.html).
+See Verilator installation instructions [here](https:
 
 ## Project Description
 This project will use chisel generators, combined with a spreadsheet of required components, to generate a custom hardware synthesizer as defined in the spreadsheet. The synthesizer will have a maximum of 3 voices, which the user can define as sine, square, sawtooth, or triangle. The user can also define an envelope (Attack, Decay, Sustain, and Release parameters) for each voice.
@@ -90,9 +90,27 @@ endmodule
 
 ### PWM
 ```
-
+PWM(counter_size):
+  width = log2Ceil(counter_size)
+  io = (
+    PWM_out = Output(Bool())
+    PWM_in = Input(UInt(width.W))
+  )
 ```
 ### Oscillator
+
+```
+class SquareOscillator(
+    amp: Int, 
+    sampleWid: Int, 
+    phaseWid: Int 
+):
+    io = (
+        increment = Input(UInt(phaseWid.W)) 
+        sample=Output(SInt(sampleWid.W)) 
+    )
+    
+```
 
 ### MVP
 
@@ -100,6 +118,6 @@ endmodule
 
 ## Sources
 
-[^1] https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual
-https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual#pulse-width_modulation
+[^1] https:
+https:
 
