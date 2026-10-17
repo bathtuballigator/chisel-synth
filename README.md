@@ -88,8 +88,15 @@ endmodule
 
 ## Interfaces
 
-![image](docs/interfaces.drawio.svg)
+### PWM
+```
 
+```
+### Oscillator
+
+### MVP
+
+### Connection graph
 
 ## Sources
 

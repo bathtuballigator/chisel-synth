@@ -1,5 +1,6 @@
 import chisel3._
 import chisel3.util.log2Ceil
+import chisel3.util.Cat
 
 class MVP(
     amp: Int = 256,
