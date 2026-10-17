@@ -25,9 +25,9 @@ class MVP(
     "Frequency must be less than Nyquist frequency"
   )
   val squareOsc =
-    new SquareOscillator(amp = amp, sampleWid = sampleWid, phaseWid = phaseWid)
+    Module(new SquareOscillator(amp = amp, sampleWid = sampleWid, phaseWid = phaseWid))
 
-  val pwm = new PWM(pwmFrequency)
+  val pwm = Module(new PWM(pwmFrequency))
 
   squareOsc.io.increment := OscConfig
     .calcIncrement(
@@ -49,16 +49,13 @@ class MVP(
 
 object MVPConfig {
   def sampleToDutyCycle(sample: SInt, sampleWid: Int): UInt = {
-
-    var sampleUSize = (BigInt(1) << sampleWid)
-    var signedMax = sampleUSize >> 1
-
     // N = sampleWid
     // sample in [-2^(N-1), 2^(N-1) - 1]
-    // normedSample = (sample + 2^(sampleWid-1))
+    // normedSample = (sample + 2^(N-1))
     // normedSample in [0, 2^(N) - 1]
-    // duty = normedSample / 2^N
+    // duty = normedSample
 
+    // Magic trick for computing sample + 2^N-1
     val duty = Cat(~sample(sampleWid - 1), sample(sampleWid - 2, 0))
     duty
   }
