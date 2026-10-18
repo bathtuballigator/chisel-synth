@@ -29,10 +29,11 @@ class MVP_Spec extends AnyFlatSpec with ChiselScalatestTester {
     var sampleVal = 5
     var dutyCycleVal = (sampleVal + 2 << (4 - 1))
     for (i <- 0 until 20) { // what should end val be??
-      for (i <- 0 until dut.pwmFrequencyExposed) {
-        assert(dut.sampleExposed == sampleVal.S)
-        assert(dut.dutyCycleExposed == dutyCycleVal.U)
-        dut.io.out.expect((i >= dutyCycleVal).B)
+      for (j <- 0 until dut.pwmFrequencyExposed) {
+        println((i,j))
+        dut.sampleExposed.expect(sampleVal.S)
+        dut.dutyCycleExposed.expect(dutyCycleVal.U)
+        dut.io.out.expect((j >= dutyCycleVal).B)
         dut.clock.step()
       }
       sampleVal = -sampleVal
