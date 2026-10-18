@@ -100,7 +100,7 @@ PWM(counter_size):
 ### Oscillator
 
 ```
-class SquareOscillator(
+SquareOscillator(
     amp: Int, 
     sampleWid: Int, 
     phaseWid: Int 
@@ -114,7 +114,23 @@ class SquareOscillator(
 
 ### MVP
 
+```
+MVP(
+    amp: Int = 256,
+    sampleWid: Int = 8,
+    phaseWid: Int = 16,
+    frequency: Int = 440, // Frequency to play square wave in Hz,
+    sampleRate: Int = 48_000
+):
+  io = (
+    play = Input(Bool()) // Whether to play sound or not
+    out = Output(Bool()) // Linked to AUD_PWM
+  )
+```
+
 ### Connection graph
+
+![image](docs/interfaces.drawio.svg)
 
 ## Sources
 
