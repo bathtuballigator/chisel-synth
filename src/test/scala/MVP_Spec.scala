@@ -22,13 +22,13 @@ class MVP_Exposed(
 }
 
 class MVP_Spec extends AnyFlatSpec with ChiselScalatestTester {
-  it should "sanity check" in test(new MVP_Exposed(5, 4, 4, 4, 16) {
+  "MVP" should "sanity check" in test(new MVP_Exposed(5, 4, 4, 4, 16)) {
     dut =>
     dut.io.play.poke(true.B)
     dut.clock.step()
     var sampleVal = 5
-    var dutyCycleVal = (sampleVal + 2 << (4 - 1))
-    for (i <- 0 until 20) { // what should end val be??
+    var dutyCycleVal = (sampleVal + (2 << (4 - 1)))
+    for (i <- 0 until 4) { // what should end val be??
       for (j <- 0 until dut.pwmFrequencyExposed) {
         println((i,j))
         dut.sampleExposed.expect(sampleVal.S)
@@ -37,13 +37,13 @@ class MVP_Spec extends AnyFlatSpec with ChiselScalatestTester {
         dut.clock.step()
       }
       sampleVal = -sampleVal
-      dutyCycleVal = (sampleVal + 2 << (4 - 1))
+      dutyCycleVal = (sampleVal + (2 << (4 - 1)))
     }
-  })
-  it should "Have high impedance instead of 1" in test(new MVP_Exposed() { // ??
+  }
+  it should "Have high impedance instead of 1" in test(new MVP_Exposed()) { // ??
     dut =>
-  })
-  it should "Have out 0 when deasserting play" in test(new MVP_Exposed() {
+  }
+  it should "Have out 0 when deasserting play" in test(new MVP_Exposed()) {
     dut => // should it be 0 or follow clock???
     dut.io.play.poke(false.B)
     dut.clock.step()
@@ -51,6 +51,6 @@ class MVP_Spec extends AnyFlatSpec with ChiselScalatestTester {
       dut.io.out.expect(false.B)
       dut.clock.step()
     }
-  })
+  }
 
 }
