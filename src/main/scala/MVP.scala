@@ -1,13 +1,13 @@
 import chisel3._
-import chisel3.util.log2Ceil
 import chisel3.util.Cat
+import chisel3.util.log2Ceil
 
 class MVP(
     amp: Int = 256,
     sampleWid: Int = 8,
     phaseWid: Int = 16,
     frequency: Int = 440, // Frequency to play square wave in Hz,
-    sampleRate: Int = 48_000,
+    sampleRate: Int = 48_000
 ) extends Module {
   val io = IO(
     new Bundle {
@@ -25,7 +25,13 @@ class MVP(
     "Frequency must be less than Nyquist frequency"
   )
   val squareOsc =
-    Module(new SquareOscillator(amp = amp, sampleWid = sampleWid, phaseWid = phaseWid))
+    Module(
+      new SquareOscillator(
+        amp = amp,
+        sampleWid = sampleWid,
+        phaseWid = phaseWid
+      )
+    )
 
   val pwm = Module(new PWM(pwmFrequency))
 
@@ -55,14 +61,8 @@ object MVPConfig {
     // normedSample in [0, 2^(N) - 1]
     // duty = normedSample
 
-    // Magic trick for computing sample + 2^N-1
+    // Magic trick for computing `sample + 2^(N-1)`
     val duty = Cat(~sample(sampleWid - 1), sample(sampleWid - 2, 0))
     duty
   }
 }
-/*
-
-10000
-01000
-
- */

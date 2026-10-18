@@ -13,43 +13,43 @@ class MVP_Exposed(
     phaseWid: Int = 4,
     frequency: Int = 4,
     sampleRate: Int = 16
-) extends MVP(amp, sampleWid, phaseWid, frequency) {
+) extends MVP(amp, sampleWid, phaseWid, frequency, sampleRate) {
   val PWM_outExposed = expose(pwm.io.PWM_out)
   val sampleExposed = expose(squareOsc.io.sample)
   val dutyCycleExposed = expose(dutyCycle)
   val sampleOrSilenceExposed = expose(sampleOrSilence)
+  val pwmFrequencyExposed = sampleRate * 10
 }
 
-class MVPSpec extends AnyFlatSpec with ChiselScalatestTester {
-  "MVP" should "Play 440hz sq. wav when asserting play" in test(
-    new MVP_Exposed(10, 8, 4, 440) {
-      dut =>
-      dut.io.play.poke(true.B)
-      dut.clock.step()
-      dut.io.out.expect()
-
-    }
-  )
-  it should "sanity check" in test(new MVP_Exposed() {
+class MVP_Spec extends AnyFlatSpec with ChiselScalatestTester {
+  it should "sanity check" in test(new MVP_Exposed(5, 4, 4, 4, 16) {
     dut =>
-      dut.io.play.poke(true.B)
-      dut.clock.step()
-      var sampleVal = 5
-      dut.sampleExposed.expect(sampleVal.S)
-      dut.dutyCycleExposed.expect((sampleVal).S)
-      dut.clock.step()
-      dut.sampleExposed.expect(5.S)
-      dut.clock.step()
-      dut.sampleExposed.expect(-5.S)
-      dut.clock.step()
-      dut.sampleExposed.expect(-5.S)
-      dut.io.out.expect()
+    dut.io.play.poke(true.B)
+    dut.clock.step()
+    var sampleVal = 5
+    var dutyCycleVal = (sampleVal + 2 << (4 - 1))
+    for (i <- 0 until 20) { // what should end val be??
+      for (i <- 0 until dut.pwmFrequencyExposed) {
+        assert(dut.sampleExposed == sampleVal.S)
+        assert(dut.dutyCycleExposed == dutyCycleVal.U)
+        dut.io.out.expect((i >= dutyCycleVal).B)
+        dut.clock.step()
+      }
+      sampleVal = -sampleVal
+      dutyCycleVal = (sampleVal + 2 << (4 - 1))
+    }
   })
   it should "Have high impedance instead of 1" in test(new MVP_Exposed() { // ??
     dut =>
   })
   it should "Have out 0 when deasserting play" in test(new MVP_Exposed() {
-    dut =>
+    dut => // should it be 0 or follow clock???
+    dut.io.play.poke(false.B)
+    dut.clock.step()
+    for (i <- 0 until 10) {
+      dut.io.out.expect(false.B)
+      dut.clock.step()
+    }
   })
 
 }
