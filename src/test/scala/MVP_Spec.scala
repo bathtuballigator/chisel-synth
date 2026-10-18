@@ -19,38 +19,59 @@ class MVP_Exposed(
   val dutyCycleExposed = expose(dutyCycle)
   val sampleOrSilenceExposed = expose(sampleOrSilence)
   val pwmFrequencyExposed = sampleRate * 10
+  val widthExposed = width
+  val maxValExposed = maxVal
+  val pwmWidthExposed = pwm.width
+
+  val amp_ = amp
+  val sampleWid_ = sampleWid
+  val phaseWid_ = phaseWid
+  val frequency_ = frequency
+  val sampleRate_ = sampleRate
+
 }
 
 class MVP_Spec extends AnyFlatSpec with ChiselScalatestTester {
-  "MVP" should "sanity check" in test(new MVP_Exposed(5, 4, 4, 4, 16)) {
-    dut =>
+  "MVP" should "sanity check" in test(new MVP_Exposed(5, 4, 4, 4, 16)) { dut =>
     dut.io.play.poke(true.B)
-    dut.clock.step()
+
+    var phaseSize = (1 << dut.phaseWid_) //
+
+    var increment = (dut.frequency_ * phaseSize) / dut.sampleRate_
+    var period = (1 << dut.phaseWid_) / increment
+
     var sampleVal = 5
-    var dutyCycleVal = (sampleVal + (2 << (4 - 1)))
-    for (i <- 0 until 4) { // what should end val be??
-      for (j <- 0 until dut.pwmFrequencyExposed) {
-        println((i,j))
-        dut.sampleExposed.expect(sampleVal.S)
-        dut.dutyCycleExposed.expect(dutyCycleVal.U)
-        dut.io.out.expect((j >= dutyCycleVal).B)
+    var dutyCycleCalc =
+      (sampleVal: Int) => (sampleVal + (1 << (dut.sampleWid_ - 1)))
+    var dutyCycleVal = dutyCycleCalc(sampleVal) // sample + 2^(N-1)
+
+    for (i <- 0 until 8) { // what should end val be??
+      for (j <- 0 until period / 2) {
+        val rowCol = (
+          (i, j),
+          dut.sampleExposed.peekInt(),
+          dut.dutyCycleExposed.peekInt(),
+          dut.io.out.peekBoolean()
+        ).toString()
+
+        dut.sampleExposed.expect(sampleVal.S, rowCol)
+        dut.dutyCycleExposed.expect(dutyCycleVal.U, rowCol)
+        dut.io.out.expect((j >= dutyCycleVal).B, rowCol)
         dut.clock.step()
       }
       sampleVal = -sampleVal
-      dutyCycleVal = (sampleVal + (2 << (4 - 1)))
+      dutyCycleVal = dutyCycleCalc(sampleVal)
     }
   }
-  it should "Have high impedance instead of 1" in test(new MVP_Exposed()) { // ??
-    dut =>
-  }
+
   it should "Have out 0 when deasserting play" in test(new MVP_Exposed()) {
     dut => // should it be 0 or follow clock???
-    dut.io.play.poke(false.B)
-    dut.clock.step()
-    for (i <- 0 until 10) {
-      dut.io.out.expect(false.B)
+      dut.io.play.poke(false.B)
       dut.clock.step()
-    }
+      for (i <- 0 until dut.maxValExposed + 1) {
+        dut.io.out.expect(false.B, s"$i")
+        dut.clock.step()
+      }
   }
 
 }

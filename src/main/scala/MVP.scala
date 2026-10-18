@@ -17,7 +17,9 @@ class MVP(
       ) // Linked to AUD_PWM  // TODO: FIXME: Should be tristate floating instead of 1??
     }
   )
-  val pwmFrequency = sampleRate * 10
+  val pwmFrequency: Int = sampleRate * 10
+  val width: Int = log2Ceil(pwmFrequency)
+  val maxVal: Int = (2 << width) - 1
   require(log2Ceil(sampleRate) <= sampleWid)
   require(frequency >= 0, "Frequency must be non-negative")
   require(
@@ -48,7 +50,11 @@ class MVP(
       sampleWid
     )
   val sampleOrSilence = // sample or 0% duty cycle
-    Mux(io.play, dutyCycle, 0.U)
+    Mux(
+      io.play,
+      dutyCycle,
+      maxVal.U
+    ) // be off for all cycles when no play
   pwm.io.PWM_in := sampleOrSilence // ???
   io.out := pwm.io.PWM_out
 }
@@ -65,4 +71,8 @@ object MVPConfig {
     val duty = Cat(~sample(sampleWid - 1), sample(sampleWid - 2, 0))
     duty
   }
+}
+
+object MVP extends App {
+  emitVerilog(new MVP)
 }

@@ -7,7 +7,7 @@ class PWM(counter_size: Int) extends Module {
 
   val io = IO(new Bundle {
     val PWM_out = Output(Bool())
-    val PWM_in = Input(UInt(width.W))
+    val PWM_in = Input(UInt(width.W)) // beware of overflow 2^width
   })
 
   val acc = RegInit(0.U(width.W))
