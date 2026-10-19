@@ -32,35 +32,37 @@ class MVP_Exposed(
 }
 
 class MVP_Spec extends AnyFlatSpec with ChiselScalatestTester {
-  "MVP" should "sanity check" in test(new MVP_Exposed(5, 4, 4, 4, 16)) { dut =>
+  "MVP" should "sanity check" in test(
+    new MVP_Exposed(5, 4, 4, 4, 16)
+  ) { dut =>
     dut.io.play.poke(true.B)
 
-    var phaseSize = (1 << dut.phaseWid_) //
+    val counterLimit = dut.pwmFrequencyExposed // 160
+    var counter = 0
+    var threshold = counterLimit
+    var expectedOut = false
 
-    var increment = (dut.frequency_ * phaseSize) / dut.sampleRate_
-    var period = (1 << dut.phaseWid_) / increment
+    // Covers multiple oscillator and PWM periods.
+    for (cycle <- 0 until 500) {
+      val sample = if ((cycle % 4) < 2) 5 else -5
+      val duty = sample + 8
 
-    var sampleVal = 5
-    var dutyCycleCalc =
-      (sampleVal: Int) => (sampleVal + (1 << (dut.sampleWid_ - 1)))
-    var dutyCycleVal = dutyCycleCalc(sampleVal) // sample + 2^(N-1)
+      dut.sampleExposed.expect(sample.S, s"cycle $cycle")
+      dut.dutyCycleExposed.expect(duty.U, s"cycle $cycle")
+      dut.io.out.expect(expectedOut.B, s"cycle $cycle")
 
-    for (i <- 0 until 8) { // what should end val be??
-      for (j <- 0 until period / 2) {
-        val rowCol = (
-          (i, j),
-          dut.sampleExposed.peekInt(),
-          dut.dutyCycleExposed.peekInt(),
-          dut.io.out.peekBoolean()
-        ).toString()
+      // Registers compute their next values from the current values.
+      expectedOut = counter >= threshold
 
-        dut.sampleExposed.expect(sampleVal.S, rowCol)
-        dut.dutyCycleExposed.expect(dutyCycleVal.U, rowCol)
-        dut.io.out.expect((j >= dutyCycleVal).B, rowCol)
-        dut.clock.step()
+      if (counter == 0) {
+        threshold = duty
       }
-      sampleVal = -sampleVal
-      dutyCycleVal = dutyCycleCalc(sampleVal)
+
+      counter =
+        if (counter == counterLimit) 0
+        else counter + 1
+
+      dut.clock.step()
     }
   }
 
