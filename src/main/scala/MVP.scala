@@ -74,5 +74,7 @@ object MVPConfig {
 }
 
 object MVP extends App {
-  emitVerilog(new MVP)
+  emitVerilog(new MVP(
+    
+  ))
 }
