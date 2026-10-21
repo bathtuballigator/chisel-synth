@@ -2,8 +2,8 @@ import chisel3._
 import chisel3.util.log2Ceil
 
 class PWMOscillator(
-    freq: Int,
-    clock_speed: Int
+    freq: Int = 440,
+    clock_speed: Int = 100_000_000
 ) extends Module {
   val size: Int = clock_speed / freq
   val width: Int = log2Ceil(size)

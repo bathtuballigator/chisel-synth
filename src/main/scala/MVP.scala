@@ -7,7 +7,8 @@ class MVP(
     sampleWid: Int = 8,
     phaseWid: Int = 16,
     frequency: Int = 440, // Frequency to play square wave in Hz,
-    sampleRate: Int = 48_000
+    sampleRate: Int = 48_000,
+    clockFrequency: Int = 100_000_000 // Hz
 ) extends Module {
   val io = IO(
     new Bundle {
@@ -20,6 +21,7 @@ class MVP(
   val pwmFrequency: Int = sampleRate * 10
   val width: Int = log2Ceil(pwmFrequency)
   val maxVal: Int = (2 << width) - 1
+
   require(log2Ceil(sampleRate) <= sampleWid)
   require(frequency >= 0, "Frequency must be non-negative")
   require(
@@ -28,35 +30,22 @@ class MVP(
   )
   val squareOsc =
     Module(
-      new SquareOscillator(
-        amp = amp,
-        sampleWid = sampleWid,
-        phaseWid = phaseWid
+      new PWMOscillator(
+        freq = frequency,
+        clock_speed = clockFrequency
       )
     )
 
   val pwm = Module(new PWM(pwmFrequency))
 
-  squareOsc.io.increment := OscConfig
-    .calcIncrement(
-      freq = frequency,
-      sampleRate = sampleRate,
-      phaseWid = phaseWid
-    )
-    .U
-  val dutyCycle =
-    MVPConfig.sampleToDutyCycle( // what should happen with sample???
-      squareOsc.io.sample,
-      sampleWid
-    )
-  val sampleOrSilence = // sample or 0% duty cycle
+  val sampleOrSilence = ( // sample or 0% duty cycle
     Mux(
       io.play,
-      dutyCycle,
-      maxVal.U
+      squareOsc.io.PWM_out,
+      0.U
     ) // be off for all cycles when no play
-  pwm.io.PWM_in := sampleOrSilence // ???
-  io.out := pwm.io.PWM_out
+  )
+  io.out := sampleOrSilence
 }
 
 object MVPConfig {
@@ -71,6 +60,7 @@ object MVPConfig {
     val duty = Cat(~sample(sampleWid - 1), sample(sampleWid - 2, 0))
     duty
   }
+
 }
 
 object MVP extends App {
@@ -79,6 +69,7 @@ object MVP extends App {
   val verilog = emitVerilog(new MVP(amp = 256, sampleWid = 16))
   val output = java.nio.file.Paths.get("generated", "MVP.sv")
   java.nio.file.Files.createDirectories(output.getParent)
-  java.nio.file.Files.write(output, verilog.getBytes(java.nio.charset.StandardCharsets.UTF_8))
+  java.nio.file.Files
+    .write(output, verilog.getBytes(java.nio.charset.StandardCharsets.UTF_8))
   println(s"Vivado source written to ${output.toAbsolutePath}")
 }

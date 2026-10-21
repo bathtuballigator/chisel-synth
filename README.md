@@ -135,5 +135,6 @@ MVP(
 ## Sources
 
 [^1] https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual
-https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual#pulse-width_modulation
+
+[^2] https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual#pulse-width_modulation
 
