@@ -15,9 +15,9 @@ class PWMOscillator(
 
   val acc = RegInit(0.U(width.W))
   val PWM_out_reg = RegInit(0.B)
-  val PWM_thresh = RegInit(size.U(width.W))
+  val PWM_thresh = RegInit((size >> 1).U(width.W))
 
-  acc := Mux(acc === size.U, 0.U, acc + 1.U)
+  acc := Mux(acc === (size - 1).U, 0.U, acc + 1.U)
   PWM_thresh := Mux(acc === 0.U, PWM_in, PWM_thresh)
   PWM_out_reg := acc >= PWM_thresh
   io.PWM_out := PWM_out_reg
