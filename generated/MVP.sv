@@ -101,47 +101,13 @@ module MVP(	// \\src\\main\\scala\\MVP.scala:5:7
          io_out	// \\src\\main\\scala\\MVP.scala:13:14
 );
 
-  wire        _squareOsc_io_PWM_out;	// \\src\\main\\scala\\MVP.scala:35:11
-  reg         playPrev;	// \\src\\main\\scala\\MVP.scala:43:25
-  reg  [26:0] remaining;	// \\src\\main\\scala\\MVP.scala:45:26
-  always @(posedge clock) begin	// \\src\\main\\scala\\MVP.scala:5:7
-    if (reset) begin	// \\src\\main\\scala\\MVP.scala:5:7
-      playPrev <= 1'h0;	// \\src\\main\\scala\\MVP.scala:5:7, :43:25
-      remaining <= 27'h0;	// \\src\\main\\scala\\MVP.scala:45:26
-    end
-    else begin	// \\src\\main\\scala\\MVP.scala:5:7
-      playPrev <= io_play;	// \\src\\main\\scala\\MVP.scala:43:25
-      if (io_play & ~playPrev)	// \\src\\main\\scala\\MVP.scala:43:25, :44:{23,26}
-        remaining <= 27'h5F5E100;	// \\src\\main\\scala\\MVP.scala:45:26, :48:15
-      else if (|remaining)	// \\src\\main\\scala\\MVP.scala:45:26, :46:27
-        remaining <= remaining - 27'h1;	// \\src\\main\\scala\\MVP.scala:45:26, :50:28
-    end
-  end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\MVP.scala:5:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MVP.scala:5:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MVP.scala:5:7
-    `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\MVP.scala:5:7
-      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\MVP.scala:5:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MVP.scala:5:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MVP.scala:5:7
-      `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\MVP.scala:5:7
-        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\MVP.scala:5:7
-        playPrev = _RANDOM[/*Zero width*/ 1'b0][0];	// \\src\\main\\scala\\MVP.scala:5:7, :43:25
-        remaining = _RANDOM[/*Zero width*/ 1'b0][27:1];	// \\src\\main\\scala\\MVP.scala:5:7, :43:25, :45:26
-      `endif // RANDOMIZE_REG_INIT
-    end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MVP.scala:5:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MVP.scala:5:7
-    `endif // FIRRTL_AFTER_INITIAL
-  `endif // ENABLE_INITIAL_REG_
+  wire _squareOsc_io_PWM_out;	// \\src\\main\\scala\\MVP.scala:35:11
   PWMOscillator squareOsc (	// \\src\\main\\scala\\MVP.scala:35:11
     .clock      (clock),
     .reset      (reset),
     .io_PWM_out (_squareOsc_io_PWM_out)
   );
-  assign io_AUD_SD = 1'h1;	// \\src\\main\\scala\\MVP.scala:5:7
-  assign io_out = (|remaining) & _squareOsc_io_PWM_out;	// \\src\\main\\scala\\MVP.scala:5:7, :35:11, :45:26, :46:27, :54:8
+  assign io_AUD_SD = 1'h1;	// \\src\\main\\scala\\MVP.scala:5:7, :22:13
+  assign io_out = io_play & _squareOsc_io_PWM_out ? 1'bz : 1'b0;	// \\src\\main\\scala\\MVP.scala:5:7, :35:11, :43:8
 endmodule
 
