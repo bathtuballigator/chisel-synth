@@ -74,7 +74,11 @@ object MVPConfig {
 }
 
 object MVP extends App {
-  emitVerilog(new MVP(
-    
-  ))
+  // The board build needs 16 sample bits for the existing 48 kHz requirement.
+  // Keep the module defaults and test configurations unchanged.
+  val verilog = emitVerilog(new MVP(amp = 256, sampleWid = 16))
+  val output = java.nio.file.Paths.get("generated", "MVP.sv")
+  java.nio.file.Files.createDirectories(output.getParent)
+  java.nio.file.Files.write(output, verilog.getBytes(java.nio.charset.StandardCharsets.UTF_8))
+  println(s"Vivado source written to ${output.toAbsolutePath}")
 }

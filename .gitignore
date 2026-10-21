@@ -1,4 +1,8 @@
-vivado/
+vivado/*
+!vivado/create_project.tcl
+!vivado/MVP.xdc
+!vivado/README.md
+/MVP.sv
 ### Project Specific stuff
 *.anno.json
 *.v
