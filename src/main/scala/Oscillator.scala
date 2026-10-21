@@ -1,51 +1,94 @@
 import chisel3._
+import chisel3.util.log2Ceil
+
+class PWMOscillator(
+    freq: Int,
+    clock_speed: Int
+) extends Module {
+  val size: Int = clock_speed / freq
+  val width: Int = log2Ceil(size)
+  val PWM_in: UInt = (size >> 1).U
+
+  val io = IO(new Bundle {
+    val PWM_out = Output(Bool())
+  })
+
+  val acc = RegInit(0.U(width.W))
+  val PWM_out_reg = RegInit(0.B)
+  val PWM_thresh = RegInit(size.U(width.W))
+
+  acc := Mux(acc === size.U, 0.U, acc + 1.U)
+  PWM_thresh := Mux(acc === 0.U, PWM_in, PWM_thresh)
+  PWM_out_reg := acc >= PWM_thresh
+  io.PWM_out := PWM_out_reg
+
+}
 
 class SquareOscillator( // class for an oscillator that uses an accumulator to generate a square wave
     amp: Int, // the amplitude of the square wave
     sampleWid: Int, // the number of bits in the output sample
     phaseWid: Int // the number of bits in the phase accumulator
-) extends Module 
-{
-    // require non-neg values
-    require(amp>=0, "Amplitude must not be negative") // I allowed zero amplitude, which will just output a constant 0
-    require(sampleWid>1, "Sample width must be >1") // number of bits
-    require(phaseWid>0, "Phase width must be positive") // number of bits
-    require(amp<(1<<(sampleWid-1)), "Amplitude must fit in signed sample width") // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
+) extends Module {
+  // require non-neg values
+  require(
+    amp >= 0,
+    "Amplitude must not be negative"
+  ) // I allowed zero amplitude, which will just output a constant 0
+  require(sampleWid > 1, "Sample width must be >1") // number of bits
+  require(phaseWid > 0, "Phase width must be positive") // number of bits
+  require(
+    amp < (1 << (sampleWid - 1)),
+    "Amplitude must fit in signed sample width"
+  ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
 
-    val io=IO(new Bundle
-    {
-        // chisel hardware unsigned
-        val increment = Input(UInt(phaseWid.W)) // increment value for the phase accumulator, calculated from frequency and sample rate
-        // neeeds to be signed
-        val sample=Output(SInt(sampleWid.W)) // output sample, signed
-    })
-    
-    // accumulator
-    val acc=RegInit(0.U(phaseWid.W))
-    // increment
-    acc:=acc+io.increment // overflow will wrap around
+  val io = IO(new Bundle {
+    // chisel hardware unsigned
+    val increment = Input(
+      UInt(phaseWid.W)
+    ) // increment value for the phase accumulator, calculated from frequency and sample rate
+    // neeeds to be signed
+    val sample = Output(SInt(sampleWid.W)) // output sample, signed
+  })
 
-    // for square wave, just use MSB
-    // if MSB is 1, output -amp
-    // if MSB is 0, output +amp
-    // that divides the phase in half
-    io.sample:=Mux(acc(phaseWid-1), (-amp).S(sampleWid.W), (+amp).S(sampleWid.W))
+  // accumulator
+  val acc = RegInit(0.U(phaseWid.W))
+  // increment
+  acc := acc + io.increment // overflow will wrap around
+
+  // for square wave, just use MSB
+  // if MSB is 1, output -amp
+  // if MSB is 0, output +amp
+  // that divides the phase in half
+  io.sample := Mux(
+    acc(phaseWid - 1),
+    (-amp).S(sampleWid.W),
+    (+amp).S(sampleWid.W)
+  )
 }
-
 
 object OscConfig // calculate increment of the square wave oscillator for given frequency, sample rate, and phase width
 {
-    def calcIncrement(
-        freq:Int, // frequency of the square wave
-        sampleRate:Int, // sample rate of the DAC in Hz
-        phaseWid:Int // number of bits in the phase accumulator
-    ): BigInt=
-    {
-        require(freq>=0, "Frequency must be non-negative") // allow zero frequency, which will just output a constant value
-        require(freq<sampleRate/2, "Frequency must be less than Nyquist frequency") // must be less than half the sample rate to avoid aliasing/acheive perfect fideltiy (Nyquist–Shannon sampling theorem)
-        require(sampleRate>0, "Sample rate must be positive") // Hz
-        require(phaseWid>0, "Phase width must be positive") // number of bits in phase accumulator
-        // generated during elaboration phase, so mult/div are not on FPGA
-        (BigInt(freq)*(BigInt(1)<<phaseWid))/sampleRate // increment = freq * 2^phaseWid / sampleRate
-    }
+  def calcIncrement(
+      freq: Int, // frequency of the square wave
+      sampleRate: Int, // sample rate of the DAC in Hz
+      phaseWid: Int // number of bits in the phase accumulator
+  ): BigInt = {
+    require(
+      freq >= 0,
+      "Frequency must be non-negative"
+    ) // allow zero frequency, which will just output a constant value
+    require(
+      freq < sampleRate / 2,
+      "Frequency must be less than Nyquist frequency"
+    ) // must be less than half the sample rate to avoid aliasing/acheive perfect fideltiy (Nyquist–Shannon sampling theorem)
+    require(sampleRate > 0, "Sample rate must be positive") // Hz
+    require(
+      phaseWid > 0,
+      "Phase width must be positive"
+    ) // number of bits in phase accumulator
+    // generated during elaboration phase, so mult/div are not on FPGA
+    (BigInt(freq) * (BigInt(
+      1
+    ) << phaseWid)) / sampleRate // increment = freq * 2^phaseWid / sampleRate
+  }
 }
