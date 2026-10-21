@@ -36,8 +36,6 @@ class MVP(
       )
     )
 
-  val pwm = Module(new PWM(pwmFrequency))
-
   val sampleOrSilence = ( // sample or 0% duty cycle
     Mux(
       io.play,
