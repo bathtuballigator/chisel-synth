@@ -13,11 +13,14 @@ class MVP(
   val io = IO(
     new Bundle {
       val play = Input(Bool()) // Whether to play sound or not
+      val AUD_SD = Output(Bool()) // High signal for the AUD_SD
       val out = Output(
         Bool()
       ) // Linked to AUD_PWM  // TODO: FIXME: Should be tristate floating instead of 1??
     }
   )
+  io.AUD_SD := true.B // Default to high for AUD_SD
+
   val pwmFrequency: Int = sampleRate * 10
   val width: Int = log2Ceil(pwmFrequency)
   val maxVal: Int = (2 << width) - 1
@@ -36,12 +39,15 @@ class MVP(
       )
     )
 
+
   val sampleOrSilence = ( // sample or 0% duty cycle
     Mux(
       io.play,
+      playing,
       squareOsc.io.PWM_out,
       0.U
     ) // be off for all cycles when no play
+    ) // be off for all cycles when not playing
   )
   io.out := sampleOrSilence
 }
