@@ -28,7 +28,8 @@ class MVPBlackBox extends BlackBox with HasBlackBoxInline {
 class MVP(
     frequency: Int = 440, // Frequency to play square wave in Hz,
     clockFrequency: Int = 100_000_000, // Hz
-    useZ: Boolean = true
+    useZ: Boolean = true,
+    AUD_SD_Val: Boolean = true // Default to high for AUD_SD
 ) extends Module {
   val io = IO(
     new Bundle {
@@ -41,7 +42,7 @@ class MVP(
     }
   )
 
-  io.AUD_SD := true.B // Default to high for AUD_SD
+  io.AUD_SD := AUD_SD_Val.B  // TODO: Have this be handled in board specific wrapper
 
   val squareOsc =
     Module(

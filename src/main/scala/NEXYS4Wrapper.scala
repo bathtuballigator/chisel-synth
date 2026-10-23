@@ -29,25 +29,37 @@ class Debouncer(stableCycles: Int) extends Module {
 }
 
 class NEXYS4Wrapper(
-    resetActiveLow: Boolean =
-      true // true means reset is active when not asserting it
 ) extends RawModule {
   val clock = IO(Input(Clock()))
   val reset = IO(Input(Bool()))
 
-  withClockAndReset(clock, if (resetActiveLow) !reset else reset) {
-    val mvp = Module(
-      new MVP(frequency = 440, clockFrequency = 100_000_000, useZ = true)
-    )
-    val io = IO(chiselTypeOf(mvp.io))
 
-    // 10 ms at 100MHz is more than plenty
-    val debounceCycles = 1_000_000
-    val play = Module(new Debouncer(debounceCycles))
+  val sw = IO(Input(Vec(Env.amntFreq, Bool())))
 
-    play.io.in := io.play
+  withClockAndReset(clock, if (Nexys4.resetActiveLow) !reset else reset) {
+    val io = IO(new Bundle {
+        val AUD_SD = Output(Bool()),
+        val out = Analog(1.W),
+        val play = Input(Bool())
+    })
+    for (i <- 0 until Env.amntFreq) {
+      val mvp = Module(
+        new MVP(
+          frequency = MidiUtils.midiToFreq(
+            i + 60 // start from C4, then C#4, etc.
+          ),
+          clockFrequency = Nexys4.clockFrequency,
+          useZ = Nexys4.useZ
+        )
+      )
 
-    io.out := play.io.out // see if this can be done automatically if we have more io
+
+      // 10 ms at 100MHz is more than plenty
+      val debounceCycles = 1_000_000
+      val play = Module(new Debouncer(debounceCycles))
+
+      play.io.in := io.play // override with debounced input
+    }
   }
 
 }
