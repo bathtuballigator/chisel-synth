@@ -70,7 +70,8 @@ class MVPIONexys4 extends Bundle {
 // inputs:
 //   - io.core.sel: Vec(Bool)  // selects which voice to play
 // outputs:
-//
+//  - AUD_PWM: high-Z or 0  // connected to the AUD_PWM port
+//  - AUD_SD: Bool  // always high
 class Nexys4Wrapper extends RawModule {
   val clock = IO(Input(Clock()))
   val reset = IO(Input(Bool()))
@@ -86,6 +87,7 @@ class Nexys4Wrapper extends RawModule {
     io.AUD_SD := true.B // Required by spec
 
     mvp.io.sel := io.core.sel
+    io.core <> mvp.io
     io.core.out := DontCare
 
     // Set AUD_PWM to be high-Z instead of 1
@@ -96,16 +98,6 @@ class Nexys4Wrapper extends RawModule {
 
 }
 
-object MVPGen extends App {
-  val verilog = emitVerilog(
-    new Nexys4Wrapper()
-  ).split(
-    "// ----- 8< ----- FILE \"firrtl_black_box_resource_files.f\""
-  ) // a bit hacky
-    .head // drop the trailing file list, which is not valid SystemVerilog
-  val output = java.nio.file.Paths.get("generated", "MVP.sv")
-  java.nio.file.Files.createDirectories(output.getParent)
-  java.nio.file.Files
-    .write(output, verilog.getBytes(java.nio.charset.StandardCharsets.UTF_8))
-  println(s"Vivado source written to ${output.toAbsolutePath}")
+object Nexys4Gen extends App {
+  VerilogGen(new Nexys4Wrapper, "MVP_Octave.sv")
 }
