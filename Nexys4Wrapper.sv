@@ -1142,23 +1142,22 @@ module Nexys4Wrapper(	// \\src\\main\\scala\\Nexys4Wrapper.scala:75:7
          reset,	// \\src\\main\\scala\\Nexys4Wrapper.scala:77:17
   output io_AUD_SD,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
   inout  io_AUD_PWM,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-  output io_core_out,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-  input  io_core_sel_0,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_1,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_2,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_3,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_4,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_5,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_6,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_7,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_8,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_9,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_10,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_11,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_12,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_13,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_14,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
-         io_core_sel_15	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+  input  io_sel_0,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_1,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_2,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_3,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_4,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_5,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_6,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_7,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_8,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_9,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_10,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_11,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_12,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_13,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_14,	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
+         io_sel_15	// \\src\\main\\scala\\Nexys4Wrapper.scala:86:16
 );
 
   wire _mvp_io_out;	// \\src\\main\\scala\\Nexys4Wrapper.scala:81:21
@@ -1166,29 +1165,28 @@ module Nexys4Wrapper(	// \\src\\main\\scala\\Nexys4Wrapper.scala:75:7
     .clock     (clock),
     .reset     (~reset),	// \\src\\main\\scala\\Nexys4Wrapper.scala:80:55
     .io_out    (_mvp_io_out),
-    .io_sel_0  (io_core_sel_0),
-    .io_sel_1  (io_core_sel_1),
-    .io_sel_2  (io_core_sel_2),
-    .io_sel_3  (io_core_sel_3),
-    .io_sel_4  (io_core_sel_4),
-    .io_sel_5  (io_core_sel_5),
-    .io_sel_6  (io_core_sel_6),
-    .io_sel_7  (io_core_sel_7),
-    .io_sel_8  (io_core_sel_8),
-    .io_sel_9  (io_core_sel_9),
-    .io_sel_10 (io_core_sel_10),
-    .io_sel_11 (io_core_sel_11),
-    .io_sel_12 (io_core_sel_12),
-    .io_sel_13 (io_core_sel_13),
-    .io_sel_14 (io_core_sel_14),
-    .io_sel_15 (io_core_sel_15)
+    .io_sel_0  (io_sel_0),
+    .io_sel_1  (io_sel_1),
+    .io_sel_2  (io_sel_2),
+    .io_sel_3  (io_sel_3),
+    .io_sel_4  (io_sel_4),
+    .io_sel_5  (io_sel_5),
+    .io_sel_6  (io_sel_6),
+    .io_sel_7  (io_sel_7),
+    .io_sel_8  (io_sel_8),
+    .io_sel_9  (io_sel_9),
+    .io_sel_10 (io_sel_10),
+    .io_sel_11 (io_sel_11),
+    .io_sel_12 (io_sel_12),
+    .io_sel_13 (io_sel_13),
+    .io_sel_14 (io_sel_14),
+    .io_sel_15 (io_sel_15)
   );
-  MVPBlackBox pwmDriver (	// \\src\\main\\scala\\Nexys4Wrapper.scala:94:27
+  MVPBlackBox pwmDriver (	// \\src\\main\\scala\\Nexys4Wrapper.scala:92:27
     .in_AUD_PWM (_mvp_io_out),	// \\src\\main\\scala\\Nexys4Wrapper.scala:81:21
     .AUD_PWM    (io_AUD_PWM)
   );
   assign io_AUD_SD = 1'h1;	// \\src\\main\\scala\\Nexys4Wrapper.scala:75:7, :87:15
-  assign io_core_out = 1'h0;	// \\src\\main\\scala\\Nexys4Wrapper.scala:75:7, :80:55
 endmodule
 
 

@@ -9,7 +9,7 @@ class MVPIO extends Bundle {
 
 class MVP(
     frequency: Int = 440, // Frequency to play square wave in Hz,
-    clockFrequency: Int = Nexys4.clockFrequency, // Hz
+    clockFrequency: Int = Nexys4.clockFrequency // Hz
 ) extends Module {
   val io = IO(new MVPIO())
 
