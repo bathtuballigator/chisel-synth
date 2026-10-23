@@ -1,8 +1,8 @@
 import chisel3._
-import chisel3.util._
 import chisel3.experimental.Analog
 import chisel3.experimental.attach
 import chisel3.util.HasBlackBoxInline
+import chisel3.util._
 
 // 2-FF synchronizer + level debouncer. Output changes only after the
 // synchronized input has held its new value for `stableCycles` cycles.
@@ -58,16 +58,24 @@ class MVPBlackBox extends BlackBox with HasBlackBoxInline {
   )
 }
 
-class MVPIONexys4 extends MVP_TopIO {
+class MVPIONexys4 extends Bundle {
   val AUD_SD = Output(Bool())
   val AUD_PWM = Analog(1.W) // Linked to AUD_PWM: 0 when low, high-Z when high
+  val core = new MVP_TopIO()
 }
 
+// Handles the Nexys4 board connections
+// The board is reset active low. The AUD_PWM is required to be driven correctly.
+// This is handled here
+// inputs:
+//   - io.core.sel: Vec(Bool)  // selects which voice to play
+// outputs:
+//
 class Nexys4Wrapper extends RawModule {
   val clock = IO(Input(Clock()))
   val reset = IO(Input(Bool()))
-    
-  // The nexys4 is reset active low, so we have to invert the reset  
+
+  // The nexys4 is reset active low, so we have to invert the reset
   withClockAndReset(clock, if (Nexys4.resetActiveLow) !reset else reset) {
     val mvp = Module(
       new MVP_Top(
@@ -77,7 +85,8 @@ class Nexys4Wrapper extends RawModule {
     val io = IO(new MVPIONexys4())
     io.AUD_SD := true.B // Required by spec
 
-    io <> mvp.io  // Connect other io
+    mvp.io.sel := io.core.sel
+    io.core.out := DontCare
 
     // Set AUD_PWM to be high-Z instead of 1
     val pwmDriver = Module(new MVPBlackBox)
