@@ -1,8 +1,9 @@
 import chisel3._
+import chisel3.experimental.Analog
+import chisel3.experimental.attach
 import chisel3.util.Cat
-import chisel3.util.log2Ceil
-import chisel3.experimental.{Analog, attach}
 import chisel3.util.HasBlackBoxInline
+import chisel3.util.log2Ceil
 
 // Open-drain driver for AUD_PWM: pulls low on 0, floats (high-Z) on 1.
 class MVPBlackBox extends BlackBox with HasBlackBoxInline {
@@ -26,7 +27,8 @@ class MVPBlackBox extends BlackBox with HasBlackBoxInline {
 
 class MVP(
     frequency: Int = 440, // Frequency to play square wave in Hz,
-    clockFrequency: Int = 100_000_000 // Hz
+    clockFrequency: Int = 100_000_000, // Hz
+    useZ: Boolean = true
 ) extends Module {
   val io = IO(
     new Bundle {
@@ -56,9 +58,13 @@ class MVP(
       0.U
     ) // be off for all cycles when no play
   )
-  val pwmDriver = Module(new MVPBlackBox)
-  pwmDriver.io.in_AUD_PWM := sampleOrSilence
-  attach(pwmDriver.io.AUD_PWM, io.out)
+  if (useZ) {
+    val pwmDriver = Module(new MVPBlackBox)
+    pwmDriver.io.in_AUD_PWM := sampleOrSilence
+    attach(pwmDriver.io.AUD_PWM, io.out)
+  } else {
+    io.out := sampleOrSilence
+  }
 }
 
 object MVP extends App {
@@ -66,7 +72,9 @@ object MVP extends App {
   // Keep the module defaults and test configurations unchanged.
   val verilog = emitVerilog(
     new MVP(frequency = 440, clockFrequency = 100_000_000)
-  ).split("// ----- 8< ----- FILE \"firrtl_black_box_resource_files.f\"")  // a bit hacky
+  ).split(
+    "// ----- 8< ----- FILE \"firrtl_black_box_resource_files.f\""
+  ) // a bit hacky
     .head // drop the trailing file list, which is not valid SystemVerilog
   val output = java.nio.file.Paths.get("generated", "MVP.sv")
   java.nio.file.Files.createDirectories(output.getParent)
