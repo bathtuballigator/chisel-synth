@@ -1,8 +1,17 @@
 import chisel3._
 import chisel3.util._
+import chisel3.experimental.Analog
+import chisel3.experimental.attach
+import chisel3.util.HasBlackBoxInline
 
 // 2-FF synchronizer + level debouncer. Output changes only after the
 // synchronized input has held its new value for `stableCycles` cycles.
+// Example usage:
+// 10 ms at 100MHz is more than plenty
+// val debounceCycles = 1_000_000
+// val play = Module(new Debouncer(debounceCycles))
+// play.io.in := io.play
+// mvp.play := play.io.out
 class Debouncer(stableCycles: Int) extends Module {
   require(stableCycles >= 2)
   val io = IO(new Bundle {
@@ -28,38 +37,66 @@ class Debouncer(stableCycles: Int) extends Module {
   io.out := stable
 }
 
-class NEXYS4Wrapper(
-) extends RawModule {
+// Open-drain driver for AUD_PWM: pulls low on 0, floats (high-Z) on 1.
+// inspired by https://www.fabienm.eu/flf/manage-high-impedance-z-state-with-chisel/
+class MVPBlackBox extends BlackBox with HasBlackBoxInline {
+  val io = IO(new Bundle {
+    val in_AUD_PWM = Input(Bool())
+    val AUD_PWM = Analog(1.W)
+  })
+
+  setInline(
+    "MVPBlackBox.sv",
+    s"""
+    |module MVPBlackBox(
+    |  input  in_AUD_PWM,
+    |  inout  AUD_PWM
+    |);
+    |  assign AUD_PWM = in_AUD_PWM ? 1'bz : 1'b0;
+    |endmodule
+    """.stripMargin
+  )
+}
+
+class MVPIONexys4 extends MVP_TopIO {
+  val AUD_SD = Output(Bool())
+  val AUD_PWM = Analog(1.W) // Linked to AUD_PWM: 0 when low, high-Z when high
+}
+
+class Nexys4Wrapper extends RawModule {
   val clock = IO(Input(Clock()))
   val reset = IO(Input(Bool()))
-
-
-  val sw = IO(Input(Vec(Env.amntFreq, Bool())))
-
+    
+  // The nexys4 is reset active low, so we have to invert the reset  
   withClockAndReset(clock, if (Nexys4.resetActiveLow) !reset else reset) {
-    val io = IO(new Bundle {
-        val AUD_SD = Output(Bool()),
-        val out = Analog(1.W),
-        val play = Input(Bool())
-    })
-    for (i <- 0 until Env.amntFreq) {
-      val mvp = Module(
-        new MVP(
-          frequency = MidiUtils.midiToFreq(
-            i + 60 // start from C4, then C#4, etc.
-          ),
-          clockFrequency = Nexys4.clockFrequency,
-          useZ = Nexys4.useZ
-        )
+    val mvp = Module(
+      new MVP_Top(
+        clockFrequency = Nexys4.clockFrequency
       )
+    )
+    val io = IO(new MVPIONexys4())
+    io.AUD_SD := true.B // Required by spec
 
+    io <> mvp.io  // Connect other io
 
-      // 10 ms at 100MHz is more than plenty
-      val debounceCycles = 1_000_000
-      val play = Module(new Debouncer(debounceCycles))
-
-      play.io.in := io.play // override with debounced input
-    }
+    // Set AUD_PWM to be high-Z instead of 1
+    val pwmDriver = Module(new MVPBlackBox)
+    pwmDriver.io.in_AUD_PWM := mvp.io.out
+    attach(pwmDriver.io.AUD_PWM, io.AUD_PWM)
   }
 
+}
+
+object MVPGen extends App {
+  val verilog = emitVerilog(
+    new Nexys4Wrapper()
+  ).split(
+    "// ----- 8< ----- FILE \"firrtl_black_box_resource_files.f\""
+  ) // a bit hacky
+    .head // drop the trailing file list, which is not valid SystemVerilog
+  val output = java.nio.file.Paths.get("generated", "MVP.sv")
+  java.nio.file.Files.createDirectories(output.getParent)
+  java.nio.file.Files
+    .write(output, verilog.getBytes(java.nio.charset.StandardCharsets.UTF_8))
+  println(s"Vivado source written to ${output.toAbsolutePath}")
 }
