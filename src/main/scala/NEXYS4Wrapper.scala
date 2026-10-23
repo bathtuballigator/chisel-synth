@@ -41,13 +41,13 @@ class NEXYS4Wrapper(
     )
     val io = IO(chiselTypeOf(mvp.io))
 
+      io <> mvp.io
+
     // 10 ms at 100MHz is more than plenty
     val debounceCycles = 1_000_000
     val play = Module(new Debouncer(debounceCycles))
 
     play.io.in := io.play
-
-    io.out := play.io.out // see if this can be done automatically if we have more io
   }
 
 }
