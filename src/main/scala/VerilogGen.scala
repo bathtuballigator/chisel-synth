@@ -1,7 +1,11 @@
 // Created with Sonnet 5.5
 import chisel3._
+import circt.stage.ChiselStage
+
 import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Path, Paths}
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 // Helper for generating Vivado-ready SystemVerilog from a Chisel module.
 // Usage in an App object:
@@ -17,10 +21,12 @@ object VerilogGen {
       fileName: String,
       outDir: String = "generated"
   ): Path = {
-    val verilog = emitVerilog(gen).split(blackBoxFileList).head
     val output = Paths.get(outDir, fileName)
     Files.createDirectories(output.getParent)
+    val verilog = ChiselStage.emitSystemVerilog(gen).split(blackBoxFileList).head
     Files.write(output, verilog.getBytes(StandardCharsets.UTF_8))
+
+
     println(s"Verilog written to ${output.toAbsolutePath}")
     output
   }

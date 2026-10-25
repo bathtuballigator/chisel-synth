@@ -56,19 +56,19 @@ module PWMOscillator(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [18:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 19'h5D8A4)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 18'h377C7)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 19'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 19'h2EC51;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 18'h1BBE3;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -82,8 +82,8 @@ module PWMOscillator(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][18:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][19];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -115,19 +115,19 @@ module PWMOscillator_1(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [18:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 19'h58231)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 18'h3463F)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 19'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 19'h2C118;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 18'h1A31F;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -141,8 +141,8 @@ module PWMOscillator_1(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][18:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][19];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -174,19 +174,19 @@ module PWMOscillator_2(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [18:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 19'h5352F)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 18'h31856)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 19'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 19'h29A97;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 18'h18C2A;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -200,8 +200,8 @@ module PWMOscillator_2(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][18:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][19];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -233,19 +233,19 @@ module PWMOscillator_3(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [18:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 19'h4E806)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 18'h2EAE3)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 19'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 19'h27402;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 18'h17571;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -259,8 +259,8 @@ module PWMOscillator_3(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][18:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][19];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -292,19 +292,19 @@ module PWMOscillator_4(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [18:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 19'h4A34E)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 18'h2C118)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 19'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 19'h251A6;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 18'h1608B;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -318,8 +318,8 @@ module PWMOscillator_4(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][18:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][19];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -351,19 +351,19 @@ module PWMOscillator_5(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [18:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 19'h45F43)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 18'h29974)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 19'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 19'h22FA1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 18'h14CB9;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -377,8 +377,8 @@ module PWMOscillator_5(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][18:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][19];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -410,19 +410,19 @@ module PWMOscillator_6(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [18:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 19'h42299)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 19'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 18'h27402)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 19'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 19'h2114C;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 18'h13A00;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -436,8 +436,8 @@ module PWMOscillator_6(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][18:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][19];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -477,11 +477,11 @@ module PWMOscillator_7(	// \\src\\main\\scala\\Oscillator.scala:4:7
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h3E709)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+      if (acc == 18'h250C0)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
         acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
         acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h1F384;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+      PWM_out_reg <= acc > 18'h1285F;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -536,11 +536,11 @@ module PWMOscillator_8(	// \\src\\main\\scala\\Oscillator.scala:4:7
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h3AD42)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+      if (acc == 18'h22FA1)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
         acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
         acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h1D6A0;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+      PWM_out_reg <= acc > 18'h117D0;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -595,11 +595,11 @@ module PWMOscillator_9(	// \\src\\main\\scala\\Oscillator.scala:4:7
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h377C7)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+      if (acc == 18'h21094)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
         acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
         acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h1BBE3;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+      PWM_out_reg <= acc > 18'h10849;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -646,19 +646,19 @@ module PWMOscillator_10(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [16:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h3463F)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 17'h1F2E0)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h1A31F;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 17'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 17'hF96F;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -672,8 +672,8 @@ module PWMOscillator_10(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][17];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -705,19 +705,19 @@ module PWMOscillator_11(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [16:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h31856)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 17'h1D6A0)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h18C2A;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 17'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 17'hEB4F;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -731,8 +731,8 @@ module PWMOscillator_11(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][17];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -764,19 +764,19 @@ module PWMOscillator_12(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [16:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h2EAE3)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 17'h1BBE3)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h17571;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 17'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 17'hDDF1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -790,8 +790,8 @@ module PWMOscillator_12(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][17];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -823,19 +823,19 @@ module PWMOscillator_13(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [16:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h2C118)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 17'h1A31F)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h1608B;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 17'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 17'hD18F;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -849,8 +849,8 @@ module PWMOscillator_13(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][17];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -882,19 +882,19 @@ module PWMOscillator_14(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [16:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h29974)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 17'h18BC4)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h14CB9;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 17'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 17'hC5E1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -908,8 +908,8 @@ module PWMOscillator_14(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][17];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -941,19 +941,19 @@ module PWMOscillator_15(	// \\src\\main\\scala\\Oscillator.scala:4:7
   output io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:12:14
 );
 
-  reg [17:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
+  reg [16:0] acc;	// \\src\\main\\scala\\Oscillator.scala:16:20
   reg        PWM_out_reg;	// \\src\\main\\scala\\Oscillator.scala:17:28
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       PWM_out_reg <= 1'h0;	// \\src\\main\\scala\\Oscillator.scala:4:7, :17:28
     end
     else begin	// \\src\\main\\scala\\Oscillator.scala:4:7
-      if (acc == 18'h27402)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
-        acc <= 18'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
+      if (acc == 17'h17571)	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:18
+        acc <= 17'h0;	// \\src\\main\\scala\\Oscillator.scala:16:20
       else	// \\src\\main\\scala\\Oscillator.scala:20:18
-        acc <= acc + 18'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
-      PWM_out_reg <= acc > 18'h13A00;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
+        acc <= acc + 17'h1;	// \\src\\main\\scala\\Oscillator.scala:16:20, :20:45
+      PWM_out_reg <= acc > 17'hBAB8;	// \\src\\main\\scala\\Oscillator.scala:16:20, :17:28, :22:22
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:4:7
@@ -967,8 +967,8 @@ module PWMOscillator_15(	// \\src\\main\\scala\\Oscillator.scala:4:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:4:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:4:7
-        acc = _RANDOM[/*Zero width*/ 1'b0][17:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
-        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][18];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
+        acc = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20
+        PWM_out_reg = _RANDOM[/*Zero width*/ 1'b0][17];	// \\src\\main\\scala\\Oscillator.scala:4:7, :16:20, :17:28
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:4:7
