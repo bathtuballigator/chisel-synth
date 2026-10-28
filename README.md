@@ -18,6 +18,36 @@ You can read more about Mill on its website: https://mill-build.org.
 The test with `svsim` needs Verilator installed.
 See Verilator installation instructions [here](https://verilator.org/guide/latest/install.html).
 
+
+## File Structure
+
+`.xdc` files are saved in `xdc_files/`. In case inputs change between branches etc. we want to keep them fairly tied to a feature.
+
+The generated system verilog files are in `generated/`
+
+The rest is typical chisel file structure
+
+>  ```
+> my-project/
+> ├── build.sbt
+> ├── project/
+> │   └── build.properties
+> ├── src/
+> │   ├── main/
+> │   │   └── scala/
+> │   │       └── mypackage/      # all lowercase, no underscores
+> │   │           ├── MyTop.scala # UpperCamelCase, matches top-level class
+> │   │           ├── MyModule.scala
+> │   │           └── MyBundle.scala
+> │   └── test/
+> │       └── scala/
+> │           └── mypackage/          # mirrors main package structure
+> │               ├── MyTopSpec.scala
+> │               └── MyModuleSpec.scala
+> ├── .gitignore
+> └── README.md   
+> ```
+
 ## Project Description
 This project will use chisel generators, combined with a spreadsheet of required components, to generate a custom hardware synthesizer as defined in the spreadsheet. The synthesizer will have a maximum of 3 voices, which the user can define as sine, square, sawtooth, or triangle. The user can also define an envelope (Attack, Decay, Sustain, and Release parameters) for each voice.
 
