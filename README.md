@@ -19,6 +19,46 @@ The test with `svsim` needs Verilator installed.
 See Verilator installation instructions [here](https://verilator.org/guide/latest/install.html).
 
 
+## Synthesizer configuration
+
+Edit [`synth.env`](synth.env) before generating hardware. It uses a small `.env`
+format: one `KEY=VALUE` per line, with full-line `#` comments and optional quotes.
+No additional library or shell command is needed to load it.
+
+```dotenv
+AMOUNT_FREQ=16
+ROOT_MIDI_NOTE=69
+```
+
+`AMOUNT_FREQ` selects 1 to 16 consecutive note/switch inputs; `ROOT_MIDI_NOTE`
+selects their first MIDI note (60 = C4, 69 = A4). The last note must not exceed
+127. These settings keep the previous defaults. They configure generated hardware,
+not live controls on the FPGA.
+
+From the repository root, check the selected values and generate the board design:
+
+```text
+sbt "runMain ShowSynthConfig"
+sbt "runMain Nexys4Gen"
+```
+
+To select another file in PowerShell:
+
+```powershell
+$env:SYNTH_CONFIG = "C:\path\to\custom.env"
+sbt "runMain ShowSynthConfig"
+sbt "runMain Nexys4Gen"
+Remove-Item Env:SYNTH_CONFIG
+```
+
+Restart sbt after changing the file: `Env` is a singleton loaded once per JVM.
+Regenerate RTL and rebuild the FPGA after changes. Fewer note inputs also require
+matching XDC constraints; the supplied octave constraints describe 16 switches.
+
+See [the configuration guide and draft ADSR fields](docs/configuration.md).
+ADSR parameters are proposed for coordination with the envelope team and are not
+implemented by this change.
+
 ## File Structure
 
 `.xdc` files are saved in `xdc_files/`. In case inputs change between branches etc. we want to keep them fairly tied to a feature.
