@@ -12,5 +12,5 @@ object Env {
   val rootMidiNote = 69  // 60 is C4, then C#4, etc. 69 is A4
   // NOTE: Config file would then be read here and variables accordingly
   // Hope this can be done with singleton object as it is now  
-
+  val midiBaudRate = 31250  // midi 1.0 uses 31250
 }
