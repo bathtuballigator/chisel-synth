@@ -19,6 +19,59 @@ The test with `svsim` needs Verilator installed.
 See Verilator installation instructions [here](https://verilator.org/guide/latest/install.html).
 
 
+## Synthesizer configuration
+
+Edit [`synth.env`](synth.env) before generating hardware. It uses a small `.env`
+format: one `KEY=VALUE` per line, with full-line `#` comments and optional quotes.
+No additional library or shell command is needed to load it.
+
+```dotenv
+AMOUNT_FREQ=16
+ROOT_MIDI_NOTE=69
+VOICE_COUNT=1
+VOICE_0_TYPE=square
+VOICE_0_ENVELOPE_ENABLED=false
+```
+
+`AMOUNT_FREQ` selects 1 to 16 consecutive note/switch inputs; `ROOT_MIDI_NOTE`
+selects their first MIDI note (60 = C4, 69 = A4). The last note must not exceed
+127. `VOICE_COUNT` describes 1 to 3 synthesizer voices. Each `VOICE_n_TYPE` selects
+`square`, `sine`, `sawtooth`, or `triangle`. Each voice can enable an envelope and
+set its attack/decay/release in whole milliseconds and sustain as a 0–1 fraction.
+Missing keys retain defaults. The checked-in config currently uses four notes
+starting at C4; the loader defaults remain 16 notes starting at A4.
+
+The current MVP hardware consumes the note-bank settings and supports one square
+voice without an envelope. The loader accepts the complete voice format, but
+hardware generation rejects unsupported voice selections until the oscillator
+and ADSR teams integrate their modules. It will not silently ignore them.
+
+From the repository root, check the selected values and generate the board design:
+
+```text
+sbt "runMain ShowSynthConfig"
+sbt "runMain Nexys4Gen"
+```
+
+To select another file in PowerShell:
+
+```powershell
+$env:SYNTH_CONFIG = "C:\path\to\custom.env"
+sbt "runMain ShowSynthConfig"
+sbt "runMain Nexys4Gen"
+Remove-Item Env:SYNTH_CONFIG
+```
+
+Restart sbt after changing the file: `Env` is a singleton loaded once per JVM.
+Regenerate RTL and rebuild the FPGA after changes. Fewer note inputs also require
+matching XDC constraints; the supplied octave constraints describe 16 switches.
+
+See [the complete configuration format](docs/configuration.md) for all fields,
+defaults, and the Scala interface for the oscillator and envelope teams.
+[The three-voice example](config/examples/three-voices.env) shows independent
+waveforms and envelopes. The configuration data is implemented; waveform mixing,
+MIDI input, chord handling, and ADSR hardware remain separate group tasks.
+
 ## File Structure
 
 `.xdc` files are saved in `xdc_files/`. In case inputs change between branches etc. we want to keep them fairly tied to a feature.
