@@ -212,3 +212,38 @@ class SineOscillator(
     // output sample from sineTable
     io.sample := sineTable(acc)
 }
+
+
+// enumeration for oscillator types
+object OscType extends ChiselEnum {
+  val Sine, Square, Saw, Triangle = Value
+}
+
+// wrapper that picks type based on enum
+class Oscillator(
+    oscType: OscType.Type, // type of oscillator to generate
+    amp: Int, // the amplitude of the wave
+    sampleWid: Int, // the number of bits in the output sample
+    phaseWid: Int // the number of bits in the phase accumulator
+) extends Module {
+  val io = IO(new Bundle {
+    // chisel hardware unsigned
+    val increment = Input(
+      UInt(phaseWid.W)
+    ) // increment value for the phase accumulator, calculated from frequency and sample rate
+    // neeeds to be signed
+    val sample = Output(SInt(sampleWid.W)) // output sample, signed
+  })
+
+  // instatiate correct osc type
+    val osc = oscType match {
+        case OscType.Sine     => Module(new SineOscillator(amp, sampleWid, phaseWid))
+        case OscType.Square   => Module(new SquareOscillator(amp, sampleWid, phaseWid))
+        case OscType.Saw      => Module(new SawOscillator(amp, sampleWid, phaseWid))
+        case OscType.Triangle => Module(new TriangleOscillator(amp, sampleWid, phaseWid))
+    }
+    // connect in and outs
+    osc.io.increment := io.increment
+    io.sample := osc.io.sample
+}
+
