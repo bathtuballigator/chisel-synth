@@ -9,7 +9,7 @@ class UartRx(clkHz: Int, baud: Int) extends Module {
     val out = Valid(UInt(8.W))
   })
 
-  val div = clkHz / baud
+  val div = clkHz / baud // divide not happening in hardware
   require(div >= 4, "clock too slow for this baud rate")
 
   // 2-FF synchronizer, idle high
@@ -27,7 +27,7 @@ class UartRx(clkHz: Int, baud: Int) extends Module {
   when(!busy) {
     when(!r) { // falling edge = start bit
       busy := true.B
-      cnt := (div / 2).U
+      cnt := (div / 2).U // divide not happening in hardware
       bitn := 0.U
     }
   }.elsewhen(cnt === 0.U) {
@@ -115,21 +115,24 @@ class MidiParser extends Module {
   io.msg.bits := outMsg
 }
 
+class MidiIO extends Bundle {
+  val rx = Input(Bool())
+  val noteOn = Output(Bool()) // 1-cycle pulse
+  val noteOff = Output(Bool()) // 1-cycle pulse
+  val cc = Output(Bool()) // 1-cycle pulse (knobs, some pads)
+  val bend = Output(Bool()) // 1-cycle pulse (pitch bend)
+  val channel = Output(UInt(4.W))
+  val data1 = Output(UInt(7.W)) // note or CC number
+  val data2 = Output(UInt(7.W)) // velocity or CC value
+  val held = Output(
+    UInt(128.W)
+  ) // one hot code for which midi notes are held. `bit n = midi note n currently held` (any channel)
+}
+
 /** Top level: UART pin in, decoded events and a held-notes bitmap out. */
-class MidiTop(clkHz: Int = Nexys4.clockFrequency, baud: Int = Env.midiBaudRate)
+class MidiTop(clkHz: Int = Nexys4.clockFrequency, baud: Int = Midi.midiBaudRate)
     extends Module {
-  val io = IO(new Bundle {
-    val rx = Input(Bool())
-    val noteOn = Output(Bool()) // 1-cycle pulse
-    val noteOff = Output(Bool()) // 1-cycle pulse
-    val cc = Output(Bool()) // 1-cycle pulse (knobs, some pads)
-    val bend = Output(Bool()) // 1-cycle pulse (pitch bend)
-    val channel = Output(UInt(4.W))
-    val data1 = Output(UInt(7.W)) // note or CC number
-    val data2 = Output(UInt(7.W)) // velocity or CC value
-    val held =
-      Output(UInt(128.W)) // bit n = note n currently held (any channel)
-  })
+  val io = IO(new MidiIO)
 
   val uart = Module(new UartRx(clkHz, baud))
   val parser = Module(new MidiParser)
@@ -141,9 +144,9 @@ class MidiTop(clkHz: Int = Nexys4.clockFrequency, baud: Int = Env.midiBaudRate)
   val kind = m.bits.status(7, 4)
 
   // Note-on with velocity 0 means note-off
-  val isOn = m.valid && kind === 0x9.U && m.bits.data2 =/= 0.U
+  val isOn = m.valid && kind === Midi.noteOn.U && m.bits.data2 =/= 0.U
   val isOff =
-    m.valid && (kind === 0x8.U || (kind === 0x9.U && m.bits.data2 === 0.U))
+    m.valid && (kind === Midi.noteOff.U || (kind === Midi.noteOn.U && m.bits.data2 === 0.U))
 
   io.noteOn := isOn
   io.noteOff := isOff
@@ -157,11 +160,4 @@ class MidiTop(clkHz: Int = Nexys4.clockFrequency, baud: Int = Env.midiBaudRate)
   when(isOn) { held(m.bits.data1) := true.B }
   when(isOff) { held(m.bits.data1) := false.B }
   io.held := held.asUInt
-}
-
-object Main extends App {
-  VerilogGen(
-    new MidiTop(clkHz = Nexys4.clockFrequency, baud = Env.midiBaudRate),
-    "midiTop.sv"
-  )
 }
