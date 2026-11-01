@@ -9,7 +9,7 @@ object Midi {
   val noteOn = 0x9
   val noteOff = 0x8
   val amntMidiNotes = 128
-  val midiBaudRate = 31250  // midi 1.0 uses 31250
+  val midiBaudRate = Env.PcUartBaud  // midi 1.0 uses 31250  // Need to connect through pc for now
 }
 
 // To be passed to all modules. Only one instance needed
@@ -21,4 +21,5 @@ object Env {
   // -- DEPRECATED --
 
   val polyphonyCount = 1  // how many keys/notes can be played at same time. This scales hardware for each.
+  val PcUartBaud = 115200
 }
