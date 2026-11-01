@@ -18,6 +18,7 @@ class MVP_Top(
     // TODO: Add param to toggle - if voices should be or-ed or handle sel as one hot.
     // Could it even be a function as a param? :O
 ) extends Module {
+  Env.config.requireMvpCompatible()
   val io = IO(new MVP_TopIO())
 
   val outs: Vec[Bool] = Wire(Vec(Env.amntFreq, Bool()))

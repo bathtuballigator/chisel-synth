@@ -8,4 +8,5 @@ object Env {
   val config: SynthConfig = SynthConfig.load(SynthConfig.configuredPath)
   val amntFreq: Int = config.amountFreq
   val rootMidiNote: Int = config.rootMidiNote
+  val voices: Vector[VoiceConfig] = config.voices
 }

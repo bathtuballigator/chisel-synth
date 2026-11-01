@@ -28,12 +28,23 @@ No additional library or shell command is needed to load it.
 ```dotenv
 AMOUNT_FREQ=16
 ROOT_MIDI_NOTE=69
+VOICE_COUNT=1
+VOICE_0_TYPE=square
+VOICE_0_ENVELOPE_ENABLED=false
 ```
 
 `AMOUNT_FREQ` selects 1 to 16 consecutive note/switch inputs; `ROOT_MIDI_NOTE`
 selects their first MIDI note (60 = C4, 69 = A4). The last note must not exceed
-127. These settings keep the previous defaults. They configure generated hardware,
-not live controls on the FPGA.
+127. `VOICE_COUNT` describes 1 to 3 synthesizer voices. Each `VOICE_n_TYPE` selects
+`square`, `sine`, `sawtooth`, or `triangle`. Each voice can enable an envelope and
+set its attack/decay/release in whole milliseconds and sustain as a 0–1 fraction.
+Missing keys retain defaults. The checked-in config currently uses four notes
+starting at C4; the loader defaults remain 16 notes starting at A4.
+
+The current MVP hardware consumes the note-bank settings and supports one square
+voice without an envelope. The loader accepts the complete voice format, but
+hardware generation rejects unsupported voice selections until the oscillator
+and ADSR teams integrate their modules. It will not silently ignore them.
 
 From the repository root, check the selected values and generate the board design:
 
@@ -55,9 +66,11 @@ Restart sbt after changing the file: `Env` is a singleton loaded once per JVM.
 Regenerate RTL and rebuild the FPGA after changes. Fewer note inputs also require
 matching XDC constraints; the supplied octave constraints describe 16 switches.
 
-See [the configuration guide and draft ADSR fields](docs/configuration.md).
-ADSR parameters are proposed for coordination with the envelope team and are not
-implemented by this change.
+See [the complete configuration format](docs/configuration.md) for all fields,
+defaults, and the Scala interface for the oscillator and envelope teams.
+[The three-voice example](config/examples/three-voices.env) shows independent
+waveforms and envelopes. The configuration data is implemented; waveform mixing,
+MIDI input, chord handling, and ADSR hardware remain separate group tasks.
 
 ## File Structure
 
