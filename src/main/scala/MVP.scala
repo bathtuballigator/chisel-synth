@@ -22,16 +22,7 @@ class MVP(
         voice = voice
       )
     )
-    osc.io.PWM_en := io.play
-
-  // val sampleOrSilence = ( // sample or 0% duty cycle
-  //   Mux(
-  //     io.play,
-  //     osc.io.PWM_out,
-  //     0.U
-  //   ) // be off for all cycles when no play
-  // )
-  // redundant for new PWMGenerator that outputs 0% duty cycle when not enabled
-  // io.out := sampleOrSilence
+    
+  osc.io.PWM_en := io.play
   io.out := osc.io.PWM_out
 }

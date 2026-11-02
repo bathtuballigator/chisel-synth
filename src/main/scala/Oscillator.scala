@@ -243,23 +243,11 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
     phaseWid: Int = 16, // default acc to 16 bit
     voice: OscillatorType = OscillatorType.Square // default to square wave
 ) extends Module {
-  // val size: Int = clock_speed / freq
-  // val width: Int = log2Ceil(size)
-  // val PWM_in: UInt = (size >> 1).U
 
   val io = IO(new Bundle {
     val PWM_en =Input(Bool())
     val PWM_out = Output(Bool())
   })
-
-  // val acc = RegInit(0.U(width.W))
-  // val PWM_out_reg = RegInit(0.B)
-  // val PWM_thresh = RegInit((size >> 1).U(width.W))
-
-  // acc := Mux(acc === (size - 1).U, 0.U, acc + 1.U)
-  // PWM_thresh := Mux(acc === 0.U, PWM_in, PWM_thresh)
-  // PWM_out_reg := acc >= PWM_thresh
-  // io.PWM_out := PWM_out_reg
 
   // instantiate the oscillator
   val osc = Module(new Oscillator(voice, amp, sampleWid, phaseWid))
