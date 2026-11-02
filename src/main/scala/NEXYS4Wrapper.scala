@@ -61,7 +61,7 @@ class MVPBlackBox extends BlackBox with HasBlackBoxInline {
 class MVPIONexys4 extends Bundle {
   val AUD_SD = Output(Bool())
   val AUD_PWM = Analog(1.W) // Linked to AUD_PWM: 0 when low, high-Z when high
-  val sel = Input(UInt(Env.numFreq.W))
+  val sel = Input(Vec(Env.amntFreq, Bool()))
 }
 
 // Handles the Nexys4 board connections
@@ -79,7 +79,7 @@ class Nexys4Wrapper extends RawModule {
   // The nexys4 is reset active low, so we have to invert the reset
   withClockAndReset(clock, if (Nexys4.resetActiveLow) !reset else reset) {
     val mvp = Module(
-      new SynthTop(
+      new MVP_Top(
         clockFrequency = Nexys4.clockFrequency
       )
     )
@@ -97,5 +97,5 @@ class Nexys4Wrapper extends RawModule {
 }
 
 object Nexys4Gen extends App {
-  VerilogGen(new Nexys4Wrapper, "SynthMidiKeyboard.sv")
+  VerilogGen(new Nexys4Wrapper, "MvpVoices.sv")
 }
