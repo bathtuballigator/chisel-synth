@@ -104,7 +104,27 @@ class SawOscillator (
   // then mult by 2*amp and divide by 2^(phaseWid-1) to scale to desired amplitude8
   // then subtract amp to center around 0
   // accumulator gives linear ramp
-  io.sample := (acc(phaseWid - 2, 0) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
+  // io.sample := (acc(phaseWid - 2, 0) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
+  // exclude MSB for ramp values
+  val ramp = acc(phaseWid - 2, 0)
+
+  // make sure calculated width is enough to hold the intermediate values
+  val calcWid = phaseWid + sampleWid + 2
+  // pad ramp with zeros to calcWid
+  val rampWide = ramp.pad(calcWid)
+  // scale to 2*amp and divide by 2^(phaseWid-1) to scale to desired amp
+  // sepated out for clarity
+  val scale = (BigInt(2) * amp).U(calcWid.W)
+  val denominator = ((BigInt(1) << (phaseWid - 1)) - 1)
+    .U(calcWid.W)
+
+  val scaled = (rampWide * scale) / denominator
+
+  // subtract amp to center around 0
+  // zero extend amp to calcWid to match scaled width
+  val centered = scaled.zext - amp.S(calcWid.W)
+
+  io.sample := centered.asSInt()(sampleWid - 1, 0).asSInt
 }
 
 class TriangleOscillator (
@@ -123,7 +143,31 @@ class TriangleOscillator (
   // XORing with MSB to flip direction for negative slope
   // then mult by 2*amp and divide by 2^(phaseWid-1) to scale to desired amplitude8
   // then subtract amp to center around 0
-    io.sample := ((acc(phaseWid - 2, 0) ^ Fill(phaseWid - 1, acc(phaseWid - 1))) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
+    // io.sample := ((acc(phaseWid - 2, 0) ^ Fill(phaseWid - 1, acc(phaseWid - 1))) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
+  // exclude MSB for ramp values
+  val ramp = acc(phaseWid - 2, 0)
+
+  // make sure calculated width is enough to hold the intermediate values
+  val calcWid = phaseWid + sampleWid + 2
+  // pad ramp with zeros to calcWid
+  val rampWide = ramp.pad(calcWid)
+  // XOR with MSB to flip direction for negative slope
+  val flipped = rampWide ^ Fill(calcWid, acc(phaseWid - 1))
+  // scale to 2*amp and divide by 2^(phaseWid-1) to scale to desired amp
+  // separated out for clarity
+  val scale = (BigInt(2) * amp).U(calcWid.W)
+  val denominator = ((BigInt(1) << (phaseWid - 1)) - 1)
+    .U(calcWid.W)
+
+  val scaled = (flipped * scale) / denominator
+
+  // subtract amp to center around 0
+  // zero extend amp to calcWid to match scaled width
+  val centered = scaled.zext - amp.S(calcWid.W)
+
+  // explicitly set width of output to sampleWid, since it is a signed value
+  // use asSInt to convert to signed
+  io.sample := centered.asSInt()(sampleWid - 1, 0).asSInt
 
 }
 
