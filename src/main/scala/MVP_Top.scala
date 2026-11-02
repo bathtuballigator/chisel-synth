@@ -22,7 +22,7 @@ class MVP_Top(
 
   val outs: Vec[Bool] = Wire(Vec(Env.amntFreq, Bool()))
   var voice_idx = 0
-  for (voice <- OscillatorType.values) {
+  for (voice <- List(OscillatorType.Sine,OscillatorType.Square,OscillatorType.Saw,OscillatorType.Triangle)) {
     for (i <- 0 until 4) {
       val mvp = Module(
         new MVP(
@@ -35,8 +35,8 @@ class MVP_Top(
       )
       mvp.io.play := io.sel(i+voice_idx*4)  // enable voice if selected
       outs(i+voice_idx*4) := mvp.io.out
-      voice_idx += 1
     }
+    voice_idx += 1
   }
 
   // Combine all voices. If any voice output is on, output is on.
