@@ -15,11 +15,12 @@ class MVP(
 
   val squareOsc =
     Module(
-      new PWMOscillator(
+      new PWMGenerator(
         freq = frequency,
         clock_speed = clockFrequency
       )
     )
+    squareOsc.io.PWM_en := io.play
 
   val sampleOrSilence = ( // sample or 0% duty cycle
     Mux(

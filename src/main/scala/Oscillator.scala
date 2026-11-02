@@ -2,9 +2,16 @@ import chisel3._
 import chisel3.util.log2Ceil
 import chisel3.util.Fill
 
-// enumeration for oscillator types
-object OscType extends ChiselEnum {
-  val Sine, Square, Saw, Triangle = Type
+// // enumeration for oscillator types
+// object OscType extends ChiselEnum {
+//   val Sine, Square, Saw, Triangle = Type
+// }
+sealed trait OscillatorType
+object OscillatorType {
+  case object Sine extends OscillatorType
+  case object Square extends OscillatorType
+  case object Saw extends OscillatorType
+  case object Triangle extends OscillatorType
 }
 
 abstract class BaseOscillator(
@@ -132,9 +139,10 @@ class SineOscillator (
   // sine tavle is 2^tableAddrWid entries, each entry is sampleWid bits
   // TODO: look at making table smaller by using symmetry and only storing 1/4 of the wave, then mirroring and inverting as needed
   // each entry is sampleWid bits
-    val tableAddrWid = Mux(phaseWid > 10, 10.U, phaseWid.U) // separate from phaseWid, so that table can be smaller than phase accumulator
+    val tableAddrWid = math.min(phaseWid, 10) // separate from phaseWid, so that table can be smaller than phase accumulator
     // max out at 10bit = 1024 entries
     // otherwise deualt would be 2^16=65k
+    // changed to math.min so it is decided during elaboration instead of in hardware
     require(phaseWid >= tableAddrWid)
     val sineTable = VecInit(
         (0 until (1 << tableAddrWid)).map { i =>
@@ -155,7 +163,7 @@ class SineOscillator (
 
 // wrapper that picks type based on enum
 class Oscillator(
-    oscType: OscType.Type, // type of oscillator to generate
+    oscType: OscillatorType, // type of oscillator to generate
     amp: Int, // the amplitude of the wave
     sampleWid: Int, // the number of bits in the output sample
     phaseWid: Int // the number of bits in the phase accumulator
@@ -171,10 +179,10 @@ class Oscillator(
 
   // instatiate correct osc type
     val osc: BaseOscillator = oscType match {
-        case OscType.Sine     => Module(new SineOscillator(amp, sampleWid, phaseWid))
-        case OscType.Square   => Module(new SquareOscillator(amp, sampleWid, phaseWid))
-        case OscType.Saw      => Module(new SawOscillator(amp, sampleWid, phaseWid))
-        case OscType.Triangle => Module(new TriangleOscillator(amp, sampleWid, phaseWid))
+        case OscillatorType.Sine     => Module(new SineOscillator(amp, sampleWid, phaseWid))
+        case OscillatorType.Square   => Module(new SquareOscillator(amp, sampleWid, phaseWid))
+        case OscillatorType.Saw      => Module(new SawOscillator(amp, sampleWid, phaseWid))
+        case OscillatorType.Triangle => Module(new TriangleOscillator(amp, sampleWid, phaseWid))
     }
     // connect in and outs
     osc.io.increment := io.increment
@@ -190,11 +198,11 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
     amp: Int = 127, // default to max for 8bit signed
     sampleWid: Int = 8, // default to 8 bit
     phaseWid: Int = 16, // default acc to 16 bit
-    voice: OscType.Type = OscType.Square // default to square wave
+    voice: OscillatorType = OscillatorType.Square // default to square wave
 ) extends Module {
-  val size: Int = clock_speed / freq
-  val width: Int = log2Ceil(size)
-  val PWM_in: UInt = (size >> 1).U
+  // val size: Int = clock_speed / freq
+  // val width: Int = log2Ceil(size)
+  // val PWM_in: UInt = (size >> 1).U
 
   val io = IO(new Bundle {
     val PWM_en =Input(Bool())
@@ -213,7 +221,7 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   // instantiate the oscillator
   val osc = Module(new Oscillator(voice, amp, sampleWid, phaseWid))
   // calc increment for osc
-  val increment=OscConfig.calcIncrement(freq, clock_speed, phaseWid).U
+  val increment=OscConfig.calcIncrement(freq, clock_speed, phaseWid).U(phaseWid.W)
   // conntect io
   osc.io.increment := increment
   // convert signed sample to unsigned PWM threshold
