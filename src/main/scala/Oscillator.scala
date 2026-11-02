@@ -62,6 +62,7 @@ object OscConfig // calculate increment of the square wave oscillator for given 
       sampleRate: Int, // sample rate of the DAC in Hz
       phaseWid: Int // number of bits in the phase accumulator
   ): BigInt = {
+    require(sampleRate > 0, "Sample rate must be positive") // Hz
     require(
       freq >= 0,
       "Frequency must be non-negative"
@@ -70,7 +71,6 @@ object OscConfig // calculate increment of the square wave oscillator for given 
       freq < sampleRate / 2,
       "Frequency must be less than Nyquist frequency"
     ) // must be less than half the sample rate to avoid aliasing/acheive perfect fideltiy (Nyquist–Shannon sampling theorem)
-    require(sampleRate > 0, "Sample rate must be positive") // Hz
     require(
       phaseWid > 0,
       "Phase width must be positive"
@@ -129,12 +129,16 @@ class SineOscillator (
   // sine wave needs lookup table
   // needs to be generated at elaboration time
   // VecInit used instead
-  // sine tavle is 2^phaseWid entries, each entry is sampleWid bits
+  // sine tavle is 2^tableAddrWid entries, each entry is sampleWid bits
   // TODO: look at making table smaller by using symmetry and only storing 1/4 of the wave, then mirroring and inverting as needed
   // each entry is sampleWid bits
+    val tableAddrWid = Mux(phaseWid > 10, 10.U, phaseWid.U) // separate from phaseWid, so that table can be smaller than phase accumulator
+    // max out at 10bit = 1024 entries
+    // otherwise deualt would be 2^16=65k
+    require(phaseWid >= tableAddrWid)
     val sineTable = VecInit(
-        (0 until (1 << phaseWid)).map { i =>
-            (Math.sin(2.0 * Math.PI * i / (1 << phaseWid)) * amp)
+        (0 until (1 << tableAddrWid)).map { i =>
+            (Math.sin(2.0 * Math.PI * i / (1 << tableAddrWid)) * amp)
               .toInt.S(sampleWid.W)
         }
     )
@@ -142,8 +146,11 @@ class SineOscillator (
     val acc = RegInit(0.U(phaseWid.W))
     // increment
     acc := acc + io.increment // overflow will wrap around
+    
+    val idx = acc(phaseWid - 1, phaseWid - tableAddrWid) // use MSBs of acc to index, since table is smaller than phase accumulator, so use MSBs to index into table
+
     // output sample from sineTable
-    io.sample := sineTable(acc)
+    io.sample := sineTable(idx)
 }
 
 // wrapper that picks type based on enum
@@ -225,6 +232,4 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   // mux to enable/disable PWM output
   // output value 
   io.PWM_out := io.PWM_en && (pwmCounter < pwmThres) // only outputs when PWM_en is high, otherwise output 0
-
-
 }
