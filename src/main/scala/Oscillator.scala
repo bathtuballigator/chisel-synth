@@ -35,7 +35,7 @@ abstract class BaseOscillator(
   require(sampleWid > 1, "Sample width must be >1") // number of bits
   require(phaseWid > 2, "Phase width must be >2") // number of bits (needs to be >2 for triangle wave, which uses MSB and next MSB for direction)
   require(
-    amp < (1 << (sampleWid - 1)),
+    amp < (BigInt(1) << (sampleWid - 1)),
     "Amplitude must fit in signed sample width"
   ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
 }
@@ -75,7 +75,7 @@ object OscConfig // calculate increment of the square wave oscillator for given 
       "Frequency must be non-negative"
     ) // allow zero frequency, which will just output a constant value
     require(
-      freq < sampleRate / 2,
+      BigInt(freq) *2 < BigInt(sampleRate),
       "Frequency must be less than Nyquist frequency"
     ) // must be less than half the sample rate to avoid aliasing/acheive perfect fideltiy (Nyquist–Shannon sampling theorem)
     require(
@@ -124,7 +124,7 @@ class SawOscillator (
   // zero extend amp to calcWid to match scaled width
   val centered = scaled.zext - amp.S(calcWid.W)
 
-  io.sample := centered.asSInt()(sampleWid - 1, 0).asSInt
+  io.sample := centered(sampleWid - 1, 0).asSInt
 }
 
 class TriangleOscillator (
@@ -149,17 +149,16 @@ class TriangleOscillator (
 
   // make sure calculated width is enough to hold the intermediate values
   val calcWid = phaseWid + sampleWid + 2
-  // pad ramp with zeros to calcWid
-  val rampWide = ramp.pad(calcWid)
   // XOR with MSB to flip direction for negative slope
-  val flipped = rampWide ^ Fill(calcWid, acc(phaseWid - 1))
+  val flipped = ramp ^ Fill(phaseWid - 1, acc(phaseWid - 1))
+  val flippedPad = flipped.pad(calcWid) // pad after flipping so the extra bits are not flipped
   // scale to 2*amp and divide by 2^(phaseWid-1) to scale to desired amp
   // separated out for clarity
   val scale = (BigInt(2) * amp).U(calcWid.W)
   val denominator = ((BigInt(1) << (phaseWid - 1)) - 1)
     .U(calcWid.W)
 
-  val scaled = (flipped * scale) / denominator
+  val scaled = (flippedPad * scale) / denominator
 
   // subtract amp to center around 0
   // zero extend amp to calcWid to match scaled width
@@ -167,7 +166,7 @@ class TriangleOscillator (
 
   // explicitly set width of output to sampleWid, since it is a signed value
   // use asSInt to convert to signed
-  io.sample := centered.asSInt()(sampleWid - 1, 0).asSInt
+  io.sample := centered(sampleWid - 1, 0).asSInt
 
 }
 
