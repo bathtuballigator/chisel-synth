@@ -144,13 +144,16 @@ class SineOscillator (
     phaseWid: Int
 ) extends BaseOscillator(amp, sampleWid, phaseWid) {
 
-  // sine wave needs lookup table, so need to create ROM with 2^phaseWid entries
+  // sine wave needs lookup table
+  // needs to be generated at elaboration time
+  // Vec
   // each entry is sampleWid bits
-  val sineTable = Mem(1 << phaseWid, SInt(sampleWid.W))
-  // fill sineTable with values from -amp to +amp
-  for (i <- 0 until (1 << phaseWid)) {
-    sineTable(i) := (Math.sin(2 * Math.PI * i / (1 << phaseWid)) * amp).toInt.S(sampleWid.W)
-  }
+    val sineTable = VecInit(
+        (0 until (1 << phaseWid)).map { i =>
+            (Math.sin(2.0 * Math.PI * i / (1 << phaseWid)) * amp)
+              .toInt.S(sampleWid.W)
+        }
+    )
   // accumulator to index into sineTable
     val acc = RegInit(0.U(phaseWid.W))
     // increment
