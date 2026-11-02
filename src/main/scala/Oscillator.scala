@@ -15,6 +15,17 @@ abstract class BaseOscillator(
     // neeeds to be signed
     val sample = Output(SInt(sampleWid.W)) // output sample, signed
   })
+    // require non-neg values
+  require(
+    amp >= 0,
+    "Amplitude must not be negative"
+  ) // I allowed zero amplitude, which will just output a constant 0
+  require(sampleWid > 1, "Sample width must be >1") // number of bits
+  require(phaseWid > 2, "Phase width must be >2") // number of bits (needs to be >2 for triangle wave, which uses MSB and next MSB for direction)
+  require(
+    amp < (1 << (sampleWid - 1)),
+    "Amplitude must fit in signed sample width"
+  ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
 }
 
 class PWMOscillator(
@@ -45,17 +56,6 @@ class SquareOscillator (
     sampleWid: Int,
     phaseWid: Int
 ) extends BaseOscillator(amp, sampleWid, phaseWid) { // class for an oscillator that uses an accumulator to generate a square wave
-    // require non-neg values
-  require(
-    amp >= 0,
-    "Amplitude must not be negative"
-  ) // I allowed zero amplitude, which will just output a constant 0
-  require(sampleWid > 1, "Sample width must be >1") // number of bits
-  require(phaseWid > 0, "Phase width must be positive") // number of bits
-  require(
-    amp < (1 << (sampleWid - 1)),
-    "Amplitude must fit in signed sample width"
-  ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
 
   // accumulator
   val acc = RegInit(0.U(phaseWid.W))
@@ -106,18 +106,6 @@ class SawOscillator (
     sampleWid: Int,
     phaseWid: Int
 ) extends BaseOscillator(amp, sampleWid, phaseWid) {
-  // require non-neg values
-  require(
-    amp >= 0,
-    "Amplitude must not be negative"
-  ) // I allowed zero amplitude, which will just output a constant 0
-  require(sampleWid > 1, "Sample width must be >1") // number of bits
-  require(phaseWid > 0, "Phase width must be positive") // number of bits
-  require(
-    amp < (1 << (sampleWid - 1)),
-    "Amplitude must fit in signed sample width"
-  ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
-
   // accumulator
   val acc = RegInit(0.U(phaseWid.W))
   // increment
@@ -135,19 +123,6 @@ class TriangleOscillator (
     sampleWid: Int,
     phaseWid: Int
 ) extends BaseOscillator(amp, sampleWid, phaseWid) {
-  // require non-neg values
-  require(
-    amp >= 0,
-    "Amplitude must not be negative"
-  ) // I allowed zero amplitude, which will just output a constant 0
-  require(sampleWid > 1, "Sample width must be >1") // number of bits
-  require(phaseWid > 0, "Phase width must be positive") // number of bits
-  require(
-    amp < (1 << (sampleWid - 1)),
-    "Amplitude must fit in signed sample width"
-  ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
-
-
 
   // accumulator
   val acc = RegInit(0.U(phaseWid.W))
@@ -168,17 +143,6 @@ class SineOscillator (
     sampleWid: Int,
     phaseWid: Int
 ) extends BaseOscillator(amp, sampleWid, phaseWid) {
-  // require non-neg values
-  require(
-    amp >= 0,
-    "Amplitude must not be negative"
-  ) // I allowed zero amplitude, which will just output a constant 0
-  require(sampleWid > 1, "Sample width must be >1") // number of bits
-  require(phaseWid > 0, "Phase width must be positive") // number of bits
-  require(
-    amp < (1 << (sampleWid - 1)),
-    "Amplitude must fit in signed sample width"
-  ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
 
   // sine wave needs lookup table, so need to create ROM with 2^phaseWid entries
   // each entry is sampleWid bits
