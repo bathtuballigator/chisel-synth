@@ -61,8 +61,7 @@ class MVPBlackBox extends BlackBox with HasBlackBoxInline {
 class MVPIONexys4 extends Bundle {
   val AUD_SD = Output(Bool())
   val AUD_PWM = Analog(1.W) // Linked to AUD_PWM: 0 when low, high-Z when high
-  val rx = Input(Bool())
-  val heldBin = Output(UInt(7.W)) // connected to leds for debugging
+  val sel = Input(UInt(Env.numFreq.W))
 }
 
 // Handles the Nexys4 board connections
@@ -87,8 +86,7 @@ class Nexys4Wrapper extends RawModule {
     val io = IO(new MVPIONexys4())
     io.AUD_SD := true.B // Required by spec
 
-    mvp.io.rx := io.rx
-    io.heldBin := mvp.io.heldBin
+    mvp.io.sel := io.sel
 
     // Set AUD_PWM to be high-Z instead of 1
     val pwmDriver = Module(new MVPBlackBox)
