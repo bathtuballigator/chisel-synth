@@ -64,7 +64,7 @@ class MVPIONexys4 extends Bundle {
   val rx = Input(Bool())
   val heldBin = Output(UInt(7.W)) // connected to leds for debugging
   val seg = Output(UInt(7.W))
-  val an = Output(UInt(4.W))
+  val an = Output(UInt(Nexys4.numAnodes.W))
 }
 
 // Handles the Nexys4 board connections

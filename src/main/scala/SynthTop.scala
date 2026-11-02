@@ -46,5 +46,5 @@ class SynthTop(
   // limit it somehow
   io.out := outs.reduce(_ || _)
 
-  io.heldBin := OHToUInt(midi.io.held)
+  io.heldBin := midi.io.data1
 }

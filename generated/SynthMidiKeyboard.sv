@@ -2379,10 +2379,9 @@ module Nexys4Wrapper(	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7
   input        io_rx,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
   output [6:0] io_heldBin,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
                io_seg,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
-  output [3:0] io_an	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
+  output [7:0] io_an	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
 );
 
-  wire [7:0] _segDec_io_an;	// \\src\\main\\scala\\Nexys4Wrapper.scala:95:24
   wire       _synth_io_out;	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
   wire [6:0] _synth_io_heldBin;	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
   SynthTop synth (	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
@@ -2397,7 +2396,7 @@ module Nexys4Wrapper(	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7
     .reset    (~reset),	// \\src\\main\\scala\\Nexys4Wrapper.scala:83:55
     .io_value (_synth_io_heldBin),	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
     .io_seg   (io_seg),
-    .io_an    (_segDec_io_an)
+    .io_an    (io_an)
   );
   MVPBlackBox pwmDriver (	// \\src\\main\\scala\\Nexys4Wrapper.scala:101:27
     .in_AUD_PWM (_synth_io_out),	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
@@ -2405,7 +2404,6 @@ module Nexys4Wrapper(	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7
   );
   assign io_AUD_SD = 1'h1;	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7, :90:15
   assign io_heldBin = _synth_io_heldBin;	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7, :84:23
-  assign io_an = _segDec_io_an[3:0];	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7, :95:24, :98:11
 endmodule
 
 
