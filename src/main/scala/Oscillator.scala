@@ -1,5 +1,21 @@
 import chisel3._
 import chisel3.util.log2Ceil
+import chisel3.util.Fill
+
+abstract class BaseOscillator(
+    amp: Int,
+    sampleWid: Int,
+    phaseWid: Int
+) extends Module {
+  val io = IO(new Bundle {
+    // chisel hardware unsigned
+    val increment = Input(
+      UInt(phaseWid.W)
+    ) // increment value for the phase accumulator, calculated from frequency and sample rate
+    // neeeds to be signed
+    val sample = Output(SInt(sampleWid.W)) // output sample, signed
+  })
+}
 
 class PWMOscillator(
     freq: Int = 440,
@@ -24,12 +40,12 @@ class PWMOscillator(
 
 }
 
-class SquareOscillator( // class for an oscillator that uses an accumulator to generate a square wave
-    amp: Int, // the amplitude of the square wave
-    sampleWid: Int, // the number of bits in the output sample
-    phaseWid: Int // the number of bits in the phase accumulator
-) extends Module {
-  // require non-neg values
+class SquareOscillator (
+    amp: Int,
+    sampleWid: Int,
+    phaseWid: Int
+) extends BaseOscillator(amp, sampleWid, phaseWid) { // class for an oscillator that uses an accumulator to generate a square wave
+    // require non-neg values
   require(
     amp >= 0,
     "Amplitude must not be negative"
@@ -40,15 +56,6 @@ class SquareOscillator( // class for an oscillator that uses an accumulator to g
     amp < (1 << (sampleWid - 1)),
     "Amplitude must fit in signed sample width"
   ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
-
-  val io = IO(new Bundle {
-    // chisel hardware unsigned
-    val increment = Input(
-      UInt(phaseWid.W)
-    ) // increment value for the phase accumulator, calculated from frequency and sample rate
-    // neeeds to be signed
-    val sample = Output(SInt(sampleWid.W)) // output sample, signed
-  })
 
   // accumulator
   val acc = RegInit(0.U(phaseWid.W))
@@ -94,11 +101,11 @@ object OscConfig // calculate increment of the square wave oscillator for given 
 }
 
 
-class SawOscillator(
-    amp: Int, // the amplitude of the saw wave
-    sampleWid: Int, // the number of bits in the output sample
-    phaseWid: Int // the number of bits in the phase accumulator
-) extends Module {
+class SawOscillator (
+    amp: Int,
+    sampleWid: Int,
+    phaseWid: Int
+) extends BaseOscillator(amp, sampleWid, phaseWid) {
   // require non-neg values
   require(
     amp >= 0,
@@ -110,15 +117,6 @@ class SawOscillator(
     amp < (1 << (sampleWid - 1)),
     "Amplitude must fit in signed sample width"
   ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
-
-  val io = IO(new Bundle {
-    // chisel hardware unsigned
-    val increment = Input(
-      UInt(phaseWid.W)
-    ) // increment value for the phase accumulator, calculated from frequency and sample rate
-    // neeeds to be signed
-    val sample = Output(SInt(sampleWid.W)) // output sample, signed
-  })
 
   // accumulator
   val acc = RegInit(0.U(phaseWid.W))
@@ -132,11 +130,11 @@ class SawOscillator(
   io.sample := (acc(phaseWid - 2, 0) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
 }
 
-class TriangleOscillator(
-    amp: Int, // the amplitude of the triangle wave
-    sampleWid: Int, // the number of bits in the output sample
-    phaseWid: Int // the number of bits in the phase accumulator
-) extends Module {
+class TriangleOscillator (
+    amp: Int,
+    sampleWid: Int,
+    phaseWid: Int
+) extends BaseOscillator(amp, sampleWid, phaseWid) {
   // require non-neg values
   require(
     amp >= 0,
@@ -149,14 +147,7 @@ class TriangleOscillator(
     "Amplitude must fit in signed sample width"
   ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
 
-  val io = IO(new Bundle {
-    // chisel hardware unsigned
-    val increment = Input(
-      UInt(phaseWid.W)
-    ) // increment value for the phase accumulator, calculated from frequency and sample rate
-    // neeeds to be signed
-    val sample = Output(SInt(sampleWid.W)) // output sample, signed
-  })
+
 
   // accumulator
   val acc = RegInit(0.U(phaseWid.W))
@@ -172,11 +163,11 @@ class TriangleOscillator(
 
 }
 
-class SineOscillator(
-    amp: Int, // the amplitude of the sine wave
-    sampleWid: Int, // the number of bits in the output sample
-    phaseWid: Int // the number of bits in the phase accumulator
-) extends Module {
+class SineOscillator (
+    amp: Int,
+    sampleWid: Int,
+    phaseWid: Int
+) extends BaseOscillator(amp, sampleWid, phaseWid) {
   // require non-neg values
   require(
     amp >= 0,
@@ -188,15 +179,6 @@ class SineOscillator(
     amp < (1 << (sampleWid - 1)),
     "Amplitude must fit in signed sample width"
   ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
-
-  val io = IO(new Bundle {
-    // chisel hardware unsigned
-    val increment = Input(
-      UInt(phaseWid.W)
-    ) // increment value for the phase accumulator, calculated from frequency and sample rate
-    // neeeds to be signed
-    val sample = Output(SInt(sampleWid.W)) // output sample, signed
-  })
 
   // sine wave needs lookup table, so need to create ROM with 2^phaseWid entries
   // each entry is sampleWid bits
@@ -236,7 +218,7 @@ class Oscillator(
   })
 
   // instatiate correct osc type
-    val osc = oscType match {
+    val osc: BaseOscillator = oscType match {
         case OscType.Sine     => Module(new SineOscillator(amp, sampleWid, phaseWid))
         case OscType.Square   => Module(new SquareOscillator(amp, sampleWid, phaseWid))
         case OscType.Saw      => Module(new SawOscillator(amp, sampleWid, phaseWid))
