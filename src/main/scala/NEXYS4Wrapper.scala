@@ -63,6 +63,8 @@ class MVPIONexys4 extends Bundle {
   val AUD_PWM = Analog(1.W) // Linked to AUD_PWM: 0 when low, high-Z when high
   val rx = Input(Bool())
   val heldBin = Output(UInt(7.W)) // connected to leds for debugging
+  val seg = Output(UInt(7.W))
+  val an = Output(UInt(4.W))
 }
 
 // Handles the Nexys4 board connections
@@ -79,7 +81,7 @@ class Nexys4Wrapper extends RawModule {
 
   // The nexys4 is reset active low, so we have to invert the reset
   withClockAndReset(clock, if (Nexys4.resetActiveLow) !reset else reset) {
-    val mvp = Module(
+    val synth = Module(
       new SynthTop(
         clockFrequency = Nexys4.clockFrequency
       )
@@ -87,12 +89,17 @@ class Nexys4Wrapper extends RawModule {
     val io = IO(new MVPIONexys4())
     io.AUD_SD := true.B // Required by spec
 
-    mvp.io.rx := io.rx
-    io.heldBin := mvp.io.heldBin
+    synth.io.rx := io.rx
+    io.heldBin := synth.io.heldBin
 
+    val segDec = Module(new SevenSegDisplay(clockFrequency=Nexys4.clockFrequency, refreshRate=1000, numAnodes=Nexys4.numAnodes))
+    segDec.io.value := synth.io.heldBin
+    io.seg := segDec.io.seg
+    io.an := segDec.io.an
+  
     // Set AUD_PWM to be high-Z instead of 1
     val pwmDriver = Module(new MVPBlackBox)
-    pwmDriver.io.in_AUD_PWM := mvp.io.out
+    pwmDriver.io.in_AUD_PWM := synth.io.out
     attach(pwmDriver.io.AUD_PWM, io.AUD_PWM)
   }
 

@@ -58,27 +58,27 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
   output [7:0] io_out_bits	// \\src\\main\\scala\\MidiUart.scala:7:14
 );
 
-  reg        r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:26
-  reg        r;	// \\src\\main\\scala\\MidiUart.scala:16:18
-  reg [11:0] cnt;	// \\src\\main\\scala\\MidiUart.scala:18:20
-  reg [3:0]  bitn;	// \\src\\main\\scala\\MidiUart.scala:19:21
-  reg        busy;	// \\src\\main\\scala\\MidiUart.scala:20:21
-  reg [7:0]  sh;	// \\src\\main\\scala\\MidiUart.scala:21:15
-  reg [7:0]  data;	// \\src\\main\\scala\\MidiUart.scala:22:17
-  reg        valid;	// \\src\\main\\scala\\MidiUart.scala:23:22
+  reg       r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:26
+  reg       r;	// \\src\\main\\scala\\MidiUart.scala:16:18
+  reg [9:0] cnt;	// \\src\\main\\scala\\MidiUart.scala:18:20
+  reg [3:0] bitn;	// \\src\\main\\scala\\MidiUart.scala:19:21
+  reg       busy;	// \\src\\main\\scala\\MidiUart.scala:20:21
+  reg [7:0] sh;	// \\src\\main\\scala\\MidiUart.scala:21:15
+  reg [7:0] data;	// \\src\\main\\scala\\MidiUart.scala:22:17
+  reg       valid;	// \\src\\main\\scala\\MidiUart.scala:23:22
   always @(posedge clock) begin	// \\src\\main\\scala\\MidiUart.scala:6:7
     automatic logic _GEN;	// \\src\\main\\scala\\MidiUart.scala:33:18
     automatic logic _GEN_0;	// \\src\\main\\scala\\MidiUart.scala:36:15
     automatic logic _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:38:21
     automatic logic _GEN_2;	// \\src\\main\\scala\\MidiUart.scala:22:17, :36:24, :38:29, :42:15
-    _GEN = cnt == 12'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20, :33:18
+    _GEN = cnt == 10'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20, :33:18
     _GEN_0 = bitn == 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21, :36:15
     _GEN_1 = bitn < 4'h9;	// \\src\\main\\scala\\MidiUart.scala:19:21, :38:21
     _GEN_2 = _GEN_0 | _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:22:17, :36:{15,24}, :38:{21,29}, :42:15
     if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:6:7
       r_REG <= 1'h1;	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26
       r <= 1'h1;	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:18
-      cnt <= 12'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20
+      cnt <= 10'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20
       bitn <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21
       busy <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:6:7, :20:21
       valid <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:6:7, :23:22
@@ -88,7 +88,7 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
       r <= r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:{18,26}
       if (busy) begin	// \\src\\main\\scala\\MidiUart.scala:20:21
         if (_GEN) begin	// \\src\\main\\scala\\MidiUart.scala:33:18
-          cnt <= 12'hC7F;	// \\src\\main\\scala\\MidiUart.scala:18:20, :34:9
+          cnt <= 10'h363;	// \\src\\main\\scala\\MidiUart.scala:18:20, :34:9
           bitn <= bitn + 4'h1;	// \\src\\main\\scala\\MidiUart.scala:19:21, :35:18
           if (_GEN_0)	// \\src\\main\\scala\\MidiUart.scala:36:15
             busy <= ~r & busy;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :37:{15,22}
@@ -96,13 +96,13 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
             busy <= _GEN_1 & busy;	// \\src\\main\\scala\\MidiUart.scala:20:21, :38:{21,29}, :41:12
         end
         else	// \\src\\main\\scala\\MidiUart.scala:33:18
-          cnt <= cnt - 12'h1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :48:16
+          cnt <= cnt - 10'h1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :48:16
       end
       else begin	// \\src\\main\\scala\\MidiUart.scala:20:21
         if (r) begin	// \\src\\main\\scala\\MidiUart.scala:16:18
         end
         else begin	// \\src\\main\\scala\\MidiUart.scala:16:18
-          cnt <= 12'h640;	// \\src\\main\\scala\\MidiUart.scala:18:20, :30:11
+          cnt <= 10'h1B2;	// \\src\\main\\scala\\MidiUart.scala:18:20, :30:11
           bitn <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21
         end
         busy <= ~r | busy;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :28:{10,14}, :29:12
@@ -133,12 +133,12 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
         end	// \\src\\main\\scala\\MidiUart.scala:6:7
         r_REG = _RANDOM[1'h0][0];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26
         r = _RANDOM[1'h0][1];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:{18,26}
-        cnt = _RANDOM[1'h0][13:2];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :18:20
-        bitn = _RANDOM[1'h0][17:14];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :19:21
-        busy = _RANDOM[1'h0][18];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :20:21
-        sh = _RANDOM[1'h0][26:19];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :21:15
-        data = {_RANDOM[1'h0][31:27], _RANDOM[1'h1][2:0]};	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :22:17
-        valid = _RANDOM[1'h1][3];	// \\src\\main\\scala\\MidiUart.scala:6:7, :22:17, :23:22
+        cnt = _RANDOM[1'h0][11:2];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :18:20
+        bitn = _RANDOM[1'h0][15:12];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :19:21
+        busy = _RANDOM[1'h0][16];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :20:21
+        sh = _RANDOM[1'h0][24:17];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :21:15
+        data = {_RANDOM[1'h0][31:25], _RANDOM[1'h1][0]};	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :22:17
+        valid = _RANDOM[1'h1][1];	// \\src\\main\\scala\\MidiUart.scala:6:7, :22:17, :23:22
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:6:7
@@ -2168,30 +2168,244 @@ module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:17:7
      _io_heldBin_T_9[2] | _io_heldBin_T_9[0]};	// \\src\\main\\scala\\SynthTop.scala:17:7, :22:20, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:{10,14,28}
 endmodule
 
-// external module MVPBlackBox
-
-module Nexys4Wrapper(	// \\src\\main\\scala\\Nexys4Wrapper.scala:76:7
-  input        clock,	// \\src\\main\\scala\\Nexys4Wrapper.scala:77:17
-               reset,	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:17
-  output       io_AUD_SD,	// \\src\\main\\scala\\Nexys4Wrapper.scala:87:16
-  inout        io_AUD_PWM,	// \\src\\main\\scala\\Nexys4Wrapper.scala:87:16
-  input        io_rx,	// \\src\\main\\scala\\Nexys4Wrapper.scala:87:16
-  output [6:0] io_heldBin	// \\src\\main\\scala\\Nexys4Wrapper.scala:87:16
+module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+  input        clock,	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+               reset,	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+  input  [6:0] io_value,	// \\src\\main\\scala\\SevenSegDisplay.scala:20:14
+  output [6:0] io_seg,	// \\src\\main\\scala\\SevenSegDisplay.scala:20:14
+  output [7:0] io_an	// \\src\\main\\scala\\SevenSegDisplay.scala:20:14
 );
 
-  wire _mvp_io_out;	// \\src\\main\\scala\\Nexys4Wrapper.scala:82:21
-  SynthTop mvp (	// \\src\\main\\scala\\Nexys4Wrapper.scala:82:21
+  wire [0:0]         _GEN = '{1'h1};	// \\src\\main\\scala\\SevenSegDisplay.scala:42:17
+  wire [15:0][6:0]   _GEN_0 =
+    '{7'h71,
+      7'h79,
+      7'h5E,
+      7'h39,
+      7'h7C,
+      7'h77,
+      7'h6F,
+      7'h7F,
+      7'h7,
+      7'h7D,
+      7'h6D,
+      7'h66,
+      7'h4F,
+      7'h5B,
+      7'h6,
+      7'h3F};	// \\src\\main\\scala\\SevenSegDecoder.scala:8:29, :10:20, :11:24, :12:24, :13:24, :14:24, :15:24, :16:24, :17:24, :18:24, :19:24, :20:24, :21:24, :22:24, :23:24, :24:24, :25:24, :26:24
+  wire [127:0][11:0] _GEN_1 =
+    '{12'h127,
+      12'h126,
+      12'h125,
+      12'h124,
+      12'h123,
+      12'h122,
+      12'h121,
+      12'h120,
+      12'h119,
+      12'h118,
+      12'h117,
+      12'h116,
+      12'h115,
+      12'h114,
+      12'h113,
+      12'h112,
+      12'h111,
+      12'h110,
+      12'h109,
+      12'h108,
+      12'h107,
+      12'h106,
+      12'h105,
+      12'h104,
+      12'h103,
+      12'h102,
+      12'h101,
+      12'h100,
+      12'h99,
+      12'h98,
+      12'h97,
+      12'h96,
+      12'h95,
+      12'h94,
+      12'h93,
+      12'h92,
+      12'h91,
+      12'h90,
+      12'h89,
+      12'h88,
+      12'h87,
+      12'h86,
+      12'h85,
+      12'h84,
+      12'h83,
+      12'h82,
+      12'h81,
+      12'h80,
+      12'h79,
+      12'h78,
+      12'h77,
+      12'h76,
+      12'h75,
+      12'h74,
+      12'h73,
+      12'h72,
+      12'h71,
+      12'h70,
+      12'h69,
+      12'h68,
+      12'h67,
+      12'h66,
+      12'h65,
+      12'h64,
+      12'h63,
+      12'h62,
+      12'h61,
+      12'h60,
+      12'h59,
+      12'h58,
+      12'h57,
+      12'h56,
+      12'h55,
+      12'h54,
+      12'h53,
+      12'h52,
+      12'h51,
+      12'h50,
+      12'h49,
+      12'h48,
+      12'h47,
+      12'h46,
+      12'h45,
+      12'h44,
+      12'h43,
+      12'h42,
+      12'h41,
+      12'h40,
+      12'h39,
+      12'h38,
+      12'h37,
+      12'h36,
+      12'h35,
+      12'h34,
+      12'h33,
+      12'h32,
+      12'h31,
+      12'h30,
+      12'h29,
+      12'h28,
+      12'h27,
+      12'h26,
+      12'h25,
+      12'h24,
+      12'h23,
+      12'h22,
+      12'h21,
+      12'h20,
+      12'h19,
+      12'h18,
+      12'h17,
+      12'h16,
+      12'h15,
+      12'h14,
+      12'h13,
+      12'h12,
+      12'h11,
+      12'h10,
+      12'h9,
+      12'h8,
+      12'h7,
+      12'h6,
+      12'h5,
+      12'h4,
+      12'h3,
+      12'h2,
+      12'h1,
+      12'h0};	// \\src\\main\\scala\\SevenSegDisplay.scala:31:27
+  reg  [16:0]        tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
+  reg  [1:0]         sel;	// src/main/scala/chisel3/util/Counter.scala:61:40
+  wire [3:0][3:0]    _GEN_2 =
+    {{_GEN_1[io_value][3:0]},
+     {_GEN_1[io_value][11:8]},
+     {_GEN_1[io_value][7:4]},
+     {_GEN_1[io_value][3:0]}};	// \\src\\main\\scala\\SevenSegDecoder.scala:10:20, \\src\\main\\scala\\SevenSegDisplay.scala:31:{27,38,49}
+  wire [3:0]         _GEN_3 = {_GEN, {{io_value > 7'h63}, {io_value > 7'h9}, {1'h1}}};	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, :34:{42,60}, :42:17
+  always @(posedge clock) begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+    if (reset) begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+      tick_c_value <= 17'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+      sel <= 2'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+    end
+    else if (tick_c_value == 17'h1869F) begin	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
+      tick_c_value <= 17'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+      if (sel == 2'h2)	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
+        sel <= 2'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+      else	// src/main/scala/chisel3/util/Counter.scala:73:24
+        sel <= sel + 2'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
+    end
+    else	// src/main/scala/chisel3/util/Counter.scala:73:24
+      tick_c_value <= tick_c_value + 17'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+        tick_c_value = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        sel = _RANDOM[/*Zero width*/ 1'b0][18:17];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_seg = ~(_GEN_3[sel] ? _GEN_0[_GEN_2[sel]] : 7'h0);	// \\src\\main\\scala\\SevenSegDecoder.scala:8:29, :10:20, :11:24, :12:24, :13:24, :14:24, :15:24, :16:24, :17:24, :18:24, :19:24, :20:24, :21:24, :22:24, :23:24, :24:24, :25:24, :26:24, \\src\\main\\scala\\SevenSegDisplay.scala:14:7, :42:{13,17}, src/main/scala/chisel3/util/Counter.scala:61:40
+  assign io_an = ~(8'h1 << sel);	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, :43:12, src/main/scala/chisel3/util/Counter.scala:61:40, src/main/scala/chisel3/util/OneHot.scala:65:12
+endmodule
+
+// external module MVPBlackBox
+
+module Nexys4Wrapper(	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7
+  input        clock,	// \\src\\main\\scala\\Nexys4Wrapper.scala:79:17
+               reset,	// \\src\\main\\scala\\Nexys4Wrapper.scala:80:17
+  output       io_AUD_SD,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
+  inout        io_AUD_PWM,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
+  input        io_rx,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
+  output [6:0] io_heldBin,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
+               io_seg,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
+  output [3:0] io_an	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
+);
+
+  wire [7:0] _segDec_io_an;	// \\src\\main\\scala\\Nexys4Wrapper.scala:95:24
+  wire       _synth_io_out;	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
+  wire [6:0] _synth_io_heldBin;	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
+  SynthTop synth (	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
     .clock      (clock),
-    .reset      (~reset),	// \\src\\main\\scala\\Nexys4Wrapper.scala:81:55
-    .io_out     (_mvp_io_out),
+    .reset      (~reset),	// \\src\\main\\scala\\Nexys4Wrapper.scala:83:55
+    .io_out     (_synth_io_out),
     .io_rx      (io_rx),
-    .io_heldBin (io_heldBin)
+    .io_heldBin (_synth_io_heldBin)
   );
-  MVPBlackBox pwmDriver (	// \\src\\main\\scala\\Nexys4Wrapper.scala:94:27
-    .in_AUD_PWM (_mvp_io_out),	// \\src\\main\\scala\\Nexys4Wrapper.scala:82:21
+  SevenSegDisplay segDec (	// \\src\\main\\scala\\Nexys4Wrapper.scala:95:24
+    .clock    (clock),
+    .reset    (~reset),	// \\src\\main\\scala\\Nexys4Wrapper.scala:83:55
+    .io_value (_synth_io_heldBin),	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
+    .io_seg   (io_seg),
+    .io_an    (_segDec_io_an)
+  );
+  MVPBlackBox pwmDriver (	// \\src\\main\\scala\\Nexys4Wrapper.scala:101:27
+    .in_AUD_PWM (_synth_io_out),	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
     .AUD_PWM    (io_AUD_PWM)
   );
-  assign io_AUD_SD = 1'h1;	// \\src\\main\\scala\\Nexys4Wrapper.scala:76:7, :88:15
+  assign io_AUD_SD = 1'h1;	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7, :90:15
+  assign io_heldBin = _synth_io_heldBin;	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7, :84:23
+  assign io_an = _segDec_io_an[3:0];	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7, :95:24, :98:11
 endmodule
 
 
