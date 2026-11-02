@@ -2,6 +2,11 @@ import chisel3._
 import chisel3.util.log2Ceil
 import chisel3.util.Fill
 
+// enumeration for oscillator types
+object OscType extends ChiselEnum {
+  val Sine, Square, Saw, Triangle = Type
+}
+
 abstract class BaseOscillator(
     amp: Int,
     sampleWid: Int,
@@ -26,29 +31,6 @@ abstract class BaseOscillator(
     amp < (1 << (sampleWid - 1)),
     "Amplitude must fit in signed sample width"
   ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
-}
-
-class PWMOscillator(
-    freq: Int = 440,
-    clock_speed: Int = 100_000_000
-) extends Module {
-  val size: Int = clock_speed / freq
-  val width: Int = log2Ceil(size)
-  val PWM_in: UInt = (size >> 1).U
-
-  val io = IO(new Bundle {
-    val PWM_out = Output(Bool())
-  })
-
-  val acc = RegInit(0.U(width.W))
-  val PWM_out_reg = RegInit(0.B)
-  val PWM_thresh = RegInit((size >> 1).U(width.W))
-
-  acc := Mux(acc === (size - 1).U, 0.U, acc + 1.U)
-  PWM_thresh := Mux(acc === 0.U, PWM_in, PWM_thresh)
-  PWM_out_reg := acc >= PWM_thresh
-  io.PWM_out := PWM_out_reg
-
 }
 
 class SquareOscillator (
@@ -146,7 +128,9 @@ class SineOscillator (
 
   // sine wave needs lookup table
   // needs to be generated at elaboration time
-  // Vec
+  // VecInit used instead
+  // sine tavle is 2^phaseWid entries, each entry is sampleWid bits
+  // TODO: look at making table smaller by using symmetry and only storing 1/4 of the wave, then mirroring and inverting as needed
   // each entry is sampleWid bits
     val sineTable = VecInit(
         (0 until (1 << phaseWid)).map { i =>
@@ -160,12 +144,6 @@ class SineOscillator (
     acc := acc + io.increment // overflow will wrap around
     // output sample from sineTable
     io.sample := sineTable(acc)
-}
-
-
-// enumeration for oscillator types
-object OscType extends ChiselEnum {
-  val Sine, Square, Saw, Triangle = Value
 }
 
 // wrapper that picks type based on enum
@@ -196,3 +174,57 @@ class Oscillator(
     io.sample := osc.io.sample
 }
 
+
+
+
+class PWMGenerator( // renamed to generator bc it uses the oscillator to generate a PWM signal
+    freq: Int = 440,
+    clock_speed: Int = 100_000_000,
+    amp: Int = 127, // default to max for 8bit signed
+    sampleWid: Int = 8, // default to 8 bit
+    phaseWid: Int = 16, // default acc to 16 bit
+    voice: OscType.Type = OscType.Square // default to square wave
+) extends Module {
+  val size: Int = clock_speed / freq
+  val width: Int = log2Ceil(size)
+  val PWM_in: UInt = (size >> 1).U
+
+  val io = IO(new Bundle {
+    val PWM_en =Input(Bool())
+    val PWM_out = Output(Bool())
+  })
+
+  // val acc = RegInit(0.U(width.W))
+  // val PWM_out_reg = RegInit(0.B)
+  // val PWM_thresh = RegInit((size >> 1).U(width.W))
+
+  // acc := Mux(acc === (size - 1).U, 0.U, acc + 1.U)
+  // PWM_thresh := Mux(acc === 0.U, PWM_in, PWM_thresh)
+  // PWM_out_reg := acc >= PWM_thresh
+  // io.PWM_out := PWM_out_reg
+
+  // instantiate the oscillator
+  val osc = Module(new Oscillator(voice, amp, sampleWid, phaseWid))
+  // calc increment for osc
+  val increment=OscConfig.calcIncrement(freq, clock_speed, phaseWid).U
+  // conntect io
+  osc.io.increment := increment
+  // convert signed sample to unsigned PWM threshold
+  val sample = osc.io.sample
+  val pwmThres =sample.asUInt ^ (BigInt(1) << (sampleWid - 1)).U(sampleWid.W) // convert signed to unsigned by adding 2^(sampleWid-1) to shift range from [-amp, amp] to [0, 2*amp]
+  // XOR with sign bit (MSB) is equivalent but cheaper
+
+  // carrier counter for PWM
+  // does not depend on frequency
+  val pwmCounter = RegInit(0.U(sampleWid.W))
+  pwmCounter := pwmCounter + 1.U
+
+  // yields carrier frequency of clock_speed / 2^sampleWid
+  // default is 100MHz / 256 = 391kHz
+
+  // mux to enable/disable PWM output
+  // output value 
+  io.PWM_out := io.PWM_en && (pwmCounter < pwmThres) // only outputs when PWM_en is high, otherwise output 0
+
+
+}
