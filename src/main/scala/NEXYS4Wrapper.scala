@@ -61,14 +61,15 @@ class MVPBlackBox extends BlackBox with HasBlackBoxInline {
 class MVPIONexys4 extends Bundle {
   val AUD_SD = Output(Bool())
   val AUD_PWM = Analog(1.W) // Linked to AUD_PWM: 0 when low, high-Z when high
-  val sel = Input(Vec(Env.amntFreq, Bool()))
+  val rx = Input(Bool())
+  val heldBin = Output(UInt(7.W)) // connected to leds for debugging
 }
 
 // Handles the Nexys4 board connections
 // The board is reset active low. The AUD_PWM is required to be driven correctly.
 // This is handled here
 // inputs:
-//   - io.core.sel: Vec(Bool)  // selects which voice to play
+//   - io.rx: Bool  // midi input from UART
 // outputs:
 //  - AUD_PWM: high-Z or 0  // connected to the AUD_PWM port
 //  - AUD_SD: Bool  // always high
@@ -79,14 +80,15 @@ class Nexys4Wrapper extends RawModule {
   // The nexys4 is reset active low, so we have to invert the reset
   withClockAndReset(clock, if (Nexys4.resetActiveLow) !reset else reset) {
     val mvp = Module(
-      new MVP_Top(
+      new SynthTop(
         clockFrequency = Nexys4.clockFrequency
       )
     )
     val io = IO(new MVPIONexys4())
     io.AUD_SD := true.B // Required by spec
 
-    mvp.io.sel := io.sel
+    mvp.io.rx := io.rx
+    io.heldBin := mvp.io.heldBin
 
     // Set AUD_PWM to be high-Z instead of 1
     val pwmDriver = Module(new MVPBlackBox)
@@ -97,5 +99,5 @@ class Nexys4Wrapper extends RawModule {
 }
 
 object Nexys4Gen extends App {
-  VerilogGen(new Nexys4Wrapper, "MVP_Octave.sv")
+  VerilogGen(new Nexys4Wrapper, "SynthMidiKeyboard.sv")
 }
