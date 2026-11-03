@@ -24,7 +24,7 @@ class SynthTopSpec extends AnyFlatSpec with ChiselScalatestTester {
     dut.clock.step(10)
     dut.io.heldBin.expect(60.U)
 
-    Seq(0x80, 60, 0).foreach(sendByte(dut, _)) // note off
+    Seq(0x80, 0, 0).foreach(sendByte(dut, _)) // note off
     dut.clock.step(10)
     dut.io.heldBin.expect(0.U)
   }
