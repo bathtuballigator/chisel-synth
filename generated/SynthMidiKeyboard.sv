@@ -247,6 +247,7 @@ module MidiTop(	// \\src\\main\\scala\\MidiUart.scala:133:7
   input          clock,	// \\src\\main\\scala\\MidiUart.scala:133:7
                  reset,	// \\src\\main\\scala\\MidiUart.scala:133:7
                  io_rx,	// \\src\\main\\scala\\MidiUart.scala:135:14
+  output [6:0]   io_data1,	// \\src\\main\\scala\\MidiUart.scala:135:14
   output [127:0] io_held	// \\src\\main\\scala\\MidiUart.scala:135:14
 );
 
@@ -946,6 +947,7 @@ module MidiTop(	// \\src\\main\\scala\\MidiUart.scala:133:7
     .io_msg_bits_data1  (_parser_io_msg_bits_data1),
     .io_msg_bits_data2  (_parser_io_msg_bits_data2)
   );
+  assign io_data1 = _parser_io_msg_bits_data1;	// \\src\\main\\scala\\MidiUart.scala:133:7, :138:22
   assign io_held =
     {held_127,
      held_126,
@@ -2046,16 +2048,12 @@ module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:17:7
   wire         _mvp_1_io_out;	// \\src\\main\\scala\\SynthTop.scala:30:21
   wire         _mvp_io_out;	// \\src\\main\\scala\\SynthTop.scala:30:21
   wire [127:0] _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:22:20
-  wire [62:0]  _io_heldBin_T_1 = _midi_io_held[127:65] | _midi_io_held[63:1];	// \\src\\main\\scala\\SynthTop.scala:22:20, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-  wire [30:0]  _io_heldBin_T_3 = _io_heldBin_T_1[62:32] | _io_heldBin_T_1[30:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-  wire [14:0]  _io_heldBin_T_5 = _io_heldBin_T_3[30:16] | _io_heldBin_T_3[14:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-  wire [6:0]   _io_heldBin_T_7 = _io_heldBin_T_5[14:8] | _io_heldBin_T_5[6:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-  wire [2:0]   _io_heldBin_T_9 = _io_heldBin_T_7[6:4] | _io_heldBin_T_7[2:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
   MidiTop midi (	// \\src\\main\\scala\\SynthTop.scala:22:20
-    .clock   (clock),
-    .reset   (reset),
-    .io_rx   (io_rx),
-    .io_held (_midi_io_held)
+    .clock    (clock),
+    .reset    (reset),
+    .io_rx    (io_rx),
+    .io_data1 (io_heldBin),
+    .io_held  (_midi_io_held)
   );
   MVP mvp (	// \\src\\main\\scala\\SynthTop.scala:30:21
     .clock   (clock),
@@ -2158,14 +2156,6 @@ module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:17:7
     | _mvp_5_io_out | _mvp_6_io_out | _mvp_7_io_out | _mvp_8_io_out | _mvp_9_io_out
     | _mvp_10_io_out | _mvp_11_io_out | _mvp_12_io_out | _mvp_13_io_out | _mvp_14_io_out
     | _mvp_15_io_out;	// \\src\\main\\scala\\SynthTop.scala:17:7, :30:21, :47:27
-  assign io_heldBin =
-    {|(_midi_io_held[127:64]),
-     |(_io_heldBin_T_1[62:31]),
-     |(_io_heldBin_T_3[30:15]),
-     |(_io_heldBin_T_5[14:7]),
-     |(_io_heldBin_T_7[6:3]),
-     |(_io_heldBin_T_9[2:1]),
-     _io_heldBin_T_9[2] | _io_heldBin_T_9[0]};	// \\src\\main\\scala\\SynthTop.scala:17:7, :22:20, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:{10,14,28}
 endmodule
 
 module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
@@ -2371,39 +2361,39 @@ endmodule
 
 // external module MVPBlackBox
 
-module Nexys4Wrapper(	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7
-  input        clock,	// \\src\\main\\scala\\Nexys4Wrapper.scala:79:17
-               reset,	// \\src\\main\\scala\\Nexys4Wrapper.scala:80:17
-  output       io_AUD_SD,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
-  inout        io_AUD_PWM,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
-  input        io_rx,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
-  output [6:0] io_heldBin,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
-               io_seg,	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
-  output [7:0] io_an	// \\src\\main\\scala\\Nexys4Wrapper.scala:89:16
+module Nexys4Wrapper(	// \\src\\main\\scala\\NEXYS4Wrapper.scala:78:7
+  input        clock,	// \\src\\main\\scala\\NEXYS4Wrapper.scala:79:17
+               reset,	// \\src\\main\\scala\\NEXYS4Wrapper.scala:80:17
+  output       io_AUD_SD,	// \\src\\main\\scala\\NEXYS4Wrapper.scala:89:16
+  inout        io_AUD_PWM,	// \\src\\main\\scala\\NEXYS4Wrapper.scala:89:16
+  input        io_rx,	// \\src\\main\\scala\\NEXYS4Wrapper.scala:89:16
+  output [6:0] io_heldBin,	// \\src\\main\\scala\\NEXYS4Wrapper.scala:89:16
+               io_seg,	// \\src\\main\\scala\\NEXYS4Wrapper.scala:89:16
+  output [7:0] io_an	// \\src\\main\\scala\\NEXYS4Wrapper.scala:89:16
 );
 
-  wire       _synth_io_out;	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
-  wire [6:0] _synth_io_heldBin;	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
-  SynthTop synth (	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
+  wire       _synth_io_out;	// \\src\\main\\scala\\NEXYS4Wrapper.scala:84:23
+  wire [6:0] _synth_io_heldBin;	// \\src\\main\\scala\\NEXYS4Wrapper.scala:84:23
+  SynthTop synth (	// \\src\\main\\scala\\NEXYS4Wrapper.scala:84:23
     .clock      (clock),
-    .reset      (~reset),	// \\src\\main\\scala\\Nexys4Wrapper.scala:83:55
+    .reset      (~reset),	// \\src\\main\\scala\\NEXYS4Wrapper.scala:83:55
     .io_out     (_synth_io_out),
     .io_rx      (io_rx),
     .io_heldBin (_synth_io_heldBin)
   );
-  SevenSegDisplay segDec (	// \\src\\main\\scala\\Nexys4Wrapper.scala:95:24
+  SevenSegDisplay segDec (	// \\src\\main\\scala\\NEXYS4Wrapper.scala:95:24
     .clock    (clock),
-    .reset    (~reset),	// \\src\\main\\scala\\Nexys4Wrapper.scala:83:55
-    .io_value (_synth_io_heldBin),	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
+    .reset    (~reset),	// \\src\\main\\scala\\NEXYS4Wrapper.scala:83:55
+    .io_value (_synth_io_heldBin),	// \\src\\main\\scala\\NEXYS4Wrapper.scala:84:23
     .io_seg   (io_seg),
     .io_an    (io_an)
   );
-  MVPBlackBox pwmDriver (	// \\src\\main\\scala\\Nexys4Wrapper.scala:101:27
-    .in_AUD_PWM (_synth_io_out),	// \\src\\main\\scala\\Nexys4Wrapper.scala:84:23
+  MVPBlackBox pwmDriver (	// \\src\\main\\scala\\NEXYS4Wrapper.scala:101:27
+    .in_AUD_PWM (_synth_io_out),	// \\src\\main\\scala\\NEXYS4Wrapper.scala:84:23
     .AUD_PWM    (io_AUD_PWM)
   );
-  assign io_AUD_SD = 1'h1;	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7, :90:15
-  assign io_heldBin = _synth_io_heldBin;	// \\src\\main\\scala\\Nexys4Wrapper.scala:78:7, :84:23
+  assign io_AUD_SD = 1'h1;	// \\src\\main\\scala\\NEXYS4Wrapper.scala:78:7, :90:15
+  assign io_heldBin = _synth_io_heldBin;	// \\src\\main\\scala\\NEXYS4Wrapper.scala:78:7, :84:23
 endmodule
 
 
