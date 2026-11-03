@@ -64,23 +64,42 @@ class SquareOscillator (
 
 object OscConfig // calculate increment of the square wave oscillator for given frequency, sample rate, and phase width
 {
-  def calcIncrementAndWidth(
+  def calcIncrement(
       freq: Int, // frequency of the wave
-      clockFrequency: Int, // in Hz
-  ): (UInt, Int) = {
-    require(clockFrequency > 0, "Sample rate must be positive") // Hz
+      sampleRate: Int, // rate the accumulator is updated at in Hz (the clock frequency)
+      phaseWid: Int // number of bits in the phase accumulator
+  ): BigInt = {
+    require(sampleRate > 0, "Sample rate must be positive") // Hz
     require(
       freq >= 0,
       "Frequency must be non-negative"
     ) // allow zero frequency, which will just output a constant value
     require(
-      BigInt(freq) *2 < BigInt(clockFrequency),
+      BigInt(freq) *2 < BigInt(sampleRate),
       "Frequency must be less than Nyquist frequency"
     ) // must be less than half the sample rate to avoid aliasing/acheive perfect fideltiy (Nyquist–Shannon sampling theorem)
-
+    require(
+      phaseWid > 0,
+      "Phase width must be positive"
+    ) // number of bits in phase accumulator
     // generated during elaboration phase, so mult/div are not on FPGA
-    val size: Int = clockFrequency / freq
-    ((size >> 1).U, log2Ceil(size))
+    // output freq = sampleRate * increment / 2^phaseWid
+    (BigInt(freq) * (BigInt(
+      1
+    ) << phaseWid)) / sampleRate // increment = freq * 2^phaseWid / sampleRate
+  }
+
+  // smallest phase width that gives the increment `precisionBits` bits
+  // truncating the increment gives a relative freq error < 2^-precisionBits
+  // e.g. 12 bits -> < 0.025% (~0.4 cents)
+  def calcPhaseWid(
+      freq: Int,
+      sampleRate: Int,
+      precisionBits: Int = 12
+  ): Int = {
+    require(freq > 0, "Frequency must be positive to derive phase width")
+    // log2Ceil(sampleRate / freq) bits are needed for an increment of 1
+    log2Ceil(sampleRate / freq) + precisionBits
   }
 }
 
@@ -244,10 +263,12 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   })
 
   // calc increment for osc
-  val (increment,incrementWidth) = OscConfig.calcIncrementAndWidth(freq, clock_speed)
+  // width derived from freq so the increment always has enough precision bits
+  val phaseWid = OscConfig.calcPhaseWid(freq, clock_speed)
+  val increment = OscConfig.calcIncrement(freq, clock_speed, phaseWid).U(phaseWid.W)
 
   // instantiate the oscillator
-  val osc = Module(new Oscillator(voice, amp, sampleWid, incrementWidth))
+  val osc = Module(new Oscillator(voice, amp, sampleWid, phaseWid))
   // connect io
   osc.io.increment := increment
   // convert signed sample to unsigned PWM threshold
