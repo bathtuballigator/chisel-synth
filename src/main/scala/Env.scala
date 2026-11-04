@@ -3,6 +3,7 @@ import chisel3._
 object Nexys4 {
     val clockFrequency = 100_000_000  // Hz
     val resetActiveLow = true // true means reset is active when not asserting it
+    val numAnodes = 8
 }
 
 object Midi {
