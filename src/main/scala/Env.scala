@@ -20,6 +20,12 @@ object Env {
   val rootMidiNote = 60  // 60 is C4, then C#4, etc. 69 is A4
   // -- DEPRECATED --
 
+  val amntFreqPerVoice = 12  // number of frequencies per voice type. Will go something like 60,61,62,63 for the first voice type, then 64,65,66,67 for the second, etc.
+
+  // -- FUTURE --
   val polyphonyCount = 1  // how many keys/notes can be played at same time. This scales hardware for each.
+  // -- FUTURE --
+
+  // -- General Constants --
   val PcUartBaud = 115200
 }
