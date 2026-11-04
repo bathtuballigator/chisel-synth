@@ -24,11 +24,10 @@ class SynthTop(
   )
   midi.io.rx := io.rx
 
-  val outs: Vec[Bool] = Wire(Vec(Env.amntFreq, Bool()))
+  val outs: Vec[Bool] = Wire(Vec(Env.amntFreqTotal, Bool()))
 
-  val outs: Vec[Bool] = Wire(Vec(Env.amntFreq, Bool()))
   var voice_idx = 0
-  for (voice <- List(OscillatorType.Sine,OscillatorType.Square,OscillatorType.Saw,OscillatorType.Triangle)) {
+  for (voice <- Env.voiceList) {
     for (i <- 0 until Env.amntFreqPerVoice) {
       val synth = Module(
         new Synth(
