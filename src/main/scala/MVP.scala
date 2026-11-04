@@ -9,20 +9,25 @@ class MVPIO extends Bundle {
 
 class MVP(
     frequency: Int = 440, // Frequency to play square wave in Hz,
-    clockFrequency: Int = Nexys4.clockFrequency, // Hz
-    voice: OscillatorType = OscillatorType.Square
+    clockFrequency: Int = Nexys4.clockFrequency // Hz
 ) extends Module {
   val io = IO(new MVPIO())
 
-  val osc =
+  val squareOsc =
     Module(
-      new PWMGenerator(
+      new PWMOscillator(
         freq = frequency,
-        clock_speed = clockFrequency,
-        voice = voice
+        clock_speed = clockFrequency
       )
     )
-    
-  osc.io.PWM_en := io.play
-  io.out := osc.io.PWM_out
+
+  val sampleOrSilence = ( // sample or 0% duty cycle
+    Mux(
+      io.play,
+      squareOsc.io.PWM_out,
+      0.U
+    ) // be off for all cycles when no play
+  )
+  io.out := sampleOrSilence
 }
+
