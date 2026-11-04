@@ -7,7 +7,7 @@ import chisel3.simulator.PeekPokeAPI
 class ModelSpec extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "Golden Model"
   it should "work right" in {
-    test(new MVP()) { dut =>
+    test(new MVP(frequency = MidiUtils.midiToFreq(Env.rootMidiNote), clockFrequency = Nexys4.clockFrequency)) { dut =>
       val simSteps = 10_000_000
       val model = new GoldenModel(Nexys4.clockFrequency, simSteps, 0)
       dut.io.play.poke(true.B)
