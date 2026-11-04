@@ -68,7 +68,7 @@ class MVPIONexys4 extends Bundle {
 // The board is reset active low. The AUD_PWM is required to be driven correctly.
 // This is handled here
 // inputs:
-//   - io.core.sel: Vec(Bool)  // selects which voice to play
+//   - io.rx: Bool  // midi input from UART
 // outputs:
 //  - AUD_PWM: high-Z or 0  // connected to the AUD_PWM port
 //  - AUD_SD: Bool  // always high
@@ -97,5 +97,5 @@ class Nexys4Wrapper extends RawModule {
 }
 
 object Nexys4Gen extends App {
-  VerilogGen(new Nexys4Wrapper, "MVP_Octave.sv")
+  VerilogGen(new Nexys4Wrapper, "MvpVoices.sv")
 }
