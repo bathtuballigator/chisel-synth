@@ -23,9 +23,9 @@ class MVP_Top(
   val outs: Vec[Bool] = Wire(Vec(Env.amntFreq, Bool()))
   var voice_idx = 0
   for (voice <- List(OscillatorType.Sine,OscillatorType.Square,OscillatorType.Saw,OscillatorType.Triangle)) {
-    for (i <- 0 until 4) {
-      val mvp = Module(
-        new MVP(
+    for (i <- 0 until Env.amntFreqPerVoice) {
+      val synth = Module(
+        new Synth(
           frequency = MidiUtils.midiToFreq(  // set frequency for note based on midi value
             i + Env.rootMidiNote             // default root midi note is 60 i.e. C4 
           ),
@@ -33,8 +33,10 @@ class MVP_Top(
           voice=voice
         )
       )
-      mvp.io.play := io.sel(i+voice_idx*4)  // enable voice if selected
-      outs(i+voice_idx*4) := mvp.io.out
+
+      // midi linked to 60,61,62,63 for the first voice type, then 64,65,66,67 for the second, etc.
+      synth.io.play := midi.io.held(i+voice_idx*Env.amntFreqPerVoice + Env.rootMidiNote)
+      outs(i+voice_idx*Env.amntFreqPerVoice) := synth.io.out
     }
     voice_idx += 1
   }
