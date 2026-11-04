@@ -21,22 +21,18 @@ class MVP_Top(
   val io = IO(new MVP_TopIO())
 
   val outs: Vec[Bool] = Wire(Vec(Env.amntFreq, Bool()))
-  var voice_idx = 0
-  for (voice <- List(OscillatorType.Sine,OscillatorType.Square,OscillatorType.Saw,OscillatorType.Triangle)) {
-    for (i <- 0 until 4) {
-      val mvp = Module(
-        new MVP(
-          frequency = MidiUtils.midiToFreq(  // set frequency for note based on midi value
-            i + Env.rootMidiNote             // default root midi note is 60 i.e. C4 
-          ),
-          clockFrequency = clockFrequency,
-          voice=voice
-        )
+
+  for (i <- 0 until Env.amntFreq) {
+    val mvp = Module(
+      new MVP(
+        frequency = MidiUtils.midiToFreq(  // set frequency for note based on midi value
+          i + Env.rootMidiNote             // default root midi note is 60 i.e. C4 
+        ),
+        clockFrequency = clockFrequency
       )
-      mvp.io.play := io.sel(i+voice_idx*4)  // enable voice if selected
-      outs(i+voice_idx*4) := mvp.io.out
-    }
-    voice_idx += 1
+    )
+    mvp.io.play := io.sel(i)  // enable voice if selected
+    outs(i) := mvp.io.out
   }
 
   // Combine all voices. If any voice output is on, output is on.
