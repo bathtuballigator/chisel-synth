@@ -106,7 +106,7 @@ class SawOscillator (
   // accumulator gives linear ramp
   // io.sample := (acc(phaseWid - 2, 0) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
   // exclude MSB for ramp values
-  val ramp = acc(phaseWid - 2, 0)
+  val ramp = acc
 
   // make sure calculated width is enough to hold the intermediate values
   val calcWid = phaseWid + sampleWid + 2
@@ -115,7 +115,7 @@ class SawOscillator (
   // scale to 2*amp and divide by 2^(phaseWid-1) to scale to desired amp
   // sepated out for clarity
   val scale = (BigInt(2) * amp).U(calcWid.W)
-  val denominator = ((BigInt(1) << (phaseWid - 1)) - 1)
+  val denominator = ((BigInt(1) << phaseWid) - 1)
     .U(calcWid.W)
 
   val scaled = (rampWide * scale) / denominator
@@ -236,7 +236,7 @@ class Oscillator(
 
 
 class PWMGenerator( // renamed to generator bc it uses the oscillator to generate a PWM signal
-    freq: Int = 440,
+    // freq: Int = 440,
     clock_speed: Int = 100_000_000,
     amp: Int = 127, // default to max for 8bit signed
     sampleWid: Int = 8, // default to 8 bit
@@ -246,13 +246,15 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
 
   val io = IO(new Bundle {
     val PWM_en =Input(Bool())
+    val frequencyHz = Input(UInt(32.W)) // for dynamic frequency control
     val PWM_out = Output(Bool())
   })
 
   // instantiate the oscillator
   val osc = Module(new Oscillator(voice, amp, sampleWid, phaseWid))
   // calc increment for osc
-  val increment=OscConfig.calcIncrement(freq, clock_speed, phaseWid).U(phaseWid.W)
+  // val increment=OscConfig.calcIncrement(freq, clock_speed, phaseWid).U(phaseWid.W)
+  val increment =(io.frequencyHz << phaseWid) / clock_speed.U // dynamic control calculated in hardware
   // conntect io
   osc.io.increment := increment
   // convert signed sample to unsigned PWM threshold

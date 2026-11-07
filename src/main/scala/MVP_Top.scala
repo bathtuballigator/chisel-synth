@@ -6,6 +6,7 @@ import chisel3.util._
 class MVP_TopIO extends Bundle {
   val out = Output(Bool())
   val sel = Input(Vec(Env.amntFreq, Bool()))
+  val frequencyHz = Input(Vec(Env.amntFreq, UInt(32.W)))
 }
 
 // Top module for MVP voices

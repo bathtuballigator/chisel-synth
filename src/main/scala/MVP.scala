@@ -4,6 +4,7 @@ import chisel3.util.log2Ceil
 
 class MVPIO extends Bundle {
   val play = Input(Bool())
+  val frequencyHz = Input(UInt(32.W)) // for dynamic frequency control
   val out = Output(Bool())
 }
 
@@ -17,12 +18,13 @@ class MVP(
   val osc =
     Module(
       new PWMGenerator(
-        freq = frequency,
+        // freq = frequency,
         clock_speed = clockFrequency,
         voice = voice
       )
     )
     
   osc.io.PWM_en := io.play
+  osc.io.frequencyHz := io.frequencyHz
   io.out := osc.io.PWM_out
 }
