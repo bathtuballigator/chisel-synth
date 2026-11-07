@@ -21,56 +21,164 @@ See Verilator installation instructions [here](https://verilator.org/guide/lates
 
 ## Synthesizer configuration
 
-Edit [`synth.env`](synth.env) before generating hardware. It uses a small `.env`
-format: one `KEY=VALUE` per line, with full-line `#` comments and optional quotes.
-No additional library or shell command is needed to load it.
+The synthesizer reads [`synth.env`](synth.env) into `Env` before Chisel generates
+hardware. Use this file to describe the note bank, voice types, and each voice's
+ADSR settings. These are build-time settings: editing the file does not change
+an FPGA that is already running.
+
+### 1. Open the config file
+
+Open a terminal in the repository root, the folder containing `build.sbt` and
+`synth.env`. Edit `synth.env` in your text editor. The checked-in file contains:
 
 ```dotenv
-AMOUNT_FREQ=16
-ROOT_MIDI_NOTE=69
+# Four consecutive notes, beginning at C4.
+AMOUNT_FREQ=4
+ROOT_MIDI_NOTE=60
+
+# One square-wave voice; envelope bypassed for the current MVP.
+VOICE_COUNT=1
+VOICE_0_TYPE=square
+VOICE_0_ENVELOPE_ENABLED=false
+VOICE_0_ATTACK_MS=10
+VOICE_0_DECAY_MS=100
+VOICE_0_SUSTAIN=0.7
+VOICE_0_RELEASE_MS=200
+```
+
+Write one `KEY=VALUE` per line. Blank lines and comments starting with `#` on
+their own line are allowed. Values may have matching single or double quotes.
+Keys are case-sensitive and must not be repeated. Put comments on separate
+lines; inline comments, `export`, and variable expansion are not supported.
+
+### 2. Choose the note bank and voices
+
+| Setting | Allowed values | Default when omitted |
+| --- | --- | --- |
+| `AMOUNT_FREQ` | Integer 1–16: number of consecutive playable notes / switch inputs. | `16` |
+| `ROOT_MIDI_NOTE` | Integer 0–127: first MIDI note. `60` is C4; `69` is A4. | `69` |
+| `VOICE_COUNT` | Integer 1–3: number of waveform voices. | `1` |
+| `VOICE_n_TYPE` | `square`, `sine`, `sawtooth`, or `triangle`. Values are case-insensitive. | `square` |
+| `VOICE_n_ENVELOPE_ENABLED` | `true` to enable that voice's ADSR configuration; `false` to bypass it when integrated. | `false` |
+| `VOICE_n_ATTACK_MS` | Nonnegative integer milliseconds from zero to peak amplitude. | `10` |
+| `VOICE_n_DECAY_MS` | Nonnegative integer milliseconds from peak to sustain level. | `100` |
+| `VOICE_n_SUSTAIN` | Decimal 0–1: held amplitude as a fraction of the peak. This is a level, not a duration. | `0.7` |
+| `VOICE_n_RELEASE_MS` | Nonnegative integer milliseconds from the current amplitude to zero after note-off. | `200` |
+
+Replace `n` with `0`, `1`, or `2`. For two voices, use `VOICE_COUNT=2` and
+prefix their settings with `VOICE_0_` and `VOICE_1_`. Settings for an index outside
+`VOICE_COUNT` are rejected. The number of voices is separate from the number of
+playable notes. The highest note, `ROOT_MIDI_NOTE + AMOUNT_FREQ - 1`, must be at
+most 127. Durations must fit a Scala `Int` (0–2147483647 milliseconds).
+
+To describe a second voice with a different waveform and envelope, set
+`VOICE_COUNT=2` and add:
+
+```dotenv
+VOICE_1_TYPE=sawtooth
+VOICE_1_ENVELOPE_ENABLED=true
+VOICE_1_ATTACK_MS=50
+VOICE_1_DECAY_MS=250
+VOICE_1_SUSTAIN=0.5
+VOICE_1_RELEASE_MS=500
+```
+
+Each voice has independent settings. To give voices identical envelopes, repeat
+the same ADSR values under their respective prefixes. Disabled envelopes retain
+their settings as configuration data. A complete example is in
+[`config/examples/three-voices.env`](config/examples/three-voices.env).
+
+The current MVP hardware consumes the note-bank settings and supports one square
+voice without an envelope. The loader accepts the complete voice format, but
+hardware generation rejects unsupported voice selections until the oscillator
+and ADSR teams integrate their modules. You can inspect multi-voice configurations
+now, but cannot generate working multi-voice/ADSR hardware from this MVP yet.
+
+### 3. Check the loaded values
+
+Save the file, then run from the repository root:
+
+```powershell
+sbt "runMain ShowSynthConfig"
+```
+
+With the checked-in configuration, the output includes:
+
+```text
+AMOUNT_FREQ=4
+ROOT_MIDI_NOTE=60
+MIDI note range: 60 to 63
 VOICE_COUNT=1
 VOICE_0_TYPE=square
 VOICE_0_ENVELOPE_ENABLED=false
 ```
 
-`AMOUNT_FREQ` selects 1 to 16 consecutive note/switch inputs; `ROOT_MIDI_NOTE`
-selects their first MIDI note (60 = C4, 69 = A4). The last note must not exceed
-127. `VOICE_COUNT` describes 1 to 3 synthesizer voices. Each `VOICE_n_TYPE` selects
-`square`, `sine`, `sawtooth`, or `triangle`. Each voice can enable an envelope and
-set its attack/decay/release in whole milliseconds and sustain as a 0–1 fraction.
-Missing keys retain defaults. The checked-in config currently uses four notes
-starting at C4; the loader defaults remain 16 notes starting at A4.
+It also prints all four ADSR parameters. This command only reads and displays the
+configuration; it does not generate hardware. Missing keys use the defaults in
+the table. A missing file or invalid setting causes an error instead of silently
+ignoring it.
 
-The current MVP hardware consumes the note-bank settings and supports one square
-voice without an envelope. The loader accepts the complete voice format, but
-hardware generation rejects unsupported voice selections until the oscillator
-and ADSR teams integrate their modules. It will not silently ignore them.
+### 4. Use a different config file
 
-From the repository root, check the selected values and generate the board design:
-
-```text
-sbt "runMain ShowSynthConfig"
-sbt "runMain Nexys4Gen"
-```
-
-To select another file in PowerShell:
+Set `SYNTH_CONFIG` before starting sbt. For example, inspect the supplied
+three-voice example in PowerShell:
 
 ```powershell
-$env:SYNTH_CONFIG = "C:\path\to\custom.env"
+$env:SYNTH_CONFIG = "config/examples/three-voices.env"
 sbt "runMain ShowSynthConfig"
-sbt "runMain Nexys4Gen"
 Remove-Item Env:SYNTH_CONFIG
 ```
 
-Restart sbt after changing the file: `Env` is a singleton loaded once per JVM.
-Regenerate RTL and rebuild the FPGA after changes. Fewer note inputs also require
-matching XDC constraints; the supplied octave constraints describe 16 switches.
+You can replace the path with your own config file, including an absolute path.
+Removing `SYNTH_CONFIG` returns subsequent runs to `synth.env`, unless the JVM
+property `synth.config` is set. Path precedence is `synth.config`, then
+`SYNTH_CONFIG`, then `synth.env` in the working directory. In an IDE, set that
+working directory to the repository root or select an absolute file path.
+
+### 5. Run the configuration tests
+
+```powershell
+sbt "testOnly SynthConfigSpec SynthConfigHardwareSpec"
+```
+
+These tests check parsing, valid/invalid settings, per-voice data, and the current
+MVP's note-bank behavior. Run the hardware test with an MVP-compatible config:
+one square voice and `ENVELOPE_ENABLED=false`. Parser tests alone can be run with
+`sbt "testOnly SynthConfigSpec"`. These do not test ADSR envelope hardware.
+
+### 6. Generate hardware
+
+With an MVP-compatible config selected, run:
+
+```powershell
+sbt "runMain Nexys4Gen"
+```
+
+This writes `generated/MVP_Octave.sv`; the board top module is `Nexys4Wrapper`.
+Rebuild the Vivado design and program the FPGA to apply the new settings.
+The supplied `xdc_files/Nexys4DDR_octave.xdc` describes 16 switches. If fewer
+notes are generated, use matching constraints for only the generated input ports.
+The config loader does not generate pin constraints.
+
+If using an interactive sbt session, exit it and start a fresh session after
+editing the file: `Env` is initialized once per JVM. Each standalone `sbt ...`
+command above starts a fresh session.
+
+### Troubleshooting
+
+- **Config file not found:** run from the repository root or select the correct
+  path with `SYNTH_CONFIG`.
+- **Unsupported key or duplicate setting:** check the spelling, capitalization,
+  and whether the key appears more than once.
+- **Inactive voice:** increase `VOICE_COUNT` or remove settings for unused indices.
+- **Invalid value:** use whole milliseconds, sustain from 0 to 1, valid MIDI
+  notes, and one of the four supported waveform names.
+- **MVP integration error:** use one square voice with its envelope disabled for
+  hardware generation. Other selections can be parsed and inspected while the
+  group completes the oscillator and envelope integration.
 
 See [the complete configuration format](docs/configuration.md) for all fields,
 defaults, and the Scala interface for the oscillator and envelope teams.
-[The three-voice example](config/examples/three-voices.env) shows independent
-waveforms and envelopes. The configuration data is implemented; waveform mixing,
-MIDI input, chord handling, and ADSR hardware remain separate group tasks.
 
 ## File Structure
 
