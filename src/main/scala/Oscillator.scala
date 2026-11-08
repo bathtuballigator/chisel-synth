@@ -250,7 +250,7 @@ class Oscillator(
 
 
 class PWMGenerator( // renamed to generator bc it uses the oscillator to generate a PWM signal
-    // freq: Int = 440,
+    freq: Int = 440,
     clock_speed: Int = 100_000_000,
     amp: Int = 127, // default to max for 8bit signed
     sampleWid: Int = 8, // default to 8 bit
@@ -259,7 +259,7 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
 
   val io = IO(new Bundle {
     val PWM_en =Input(Bool())
-    val frequencyHz = Input(UInt(32.W)) // for dynamic frequency control
+    // val frequencyHz = Input(UInt(32.W)) // for dynamic frequency control
     val PWM_out = Output(Bool())
   })
 
