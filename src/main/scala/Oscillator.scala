@@ -120,7 +120,7 @@ class SawOscillator (
   // accumulator gives linear ramp
   // io.sample := (acc(phaseWid - 2, 0) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
   // exclude MSB for ramp values
-  val ramp = acc(phaseWid - 2, 0)
+  val ramp = acc
 
   // make sure calculated width is enough to hold the intermediate values
   val calcWid = phaseWid + sampleWid + 2
@@ -129,7 +129,7 @@ class SawOscillator (
   // scale to 2*amp and divide by 2^(phaseWid-1) to scale to desired amp
   // sepated out for clarity
   val scale = (BigInt(2) * amp).U(calcWid.W)
-  val denominator = ((BigInt(1) << (phaseWid - 1)) - 1)
+  val denominator = ((BigInt(1) << phaseWid) - 1)
     .U(calcWid.W)
 
   val scaled = (rampWide * scale) / denominator
@@ -259,6 +259,7 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
 
   val io = IO(new Bundle {
     val PWM_en =Input(Bool())
+    // val frequencyHz = Input(UInt(32.W)) // for dynamic frequency control
     val PWM_out = Output(Bool())
   })
 
