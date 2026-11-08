@@ -68,7 +68,7 @@ lines; inline comments, `export`, and variable expansion are not supported.
 Replace `n` with `0`, `1`, or `2`. For two voices, use `VOICE_COUNT=2` and
 prefix their settings with `VOICE_0_` and `VOICE_1_`. Settings for an index outside
 `VOICE_COUNT` are rejected. The number of voices is separate from the number of
-playable notes. The highest note, `ROOT_MIDI_NOTE + AMOUNT_FREQ - 1`, must be at
+playable notes. The highest note, must be at
 most 127. Durations must fit a Scala `Int` (0–2147483647 milliseconds).
 
 To describe a second voice with a different waveform and envelope, set
