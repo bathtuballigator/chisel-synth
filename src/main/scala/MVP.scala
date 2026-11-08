@@ -2,6 +2,27 @@ import chisel3._
 import chisel3.util.Cat
 import chisel3.util.log2Ceil
 
+class PWMOscillator(
+    freq: Int = 440,
+    clock_speed: Int = 100_000_000
+) extends Module {
+  val size: Int = clock_speed / freq
+  val width: Int = log2Ceil(size)
+  val PWM_in: UInt = (size >> 1).U
+
+  val io = IO(new Bundle {
+    val PWM_out = Output(Bool())
+  })
+
+  val acc = RegInit(0.U(width.W))
+  val PWM_thresh = RegInit((size >> 1).U(width.W))
+
+  acc := Mux(acc === (size - 1).U, 0.U, acc + 1.U)
+  PWM_thresh := Mux(acc === 0.U, PWM_in, PWM_thresh)
+  io.PWM_out := acc >= PWM_thresh
+
+}
+
 class MVPIO extends Bundle {
   val play = Input(Bool())
   val out = Output(Bool())
@@ -30,3 +51,4 @@ class MVP(
   )
   io.out := sampleOrSilence
 }
+
