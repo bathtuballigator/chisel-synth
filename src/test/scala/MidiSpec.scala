@@ -3,6 +3,14 @@ import chisel3.simulator.EphemeralSimulator._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import scala.collection.mutable.ArrayBuffer
+import scala.sys.process._
+import scala.util.Try
+
+/** EphemeralSimulator needs Verilator; tests are cancelled (skipped) without it. */
+object Verilator {
+  lazy val available: Boolean =
+    Try(Seq("verilator", "--version").!(ProcessLogger(_ => ())) == 0).getOrElse(false)
+}
 
 /** End-to-end tests: serialized bits on the rx pin -> decoded events. */
 class MidiTopSpec extends AnyFlatSpec with Matchers {
@@ -46,7 +54,8 @@ class MidiTopSpec extends AnyFlatSpec with Matchers {
     def held: BigInt = dut.io.held.peek().litValue
   }
 
-  def run(body: Driver => Unit): Unit =
+  def run(body: Driver => Unit): Unit = {
+    assume(Verilator.available, "verilator not found on PATH")
     simulate(new MidiTop(ClkHz, Baud)) { dut =>
       dut.io.rx.poke(true.B)
       dut.reset.poke(true.B)
@@ -56,6 +65,7 @@ class MidiTopSpec extends AnyFlatSpec with Matchers {
       d.idle(Div)
       body(d)
     }
+  }
 
   "MidiTop" should "decode a note on and track it as held" in run { d =>
     d.send(0x90, 0x3C, 0x64) // ch 1, middle C, velocity 100
@@ -111,6 +121,7 @@ class MidiTopSpec extends AnyFlatSpec with Matchers {
 /** Parser-level tests, driving bytes directly (no UART). */
 class MidiParserSpec extends AnyFlatSpec with Matchers {
   def feed(bytes: Int*): Seq[(Int, Int, Int)] = {
+    assume(Verilator.available, "verilator not found on PATH")
     val out = ArrayBuffer[(Int, Int, Int)]()
     simulate(new MidiParser) { dut =>
       dut.io.in.valid.poke(false.B)

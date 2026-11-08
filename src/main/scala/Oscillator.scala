@@ -65,8 +65,8 @@ class SquareOscillator (
 object OscConfig // calculate increment of the square wave oscillator for given frequency, sample rate, and phase width
 {
   def calcIncrement(
-      freq: Int, // frequency of the square wave
-      sampleRate: Int, // sample rate of the DAC in Hz
+      freq: Int, // frequency of the wave
+      sampleRate: Int, // rate the accumulator is updated at in Hz (the clock frequency)
       phaseWid: Int // number of bits in the phase accumulator
   ): BigInt = {
     require(sampleRate > 0, "Sample rate must be positive") // Hz
@@ -83,9 +83,23 @@ object OscConfig // calculate increment of the square wave oscillator for given 
       "Phase width must be positive"
     ) // number of bits in phase accumulator
     // generated during elaboration phase, so mult/div are not on FPGA
+    // output freq = sampleRate * increment / 2^phaseWid
     (BigInt(freq) * (BigInt(
       1
     ) << phaseWid)) / sampleRate // increment = freq * 2^phaseWid / sampleRate
+  }
+
+  // smallest phase width that gives the increment `precisionBits` bits
+  // truncating the increment gives a relative freq error < 2^-precisionBits
+  // e.g. 12 bits -> < 0.025% (~0.4 cents)
+  def calcPhaseWid(
+      freq: Int,
+      sampleRate: Int,
+      precisionBits: Int = 12
+  ): Int = {
+    require(freq > 0, "Frequency must be positive to derive phase width")
+    // log2Ceil(sampleRate / freq) bits are needed for an increment of 1
+    log2Ceil(sampleRate / freq) + precisionBits
   }
 }
 
@@ -240,7 +254,6 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
     clock_speed: Int = 100_000_000,
     amp: Int = 127, // default to max for 8bit signed
     sampleWid: Int = 8, // default to 8 bit
-    phaseWid: Int = 16, // default acc to 16 bit
     voice: OscillatorType = OscillatorType.Square // default to square wave
 ) extends Module {
 
@@ -250,12 +263,14 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
     val PWM_out = Output(Bool())
   })
 
+  // calc increment for osc
+  // width derived from freq so the increment always has enough precision bits
+  val phaseWid = OscConfig.calcPhaseWid(freq, clock_speed)
+  val increment = OscConfig.calcIncrement(freq, clock_speed, phaseWid).U(phaseWid.W)
+
   // instantiate the oscillator
   val osc = Module(new Oscillator(voice, amp, sampleWid, phaseWid))
-  // calc increment for osc
-  // val increment=OscConfig.calcIncrement(freq, clock_speed, phaseWid).U(phaseWid.W)
-  val increment =(io.frequencyHz << phaseWid) / clock_speed.U // dynamic control calculated in hardware
-  // conntect io
+  // connect io
   osc.io.increment := increment
   // convert signed sample to unsigned PWM threshold
   val sample = osc.io.sample
@@ -267,6 +282,7 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   val pwmCounter = RegInit(0.U(sampleWid.W))
   pwmCounter := pwmCounter + 1.U
 
+  // NOTE AFTER CHANGING calcIncrement: Idk what this means or if still true
   // yields carrier frequency of clock_speed / 2^sampleWid
   // default is 100MHz / 256 = 391kHz
 
