@@ -25,7 +25,6 @@ class PWMOscillator(
 
 class MVPIO extends Bundle {
   val play = Input(Bool())
-  val frequencyHz = Input(UInt(32.W)) // for dynamic frequency control
   val out = Output(Bool())
 }
 
