@@ -6,6 +6,7 @@ import chisel3.util._
 class MVP_TopIO extends Bundle {
   val out = Output(Bool())
   val sel = Input(Vec(Env.amntFreq, Bool()))
+  val frequencyHz = Input(Vec(Env.amntFreq, UInt(32.W)))
 }
 
 // Top module for MVP voices
@@ -18,6 +19,7 @@ class MVP_Top(
     // TODO: Add param to toggle - if voices should be or-ed or handle sel as one hot.
     // Could it even be a function as a param? :O
 ) extends Module {
+  Env.config.requireMvpCompatible()
   val io = IO(new MVP_TopIO())
 
   val outs: Vec[Bool] = Wire(Vec(Env.amntFreq, Bool()))
