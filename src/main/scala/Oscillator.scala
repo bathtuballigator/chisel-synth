@@ -245,8 +245,8 @@ class Oscillator(
         case OscillatorType.Triangle => Module(new TriangleOscillator(amp, sampleWid, phaseWid))
     }
 
-    val validPitch = (io.frequencyHz > 0.U) && (io.frequencyHz * 2.U < clkFreq.U)  && (io.frequencyHz < (clkFreq.U>>1)) // valid if >0 and < Nyquist frequency and < half clock freq
-    val increment = (io.frequencyHz <<phaseWid.U) / clkFreq.U // increment = freq * 2^phaseWid / sampleRate, calculated dynamically from input frequency and clock frequency
+    val validPitch = (io.frequencyHz > 0.U) && (io.frequencyHz <= ((clkFreq - 1) / 2).U)
+    val increment = (io.frequencyHz <<phaseWid) / clkFreq.U // increment = freq * 2^phaseWid / sampleRate, calculated dynamically from input frequency and clock frequency
 
     // connect in and outs
     osc.io.increment := Mux(validPitch, increment, 0.U)
