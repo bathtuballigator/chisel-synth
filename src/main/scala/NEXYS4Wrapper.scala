@@ -106,5 +106,5 @@ class Nexys4Wrapper extends RawModule {
 }
 
 object Nexys4Gen extends App {
-  VerilogGen(new Nexys4Wrapper, "MvpVoicesWithMidi.sv")
+  VerilogGen(new Nexys4Wrapper, "polyphony.sv")
 }

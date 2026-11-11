@@ -5,7 +5,7 @@ import chisel3.util._
 
 class SynthTopIO extends Bundle {
   val out = Output(Bool())
-  val rx = Input(Bool())  // midi rx
+  val rx = Input(Bool()) // midi rx
   val heldBin = Output(UInt(7.W))
 }
 
@@ -32,7 +32,7 @@ class SynthTop(
   //     val synth = Module(
   //       new Synth(
   //         frequency = MidiUtils.midiToFreq(  // set frequency for note based on midi value
-  //           i + Env.rootMidiNote             // default root midi note is 60 i.e. C4 
+  //           i + Env.rootMidiNote             // default root midi note is 60 i.e. C4
   //         ),
   //         clockFrequency = clockFrequency,
   //         voice=voice
@@ -53,33 +53,42 @@ class SynthTop(
 
   io.heldBin := midi.io.data1
 
-  val sampleWid=8
-  val voiceCount=Env.amntFreqTotal
+  val sampleWid = 8
+  val voiceCount = Env.amntFreqTotal
 
-  val pwm = Module(new PWMGenerator(
-    sampleWid=sampleWid,
-    numVoices=voiceCount
-  ))
+  val pwm = Module(
+    new PWMGenerator(
+      sampleWid = sampleWid,
+      numVoices = voiceCount
+    )
+  )
+  val midiLookupTable = MidiUtils.midiLookupTable(width = 32)
 
-  for ((waveform,bank)<-Env.voiceList.zipWithIndex) {
+  // The first `voiceCount` held notes (lowest note first). heldNotes(k) is a midi note number.
+  val (heldNotes, heldValid) = FirstNSetBits(midi.io.held, voiceCount)
+
+  for ((waveform, bank) <- Env.voiceList.zipWithIndex) {
     for (i <- 0 until Env.amntFreqPerVoice) {
-      val idx = bank*Env.amntFreqPerVoice + i // index of voice in pwm module
-      val note=idx + Env.rootMidiNote // midi note to play
-      val pitchHz= MidiUtils.midiToFreq(note).U(32.W)
+      val idx = bank * Env.amntFreqPerVoice + i // index of voice in pwm module
+      val note = heldNotes(idx)
+      val pitchHz = midiLookupTable(note)
 
       val synth = Module(
         new Synth(
-          sampleWid=sampleWid,
-          clockFrequency=clockFrequency,
-          voice=waveform
+          sampleWid = sampleWid,
+          clockFrequency = clockFrequency,
+          voice = waveform
         )
       )
-      synth.io.frequencyHz := Mux(midi.io.held(note), pitchHz, 0.U) // if note is held, play it, else play 0 Hz
+      synth.io.frequencyHz := Mux(
+        heldValid(idx),
+        pitchHz,
+        0.U
+      ) // if note is held, play it, else play 0 Hz
       pwm.io.samples(idx) := synth.io.sample
     }
   }
 
-  val lastNote= Env.rootMidiNote + Env.amntFreqTotal - 1
-  pwm.io.PWM_en:=midi.io.held(lastNote,Env.rootMidiNote).orR // enable pwm if any note is held
+  pwm.io.PWM_en := midi.io.held.orR // enable pwm if any note is held
   io.out := pwm.io.PWM_out
 }
