@@ -66,8 +66,9 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
     }
 
     it should "select the correct waveform through the Oscillator wrapper" in {
-      test(new Oscillator(wave.kind, amplitude, sampleWidth, phaseWidth)) { dut =>
-        dut.io.increment.poke(1.U)
+      test(new Oscillator(wave.kind, amplitude, sampleWidth, phaseWidth,clkFreq=16)) { dut =>
+        dut.io.frequencyHz.poke(1.U) // 1 Hz frequency, 16 Hz clock, 4 phase bits = 1 sample per clock
+        dut.io.valid.expect(1.B)
         for ((expected, phase) <- wave.samples.zipWithIndex) {
           dut.io.sample.expect(expected.S, s"${wave.name} wrapper: phase=$phase")
           dut.clock.step()
