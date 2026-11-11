@@ -80,6 +80,6 @@ class SynthTop(
   }
 
   val lastNote= Env.rootMidiNote + Env.amntFreqTotal - 1
-  pwm.io.PWM_en:=midi.io.held(lastNote || midi.io.held(Env.rootMidiNote)) // enable pwm if any note is held
+  pwm.io.PWM_en:=midi.io.held(lastNote,Env.rootMidiNote).orR // enable pwm if any note is held
   io.out := pwm.io.PWM_out
 }
