@@ -23,7 +23,7 @@ object Env {
   // -- DEPRECATED --
 
   val amntFreqPerVoice =
-    12 // number of frequencies per voice type. Will go something like 60,61,62,63 for the first voice type, then 64,65,66,67 for the second, etc.
+    4 // number of frequencies per voice type. Will go something like 60,61,62,63 for the first voice type, then 64,65,66,67 for the second, etc.
 
   // Idk how to enumerate the sealed trait
   val voiceList = List(
