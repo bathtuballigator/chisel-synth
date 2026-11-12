@@ -223,14 +223,17 @@ class Oscillator(
     oscType: OscillatorType, // type of oscillator to generate
     amp: Int, // the amplitude of the wave
     sampleWid: Int, // the number of bits in the output sample
-    phaseWid: Int // the number of bits in the phase accumulator
+    phaseWid: Int, // the number of bits in the phase accumulator
+    clkFreq: Int = 100_000_000 // clock freq in Hz to calculate increment for given frequency dynaically
 ) extends Module {
   val io = IO(new Bundle {
-    // chisel hardware unsigned
-    val increment = Input(
-      UInt(phaseWid.W)
-    ) // increment value for the phase accumulator, calculated from frequency and sample rate
-    // neeeds to be signed
+    // // chisel hardware unsigned
+    // val increment = Input(
+    //   UInt(phaseWid.W)
+    // ) // increment value for the phase accumulator, calculated from frequency and sample rate
+    // // neeeds to be signed
+    val frequencyHz = Input(UInt(32.W)) // frequency of the wave in Hz, for dynamic frequency control
+    val valid= Output(Bool()) // valid output to deal with invalid frequency inputs (0Hz or > Nyquist)
     val sample = Output(SInt(sampleWid.W)) // output sample, signed
   })
 
@@ -241,40 +244,39 @@ class Oscillator(
         case OscillatorType.Saw      => Module(new SawOscillator(amp, sampleWid, phaseWid))
         case OscillatorType.Triangle => Module(new TriangleOscillator(amp, sampleWid, phaseWid))
     }
+
+    val validPitch = (io.frequencyHz > 0.U) && (io.frequencyHz <= ((clkFreq - 1) / 2).U)
+    val increment = (io.frequencyHz <<phaseWid) / clkFreq.U // increment = freq * 2^phaseWid / sampleRate, calculated dynamically from input frequency and clock frequency
+
     // connect in and outs
-    osc.io.increment := io.increment
-    io.sample := osc.io.sample
+    osc.io.increment := Mux(validPitch, increment, 0.U)
+    io.sample := Mux(validPitch, osc.io.sample, 0.S) 
+    io.valid:= validPitch
 }
 
 
 
 
 class PWMGenerator( // renamed to generator bc it uses the oscillator to generate a PWM signal
-    freq: Int = 440,
-    clock_speed: Int = 100_000_000,
-    amp: Int = 127, // default to max for 8bit signed
     sampleWid: Int = 8, // default to 8 bit
-    voice: OscillatorType = OscillatorType.Square // default to square wave
+    numVoices: Int = 1 // default to 1 voice
 ) extends Module {
+  require(sampleWid > 1, "Sample width must be >1") // number of bits
+  require(numVoices > 0, "Number of voices must be >0") //
 
   val io = IO(new Bundle {
+    val samples = Input(Vec(numVoices, SInt(sampleWid.W))) // input samples from oscillators, signed
     val PWM_en =Input(Bool())
-    // val frequencyHz = Input(UInt(32.W)) // for dynamic frequency control
     val PWM_out = Output(Bool())
   })
 
-  // calc increment for osc
-  // width derived from freq so the increment always has enough precision bits
-  val phaseWid = OscConfig.calcPhaseWid(freq, clock_speed)
-  val increment = OscConfig.calcIncrement(freq, clock_speed, phaseWid).U(phaseWid.W)
 
-  // instantiate the oscillator
-  val osc = Module(new Oscillator(voice, amp, sampleWid, phaseWid))
-  // connect io
-  osc.io.increment := increment
   // convert signed sample to unsigned PWM threshold
-  val sample = osc.io.sample
-  val pwmThres =sample.asUInt ^ (BigInt(1) << (sampleWid - 1)).U(sampleWid.W) // convert signed to unsigned by adding 2^(sampleWid-1) to shift range from [-amp, amp] to [0, 2*amp]
+  val sumSamples = io.samples.reduceTree(_+&_) // sum all voices with carry to avoid arithmetic overflow
+  val finalSample=Wire(SInt(sampleWid.W))
+  finalSample:=sumSamples/numVoices.S // normalize
+  
+  val pwmThres =finalSample.asUInt ^ (BigInt(1) << (sampleWid - 1)).U(sampleWid.W) // convert signed to unsigned by adding 2^(sampleWid-1) to shift range from [-amp, amp] to [0, 2*amp]
   // XOR with sign bit (MSB) is equivalent but cheaper
 
   // carrier counter for PWM
@@ -282,11 +284,14 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   val pwmCounter = RegInit(0.U(sampleWid.W))
   pwmCounter := pwmCounter + 1.U
 
-  // NOTE AFTER CHANGING calcIncrement: Idk what this means or if still true
-  // yields carrier frequency of clock_speed / 2^sampleWid
-  // default is 100MHz / 256 = 391kHz
+  val duty=RegInit(0.U(sampleWid.W))
+
+  when(pwmCounter.andR) // keep duty cycle constant until counter wraps around
+  {
+    duty:=Mux(io.PWM_en, pwmThres, 0.U) // update duty cycle only if PWM_en is high
+  }
 
   // mux to enable/disable PWM output
   // output value 
-  io.PWM_out := io.PWM_en && (pwmCounter < pwmThres) // only outputs when PWM_en is high, otherwise output 0
+  io.PWM_out := io.PWM_en && (pwmCounter < duty) // only outputs when PWM_en is high, otherwise output 0
 }
