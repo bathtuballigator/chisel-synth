@@ -12,6 +12,18 @@ object MidiUtils {
     })
 }
 
+object DivideByConstant {
+  def apply(ioVal: UInt, constantVal: Int): UInt = {
+    require(constantVal > 0)  // we assume uint
+
+    if (isPow2(constantVal)) {
+      ioVal >> log2Ceil(constantVal)
+    } else {
+      val s = ioVal.ge
+    }
+  }
+}
+
 /** Made by opus 5.5
   * Finds the positions of the `n` lowest set bits of `in`, combinationally.
   *
