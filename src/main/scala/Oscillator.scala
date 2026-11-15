@@ -1,6 +1,5 @@
 import chisel3._
-import chisel3.util.log2Ceil
-import chisel3.util.Fill
+import chisel3.util._
 
 // // enumeration for oscillator types
 // object OscType extends ChiselEnum {
@@ -27,20 +26,23 @@ abstract class BaseOscillator(
     // neeeds to be signed
     val sample = Output(SInt(sampleWid.W)) // output sample, signed
   })
-    // require non-neg values
+  // require non-neg values
   require(
     amp >= 0,
     "Amplitude must not be negative"
   ) // I allowed zero amplitude, which will just output a constant 0
   require(sampleWid > 1, "Sample width must be >1") // number of bits
-  require(phaseWid > 2, "Phase width must be >2") // number of bits (needs to be >2 for triangle wave, which uses MSB and next MSB for direction)
+  require(
+    phaseWid > 2,
+    "Phase width must be >2"
+  ) // number of bits (needs to be >2 for triangle wave, which uses MSB and next MSB for direction)
   require(
     amp < (BigInt(1) << (sampleWid - 1)),
     "Amplitude must fit in signed sample width"
   ) // if sample width is 8 bits, max amplitude is 127, if sample width is 16 bits, max amplitude is 32767, etc.
 }
 
-class SquareOscillator (
+class SquareOscillator(
     amp: Int,
     sampleWid: Int,
     phaseWid: Int
@@ -75,7 +77,7 @@ object OscConfig // calculate increment of the square wave oscillator for given 
       "Frequency must be non-negative"
     ) // allow zero frequency, which will just output a constant value
     require(
-      BigInt(freq) *2 < BigInt(sampleRate),
+      BigInt(freq) * 2 < BigInt(sampleRate),
       "Frequency must be less than Nyquist frequency"
     ) // must be less than half the sample rate to avoid aliasing/acheive perfect fideltiy (Nyquist–Shannon sampling theorem)
     require(
@@ -103,8 +105,7 @@ object OscConfig // calculate increment of the square wave oscillator for given 
   }
 }
 
-
-class SawOscillator (
+class SawOscillator(
     amp: Int,
     sampleWid: Int,
     phaseWid: Int
@@ -139,7 +140,7 @@ class SawOscillator (
   io.sample := centered(sampleWid - 1, 0).asSInt
 }
 
-class TriangleOscillator (
+class TriangleOscillator(
     amp: Int,
     sampleWid: Int,
     phaseWid: Int
@@ -155,7 +156,7 @@ class TriangleOscillator (
   // XORing with MSB to flip direction for negative slope
   // then mult by 2*amp and divide by 2^(phaseWid-1) to scale to desired amplitude8
   // then subtract amp to center around 0
-    // io.sample := ((acc(phaseWid - 2, 0) ^ Fill(phaseWid - 1, acc(phaseWid - 1))) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
+  // io.sample := ((acc(phaseWid - 2, 0) ^ Fill(phaseWid - 1, acc(phaseWid - 1))) * (2 * amp).S(sampleWid.W)) / ((1 << (phaseWid - 1)) - 1).S(sampleWid.W) - amp.S(sampleWid.W)
   // exclude MSB for ramp values
   val ramp = acc(phaseWid - 2, 0)
 
@@ -181,7 +182,7 @@ class TriangleOscillator (
 
 }
 
-class SineOscillator (
+class SineOscillator(
     amp: Int,
     sampleWid: Int,
     phaseWid: Int
@@ -193,26 +194,32 @@ class SineOscillator (
   // sine tavle is 2^tableAddrWid entries, each entry is sampleWid bits
   // TODO: look at making table smaller by using symmetry and only storing 1/4 of the wave, then mirroring and inverting as needed
   // each entry is sampleWid bits
-    val tableAddrWid = math.min(phaseWid, 10) // separate from phaseWid, so that table can be smaller than phase accumulator
-    // max out at 10bit = 1024 entries
-    // otherwise deualt would be 2^16=65k
-    // changed to math.min so it is decided during elaboration instead of in hardware
-    require(phaseWid >= tableAddrWid)
-    val sineTable = VecInit(
-        (0 until (1 << tableAddrWid)).map { i =>
-            (Math.sin(2.0 * Math.PI * i / (1 << tableAddrWid)) * amp)
-              .toInt.S(sampleWid.W)
-        }
-    )
+  val tableAddrWid = math.min(
+    phaseWid,
+    10
+  ) // separate from phaseWid, so that table can be smaller than phase accumulator
+  // max out at 10bit = 1024 entries
+  // otherwise deualt would be 2^16=65k
+  // changed to math.min so it is decided during elaboration instead of in hardware
+  require(phaseWid >= tableAddrWid)
+  val sineTable = VecInit(
+    (0 until (1 << tableAddrWid)).map { i =>
+      (Math.sin(2.0 * Math.PI * i / (1 << tableAddrWid)) * amp).toInt
+        .S(sampleWid.W)
+    }
+  )
   // accumulator to index into sineTable
-    val acc = RegInit(0.U(phaseWid.W))
-    // increment
-    acc := acc + io.increment // overflow will wrap around
-    
-    val idx = acc(phaseWid - 1, phaseWid - tableAddrWid) // use MSBs of acc to index, since table is smaller than phase accumulator, so use MSBs to index into table
+  val acc = RegInit(0.U(phaseWid.W))
+  // increment
+  acc := acc + io.increment // overflow will wrap around
 
-    // output sample from sineTable
-    io.sample := sineTable(idx)
+  val idx = acc(
+    phaseWid - 1,
+    phaseWid - tableAddrWid
+  ) // use MSBs of acc to index, since table is smaller than phase accumulator, so use MSBs to index into table
+
+  // output sample from sineTable
+  io.sample := sineTable(idx)
 }
 
 // wrapper that picks type based on enum
@@ -221,7 +228,8 @@ class Oscillator(
     amp: Int, // the amplitude of the wave
     sampleWid: Int, // the number of bits in the output sample
     phaseWid: Int, // the number of bits in the phase accumulator
-    clkFreq: Int = 100_000_000 // clock freq in Hz to calculate increment for given frequency dynaically
+    clkFreq: Int =
+      100_000_000 // clock freq in Hz to calculate increment for given frequency dynaically
 ) extends Module {
   val io = IO(new Bundle {
     // // chisel hardware unsigned
@@ -229,30 +237,39 @@ class Oscillator(
     //   UInt(phaseWid.W)
     // ) // increment value for the phase accumulator, calculated from frequency and sample rate
     // // neeeds to be signed
-    val frequencyHz = Input(UInt(32.W)) // frequency of the wave in Hz, for dynamic frequency control
-    val valid= Output(Bool()) // valid output to deal with invalid frequency inputs (0Hz or > Nyquist)
+    val frequencyHz = Input(
+      UInt(32.W)
+    ) // frequency of the wave in Hz, for dynamic frequency control
+    val valid = Output(
+      Bool()
+    ) // valid output to deal with invalid frequency inputs (0Hz or > Nyquist)
     val sample = Output(SInt(sampleWid.W)) // output sample, signed
   })
 
   // instatiate correct osc type
-    val osc: BaseOscillator = oscType match {
-        case OscillatorType.Sine     => Module(new SineOscillator(amp, sampleWid, phaseWid))
-        case OscillatorType.Square   => Module(new SquareOscillator(amp, sampleWid, phaseWid))
-        case OscillatorType.Saw      => Module(new SawOscillator(amp, sampleWid, phaseWid))
-        case OscillatorType.Triangle => Module(new TriangleOscillator(amp, sampleWid, phaseWid))
-    }
+  val osc: BaseOscillator = oscType match {
+    case OscillatorType.Sine =>
+      Module(new SineOscillator(amp, sampleWid, phaseWid))
+    case OscillatorType.Square =>
+      Module(new SquareOscillator(amp, sampleWid, phaseWid))
+    case OscillatorType.Saw =>
+      Module(new SawOscillator(amp, sampleWid, phaseWid))
+    case OscillatorType.Triangle =>
+      Module(new TriangleOscillator(amp, sampleWid, phaseWid))
+  }
 
-    val validPitch = (io.frequencyHz > 0.U) && (io.frequencyHz <= ((clkFreq - 1) >> 1).U)
-    val increment =DivideByConstant(io.frequencyHz << phaseWid, clkFreq) // avoid div in hardware. instead, use const multiplier since clkFreq known at elab time
+  val validPitch =
+    (io.frequencyHz > 0.U) && (io.frequencyHz <= ((clkFreq - 1) >> 1).U)
+  val increment = DivideByConstant(
+    io.frequencyHz << phaseWid,
+    clkFreq
+  ) // avoid div in hardware. instead, use const multiplier since clkFreq known at elab time
 
-    // connect in and outs
-    osc.io.increment := Mux(validPitch, increment, 0.U)
-    io.sample := Mux(validPitch, osc.io.sample, 0.S) 
-    io.valid:= validPitch
+  // connect in and outs
+  osc.io.increment := Mux(validPitch, increment, 0.U)
+  io.sample := Mux(validPitch, osc.io.sample, 0.S)
+  io.valid := validPitch
 }
-
-
-
 
 class PWMGenerator( // renamed to generator bc it uses the oscillator to generate a PWM signal
     sampleWid: Int = 8, // default to 8 bit
@@ -262,12 +279,14 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   require(numVoices > 0, "Number of voices must be >0") //
 
   val io = IO(new Bundle {
-    val samples = Input(Vec(numVoices, SInt(sampleWid.W))) // input samples from oscillators, signed
-    val PWM_en =Input(Bool())
+    val samples = Input(
+      Vec(numVoices, SInt(sampleWid.W))
+    ) // input samples from oscillators, signed
+    val PWM_en = Input(Bool())
     val PWM_out = Output(Bool())
   })
 
-  val voiceSamples =RegNext(io.samples) // register input samples for better timing
+ val voiceSamples = RegNext(io.samples)
   // convert signed sample to unsigned PWM threshold
   val sumSamples = RegNext(voiceSamples.reduceTree(_+&_)) // sum all voices with carry to avoid arithmetic overflow
   val finalSample=Wire(SInt(sampleWid.W))
@@ -285,14 +304,18 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   val pwmCounter = RegInit(0.U(sampleWid.W))
   pwmCounter := pwmCounter + 1.U
 
-  val duty=RegInit(0.U(sampleWid.W))
+  val duty = RegInit(0.U(sampleWid.W))
 
   when(pwmCounter.andR) // keep duty cycle constant until counter wraps around
   {
-    duty:=Mux(io.PWM_en, pwmThres, 0.U) // update duty cycle only if PWM_en is high
+    duty := Mux(
+      io.PWM_en,
+      pwmThres,
+      0.U
+    ) // update duty cycle only if PWM_en is high
   }
 
   // mux to enable/disable PWM output
-  // output value 
+  // output value
   io.PWM_out := io.PWM_en && (pwmCounter < duty) // only outputs when PWM_en is high, otherwise output 0
 }
