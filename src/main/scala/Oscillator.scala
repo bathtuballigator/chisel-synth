@@ -126,15 +126,13 @@ class SawOscillator(
   // make sure calculated width is enough to hold the intermediate values
   val calcWid = phaseWid + sampleWid + 2
   // pad ramp with zeros to calcWid
-  val rampWide = ramp.pad(calcWid)
+  // val rampWide = ramp.pad(calcWid)
   // scale to 2*amp and divide by 2^(phaseWid-1) to scale to desired amp
   // sepated out for clarity
-  val scale = (BigInt(2) * amp).U(calcWid.W)
-  val denominator = ((BigInt(1) << phaseWid) - 1)
-    .U(calcWid.W)
+  val scale = (BigInt(2) * amp).U
+  val denominator = (BigInt(1) << phaseWid) - 1
 
-  val scaled = (rampWide * scale) / denominator
-
+  val scaled = DivideByConstant(ramp * scale, denominator)
   // subtract amp to center around 0
   // zero extend amp to calcWid to match scaled width
   val centered = scaled.zext - amp.S(calcWid.W)
@@ -166,14 +164,13 @@ class TriangleOscillator(
   val calcWid = phaseWid + sampleWid + 2
   // XOR with MSB to flip direction for negative slope
   val flipped = ramp ^ Fill(phaseWid - 1, acc(phaseWid - 1))
-  val flippedPad =
-    flipped.pad(calcWid) // pad after flipping so the extra bits are not flipped
+  // val flippedPad = flipped.pad(calcWid) // pad after flipping so the extra bits are not flipped
   // scale to 2*amp and divide by 2^(phaseWid-1) to scale to desired amp
   // separated out for clarity
-  val scale = (BigInt(2) * amp).U(calcWid.W)
-  val denominator: Int = ((1 << (phaseWid - 1)) - 1)
+  val scale = (BigInt(2) * amp).U
+  val denominator = (BigInt(1) << (phaseWid - 1)) - 1
 
-  val scaled = DivideByConstant(flippedPad * scale, denominator)
+  val scaled = DivideByConstant(flipped * scale, denominator)
 
   // subtract amp to center around 0
   // zero extend amp to calcWid to match scaled width
@@ -295,7 +292,7 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   ) // sum all voices with carry to avoid arithmetic overflow
   val finalSample = Wire(SInt(sampleWid.W))
   finalSample := Cat(
-    sumSamples(sumSamples.getWidth-1),
+    sumSamples(sumSamples.getWidth - 1),
     DivideByConstant(sumSamples(sumSamples.getWidth - 2, 0), numVoices)
   ).asSInt // normalize
 

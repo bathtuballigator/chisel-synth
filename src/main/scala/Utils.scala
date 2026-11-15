@@ -13,18 +13,18 @@ object MidiUtils {
 }
 
 object DivideByConstant {
-  def apply(ioVal: UInt, constantVal: Int): UInt = {
+  def apply(ioVal: UInt, constantVal: BigInt): UInt = {
     require(constantVal > 0)  // we assume uint
     val wid=ioVal.getWidth
 
-    if (BigInt(constantVal).bitLength>wid)
+    if (constantVal.bitLength>wid)
     {
       0.U
     } else
     {
-      val zeroLSBs=Integer.numberOfTrailingZeros(constantVal) // check number of trailing zeros in const
+      val zeroLSBs=constantVal.bigInteger.getLowestSetBit// check number of trailing zeros in const
       val num=ioVal >> zeroLSBs // divide by 2^zeroLSBs
-      val denom=BigInt(constantVal) >> zeroLSBs // divide by 2^zeroLSBs
+      val denom=constantVal >> zeroLSBs // divide by 2^zeroLSBs
 
       if (denom==1) // denom was a power of 2
       {
