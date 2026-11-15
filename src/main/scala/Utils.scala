@@ -15,11 +15,33 @@ object MidiUtils {
 object DivideByConstant {
   def apply(ioVal: UInt, constantVal: Int): UInt = {
     require(constantVal > 0)  // we assume uint
+    val wid=ioVal.getWidth
 
-    if (isPow2(constantVal)) {
-      ioVal >> log2Ceil(constantVal)
-    } else {
-      val s = ioVal.ge
+    if (BigInt(constantVal).bitLength>wid)
+    {
+      0.U
+    } else
+    {
+      val zeroLSBs=Integer.numberOfTrailingZeros(constantVal) // check number of trailing zeros in const
+      val num=ioVal >> zeroLSBs // divide by 2^zeroLSBs
+      val denom=BigInt(constantVal) >> zeroLSBs // divide by 2^zeroLSBs
+
+      if (denom==1) // denom was a power of 2
+      {
+        num 
+      } else 
+      {
+        // for non-powerof2, use constant multiplier to avoid division
+        val shiftAmt=num.getWidth+denom.bitLength
+        val powerTwo=(BigInt(1)<<shiftAmt) // 2^shiftAmt
+        val multDenom=powerTwo+denom-1 // round up to nearest multiple of denominator
+        val constMult=multDenom/denom // determin constant multiplier
+
+        val res=constMult.U*num // multiply numerator by constant multiplier
+        res >> shiftAmt // divide by 2^shiftAmt
+      }
+
+
     }
   }
 }

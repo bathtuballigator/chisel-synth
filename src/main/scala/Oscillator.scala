@@ -246,7 +246,7 @@ class Oscillator(
     }
 
     val validPitch = (io.frequencyHz > 0.U) && (io.frequencyHz <= ((clkFreq - 1) >> 1).U)
-    val increment = (io.frequencyHz <<phaseWid) / clkFreq.U // increment = freq * 2^phaseWid / sampleRate, calculated dynamically from input frequency and clock frequency
+    val increment =DivideByConstant(io.frequencyHz << phaseWid, clkFreq) // avoid div in hardware. instead, use const multiplier since clkFreq known at elab time
 
     // connect in and outs
     osc.io.increment := Mux(validPitch, increment, 0.U)
