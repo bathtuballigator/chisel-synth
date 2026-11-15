@@ -271,7 +271,11 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
   // convert signed sample to unsigned PWM threshold
   val sumSamples = RegNext(voiceSamples.reduceTree(_+&_)) // sum all voices with carry to avoid arithmetic overflow
   val finalSample=Wire(SInt(sampleWid.W))
-  finalSample:=sumSamples/numVoices.S // normalize
+
+  val sign=sumSamples(sampleWid-1) // get sign bit
+  val mag=Mux(sign, -sumSamples, sumSamples).asUInt // get magnitude of sumSamples
+  val quotient=DivideByConstant(mag,BigInt(numVoices)).zext // divide by number of voices to normalize
+  finalSample:=Mux(sign, -quotient, quotient) // restore sign to normalized value
   
   val pwmThres =finalSample.asUInt ^ (BigInt(1) << (sampleWid - 1)).U(sampleWid.W) // convert signed to unsigned by adding 2^(sampleWid-1) to shift range from [-amp, amp] to [0, 2*amp]
   // XOR with sign bit (MSB) is equivalent but cheaper
