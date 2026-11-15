@@ -267,9 +267,9 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
     val PWM_out = Output(Bool())
   })
 
-
+  val voiceSamples =RegNext(io.samples) // register input samples for better timing
   // convert signed sample to unsigned PWM threshold
-  val sumSamples = RegNext(io.samples.reduceTree(_+&_)) // sum all voices with carry to avoid arithmetic overflow
+  val sumSamples = RegNext(voiceSamples.reduceTree(_+&_)) // sum all voices with carry to avoid arithmetic overflow
   val finalSample=Wire(SInt(sampleWid.W))
   finalSample:=sumSamples/numVoices.S // normalize
   
