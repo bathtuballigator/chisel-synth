@@ -65,7 +65,8 @@ class SynthTop(
   val midiLookupTable = MidiUtils.midiLookupTable(width = 32)
 
   // The first `voiceCount` held notes (lowest note first). heldNotes(k) is a midi note number.
-  val (heldNotes, heldValid) = FirstNSetBits(midi.io.held, voiceCount)
+  val firstNSetBits = Module(new FirstNSetBits(n=voiceCount))
+  firstNSetBits.io.in.enq(midi.held)
 
   for ((waveform, bank) <- Env.voiceList.zipWithIndex) {
     for (i <- 0 until Env.amntFreqPerVoice) {
