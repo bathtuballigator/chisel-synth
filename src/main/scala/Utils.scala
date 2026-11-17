@@ -2,14 +2,25 @@ import chisel3._
 import chisel3.util._
 
 object MidiUtils {
+  def midiToFreqDouble(note: Int): // 440 Hz is midi note 69
+  Double = (440.0 * math.pow(2, (note - 69) / 12.0))
   def midiToFreq(note: Int): // 440 Hz is midi note 69
   Int = (440.0 * math.pow(2, (note - 69) / 12.0)).toInt
-  def freqToMidi(freq: Double): Int =
-    (69 + 12 * math.log(freq / 440.0) / math.log(2)).toInt
-  def midiLookupTable(width: Int = 32): Vec[UInt] =
-    VecInit((0 until 128).map { i =>
-      midiToFreq(i).U(width.W)
-    })
+  
+  /**
+    * Return the increment for the oscillator.
+    *
+    * @param phaseWid
+    * @param clkHz
+    * @return
+    */
+  def midiLookupTable(phaseWid: Int = 32, clkHz: Int = Nexys4.clockFrequency): Vec[UInt] = {
+    val incLut: Seq[BigInt] = (0 until 128).map { i =>
+      val hz = midiToFreqDouble(i)
+      BigInt(math.round(hz * math.pow(2, phaseWid) / clkHz))
+    }
+    VecInit(incLut.map(_.U(phaseWid.W)))
+  }
 }
 
 object DivideByConstant {

@@ -37,7 +37,12 @@ class SynthTop(
   )
   midi.io.rx := io.rx
 
-  io.heldBin := midi.io.data1
+  val heldBin = Reg(chiselTypeOf(midi.io.data1))
+  val held = Reg(chiselTypeOf(midi.io.held))
+  heldBin := midi.io.data1
+  held := midi.io.held
+
+  io.heldBin := heldBin
 
   val sampleWid = 8
   val voiceCount = Env.amntSynths
@@ -48,11 +53,12 @@ class SynthTop(
       numVoices = voiceCount
     )
   )
-  val midiToFreqLut = MidiUtils.midiLookupTable(width = 32)
+  val midiToFreqLut =
+    MidiUtils.midiLookupTable(phaseWid = 32, clkHz = clockFrequency)
 
   // Handler for calculating first n set bits of midi
   val firstNSetBits = Module(
-    new FirstNSetBits(n = Env.polyphonyCount, w = midi.io.held.getWidth)
+    new FirstNSetBits(n = Env.polyphonyCount, w = held.getWidth)
   )
 
   val synths: Seq[Seq[Synth]] = for {
@@ -89,7 +95,7 @@ class SynthTop(
   for ((midiVal, idx) <- nSetBits.idx.zipWithIndex) {
     val isIdxValid = nSetBits.valid(idx)
     for (synth <- synths(idx)) { // have all different voices play at once
-      synth.io.frequencyHz := Mux(
+      synth.io.increment := Mux(
         isIdxValid,
         midiToFreqLut(midiVal),
         0.U
@@ -99,7 +105,7 @@ class SynthTop(
 
   switch(state) {
     is(S.enqMidi) {
-      firstNSetBits.io.in.enq(midi.io.held)
+      firstNSetBits.io.in.enq(held)
       when(firstNSetBits.io.in.fire) {
         state := S.waitDeq
       }
@@ -112,7 +118,7 @@ class SynthTop(
     }
   }
 
-  pwm.io.PWM_en := midi.io.held.orR // enable pwm if any note is held
+  pwm.io.PWM_en := held.orR // enable pwm if any note is held
 
   io.out := pwm.io.PWM_out
 }

@@ -3,7 +3,7 @@ import chisel3.util.Cat
 import chisel3.util.log2Ceil
 
 class SynthIO(sampleWid: Int) extends Bundle {
-  val frequencyHz = Input(UInt(32.W)) // Frequency to play in Hz
+  val increment = Input(UInt(32.W)) // Frequency to play in Hz
   val sample=Output(SInt(sampleWid.W))
 }
 
@@ -26,6 +26,6 @@ class Synth(
       )
     )
     
-  osc.io.frequencyHz := io.frequencyHz
+  osc.io.increment := io.increment
   io.sample := osc.io.sample
 }
