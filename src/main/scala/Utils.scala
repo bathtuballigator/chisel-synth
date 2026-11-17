@@ -31,11 +31,11 @@ object DivideByConstant {
         num 
       } else 
       {
-        // for non-powerof2, use constant multiplier to avoid division
+        // for non-power of2, use constant multiplier to avoid division
         val shiftAmt=num.getWidth+denom.bitLength
         val powerTwo=(BigInt(1)<<shiftAmt) // 2^shiftAmt
         val multDenom=powerTwo+denom-1 // round up to nearest multiple of denominator
-        val constMult=multDenom/denom // determin constant multiplier
+        val constMult=multDenom/denom // determine constant multiplier
 
         val res=constMult.U*num // multiply numerator by constant multiplier
         res >> shiftAmt // divide by 2^shiftAmt

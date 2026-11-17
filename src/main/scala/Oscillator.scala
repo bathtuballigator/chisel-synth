@@ -23,7 +23,7 @@ abstract class BaseOscillator(
     val increment = Input(
       UInt(phaseWid.W)
     ) // increment value for the phase accumulator, calculated from frequency and sample rate
-    // neeeds to be signed
+    // needs to be signed
     val sample = Output(SInt(sampleWid.W)) // output sample, signed
   })
   // require non-neg values
@@ -79,7 +79,7 @@ object OscConfig // calculate increment of the square wave oscillator for given 
     require(
       BigInt(freq) * 2 < BigInt(sampleRate),
       "Frequency must be less than Nyquist frequency"
-    ) // must be less than half the sample rate to avoid aliasing/acheive perfect fideltiy (Nyquist–Shannon sampling theorem)
+    ) // must be less than half the sample rate to avoid aliasing/achieve perfect fidelity (Nyquist–Shannon sampling theorem)
     require(
       phaseWid > 0,
       "Phase width must be positive"
@@ -128,7 +128,7 @@ class SawOscillator(
   // pad ramp with zeros to calcWid
   // val rampWide = ramp.pad(calcWid)
   // scale to 2*amp and divide by 2^(phaseWid-1) to scale to desired amp
-  // sepated out for clarity
+  // separated out for clarity
   val scale = (BigInt(2) * amp).U
   val denominator = (BigInt(1) << phaseWid) - 1
 
@@ -191,7 +191,7 @@ class SineOscillator(
   // sine wave needs lookup table
   // needs to be generated at elaboration time
   // VecInit used instead
-  // sine tavle is 2^tableAddrWid entries, each entry is sampleWid bits
+  // sine table is 2^tableAddrWid entries, each entry is sampleWid bits
   // TODO: look at making table smaller by using symmetry and only storing 1/4 of the wave, then mirroring and inverting as needed
   // each entry is sampleWid bits
   val tableAddrWid = math.min(
@@ -199,7 +199,7 @@ class SineOscillator(
     10
   ) // separate from phaseWid, so that table can be smaller than phase accumulator
   // max out at 10bit = 1024 entries
-  // otherwise deualt would be 2^16=65k
+  // otherwise default would be 2^16=65k
   // changed to math.min so it is decided during elaboration instead of in hardware
   require(phaseWid >= tableAddrWid)
   val sineTable = VecInit(
@@ -229,7 +229,7 @@ class Oscillator(
     sampleWid: Int, // the number of bits in the output sample
     phaseWid: Int, // the number of bits in the phase accumulator
     clkFreq: Int =
-      100_000_000 // clock freq in Hz to calculate increment for given frequency dynaically
+      100_000_000 // clock freq in Hz to calculate increment for given frequency dynamically
 ) extends Module {
   val io = IO(new Bundle {
     // // chisel hardware unsigned
@@ -246,7 +246,7 @@ class Oscillator(
     val sample = Output(SInt(sampleWid.W)) // output sample, signed
   })
 
-  // instatiate correct osc type
+  // instantiate correct osc type
   val osc: BaseOscillator = oscType match {
     case OscillatorType.Sine =>
       Module(new SineOscillator(amp, sampleWid, phaseWid))
