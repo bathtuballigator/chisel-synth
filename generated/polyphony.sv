@@ -1079,95 +1079,329 @@ module MidiTop(	// \\src\\main\\scala\\MidiUart.scala:133:7
      held_0};	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21, :162:19
 endmodule
 
-module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:274:7
-  input        clock,	// \\src\\main\\scala\\Oscillator.scala:274:7
-               reset,	// \\src\\main\\scala\\Oscillator.scala:274:7
-  input  [7:0] io_samples_0,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_1,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_2,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_3,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_4,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_5,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_6,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_7,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_8,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_9,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_10,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_11,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_12,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_13,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_14,	// \\src\\main\\scala\\Oscillator.scala:281:14
-               io_samples_15,	// \\src\\main\\scala\\Oscillator.scala:281:14
-  input        io_PWM_en,	// \\src\\main\\scala\\Oscillator.scala:281:14
-  output       io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:281:14
+module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:269:7
+  input        clock,	// \\src\\main\\scala\\Oscillator.scala:269:7
+               reset,	// \\src\\main\\scala\\Oscillator.scala:269:7
+  input  [7:0] io_samples_0,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_1,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_2,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_3,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_4,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_5,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_6,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_7,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_8,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_9,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_10,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_11,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_12,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_13,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_14,	// \\src\\main\\scala\\Oscillator.scala:276:14
+               io_samples_15,	// \\src\\main\\scala\\Oscillator.scala:276:14
+  input        io_PWM_en,	// \\src\\main\\scala\\Oscillator.scala:276:14
+  output       io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:276:14
 );
 
-  reg [7:0] pwmCounter;	// \\src\\main\\scala\\Oscillator.scala:306:27
-  reg [7:0] duty;	// \\src\\main\\scala\\Oscillator.scala:309:21
-  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:274:7
-    if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:274:7
-      pwmCounter <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:306:27
-      duty <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:306:27, :309:21
+  reg [7:0]  voiceSamples_0;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_1;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_2;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_3;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_4;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_5;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_6;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_7;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_8;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_9;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_10;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_11;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_12;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_13;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_14;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [7:0]  voiceSamples_15;	// \\src\\main\\scala\\Oscillator.scala:284:28
+  reg [11:0] sumSamples;	// \\src\\main\\scala\\Oscillator.scala:287:23
+  reg [7:0]  pwmCounter;	// \\src\\main\\scala\\Oscillator.scala:301:27
+  reg [7:0]  duty;	// \\src\\main\\scala\\Oscillator.scala:304:21
+  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:269:7
+    automatic logic [8:0]  _sumSamples_T;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [8:0]  _sumSamples_T_1;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [8:0]  _sumSamples_T_2;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [8:0]  _sumSamples_T_3;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [8:0]  _sumSamples_T_4;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [8:0]  _sumSamples_T_5;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [8:0]  _sumSamples_T_6;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [8:0]  _sumSamples_T_7;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [9:0]  _sumSamples_T_8;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [9:0]  _sumSamples_T_9;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [9:0]  _sumSamples_T_10;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [9:0]  _sumSamples_T_11;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [10:0] _sumSamples_T_12;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    automatic logic [10:0] _sumSamples_T_13;	// \\src\\main\\scala\\Oscillator.scala:288:43
+    _sumSamples_T =
+      {voiceSamples_0[7], voiceSamples_0} + {voiceSamples_1[7], voiceSamples_1};	// \\src\\main\\scala\\Oscillator.scala:284:28, :288:43
+    _sumSamples_T_1 =
+      {voiceSamples_2[7], voiceSamples_2} + {voiceSamples_3[7], voiceSamples_3};	// \\src\\main\\scala\\Oscillator.scala:284:28, :288:43
+    _sumSamples_T_2 =
+      {voiceSamples_4[7], voiceSamples_4} + {voiceSamples_5[7], voiceSamples_5};	// \\src\\main\\scala\\Oscillator.scala:284:28, :288:43
+    _sumSamples_T_3 =
+      {voiceSamples_6[7], voiceSamples_6} + {voiceSamples_7[7], voiceSamples_7};	// \\src\\main\\scala\\Oscillator.scala:284:28, :288:43
+    _sumSamples_T_4 =
+      {voiceSamples_8[7], voiceSamples_8} + {voiceSamples_9[7], voiceSamples_9};	// \\src\\main\\scala\\Oscillator.scala:284:28, :288:43
+    _sumSamples_T_5 =
+      {voiceSamples_10[7], voiceSamples_10} + {voiceSamples_11[7], voiceSamples_11};	// \\src\\main\\scala\\Oscillator.scala:284:28, :288:43
+    _sumSamples_T_6 =
+      {voiceSamples_12[7], voiceSamples_12} + {voiceSamples_13[7], voiceSamples_13};	// \\src\\main\\scala\\Oscillator.scala:284:28, :288:43
+    _sumSamples_T_7 =
+      {voiceSamples_14[7], voiceSamples_14} + {voiceSamples_15[7], voiceSamples_15};	// \\src\\main\\scala\\Oscillator.scala:284:28, :288:43
+    _sumSamples_T_8 =
+      {_sumSamples_T[8], _sumSamples_T} + {_sumSamples_T_1[8], _sumSamples_T_1};	// \\src\\main\\scala\\Oscillator.scala:288:43
+    _sumSamples_T_9 =
+      {_sumSamples_T_2[8], _sumSamples_T_2} + {_sumSamples_T_3[8], _sumSamples_T_3};	// \\src\\main\\scala\\Oscillator.scala:288:43
+    _sumSamples_T_10 =
+      {_sumSamples_T_4[8], _sumSamples_T_4} + {_sumSamples_T_5[8], _sumSamples_T_5};	// \\src\\main\\scala\\Oscillator.scala:288:43
+    _sumSamples_T_11 =
+      {_sumSamples_T_6[8], _sumSamples_T_6} + {_sumSamples_T_7[8], _sumSamples_T_7};	// \\src\\main\\scala\\Oscillator.scala:288:43
+    _sumSamples_T_12 =
+      {_sumSamples_T_8[9], _sumSamples_T_8} + {_sumSamples_T_9[9], _sumSamples_T_9};	// \\src\\main\\scala\\Oscillator.scala:288:43
+    _sumSamples_T_13 =
+      {_sumSamples_T_10[9], _sumSamples_T_10} + {_sumSamples_T_11[9], _sumSamples_T_11};	// \\src\\main\\scala\\Oscillator.scala:288:43
+    voiceSamples_0 <= io_samples_0;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_1 <= io_samples_1;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_2 <= io_samples_2;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_3 <= io_samples_3;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_4 <= io_samples_4;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_5 <= io_samples_5;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_6 <= io_samples_6;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_7 <= io_samples_7;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_8 <= io_samples_8;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_9 <= io_samples_9;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_10 <= io_samples_10;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_11 <= io_samples_11;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_12 <= io_samples_12;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_13 <= io_samples_13;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_14 <= io_samples_14;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    voiceSamples_15 <= io_samples_15;	// \\src\\main\\scala\\Oscillator.scala:284:28
+    sumSamples <=
+      {_sumSamples_T_12[10], _sumSamples_T_12} + {_sumSamples_T_13[10], _sumSamples_T_13};	// \\src\\main\\scala\\Oscillator.scala:287:23, :288:43
+    if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:269:7
+      pwmCounter <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:301:27
+      duty <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:301:27, :304:21
     end
-    else begin	// \\src\\main\\scala\\Oscillator.scala:274:7
-      pwmCounter <= pwmCounter + 8'h1;	// \\src\\main\\scala\\Oscillator.scala:306:27, :307:28
-      if (&pwmCounter) begin	// \\src\\main\\scala\\Oscillator.scala:306:27, :311:19
-        automatic logic [8:0]  _sumSamples_T =
-          {io_samples_0[7], io_samples_0} + {io_samples_1[7], io_samples_1};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [8:0]  _sumSamples_T_1 =
-          {io_samples_2[7], io_samples_2} + {io_samples_3[7], io_samples_3};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [8:0]  _sumSamples_T_2 =
-          {io_samples_4[7], io_samples_4} + {io_samples_5[7], io_samples_5};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [8:0]  _sumSamples_T_3 =
-          {io_samples_6[7], io_samples_6} + {io_samples_7[7], io_samples_7};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [8:0]  _sumSamples_T_4 =
-          {io_samples_8[7], io_samples_8} + {io_samples_9[7], io_samples_9};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [8:0]  _sumSamples_T_5 =
-          {io_samples_10[7], io_samples_10} + {io_samples_11[7], io_samples_11};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [8:0]  _sumSamples_T_6 =
-          {io_samples_12[7], io_samples_12} + {io_samples_13[7], io_samples_13};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [8:0]  _sumSamples_T_7 =
-          {io_samples_14[7], io_samples_14} + {io_samples_15[7], io_samples_15};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [9:0]  _sumSamples_T_8 =
-          {_sumSamples_T[8], _sumSamples_T} + {_sumSamples_T_1[8], _sumSamples_T_1};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [9:0]  _sumSamples_T_9 =
-          {_sumSamples_T_2[8], _sumSamples_T_2} + {_sumSamples_T_3[8], _sumSamples_T_3};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [9:0]  _sumSamples_T_10 =
-          {_sumSamples_T_4[8], _sumSamples_T_4} + {_sumSamples_T_5[8], _sumSamples_T_5};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [9:0]  _sumSamples_T_11 =
-          {_sumSamples_T_6[8], _sumSamples_T_6} + {_sumSamples_T_7[8], _sumSamples_T_7};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [10:0] _sumSamples_T_12 =
-          {_sumSamples_T_8[9], _sumSamples_T_8} + {_sumSamples_T_9[9], _sumSamples_T_9};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [10:0] _sumSamples_T_13 =
-          {_sumSamples_T_10[9], _sumSamples_T_10}
-          + {_sumSamples_T_11[9], _sumSamples_T_11};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        automatic logic [11:0] sumSamples =
-          {_sumSamples_T_12[10], _sumSamples_T_12}
-          + {_sumSamples_T_13[10], _sumSamples_T_13};	// \\src\\main\\scala\\Oscillator.scala:291:7
-        duty <= io_PWM_en ? sumSamples[11:4] ^ 8'h80 : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:291:7, :294:21, :299:37, :306:27, :309:21, :313:16
+    else begin	// \\src\\main\\scala\\Oscillator.scala:269:7
+      pwmCounter <= pwmCounter + 8'h1;	// \\src\\main\\scala\\Oscillator.scala:301:27, :302:28
+      if (&pwmCounter) begin	// \\src\\main\\scala\\Oscillator.scala:301:27, :306:19
+        automatic logic        sign;	// \\src\\main\\scala\\Oscillator.scala:291:23
+        automatic logic [11:0] _mag_T;	// \\src\\main\\scala\\Oscillator.scala:291:23, :292:21
+        sign = $signed(sumSamples) < 12'sh0;	// \\src\\main\\scala\\Oscillator.scala:287:23, :291:23
+        _mag_T = 12'h0 - sumSamples;	// \\src\\main\\scala\\Oscillator.scala:287:23, :291:23, :292:21
+        duty <=
+          io_PWM_en
+            ? (sign ? 8'h0 - (sign ? _mag_T[11:4] : sumSamples[11:4]) : sumSamples[11:4])
+              ^ 8'h80
+            : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:287:23, :291:23, :292:{14,21}, :294:{19,26}, :296:36, :301:27, :304:21, :308:16
       end
     end
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:274:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:274:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:274:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:269:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:269:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:269:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\Oscillator.scala:274:7
-      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\Oscillator.scala:274:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:274:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:274:7
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:269:7
+      automatic logic [31:0] _RANDOM[0:4];	// \\src\\main\\scala\\Oscillator.scala:269:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:269:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:269:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:274:7
-        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:274:7
-        pwmCounter = _RANDOM[/*Zero width*/ 1'b0][7:0];	// \\src\\main\\scala\\Oscillator.scala:274:7, :306:27
-        duty = _RANDOM[/*Zero width*/ 1'b0][15:8];	// \\src\\main\\scala\\Oscillator.scala:274:7, :306:27, :309:21
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:269:7
+        for (logic [2:0] i = 3'h0; i < 3'h5; i += 3'h1) begin
+          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:269:7
+        end	// \\src\\main\\scala\\Oscillator.scala:269:7
+        voiceSamples_0 = _RANDOM[3'h0][7:0];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_1 = _RANDOM[3'h0][15:8];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_2 = _RANDOM[3'h0][23:16];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_3 = _RANDOM[3'h0][31:24];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_4 = _RANDOM[3'h1][7:0];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_5 = _RANDOM[3'h1][15:8];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_6 = _RANDOM[3'h1][23:16];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_7 = _RANDOM[3'h1][31:24];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_8 = _RANDOM[3'h2][7:0];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_9 = _RANDOM[3'h2][15:8];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_10 = _RANDOM[3'h2][23:16];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_11 = _RANDOM[3'h2][31:24];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_12 = _RANDOM[3'h3][7:0];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_13 = _RANDOM[3'h3][15:8];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_14 = _RANDOM[3'h3][23:16];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        voiceSamples_15 = _RANDOM[3'h3][31:24];	// \\src\\main\\scala\\Oscillator.scala:269:7, :284:28
+        sumSamples = _RANDOM[3'h4][11:0];	// \\src\\main\\scala\\Oscillator.scala:269:7, :287:23
+        pwmCounter = _RANDOM[3'h4][19:12];	// \\src\\main\\scala\\Oscillator.scala:269:7, :287:23, :301:27
+        duty = _RANDOM[3'h4][27:20];	// \\src\\main\\scala\\Oscillator.scala:269:7, :287:23, :304:21
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:274:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:274:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:269:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:269:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_PWM_out = io_PWM_en & pwmCounter < duty;	// \\src\\main\\scala\\Oscillator.scala:274:7, :306:27, :309:21, :322:{27,42}
+  assign io_PWM_out = io_PWM_en & pwmCounter < duty;	// \\src\\main\\scala\\Oscillator.scala:269:7, :301:27, :304:21, :317:{27,42}
+endmodule
+
+module FirstNSetBits(	// \\src\\main\\scala\\Utils.scala:53:7
+  input          clock,	// \\src\\main\\scala\\Utils.scala:53:7
+                 reset,	// \\src\\main\\scala\\Utils.scala:53:7
+  output         io_in_ready,	// \\src\\main\\scala\\Utils.scala:59:14
+  input          io_in_valid,	// \\src\\main\\scala\\Utils.scala:59:14
+  input  [127:0] io_in_bits,	// \\src\\main\\scala\\Utils.scala:59:14
+  input          io_out_ready,	// \\src\\main\\scala\\Utils.scala:59:14
+  output         io_out_valid,	// \\src\\main\\scala\\Utils.scala:59:14
+  output [6:0]   io_out_bits_idx_0,	// \\src\\main\\scala\\Utils.scala:59:14
+                 io_out_bits_idx_1,	// \\src\\main\\scala\\Utils.scala:59:14
+                 io_out_bits_idx_2,	// \\src\\main\\scala\\Utils.scala:59:14
+                 io_out_bits_idx_3,	// \\src\\main\\scala\\Utils.scala:59:14
+  output         io_out_bits_valid_0,	// \\src\\main\\scala\\Utils.scala:59:14
+                 io_out_bits_valid_1,	// \\src\\main\\scala\\Utils.scala:59:14
+                 io_out_bits_valid_2,	// \\src\\main\\scala\\Utils.scala:59:14
+                 io_out_bits_valid_3	// \\src\\main\\scala\\Utils.scala:59:14
+);
+
+  reg  [1:0]   state;	// \\src\\main\\scala\\Utils.scala:65:22
+  reg  [127:0] bits;	// \\src\\main\\scala\\Utils.scala:67:17
+  reg  [1:0]   cnt;	// \\src\\main\\scala\\Utils.scala:68:16
+  reg  [6:0]   idx_0;	// \\src\\main\\scala\\Utils.scala:69:16
+  reg  [6:0]   idx_1;	// \\src\\main\\scala\\Utils.scala:69:16
+  reg  [6:0]   idx_2;	// \\src\\main\\scala\\Utils.scala:69:16
+  reg  [6:0]   idx_3;	// \\src\\main\\scala\\Utils.scala:69:16
+  reg          vld_0;	// \\src\\main\\scala\\Utils.scala:70:20
+  reg          vld_1;	// \\src\\main\\scala\\Utils.scala:70:20
+  reg          vld_2;	// \\src\\main\\scala\\Utils.scala:70:20
+  reg          vld_3;	// \\src\\main\\scala\\Utils.scala:70:20
+  wire         io_out_valid_0 = state == 2'h2;	// \\src\\main\\scala\\Utils.scala:65:22, :90:25
+  always @(posedge clock) begin	// \\src\\main\\scala\\Utils.scala:53:7
+    automatic logic [127:0] _oh_T_1;	// \\src\\main\\scala\\Utils.scala:73:26
+    automatic logic [127:0] oh;	// \\src\\main\\scala\\Utils.scala:73:17
+    automatic logic         _GEN;	// src/main/scala/chisel3/util/Decoupled.scala:51:35
+    automatic logic         _GEN_0;	// \\src\\main\\scala\\Utils.scala:94:17
+    automatic logic [63:0]  idx_hi;	// \\src\\main\\scala\\Utils.scala:73:17, src/main/scala/chisel3/util/OneHot.scala:30:18
+    automatic logic [62:0]  _idx_T_1;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [30:0]  _idx_T_3;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [14:0]  _idx_T_5;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [6:0]   _idx_T_7;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [2:0]   _idx_T_9;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [6:0]   _idx_T_18;	// src/main/scala/chisel3/util/OneHot.scala:32:10
+    automatic logic         _GEN_1;	// \\src\\main\\scala\\Utils.scala:69:16, :94:17, :104:22, :105:18
+    automatic logic         _GEN_2;	// \\src\\main\\scala\\Utils.scala:69:16, :94:17, :104:22, :105:18
+    automatic logic         _GEN_3;	// \\src\\main\\scala\\Utils.scala:69:16, :94:17, :104:22, :105:18
+    automatic logic         _GEN_4;	// \\src\\main\\scala\\Utils.scala:69:16, :94:17, :104:22, :105:18
+    _oh_T_1 = ~bits + 128'h1;	// \\src\\main\\scala\\Utils.scala:67:17, :73:{20,26}
+    oh = bits & _oh_T_1;	// \\src\\main\\scala\\Utils.scala:67:17, :73:{17,26}
+    _GEN = ~(|state) & io_in_valid;	// \\src\\main\\scala\\Utils.scala:65:22, :89:24, src/main/scala/chisel3/util/Decoupled.scala:51:35
+    _GEN_0 = state == 2'h1;	// \\src\\main\\scala\\Utils.scala:65:22, :94:17, :105:18
+    idx_hi = bits[127:64] & _oh_T_1[127:64];	// \\src\\main\\scala\\Utils.scala:67:17, :73:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18
+    _idx_T_1 = idx_hi[63:1] | bits[63:1] & _oh_T_1[63:1];	// \\src\\main\\scala\\Utils.scala:67:17, :73:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_3 = _idx_T_1[62:32] | _idx_T_1[30:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_5 = _idx_T_3[30:16] | _idx_T_3[14:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_7 = _idx_T_5[14:8] | _idx_T_5[6:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_9 = _idx_T_7[6:4] | _idx_T_7[2:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_18 =
+      {|idx_hi,
+       |(_idx_T_1[62:31]),
+       |(_idx_T_3[30:15]),
+       |(_idx_T_5[14:7]),
+       |(_idx_T_7[6:3]),
+       |(_idx_T_9[2:1]),
+       _idx_T_9[2] | _idx_T_9[0]};	// \\src\\main\\scala\\Utils.scala:73:17, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:{10,14,28}
+    _GEN_1 = _GEN_0 & (|bits) & cnt == 2'h0;	// \\src\\main\\scala\\Utils.scala:67:17, :68:16, :69:16, :94:17, :104:{17,22}, :105:18
+    _GEN_2 = _GEN_0 & (|bits) & cnt == 2'h1;	// \\src\\main\\scala\\Utils.scala:67:17, :68:16, :69:16, :94:17, :104:{17,22}, :105:18
+    _GEN_3 = _GEN_0 & (|bits) & cnt == 2'h2;	// \\src\\main\\scala\\Utils.scala:67:17, :68:16, :69:16, :90:25, :94:17, :104:{17,22}, :105:18
+    _GEN_4 = _GEN_0 & (|bits) & (&cnt);	// \\src\\main\\scala\\Utils.scala:67:17, :68:16, :69:16, :94:17, :104:{17,22}, :105:18
+    if (reset) begin	// \\src\\main\\scala\\Utils.scala:53:7
+      state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:65:22, :105:18
+      vld_0 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:65:22, :70:20
+      vld_1 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:65:22, :70:20
+      vld_2 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:65:22, :70:20
+      vld_3 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:65:22, :70:20
+    end
+    else if (|state) begin	// \\src\\main\\scala\\Utils.scala:65:22, :89:24
+      if (_GEN_0) begin	// \\src\\main\\scala\\Utils.scala:94:17
+        if ((bits & ~oh) == 128'h0 | (&cnt))	// \\src\\main\\scala\\Utils.scala:67:17, :68:16, :73:{17,26}, :74:{19,21}, :105:18, :111:{18,22}
+          state <= 2'h2;	// \\src\\main\\scala\\Utils.scala:65:22, :90:25
+      end
+      else if (state == 2'h2 & io_out_ready & io_out_valid_0)	// \\src\\main\\scala\\Utils.scala:65:22, :90:25, :94:17, :114:{25,33}
+        state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:65:22, :105:18
+      vld_0 <= _GEN_1 | vld_0;	// \\src\\main\\scala\\Utils.scala:69:16, :70:20, :94:17, :104:22, :105:18, :106:18
+      vld_1 <= _GEN_2 | vld_1;	// \\src\\main\\scala\\Utils.scala:69:16, :70:20, :94:17, :104:22, :105:18, :106:18
+      vld_2 <= _GEN_3 | vld_2;	// \\src\\main\\scala\\Utils.scala:69:16, :70:20, :94:17, :104:22, :105:18, :106:18
+      vld_3 <= _GEN_4 | vld_3;	// \\src\\main\\scala\\Utils.scala:69:16, :70:20, :94:17, :104:22, :105:18, :106:18
+    end
+    else begin	// \\src\\main\\scala\\Utils.scala:89:24
+      if (_GEN)	// src/main/scala/chisel3/util/Decoupled.scala:51:35
+        state <= 2'h1;	// \\src\\main\\scala\\Utils.scala:65:22, :105:18
+      vld_0 <= ~_GEN & vld_0;	// \\src\\main\\scala\\Utils.scala:70:20, :96:24, :99:23, src/main/scala/chisel3/util/Decoupled.scala:51:35
+      vld_1 <= ~_GEN & vld_1;	// \\src\\main\\scala\\Utils.scala:70:20, :96:24, :99:23, src/main/scala/chisel3/util/Decoupled.scala:51:35
+      vld_2 <= ~_GEN & vld_2;	// \\src\\main\\scala\\Utils.scala:70:20, :96:24, :99:23, src/main/scala/chisel3/util/Decoupled.scala:51:35
+      vld_3 <= ~_GEN & vld_3;	// \\src\\main\\scala\\Utils.scala:70:20, :96:24, :99:23, src/main/scala/chisel3/util/Decoupled.scala:51:35
+    end
+    if (|state) begin	// \\src\\main\\scala\\Utils.scala:65:22, :89:24
+      automatic logic _GEN_5;	// \\src\\main\\scala\\Utils.scala:67:17, :94:17, :104:22, :107:14
+      _GEN_5 = _GEN_0 & (|bits);	// \\src\\main\\scala\\Utils.scala:67:17, :94:17, :104:{17,22}, :107:14
+      bits <= ({128{~_GEN_5}} | ~oh) & bits;	// \\src\\main\\scala\\Utils.scala:67:17, :73:17, :74:21, :94:17, :104:22, :107:14
+      if (_GEN_5)	// \\src\\main\\scala\\Utils.scala:67:17, :94:17, :104:22, :107:14
+        cnt <= cnt + 2'h1;	// \\src\\main\\scala\\Utils.scala:68:16, :105:18, :108:20
+    end
+    else if (_GEN) begin	// src/main/scala/chisel3/util/Decoupled.scala:51:35
+      bits <= io_in_bits;	// \\src\\main\\scala\\Utils.scala:67:17
+      cnt <= 2'h0;	// \\src\\main\\scala\\Utils.scala:68:16, :105:18
+    end
+    if ((|state) & _GEN_1)	// \\src\\main\\scala\\Utils.scala:65:22, :69:16, :89:24, :94:17, :104:22, :105:18
+      idx_0 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:69:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_2)	// \\src\\main\\scala\\Utils.scala:65:22, :69:16, :89:24, :94:17, :104:22, :105:18
+      idx_1 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:69:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_3)	// \\src\\main\\scala\\Utils.scala:65:22, :69:16, :89:24, :94:17, :104:22, :105:18
+      idx_2 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:69:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_4)	// \\src\\main\\scala\\Utils.scala:65:22, :69:16, :89:24, :94:17, :104:22, :105:18
+      idx_3 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:69:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Utils.scala:53:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:53:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:53:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Utils.scala:53:7
+      automatic logic [31:0] _RANDOM[0:5];	// \\src\\main\\scala\\Utils.scala:53:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:53:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:53:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Utils.scala:53:7
+        for (logic [2:0] i = 3'h0; i < 3'h6; i += 3'h1) begin
+          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\Utils.scala:53:7
+        end	// \\src\\main\\scala\\Utils.scala:53:7
+        state = _RANDOM[3'h0][1:0];	// \\src\\main\\scala\\Utils.scala:53:7, :65:22
+        bits =
+          {_RANDOM[3'h0][31:2],
+           _RANDOM[3'h1],
+           _RANDOM[3'h2],
+           _RANDOM[3'h3],
+           _RANDOM[3'h4][1:0]};	// \\src\\main\\scala\\Utils.scala:53:7, :65:22, :67:17
+        cnt = _RANDOM[3'h4][3:2];	// \\src\\main\\scala\\Utils.scala:53:7, :67:17, :68:16
+        idx_0 = _RANDOM[3'h4][10:4];	// \\src\\main\\scala\\Utils.scala:53:7, :67:17, :69:16
+        idx_1 = _RANDOM[3'h4][17:11];	// \\src\\main\\scala\\Utils.scala:53:7, :67:17, :69:16
+        idx_2 = _RANDOM[3'h4][24:18];	// \\src\\main\\scala\\Utils.scala:53:7, :67:17, :69:16
+        idx_3 = _RANDOM[3'h4][31:25];	// \\src\\main\\scala\\Utils.scala:53:7, :67:17, :69:16
+        vld_0 = _RANDOM[3'h5][0];	// \\src\\main\\scala\\Utils.scala:53:7, :70:20
+        vld_1 = _RANDOM[3'h5][1];	// \\src\\main\\scala\\Utils.scala:53:7, :70:20
+        vld_2 = _RANDOM[3'h5][2];	// \\src\\main\\scala\\Utils.scala:53:7, :70:20
+        vld_3 = _RANDOM[3'h5][3];	// \\src\\main\\scala\\Utils.scala:53:7, :70:20
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:53:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:53:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_in_ready = ~(|state);	// \\src\\main\\scala\\Utils.scala:53:7, :65:22, :89:24
+  assign io_out_valid = io_out_valid_0;	// \\src\\main\\scala\\Utils.scala:53:7, :90:25
+  assign io_out_bits_idx_0 = idx_0;	// \\src\\main\\scala\\Utils.scala:53:7, :69:16
+  assign io_out_bits_idx_1 = idx_1;	// \\src\\main\\scala\\Utils.scala:53:7, :69:16
+  assign io_out_bits_idx_2 = idx_2;	// \\src\\main\\scala\\Utils.scala:53:7, :69:16
+  assign io_out_bits_idx_3 = idx_3;	// \\src\\main\\scala\\Utils.scala:53:7, :69:16
+  assign io_out_bits_valid_0 = vld_0;	// \\src\\main\\scala\\Utils.scala:53:7, :70:20
+  assign io_out_bits_valid_1 = vld_1;	// \\src\\main\\scala\\Utils.scala:53:7, :70:20
+  assign io_out_bits_valid_2 = vld_2;	// \\src\\main\\scala\\Utils.scala:53:7, :70:20
+  assign io_out_bits_valid_3 = vld_3;	// \\src\\main\\scala\\Utils.scala:53:7, :70:20
 endmodule
 
 module SineOscillator(	// \\src\\main\\scala\\Oscillator.scala:185:7
@@ -2237,16 +2471,16 @@ module Oscillator(	// \\src\\main\\scala\\Oscillator.scala:226:7
   output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:234:14
 );
 
-  wire [7:0]   _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:252:13
-  wire         validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:262:{21,28,47}
-  wire [106:0] increment_res = {51'h0, io_frequencyHz, 24'h0} * 107'h15798EE2308C39E;	// \\src\\main\\scala\\Utils.scala:26:21, :40:28
-  SineOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:252:13
+  wire [7:0]   _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:247:13
+  wire         validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:257:{21,28,47}
+  wire [106:0] increment_res = {51'h0, io_frequencyHz, 24'h0} * 107'h15798EE2308C39E;	// \\src\\main\\scala\\Utils.scala:26:23, :40:31
+  SineOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:247:13
     .clock        (clock),
     .reset        (reset),
-    .io_increment (validPitch ? increment_res[106:75] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:262:28, :264:20, :269:26, \\src\\main\\scala\\Utils.scala:40:28, :41:13
+    .io_increment (validPitch ? increment_res[106:75] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:257:28, :259:20, :264:26, \\src\\main\\scala\\Utils.scala:40:31, :41:13
     .io_sample    (_osc_io_sample)
   );
-  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:226:7, :252:13, :262:28, :270:19
+  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:226:7, :247:13, :257:28, :265:19
 endmodule
 
 module Synth(	// \\src\\main\\scala\\Synth.scala:11:7
@@ -2299,33 +2533,33 @@ module SquareOscillator(	// \\src\\main\\scala\\Oscillator.scala:45:7
   assign io_sample = acc[31] ? 8'h81 : 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:45:7, :52:20, :60:19, :61:8
 endmodule
 
-module Oscillator_4(	// \\src\\main\\scala\\Oscillator.scala:226:7
+module Oscillator_1(	// \\src\\main\\scala\\Oscillator.scala:226:7
   input         clock,	// \\src\\main\\scala\\Oscillator.scala:226:7
                 reset,	// \\src\\main\\scala\\Oscillator.scala:226:7
   input  [31:0] io_frequencyHz,	// \\src\\main\\scala\\Oscillator.scala:234:14
   output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:234:14
 );
 
-  wire [7:0]   _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:254:13
-  wire         validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:262:{21,28,47}
-  wire [106:0] increment_res = {51'h0, io_frequencyHz, 24'h0} * 107'h15798EE2308C39E;	// \\src\\main\\scala\\Utils.scala:26:21, :40:28
-  SquareOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:254:13
+  wire [7:0]   _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:249:13
+  wire         validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:257:{21,28,47}
+  wire [106:0] increment_res = {51'h0, io_frequencyHz, 24'h0} * 107'h15798EE2308C39E;	// \\src\\main\\scala\\Utils.scala:26:23, :40:31
+  SquareOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:249:13
     .clock        (clock),
     .reset        (reset),
-    .io_increment (validPitch ? increment_res[106:75] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:262:28, :264:20, :269:26, \\src\\main\\scala\\Utils.scala:40:28, :41:13
+    .io_increment (validPitch ? increment_res[106:75] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:257:28, :259:20, :264:26, \\src\\main\\scala\\Utils.scala:40:31, :41:13
     .io_sample    (_osc_io_sample)
   );
-  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:226:7, :254:13, :262:28, :270:19
+  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:226:7, :249:13, :257:28, :265:19
 endmodule
 
-module Synth_4(	// \\src\\main\\scala\\Synth.scala:11:7
+module Synth_1(	// \\src\\main\\scala\\Synth.scala:11:7
   input         clock,	// \\src\\main\\scala\\Synth.scala:11:7
                 reset,	// \\src\\main\\scala\\Synth.scala:11:7
   input  [31:0] io_frequencyHz,	// \\src\\main\\scala\\Synth.scala:16:14
   output [7:0]  io_sample	// \\src\\main\\scala\\Synth.scala:16:14
 );
 
-  Oscillator_4 osc (	// \\src\\main\\scala\\Synth.scala:19:11
+  Oscillator_1 osc (	// \\src\\main\\scala\\Synth.scala:19:11
     .clock          (clock),
     .reset          (reset),
     .io_frequencyHz (io_frequencyHz),
@@ -2341,7 +2575,7 @@ module SawOscillator(	// \\src\\main\\scala\\Oscillator.scala:108:7
 );
 
   reg  [31:0] acc;	// \\src\\main\\scala\\Oscillator.scala:114:20
-  wire [79:0] scaled_res = {40'h0, {8'h0, acc} * 40'hFE} * 80'h10000000101;	// \\src\\main\\scala\\Oscillator.scala:114:20, :135:38, \\src\\main\\scala\\Utils.scala:40:28
+  wire [79:0] scaled_res = {40'h0, {8'h0, acc} * 40'hFE} * 80'h10000000101;	// \\src\\main\\scala\\Oscillator.scala:114:20, :135:38, \\src\\main\\scala\\Utils.scala:40:31
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:108:7
     if (reset)	// \\src\\main\\scala\\Oscillator.scala:108:7
       acc <= 32'h0;	// \\src\\main\\scala\\Oscillator.scala:114:20
@@ -2366,36 +2600,36 @@ module SawOscillator(	// \\src\\main\\scala\\Oscillator.scala:108:7
       `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:108:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_sample = scaled_res[79:72] - 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:108:7, :138:30, \\src\\main\\scala\\Utils.scala:40:28
+  assign io_sample = scaled_res[79:72] - 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:108:7, :138:30, \\src\\main\\scala\\Utils.scala:40:31
 endmodule
 
-module Oscillator_8(	// \\src\\main\\scala\\Oscillator.scala:226:7
+module Oscillator_2(	// \\src\\main\\scala\\Oscillator.scala:226:7
   input         clock,	// \\src\\main\\scala\\Oscillator.scala:226:7
                 reset,	// \\src\\main\\scala\\Oscillator.scala:226:7
   input  [31:0] io_frequencyHz,	// \\src\\main\\scala\\Oscillator.scala:234:14
   output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:234:14
 );
 
-  wire [7:0]   _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:256:13
-  wire         validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:262:{21,28,47}
-  wire [106:0] increment_res = {51'h0, io_frequencyHz, 24'h0} * 107'h15798EE2308C39E;	// \\src\\main\\scala\\Utils.scala:26:21, :40:28
-  SawOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:256:13
+  wire [7:0]   _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:251:13
+  wire         validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:257:{21,28,47}
+  wire [106:0] increment_res = {51'h0, io_frequencyHz, 24'h0} * 107'h15798EE2308C39E;	// \\src\\main\\scala\\Utils.scala:26:23, :40:31
+  SawOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:251:13
     .clock        (clock),
     .reset        (reset),
-    .io_increment (validPitch ? increment_res[106:75] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:262:28, :264:20, :269:26, \\src\\main\\scala\\Utils.scala:40:28, :41:13
+    .io_increment (validPitch ? increment_res[106:75] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:257:28, :259:20, :264:26, \\src\\main\\scala\\Utils.scala:40:31, :41:13
     .io_sample    (_osc_io_sample)
   );
-  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:226:7, :256:13, :262:28, :270:19
+  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:226:7, :251:13, :257:28, :265:19
 endmodule
 
-module Synth_8(	// \\src\\main\\scala\\Synth.scala:11:7
+module Synth_2(	// \\src\\main\\scala\\Synth.scala:11:7
   input         clock,	// \\src\\main\\scala\\Synth.scala:11:7
                 reset,	// \\src\\main\\scala\\Synth.scala:11:7
   input  [31:0] io_frequencyHz,	// \\src\\main\\scala\\Synth.scala:16:14
   output [7:0]  io_sample	// \\src\\main\\scala\\Synth.scala:16:14
 );
 
-  Oscillator_8 osc (	// \\src\\main\\scala\\Synth.scala:19:11
+  Oscillator_2 osc (	// \\src\\main\\scala\\Synth.scala:19:11
     .clock          (clock),
     .reset          (reset),
     .io_frequencyHz (io_frequencyHz),
@@ -2412,7 +2646,7 @@ module TriangleOscillator(	// \\src\\main\\scala\\Oscillator.scala:143:7
 
   reg  [31:0] acc;	// \\src\\main\\scala\\Oscillator.scala:150:20
   wire [77:0] scaled_res =
-    {39'h0, {8'h0, acc[30:0] ^ {31{acc[31]}}} * 39'hFE} * 78'h8000000101;	// \\src\\main\\scala\\Oscillator.scala:150:20, :161:17, :166:{22,28,46}, :173:41, \\src\\main\\scala\\Utils.scala:40:28
+    {39'h0, {8'h0, acc[30:0] ^ {31{acc[31]}}} * 39'hFE} * 78'h8000000101;	// \\src\\main\\scala\\Oscillator.scala:150:20, :161:17, :166:{22,28,46}, :173:41, \\src\\main\\scala\\Utils.scala:40:31
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:143:7
     if (reset)	// \\src\\main\\scala\\Oscillator.scala:143:7
       acc <= 32'h0;	// \\src\\main\\scala\\Oscillator.scala:150:20
@@ -2437,36 +2671,36 @@ module TriangleOscillator(	// \\src\\main\\scala\\Oscillator.scala:143:7
       `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:143:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_sample = scaled_res[77:70] - 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:143:7, :177:30, \\src\\main\\scala\\Utils.scala:40:28
+  assign io_sample = scaled_res[77:70] - 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:143:7, :177:30, \\src\\main\\scala\\Utils.scala:40:31
 endmodule
 
-module Oscillator_12(	// \\src\\main\\scala\\Oscillator.scala:226:7
+module Oscillator_3(	// \\src\\main\\scala\\Oscillator.scala:226:7
   input         clock,	// \\src\\main\\scala\\Oscillator.scala:226:7
                 reset,	// \\src\\main\\scala\\Oscillator.scala:226:7
   input  [31:0] io_frequencyHz,	// \\src\\main\\scala\\Oscillator.scala:234:14
   output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:234:14
 );
 
-  wire [7:0]   _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:258:13
-  wire         validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:262:{21,28,47}
-  wire [106:0] increment_res = {51'h0, io_frequencyHz, 24'h0} * 107'h15798EE2308C39E;	// \\src\\main\\scala\\Utils.scala:26:21, :40:28
-  TriangleOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:258:13
+  wire [7:0]   _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:253:13
+  wire         validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:257:{21,28,47}
+  wire [106:0] increment_res = {51'h0, io_frequencyHz, 24'h0} * 107'h15798EE2308C39E;	// \\src\\main\\scala\\Utils.scala:26:23, :40:31
+  TriangleOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:253:13
     .clock        (clock),
     .reset        (reset),
-    .io_increment (validPitch ? increment_res[106:75] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:262:28, :264:20, :269:26, \\src\\main\\scala\\Utils.scala:40:28, :41:13
+    .io_increment (validPitch ? increment_res[106:75] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:257:28, :259:20, :264:26, \\src\\main\\scala\\Utils.scala:40:31, :41:13
     .io_sample    (_osc_io_sample)
   );
-  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:226:7, :258:13, :262:28, :270:19
+  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:226:7, :253:13, :257:28, :265:19
 endmodule
 
-module Synth_12(	// \\src\\main\\scala\\Synth.scala:11:7
+module Synth_3(	// \\src\\main\\scala\\Synth.scala:11:7
   input         clock,	// \\src\\main\\scala\\Synth.scala:11:7
                 reset,	// \\src\\main\\scala\\Synth.scala:11:7
   input  [31:0] io_frequencyHz,	// \\src\\main\\scala\\Synth.scala:16:14
   output [7:0]  io_sample	// \\src\\main\\scala\\Synth.scala:16:14
 );
 
-  Oscillator_12 osc (	// \\src\\main\\scala\\Synth.scala:19:11
+  Oscillator_3 osc (	// \\src\\main\\scala\\Synth.scala:19:11
     .clock          (clock),
     .reset          (reset),
     .io_frequencyHz (io_frequencyHz),
@@ -2474,31 +2708,42 @@ module Synth_12(	// \\src\\main\\scala\\Synth.scala:11:7
   );
 endmodule
 
-module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:17:7
-  input        clock,	// \\src\\main\\scala\\SynthTop.scala:17:7
-               reset,	// \\src\\main\\scala\\SynthTop.scala:17:7
-  output       io_out,	// \\src\\main\\scala\\SynthTop.scala:20:14
-  input        io_rx,	// \\src\\main\\scala\\SynthTop.scala:20:14
-  output [6:0] io_heldBin	// \\src\\main\\scala\\SynthTop.scala:20:14
+module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:29:7
+  input        clock,	// \\src\\main\\scala\\SynthTop.scala:29:7
+               reset,	// \\src\\main\\scala\\SynthTop.scala:29:7
+  output       io_out,	// \\src\\main\\scala\\SynthTop.scala:32:14
+  input        io_rx,	// \\src\\main\\scala\\SynthTop.scala:32:14
+  output [6:0] io_heldBin	// \\src\\main\\scala\\SynthTop.scala:32:14
 );
 
-  wire [7:0]         _synth_15_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_14_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_13_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_12_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_11_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_10_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_9_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_8_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_7_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_6_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_5_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_4_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [7:0]         _synth_io_sample;	// \\src\\main\\scala\\SynthTop.scala:76:25
-  wire [127:0]       _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:22:20
+  reg                state;	// \\src\\main\\scala\\SynthTop.scala:81:22
+  wire [7:0]         _synths_3_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_3_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_3_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_3_0_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_2_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_2_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_2_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_2_0_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_1_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_1_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_1_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_1_0_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_0_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_0_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_0_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire [7:0]         _synths_0_0_io_sample;	// \\src\\main\\scala\\SynthTop.scala:66:25
+  wire               _firstNSetBits_io_in_ready;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire               _firstNSetBits_io_out_valid;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire [6:0]         _firstNSetBits_io_out_bits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire [6:0]         _firstNSetBits_io_out_bits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire [6:0]         _firstNSetBits_io_out_bits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire [6:0]         _firstNSetBits_io_out_bits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire               _firstNSetBits_io_out_bits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire               _firstNSetBits_io_out_bits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire               _firstNSetBits_io_out_bits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire               _firstNSetBits_io_out_bits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:54:29
+  wire [127:0]       _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:35:20
   wire [127:0][31:0] _GEN =
     '{32'h30FF,
       32'h2E3F,
@@ -2627,3009 +2872,223 @@ module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:17:7
       32'h9,
       32'h9,
       32'h8,
-      32'h8};	// \\src\\main\\scala\\SynthTop.scala:83:34
-  wire [1:0]         sum = {1'h0, _midi_io_held[0]} + {1'h0, _midi_io_held[1]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt = (&sum) ? 2'h2 : sum;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_1 = {6'h1, ~(_midi_io_held[2])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_1 = {1'h0, _midi_io_held[2]} + {1'h0, _midi_io_held[3]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_10 = cnt == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_2 = {1'h0, cnt} + {1'h0, (&sum_1) ? 2'h2 : sum_1};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_2 = sum_2 > 3'h4 ? 3'h4 : sum_2;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_3 = {1'h0, _midi_io_held[4]} + {1'h0, _midi_io_held[5]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_3 = (&sum_3) ? 2'h2 : sum_3;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_4 = {6'h3, ~(_midi_io_held[6])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_4 = {1'h0, _midi_io_held[6]} + {1'h0, _midi_io_held[7]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_5 = (|cnt_3) ? {6'h2, ~(_midi_io_held[4])} : idx_0_4;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_26 = cnt_3 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_1 =
-    cnt_3[1]
-      ? 7'h5
-      : (cnt_3 == 2'h0 ? 7'h7 : 7'h0) | (_idx_fromRight_T_26 ? idx_0_4 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_1 =
-    (_idx_fromRight_T_26 ? 7'h7 : 7'h0) | (cnt_3 == 2'h2 ? idx_0_4 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_5 = {1'h0, cnt_3} + {1'h0, (&sum_4) ? 2'h2 : sum_4};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_46 = cnt_2 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_57 = cnt_2 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_68 = cnt_2 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_76 = cnt_2 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_81 = cnt_2 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [3:0]         sum_6 = {1'h0, cnt_2} + {1'h0, sum_5 > 3'h4 ? 3'h4 : sum_5};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [3:0]         cnt_6 = sum_6 > 4'h8 ? 4'h8 : sum_6;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_7 = {1'h0, _midi_io_held[8]} + {1'h0, _midi_io_held[9]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_7 = (&sum_7) ? 2'h2 : sum_7;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_8 = {6'h5, ~(_midi_io_held[10])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_8 = {1'h0, _midi_io_held[10]} + {1'h0, _midi_io_held[11]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_92 = cnt_7 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_9 = {1'h0, cnt_7} + {1'h0, (&sum_8) ? 2'h2 : sum_8};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_9 = sum_9 > 3'h4 ? 3'h4 : sum_9;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_10 = {1'h0, _midi_io_held[12]} + {1'h0, _midi_io_held[13]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_10 = (&sum_10) ? 2'h2 : sum_10;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_11 = {6'h7, ~(_midi_io_held[14])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_11 = {1'h0, _midi_io_held[14]} + {1'h0, _midi_io_held[15]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_12 = (|cnt_10) ? {6'h6, ~(_midi_io_held[12])} : idx_0_11;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_108 = cnt_10 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_4 =
-    cnt_10[1]
-      ? 7'hD
-      : (cnt_10 == 2'h0 ? 7'hF : 7'h0) | (_idx_fromRight_T_108 ? idx_0_11 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_4 =
-    (_idx_fromRight_T_108 ? 7'hF : 7'h0) | (cnt_10 == 2'h2 ? idx_0_11 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_12 = {1'h0, cnt_10} + {1'h0, (&sum_11) ? 2'h2 : sum_11};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_128 = cnt_9 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_13 =
-    (|cnt_9) ? ((|cnt_7) ? {6'h4, ~(_midi_io_held[8])} : idx_0_8) : idx_0_12;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_139 = cnt_9 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_5 =
-    (|(cnt_9[2:1]))
-      ? (cnt_7[1]
-           ? 7'h9
-           : (cnt_7 == 2'h0 ? 7'hB : 7'h0) | (_idx_fromRight_T_92 ? idx_0_8 : 7'h0))
-      : (_idx_fromRight_T_128 ? idx_1_4 : 7'h0)
-        | (_idx_fromRight_T_139 ? idx_0_12 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_150 = cnt_9 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_5 =
-    cnt_9 > 3'h2
-      ? (_idx_fromRight_T_92 ? 7'hB : 7'h0) | (cnt_7 == 2'h2 ? idx_0_8 : 7'h0)
-      : (_idx_fromRight_T_128 ? idx_2_4 : 7'h0) | (_idx_fromRight_T_139 ? idx_1_4 : 7'h0)
-        | (_idx_fromRight_T_150 ? idx_0_12 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_158 = cnt_9 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_1 =
-    cnt_9[2]
-      ? 7'hB
-      : (_idx_fromRight_T_128 ? 7'hF : 7'h0) | (_idx_fromRight_T_139 ? idx_2_4 : 7'h0)
-        | (_idx_fromRight_T_150 ? idx_1_4 : 7'h0)
-        | (_idx_fromRight_T_158 ? idx_0_12 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_163 = cnt_9 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_4_1 =
-    (_idx_fromRight_T_139 ? 7'hF : 7'h0) | (_idx_fromRight_T_150 ? idx_2_4 : 7'h0)
-    | (_idx_fromRight_T_158 ? idx_1_4 : 7'h0) | (_idx_fromRight_T_163 ? idx_0_12 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_5_1 =
-    (_idx_fromRight_T_150 ? 7'hF : 7'h0) | (_idx_fromRight_T_158 ? idx_2_4 : 7'h0)
-    | (_idx_fromRight_T_163 ? idx_1_4 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_6_1 =
-    (_idx_fromRight_T_158 ? 7'hF : 7'h0) | (_idx_fromRight_T_163 ? idx_2_4 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [3:0]         sum_13 = {1'h0, cnt_9} + {1'h0, sum_12 > 3'h4 ? 3'h4 : sum_12};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_240 = cnt_6 == 4'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_263 = cnt_6 == 4'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_286 = cnt_6 == 4'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_306 = cnt_6 == 4'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_323 = cnt_6 == 4'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_337 = cnt_6 == 4'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_348 = cnt_6 == 4'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_356 = cnt_6 == 4'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_361 = cnt_6 == 4'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [4:0]         sum_14 = {1'h0, cnt_6} + {1'h0, sum_13 > 4'h8 ? 4'h8 : sum_13};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [4:0]         cnt_14 = sum_14 > 5'h10 ? 5'h10 : sum_14;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_15 = {1'h0, _midi_io_held[16]} + {1'h0, _midi_io_held[17]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_15 = (&sum_15) ? 2'h2 : sum_15;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_16 = {6'h9, ~(_midi_io_held[18])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_16 = {1'h0, _midi_io_held[18]} + {1'h0, _midi_io_held[19]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_372 = cnt_15 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_17 = {1'h0, cnt_15} + {1'h0, (&sum_16) ? 2'h2 : sum_16};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_17 = sum_17 > 3'h4 ? 3'h4 : sum_17;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_18 = {1'h0, _midi_io_held[20]} + {1'h0, _midi_io_held[21]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_18 = (&sum_18) ? 2'h2 : sum_18;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_19 = {6'hB, ~(_midi_io_held[22])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_19 = {1'h0, _midi_io_held[22]} + {1'h0, _midi_io_held[23]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_20 = (|cnt_18) ? {6'hA, ~(_midi_io_held[20])} : idx_0_19;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_388 = cnt_18 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_8 =
-    cnt_18[1]
-      ? 7'h15
-      : (cnt_18 == 2'h0 ? 7'h17 : 7'h0) | (_idx_fromRight_T_388 ? idx_0_19 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_8 =
-    (_idx_fromRight_T_388 ? 7'h17 : 7'h0) | (cnt_18 == 2'h2 ? idx_0_19 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_20 = {1'h0, cnt_18} + {1'h0, (&sum_19) ? 2'h2 : sum_19};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_408 = cnt_17 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_419 = cnt_17 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_430 = cnt_17 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_438 = cnt_17 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_443 = cnt_17 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [3:0]         sum_21 = {1'h0, cnt_17} + {1'h0, sum_20 > 3'h4 ? 3'h4 : sum_20};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [3:0]         cnt_21 = sum_21 > 4'h8 ? 4'h8 : sum_21;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_22 = {1'h0, _midi_io_held[24]} + {1'h0, _midi_io_held[25]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_22 = (&sum_22) ? 2'h2 : sum_22;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_23 = {6'hD, ~(_midi_io_held[26])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_23 = {1'h0, _midi_io_held[26]} + {1'h0, _midi_io_held[27]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_454 = cnt_22 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_24 = {1'h0, cnt_22} + {1'h0, (&sum_23) ? 2'h2 : sum_23};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_24 = sum_24 > 3'h4 ? 3'h4 : sum_24;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_25 = {1'h0, _midi_io_held[28]} + {1'h0, _midi_io_held[29]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_25 = (&sum_25) ? 2'h2 : sum_25;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_26 = {6'hF, ~(_midi_io_held[30])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_26 = {1'h0, _midi_io_held[30]} + {1'h0, _midi_io_held[31]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_27 = (|cnt_25) ? {6'hE, ~(_midi_io_held[28])} : idx_0_26;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_470 = cnt_25 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_11 =
-    cnt_25[1]
-      ? 7'h1D
-      : (cnt_25 == 2'h0 ? 7'h1F : 7'h0) | (_idx_fromRight_T_470 ? idx_0_26 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_11 =
-    (_idx_fromRight_T_470 ? 7'h1F : 7'h0) | (cnt_25 == 2'h2 ? idx_0_26 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_27 = {1'h0, cnt_25} + {1'h0, (&sum_26) ? 2'h2 : sum_26};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_490 = cnt_24 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_28 =
-    (|cnt_24) ? ((|cnt_22) ? {6'hC, ~(_midi_io_held[24])} : idx_0_23) : idx_0_27;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_501 = cnt_24 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_12 =
-    (|(cnt_24[2:1]))
-      ? (cnt_22[1]
-           ? 7'h19
-           : (cnt_22 == 2'h0 ? 7'h1B : 7'h0) | (_idx_fromRight_T_454 ? idx_0_23 : 7'h0))
-      : (_idx_fromRight_T_490 ? idx_1_11 : 7'h0)
-        | (_idx_fromRight_T_501 ? idx_0_27 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_512 = cnt_24 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_12 =
-    cnt_24 > 3'h2
-      ? (_idx_fromRight_T_454 ? 7'h1B : 7'h0) | (cnt_22 == 2'h2 ? idx_0_23 : 7'h0)
-      : (_idx_fromRight_T_490 ? idx_2_11 : 7'h0)
-        | (_idx_fromRight_T_501 ? idx_1_11 : 7'h0)
-        | (_idx_fromRight_T_512 ? idx_0_27 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_520 = cnt_24 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_4 =
-    cnt_24[2]
-      ? 7'h1B
-      : (_idx_fromRight_T_490 ? 7'h1F : 7'h0) | (_idx_fromRight_T_501 ? idx_2_11 : 7'h0)
-        | (_idx_fromRight_T_512 ? idx_1_11 : 7'h0)
-        | (_idx_fromRight_T_520 ? idx_0_27 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_525 = cnt_24 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_4_4 =
-    (_idx_fromRight_T_501 ? 7'h1F : 7'h0) | (_idx_fromRight_T_512 ? idx_2_11 : 7'h0)
-    | (_idx_fromRight_T_520 ? idx_1_11 : 7'h0) | (_idx_fromRight_T_525 ? idx_0_27 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_5_4 =
-    (_idx_fromRight_T_512 ? 7'h1F : 7'h0) | (_idx_fromRight_T_520 ? idx_2_11 : 7'h0)
-    | (_idx_fromRight_T_525 ? idx_1_11 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_6_4 =
-    (_idx_fromRight_T_520 ? 7'h1F : 7'h0) | (_idx_fromRight_T_525 ? idx_2_11 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [3:0]         sum_28 = {1'h0, cnt_24} + {1'h0, sum_27 > 3'h4 ? 3'h4 : sum_27};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_602 = cnt_21 == 4'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_29 =
-    (|cnt_21)
-      ? ((|cnt_17) ? ((|cnt_15) ? {6'h8, ~(_midi_io_held[16])} : idx_0_16) : idx_0_20)
-      : idx_0_28;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_625 = cnt_21 == 4'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_13 =
-    (|(cnt_21[3:1]))
-      ? ((|(cnt_17[2:1]))
-           ? (cnt_15[1]
-                ? 7'h11
-                : (cnt_15 == 2'h0 ? 7'h13 : 7'h0)
-                  | (_idx_fromRight_T_372 ? idx_0_16 : 7'h0))
-           : (_idx_fromRight_T_408 ? idx_1_8 : 7'h0)
-             | (_idx_fromRight_T_419 ? idx_0_20 : 7'h0))
-      : (_idx_fromRight_T_602 ? idx_1_12 : 7'h0)
-        | (_idx_fromRight_T_625 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_648 = cnt_21 == 4'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_13 =
-    cnt_21 > 4'h2
-      ? (cnt_17 > 3'h2
-           ? (_idx_fromRight_T_372 ? 7'h13 : 7'h0) | (cnt_15 == 2'h2 ? idx_0_16 : 7'h0)
-           : (_idx_fromRight_T_408 ? idx_2_8 : 7'h0)
-             | (_idx_fromRight_T_419 ? idx_1_8 : 7'h0)
-             | (_idx_fromRight_T_430 ? idx_0_20 : 7'h0))
-      : (_idx_fromRight_T_602 ? idx_2_12 : 7'h0)
-        | (_idx_fromRight_T_625 ? idx_1_12 : 7'h0)
-        | (_idx_fromRight_T_648 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_668 = cnt_21 == 4'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_5 =
-    (|(cnt_21[3:2]))
-      ? (cnt_17[2]
-           ? 7'h13
-           : (_idx_fromRight_T_408 ? 7'h17 : 7'h0)
-             | (_idx_fromRight_T_419 ? idx_2_8 : 7'h0)
-             | (_idx_fromRight_T_430 ? idx_1_8 : 7'h0)
-             | (_idx_fromRight_T_438 ? idx_0_20 : 7'h0))
-      : (_idx_fromRight_T_602 ? idx_3_4 : 7'h0) | (_idx_fromRight_T_625 ? idx_2_12 : 7'h0)
-        | (_idx_fromRight_T_648 ? idx_1_12 : 7'h0)
-        | (_idx_fromRight_T_668 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_685 = cnt_21 == 4'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_4_5 =
-    cnt_21 > 4'h4
-      ? (_idx_fromRight_T_419 ? 7'h17 : 7'h0) | (_idx_fromRight_T_430 ? idx_2_8 : 7'h0)
-        | (_idx_fromRight_T_438 ? idx_1_8 : 7'h0)
-        | (_idx_fromRight_T_443 ? idx_0_20 : 7'h0)
-      : (_idx_fromRight_T_602 ? idx_4_4 : 7'h0) | (_idx_fromRight_T_625 ? idx_3_4 : 7'h0)
-        | (_idx_fromRight_T_648 ? idx_2_12 : 7'h0)
-        | (_idx_fromRight_T_668 ? idx_1_12 : 7'h0)
-        | (_idx_fromRight_T_685 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_699 = cnt_21 == 4'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_5_5 =
-    cnt_21 > 4'h5
-      ? (_idx_fromRight_T_430 ? 7'h17 : 7'h0) | (_idx_fromRight_T_438 ? idx_2_8 : 7'h0)
-        | (_idx_fromRight_T_443 ? idx_1_8 : 7'h0)
-      : (_idx_fromRight_T_602 ? idx_5_4 : 7'h0) | (_idx_fromRight_T_625 ? idx_4_4 : 7'h0)
-        | (_idx_fromRight_T_648 ? idx_3_4 : 7'h0)
-        | (_idx_fromRight_T_668 ? idx_2_12 : 7'h0)
-        | (_idx_fromRight_T_685 ? idx_1_12 : 7'h0)
-        | (_idx_fromRight_T_699 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_710 = cnt_21 == 4'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_6_5 =
-    cnt_21 > 4'h6
-      ? (_idx_fromRight_T_438 ? 7'h17 : 7'h0) | (_idx_fromRight_T_443 ? idx_2_8 : 7'h0)
-      : (_idx_fromRight_T_602 ? idx_6_4 : 7'h0) | (_idx_fromRight_T_625 ? idx_5_4 : 7'h0)
-        | (_idx_fromRight_T_648 ? idx_4_4 : 7'h0)
-        | (_idx_fromRight_T_668 ? idx_3_4 : 7'h0)
-        | (_idx_fromRight_T_685 ? idx_2_12 : 7'h0)
-        | (_idx_fromRight_T_699 ? idx_1_12 : 7'h0)
-        | (_idx_fromRight_T_710 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_718 = cnt_21 == 4'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_7_1 =
-    cnt_21[3]
-      ? 7'h17
-      : (_idx_fromRight_T_602 ? 7'h1F : 7'h0) | (_idx_fromRight_T_625 ? idx_6_4 : 7'h0)
-        | (_idx_fromRight_T_648 ? idx_5_4 : 7'h0)
-        | (_idx_fromRight_T_668 ? idx_4_4 : 7'h0)
-        | (_idx_fromRight_T_685 ? idx_3_4 : 7'h0)
-        | (_idx_fromRight_T_699 ? idx_2_12 : 7'h0)
-        | (_idx_fromRight_T_710 ? idx_1_12 : 7'h0)
-        | (_idx_fromRight_T_718 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_723 = cnt_21 == 4'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_8_1 =
-    (_idx_fromRight_T_625 ? 7'h1F : 7'h0) | (_idx_fromRight_T_648 ? idx_6_4 : 7'h0)
-    | (_idx_fromRight_T_668 ? idx_5_4 : 7'h0) | (_idx_fromRight_T_685 ? idx_4_4 : 7'h0)
-    | (_idx_fromRight_T_699 ? idx_3_4 : 7'h0) | (_idx_fromRight_T_710 ? idx_2_12 : 7'h0)
-    | (_idx_fromRight_T_718 ? idx_1_12 : 7'h0) | (_idx_fromRight_T_723 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_9_1 =
-    (_idx_fromRight_T_648 ? 7'h1F : 7'h0) | (_idx_fromRight_T_668 ? idx_6_4 : 7'h0)
-    | (_idx_fromRight_T_685 ? idx_5_4 : 7'h0) | (_idx_fromRight_T_699 ? idx_4_4 : 7'h0)
-    | (_idx_fromRight_T_710 ? idx_3_4 : 7'h0) | (_idx_fromRight_T_718 ? idx_2_12 : 7'h0)
-    | (_idx_fromRight_T_723 ? idx_1_12 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_10_1 =
-    (_idx_fromRight_T_668 ? 7'h1F : 7'h0) | (_idx_fromRight_T_685 ? idx_6_4 : 7'h0)
-    | (_idx_fromRight_T_699 ? idx_5_4 : 7'h0) | (_idx_fromRight_T_710 ? idx_4_4 : 7'h0)
-    | (_idx_fromRight_T_718 ? idx_3_4 : 7'h0) | (_idx_fromRight_T_723 ? idx_2_12 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_11_1 =
-    (_idx_fromRight_T_685 ? 7'h1F : 7'h0) | (_idx_fromRight_T_699 ? idx_6_4 : 7'h0)
-    | (_idx_fromRight_T_710 ? idx_5_4 : 7'h0) | (_idx_fromRight_T_718 ? idx_4_4 : 7'h0)
-    | (_idx_fromRight_T_723 ? idx_3_4 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_12_1 =
-    (_idx_fromRight_T_699 ? 7'h1F : 7'h0) | (_idx_fromRight_T_710 ? idx_6_4 : 7'h0)
-    | (_idx_fromRight_T_718 ? idx_5_4 : 7'h0) | (_idx_fromRight_T_723 ? idx_4_4 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_13_1 =
-    (_idx_fromRight_T_710 ? 7'h1F : 7'h0) | (_idx_fromRight_T_718 ? idx_6_4 : 7'h0)
-    | (_idx_fromRight_T_723 ? idx_5_4 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_14_1 =
-    (_idx_fromRight_T_718 ? 7'h1F : 7'h0) | (_idx_fromRight_T_723 ? idx_6_4 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [4:0]         sum_29 = {1'h0, cnt_21} + {1'h0, sum_28 > 4'h8 ? 4'h8 : sum_28};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_1068 = cnt_14 == 5'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1069 = cnt_14 == 5'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1070 = cnt_14 == 5'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1071 = cnt_14 == 5'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1072 = cnt_14 == 5'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1073 = cnt_14 == 5'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1074 = cnt_14 == 5'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1075 = cnt_14 == 5'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1076 = cnt_14 == 5'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1077 = cnt_14 == 5'h9;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1078 = cnt_14 == 5'hA;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1079 = cnt_14 == 5'hB;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1080 = cnt_14 == 5'hC;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1081 = cnt_14 == 5'hD;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1082 = cnt_14 == 5'hE;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [5:0]         sum_30 = {1'h0, cnt_14} + {1'h0, sum_29 > 5'h10 ? 5'h10 : sum_29};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [4:0]         _cnt_T_61 = sum_30 > 6'h10 ? 5'h10 : sum_30[4:0];	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_31 = {1'h0, _midi_io_held[32]} + {1'h0, _midi_io_held[33]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_31 = (&sum_31) ? 2'h2 : sum_31;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_32 = {6'h11, ~(_midi_io_held[34])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_32 = {1'h0, _midi_io_held[34]} + {1'h0, _midi_io_held[35]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_1125 = cnt_31 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_33 = {1'h0, cnt_31} + {1'h0, (&sum_32) ? 2'h2 : sum_32};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_33 = sum_33 > 3'h4 ? 3'h4 : sum_33;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_34 = {1'h0, _midi_io_held[36]} + {1'h0, _midi_io_held[37]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_34 = (&sum_34) ? 2'h2 : sum_34;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_35 = {6'h13, ~(_midi_io_held[38])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_35 = {1'h0, _midi_io_held[38]} + {1'h0, _midi_io_held[39]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_36 = (|cnt_34) ? {6'h12, ~(_midi_io_held[36])} : idx_0_35;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_1141 = cnt_34 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_16 =
-    cnt_34[1]
-      ? 7'h25
-      : (cnt_34 == 2'h0 ? 7'h27 : 7'h0) | (_idx_fromRight_T_1141 ? idx_0_35 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_16 =
-    (_idx_fromRight_T_1141 ? 7'h27 : 7'h0) | (cnt_34 == 2'h2 ? idx_0_35 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_36 = {1'h0, cnt_34} + {1'h0, (&sum_35) ? 2'h2 : sum_35};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_1161 = cnt_33 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1172 = cnt_33 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1183 = cnt_33 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1191 = cnt_33 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1196 = cnt_33 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [3:0]         sum_37 = {1'h0, cnt_33} + {1'h0, sum_36 > 3'h4 ? 3'h4 : sum_36};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [3:0]         cnt_37 = sum_37 > 4'h8 ? 4'h8 : sum_37;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_38 = {1'h0, _midi_io_held[40]} + {1'h0, _midi_io_held[41]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_38 = (&sum_38) ? 2'h2 : sum_38;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_39 = {6'h15, ~(_midi_io_held[42])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_39 = {1'h0, _midi_io_held[42]} + {1'h0, _midi_io_held[43]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_1207 = cnt_38 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_40 = {1'h0, cnt_38} + {1'h0, (&sum_39) ? 2'h2 : sum_39};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_40 = sum_40 > 3'h4 ? 3'h4 : sum_40;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_41 = {1'h0, _midi_io_held[44]} + {1'h0, _midi_io_held[45]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_41 = (&sum_41) ? 2'h2 : sum_41;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_42 = {6'h17, ~(_midi_io_held[46])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_42 = {1'h0, _midi_io_held[46]} + {1'h0, _midi_io_held[47]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_43 = (|cnt_41) ? {6'h16, ~(_midi_io_held[44])} : idx_0_42;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_1223 = cnt_41 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_19 =
-    cnt_41[1]
-      ? 7'h2D
-      : (cnt_41 == 2'h0 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1223 ? idx_0_42 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_19 =
-    (_idx_fromRight_T_1223 ? 7'h2F : 7'h0) | (cnt_41 == 2'h2 ? idx_0_42 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_43 = {1'h0, cnt_41} + {1'h0, (&sum_42) ? 2'h2 : sum_42};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_1243 = cnt_40 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_44 =
-    (|cnt_40) ? ((|cnt_38) ? {6'h14, ~(_midi_io_held[40])} : idx_0_39) : idx_0_43;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_1254 = cnt_40 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_20 =
-    (|(cnt_40[2:1]))
-      ? (cnt_38[1]
-           ? 7'h29
-           : (cnt_38 == 2'h0 ? 7'h2B : 7'h0) | (_idx_fromRight_T_1207 ? idx_0_39 : 7'h0))
-      : (_idx_fromRight_T_1243 ? idx_1_19 : 7'h0)
-        | (_idx_fromRight_T_1254 ? idx_0_43 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1265 = cnt_40 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_20 =
-    cnt_40 > 3'h2
-      ? (_idx_fromRight_T_1207 ? 7'h2B : 7'h0) | (cnt_38 == 2'h2 ? idx_0_39 : 7'h0)
-      : (_idx_fromRight_T_1243 ? idx_2_19 : 7'h0)
-        | (_idx_fromRight_T_1254 ? idx_1_19 : 7'h0)
-        | (_idx_fromRight_T_1265 ? idx_0_43 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1273 = cnt_40 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_8 =
-    cnt_40[2]
-      ? 7'h2B
-      : (_idx_fromRight_T_1243 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1254 ? idx_2_19 : 7'h0)
-        | (_idx_fromRight_T_1265 ? idx_1_19 : 7'h0)
-        | (_idx_fromRight_T_1273 ? idx_0_43 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1278 = cnt_40 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_4_8 =
-    (_idx_fromRight_T_1254 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1265 ? idx_2_19 : 7'h0)
-    | (_idx_fromRight_T_1273 ? idx_1_19 : 7'h0)
-    | (_idx_fromRight_T_1278 ? idx_0_43 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_5_8 =
-    (_idx_fromRight_T_1265 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1273 ? idx_2_19 : 7'h0)
-    | (_idx_fromRight_T_1278 ? idx_1_19 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_6_8 =
-    (_idx_fromRight_T_1273 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1278 ? idx_2_19 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [3:0]         sum_44 = {1'h0, cnt_40} + {1'h0, sum_43 > 3'h4 ? 3'h4 : sum_43};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_1355 = cnt_37 == 4'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1378 = cnt_37 == 4'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1401 = cnt_37 == 4'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1421 = cnt_37 == 4'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1438 = cnt_37 == 4'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1452 = cnt_37 == 4'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1463 = cnt_37 == 4'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1471 = cnt_37 == 4'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1476 = cnt_37 == 4'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [4:0]         sum_45 = {1'h0, cnt_37} + {1'h0, sum_44 > 4'h8 ? 4'h8 : sum_44};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [4:0]         cnt_45 = sum_45 > 5'h10 ? 5'h10 : sum_45;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_46 = {1'h0, _midi_io_held[48]} + {1'h0, _midi_io_held[49]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_46 = (&sum_46) ? 2'h2 : sum_46;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_47 = {6'h19, ~(_midi_io_held[50])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_47 = {1'h0, _midi_io_held[50]} + {1'h0, _midi_io_held[51]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_1487 = cnt_46 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_48 = {1'h0, cnt_46} + {1'h0, (&sum_47) ? 2'h2 : sum_47};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_48 = sum_48 > 3'h4 ? 3'h4 : sum_48;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_49 = {1'h0, _midi_io_held[52]} + {1'h0, _midi_io_held[53]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_49 = (&sum_49) ? 2'h2 : sum_49;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_50 = {6'h1B, ~(_midi_io_held[54])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_50 = {1'h0, _midi_io_held[54]} + {1'h0, _midi_io_held[55]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_51 = (|cnt_49) ? {6'h1A, ~(_midi_io_held[52])} : idx_0_50;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_1503 = cnt_49 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_23 =
-    cnt_49[1]
-      ? 7'h35
-      : (cnt_49 == 2'h0 ? 7'h37 : 7'h0) | (_idx_fromRight_T_1503 ? idx_0_50 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_23 =
-    (_idx_fromRight_T_1503 ? 7'h37 : 7'h0) | (cnt_49 == 2'h2 ? idx_0_50 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_51 = {1'h0, cnt_49} + {1'h0, (&sum_50) ? 2'h2 : sum_50};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_1523 = cnt_48 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1534 = cnt_48 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1545 = cnt_48 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1553 = cnt_48 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_1558 = cnt_48 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [3:0]         sum_52 = {1'h0, cnt_48} + {1'h0, sum_51 > 3'h4 ? 3'h4 : sum_51};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [3:0]         cnt_52 = sum_52 > 4'h8 ? 4'h8 : sum_52;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_53 = {1'h0, _midi_io_held[56]} + {1'h0, _midi_io_held[57]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_53 = (&sum_53) ? 2'h2 : sum_53;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_54 = {6'h1D, ~(_midi_io_held[58])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_54 = {1'h0, _midi_io_held[58]} + {1'h0, _midi_io_held[59]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_1569 = cnt_53 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_55 = {1'h0, cnt_53} + {1'h0, (&sum_54) ? 2'h2 : sum_54};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_55 = sum_55 > 3'h4 ? 3'h4 : sum_55;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_56 = {1'h0, _midi_io_held[60]} + {1'h0, _midi_io_held[61]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_56 = (&sum_56) ? 2'h2 : sum_56;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_57 = {6'h1F, ~(_midi_io_held[62])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_57 = {1'h0, _midi_io_held[62]} + {1'h0, _midi_io_held[63]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_58 = (|cnt_56) ? {6'h1E, ~(_midi_io_held[60])} : idx_0_57;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_1585 = cnt_56 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_26 =
-    cnt_56[1]
-      ? 7'h3D
-      : (cnt_56 == 2'h0 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1585 ? idx_0_57 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_26 =
-    (_idx_fromRight_T_1585 ? 7'h3F : 7'h0) | (cnt_56 == 2'h2 ? idx_0_57 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_58 = {1'h0, cnt_56} + {1'h0, (&sum_57) ? 2'h2 : sum_57};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_1605 = cnt_55 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_59 =
-    (|cnt_55) ? ((|cnt_53) ? {6'h1C, ~(_midi_io_held[56])} : idx_0_54) : idx_0_58;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_1616 = cnt_55 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_27 =
-    (|(cnt_55[2:1]))
-      ? (cnt_53[1]
-           ? 7'h39
-           : (cnt_53 == 2'h0 ? 7'h3B : 7'h0) | (_idx_fromRight_T_1569 ? idx_0_54 : 7'h0))
-      : (_idx_fromRight_T_1605 ? idx_1_26 : 7'h0)
-        | (_idx_fromRight_T_1616 ? idx_0_58 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1627 = cnt_55 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_27 =
-    cnt_55 > 3'h2
-      ? (_idx_fromRight_T_1569 ? 7'h3B : 7'h0) | (cnt_53 == 2'h2 ? idx_0_54 : 7'h0)
-      : (_idx_fromRight_T_1605 ? idx_2_26 : 7'h0)
-        | (_idx_fromRight_T_1616 ? idx_1_26 : 7'h0)
-        | (_idx_fromRight_T_1627 ? idx_0_58 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1635 = cnt_55 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_11 =
-    cnt_55[2]
-      ? 7'h3B
-      : (_idx_fromRight_T_1605 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1616 ? idx_2_26 : 7'h0)
-        | (_idx_fromRight_T_1627 ? idx_1_26 : 7'h0)
-        | (_idx_fromRight_T_1635 ? idx_0_58 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1640 = cnt_55 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_4_11 =
-    (_idx_fromRight_T_1616 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1627 ? idx_2_26 : 7'h0)
-    | (_idx_fromRight_T_1635 ? idx_1_26 : 7'h0)
-    | (_idx_fromRight_T_1640 ? idx_0_58 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_5_11 =
-    (_idx_fromRight_T_1627 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1635 ? idx_2_26 : 7'h0)
-    | (_idx_fromRight_T_1640 ? idx_1_26 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_6_11 =
-    (_idx_fromRight_T_1635 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1640 ? idx_2_26 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [3:0]         sum_59 = {1'h0, cnt_55} + {1'h0, sum_58 > 3'h4 ? 3'h4 : sum_58};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_1717 = cnt_52 == 4'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_60 =
-    (|cnt_52)
-      ? ((|cnt_48) ? ((|cnt_46) ? {6'h18, ~(_midi_io_held[48])} : idx_0_47) : idx_0_51)
-      : idx_0_59;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_1740 = cnt_52 == 4'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_28 =
-    (|(cnt_52[3:1]))
-      ? ((|(cnt_48[2:1]))
-           ? (cnt_46[1]
-                ? 7'h31
-                : (cnt_46 == 2'h0 ? 7'h33 : 7'h0)
-                  | (_idx_fromRight_T_1487 ? idx_0_47 : 7'h0))
-           : (_idx_fromRight_T_1523 ? idx_1_23 : 7'h0)
-             | (_idx_fromRight_T_1534 ? idx_0_51 : 7'h0))
-      : (_idx_fromRight_T_1717 ? idx_1_27 : 7'h0)
-        | (_idx_fromRight_T_1740 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1763 = cnt_52 == 4'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_28 =
-    cnt_52 > 4'h2
-      ? (cnt_48 > 3'h2
-           ? (_idx_fromRight_T_1487 ? 7'h33 : 7'h0) | (cnt_46 == 2'h2 ? idx_0_47 : 7'h0)
-           : (_idx_fromRight_T_1523 ? idx_2_23 : 7'h0)
-             | (_idx_fromRight_T_1534 ? idx_1_23 : 7'h0)
-             | (_idx_fromRight_T_1545 ? idx_0_51 : 7'h0))
-      : (_idx_fromRight_T_1717 ? idx_2_27 : 7'h0)
-        | (_idx_fromRight_T_1740 ? idx_1_27 : 7'h0)
-        | (_idx_fromRight_T_1763 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1783 = cnt_52 == 4'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_12 =
-    (|(cnt_52[3:2]))
-      ? (cnt_48[2]
-           ? 7'h33
-           : (_idx_fromRight_T_1523 ? 7'h37 : 7'h0)
-             | (_idx_fromRight_T_1534 ? idx_2_23 : 7'h0)
-             | (_idx_fromRight_T_1545 ? idx_1_23 : 7'h0)
-             | (_idx_fromRight_T_1553 ? idx_0_51 : 7'h0))
-      : (_idx_fromRight_T_1717 ? idx_3_11 : 7'h0)
-        | (_idx_fromRight_T_1740 ? idx_2_27 : 7'h0)
-        | (_idx_fromRight_T_1763 ? idx_1_27 : 7'h0)
-        | (_idx_fromRight_T_1783 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1800 = cnt_52 == 4'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_4_12 =
-    cnt_52 > 4'h4
-      ? (_idx_fromRight_T_1534 ? 7'h37 : 7'h0) | (_idx_fromRight_T_1545 ? idx_2_23 : 7'h0)
-        | (_idx_fromRight_T_1553 ? idx_1_23 : 7'h0)
-        | (_idx_fromRight_T_1558 ? idx_0_51 : 7'h0)
-      : (_idx_fromRight_T_1717 ? idx_4_11 : 7'h0)
-        | (_idx_fromRight_T_1740 ? idx_3_11 : 7'h0)
-        | (_idx_fromRight_T_1763 ? idx_2_27 : 7'h0)
-        | (_idx_fromRight_T_1783 ? idx_1_27 : 7'h0)
-        | (_idx_fromRight_T_1800 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1814 = cnt_52 == 4'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_5_12 =
-    cnt_52 > 4'h5
-      ? (_idx_fromRight_T_1545 ? 7'h37 : 7'h0) | (_idx_fromRight_T_1553 ? idx_2_23 : 7'h0)
-        | (_idx_fromRight_T_1558 ? idx_1_23 : 7'h0)
-      : (_idx_fromRight_T_1717 ? idx_5_11 : 7'h0)
-        | (_idx_fromRight_T_1740 ? idx_4_11 : 7'h0)
-        | (_idx_fromRight_T_1763 ? idx_3_11 : 7'h0)
-        | (_idx_fromRight_T_1783 ? idx_2_27 : 7'h0)
-        | (_idx_fromRight_T_1800 ? idx_1_27 : 7'h0)
-        | (_idx_fromRight_T_1814 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1825 = cnt_52 == 4'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_6_12 =
-    cnt_52 > 4'h6
-      ? (_idx_fromRight_T_1553 ? 7'h37 : 7'h0) | (_idx_fromRight_T_1558 ? idx_2_23 : 7'h0)
-      : (_idx_fromRight_T_1717 ? idx_6_11 : 7'h0)
-        | (_idx_fromRight_T_1740 ? idx_5_11 : 7'h0)
-        | (_idx_fromRight_T_1763 ? idx_4_11 : 7'h0)
-        | (_idx_fromRight_T_1783 ? idx_3_11 : 7'h0)
-        | (_idx_fromRight_T_1800 ? idx_2_27 : 7'h0)
-        | (_idx_fromRight_T_1814 ? idx_1_27 : 7'h0)
-        | (_idx_fromRight_T_1825 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1833 = cnt_52 == 4'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_7_4 =
-    cnt_52[3]
-      ? 7'h37
-      : (_idx_fromRight_T_1717 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1740 ? idx_6_11 : 7'h0)
-        | (_idx_fromRight_T_1763 ? idx_5_11 : 7'h0)
-        | (_idx_fromRight_T_1783 ? idx_4_11 : 7'h0)
-        | (_idx_fromRight_T_1800 ? idx_3_11 : 7'h0)
-        | (_idx_fromRight_T_1814 ? idx_2_27 : 7'h0)
-        | (_idx_fromRight_T_1825 ? idx_1_27 : 7'h0)
-        | (_idx_fromRight_T_1833 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_1838 = cnt_52 == 4'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_8_4 =
-    (_idx_fromRight_T_1740 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1763 ? idx_6_11 : 7'h0)
-    | (_idx_fromRight_T_1783 ? idx_5_11 : 7'h0)
-    | (_idx_fromRight_T_1800 ? idx_4_11 : 7'h0)
-    | (_idx_fromRight_T_1814 ? idx_3_11 : 7'h0)
-    | (_idx_fromRight_T_1825 ? idx_2_27 : 7'h0)
-    | (_idx_fromRight_T_1833 ? idx_1_27 : 7'h0)
-    | (_idx_fromRight_T_1838 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_9_4 =
-    (_idx_fromRight_T_1763 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1783 ? idx_6_11 : 7'h0)
-    | (_idx_fromRight_T_1800 ? idx_5_11 : 7'h0)
-    | (_idx_fromRight_T_1814 ? idx_4_11 : 7'h0)
-    | (_idx_fromRight_T_1825 ? idx_3_11 : 7'h0)
-    | (_idx_fromRight_T_1833 ? idx_2_27 : 7'h0)
-    | (_idx_fromRight_T_1838 ? idx_1_27 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_10_4 =
-    (_idx_fromRight_T_1783 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1800 ? idx_6_11 : 7'h0)
-    | (_idx_fromRight_T_1814 ? idx_5_11 : 7'h0)
-    | (_idx_fromRight_T_1825 ? idx_4_11 : 7'h0)
-    | (_idx_fromRight_T_1833 ? idx_3_11 : 7'h0)
-    | (_idx_fromRight_T_1838 ? idx_2_27 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_11_4 =
-    (_idx_fromRight_T_1800 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1814 ? idx_6_11 : 7'h0)
-    | (_idx_fromRight_T_1825 ? idx_5_11 : 7'h0)
-    | (_idx_fromRight_T_1833 ? idx_4_11 : 7'h0)
-    | (_idx_fromRight_T_1838 ? idx_3_11 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_12_4 =
-    (_idx_fromRight_T_1814 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1825 ? idx_6_11 : 7'h0)
-    | (_idx_fromRight_T_1833 ? idx_5_11 : 7'h0)
-    | (_idx_fromRight_T_1838 ? idx_4_11 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_13_4 =
-    (_idx_fromRight_T_1825 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1833 ? idx_6_11 : 7'h0)
-    | (_idx_fromRight_T_1838 ? idx_5_11 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_14_4 =
-    (_idx_fromRight_T_1833 ? 7'h3F : 7'h0) | (_idx_fromRight_T_1838 ? idx_6_11 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [4:0]         sum_60 = {1'h0, cnt_52} + {1'h0, sum_59 > 4'h8 ? 4'h8 : sum_59};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_2183 = cnt_45 == 5'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_61 =
-    (|cnt_45)
-      ? ((|cnt_37)
-           ? ((|cnt_33)
-                ? ((|cnt_31) ? {6'h10, ~(_midi_io_held[32])} : idx_0_32)
-                : idx_0_36)
-           : idx_0_44)
-      : idx_0_60;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_2184 = cnt_45 == 5'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_29 =
-    (|(cnt_45[4:1]))
-      ? ((|(cnt_37[3:1]))
-           ? ((|(cnt_33[2:1]))
-                ? (cnt_31[1]
-                     ? 7'h21
-                     : (cnt_31 == 2'h0 ? 7'h23 : 7'h0)
-                       | (_idx_fromRight_T_1125 ? idx_0_32 : 7'h0))
-                : (_idx_fromRight_T_1161 ? idx_1_16 : 7'h0)
-                  | (_idx_fromRight_T_1172 ? idx_0_36 : 7'h0))
-           : (_idx_fromRight_T_1355 ? idx_1_20 : 7'h0)
-             | (_idx_fromRight_T_1378 ? idx_0_44 : 7'h0))
-      : (_idx_fromRight_T_2183 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2185 = cnt_45 == 5'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_29 =
-    cnt_45 > 5'h2
-      ? (cnt_37 > 4'h2
-           ? (cnt_33 > 3'h2
-                ? (_idx_fromRight_T_1125 ? 7'h23 : 7'h0)
-                  | (cnt_31 == 2'h2 ? idx_0_32 : 7'h0)
-                : (_idx_fromRight_T_1161 ? idx_2_16 : 7'h0)
-                  | (_idx_fromRight_T_1172 ? idx_1_16 : 7'h0)
-                  | (_idx_fromRight_T_1183 ? idx_0_36 : 7'h0))
-           : (_idx_fromRight_T_1355 ? idx_2_20 : 7'h0)
-             | (_idx_fromRight_T_1378 ? idx_1_20 : 7'h0)
-             | (_idx_fromRight_T_1401 ? idx_0_44 : 7'h0))
-      : (_idx_fromRight_T_2183 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2186 = cnt_45 == 5'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_13 =
-    (|(cnt_45[4:2]))
-      ? ((|(cnt_37[3:2]))
-           ? (cnt_33[2]
-                ? 7'h23
-                : (_idx_fromRight_T_1161 ? 7'h27 : 7'h0)
-                  | (_idx_fromRight_T_1172 ? idx_2_16 : 7'h0)
-                  | (_idx_fromRight_T_1183 ? idx_1_16 : 7'h0)
-                  | (_idx_fromRight_T_1191 ? idx_0_36 : 7'h0))
-           : (_idx_fromRight_T_1355 ? idx_3_8 : 7'h0)
-             | (_idx_fromRight_T_1378 ? idx_2_20 : 7'h0)
-             | (_idx_fromRight_T_1401 ? idx_1_20 : 7'h0)
-             | (_idx_fromRight_T_1421 ? idx_0_44 : 7'h0))
-      : (_idx_fromRight_T_2183 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2187 = cnt_45 == 5'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_4_13 =
-    cnt_45 > 5'h4
-      ? (cnt_37 > 4'h4
-           ? (_idx_fromRight_T_1172 ? 7'h27 : 7'h0)
-             | (_idx_fromRight_T_1183 ? idx_2_16 : 7'h0)
-             | (_idx_fromRight_T_1191 ? idx_1_16 : 7'h0)
-             | (_idx_fromRight_T_1196 ? idx_0_36 : 7'h0)
-           : (_idx_fromRight_T_1355 ? idx_4_8 : 7'h0)
-             | (_idx_fromRight_T_1378 ? idx_3_8 : 7'h0)
-             | (_idx_fromRight_T_1401 ? idx_2_20 : 7'h0)
-             | (_idx_fromRight_T_1421 ? idx_1_20 : 7'h0)
-             | (_idx_fromRight_T_1438 ? idx_0_44 : 7'h0))
-      : (_idx_fromRight_T_2183 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2188 = cnt_45 == 5'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_5_13 =
-    cnt_45 > 5'h5
-      ? (cnt_37 > 4'h5
-           ? (_idx_fromRight_T_1183 ? 7'h27 : 7'h0)
-             | (_idx_fromRight_T_1191 ? idx_2_16 : 7'h0)
-             | (_idx_fromRight_T_1196 ? idx_1_16 : 7'h0)
-           : (_idx_fromRight_T_1355 ? idx_5_8 : 7'h0)
-             | (_idx_fromRight_T_1378 ? idx_4_8 : 7'h0)
-             | (_idx_fromRight_T_1401 ? idx_3_8 : 7'h0)
-             | (_idx_fromRight_T_1421 ? idx_2_20 : 7'h0)
-             | (_idx_fromRight_T_1438 ? idx_1_20 : 7'h0)
-             | (_idx_fromRight_T_1452 ? idx_0_44 : 7'h0))
-      : (_idx_fromRight_T_2183 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2189 = cnt_45 == 5'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_6_13 =
-    cnt_45 > 5'h6
-      ? (cnt_37 > 4'h6
-           ? (_idx_fromRight_T_1191 ? 7'h27 : 7'h0)
-             | (_idx_fromRight_T_1196 ? idx_2_16 : 7'h0)
-           : (_idx_fromRight_T_1355 ? idx_6_8 : 7'h0)
-             | (_idx_fromRight_T_1378 ? idx_5_8 : 7'h0)
-             | (_idx_fromRight_T_1401 ? idx_4_8 : 7'h0)
-             | (_idx_fromRight_T_1421 ? idx_3_8 : 7'h0)
-             | (_idx_fromRight_T_1438 ? idx_2_20 : 7'h0)
-             | (_idx_fromRight_T_1452 ? idx_1_20 : 7'h0)
-             | (_idx_fromRight_T_1463 ? idx_0_44 : 7'h0))
-      : (_idx_fromRight_T_2183 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2190 = cnt_45 == 5'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_7_5 =
-    (|(cnt_45[4:3]))
-      ? (cnt_37[3]
-           ? 7'h27
-           : (_idx_fromRight_T_1355 ? 7'h2F : 7'h0)
-             | (_idx_fromRight_T_1378 ? idx_6_8 : 7'h0)
-             | (_idx_fromRight_T_1401 ? idx_5_8 : 7'h0)
-             | (_idx_fromRight_T_1421 ? idx_4_8 : 7'h0)
-             | (_idx_fromRight_T_1438 ? idx_3_8 : 7'h0)
-             | (_idx_fromRight_T_1452 ? idx_2_20 : 7'h0)
-             | (_idx_fromRight_T_1463 ? idx_1_20 : 7'h0)
-             | (_idx_fromRight_T_1471 ? idx_0_44 : 7'h0))
-      : (_idx_fromRight_T_2183 ? idx_7_4 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2190 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2191 = cnt_45 == 5'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_8_5 =
-    cnt_45 > 5'h8
-      ? (_idx_fromRight_T_1378 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1401 ? idx_6_8 : 7'h0)
-        | (_idx_fromRight_T_1421 ? idx_5_8 : 7'h0)
-        | (_idx_fromRight_T_1438 ? idx_4_8 : 7'h0)
-        | (_idx_fromRight_T_1452 ? idx_3_8 : 7'h0)
-        | (_idx_fromRight_T_1463 ? idx_2_20 : 7'h0)
-        | (_idx_fromRight_T_1471 ? idx_1_20 : 7'h0)
-        | (_idx_fromRight_T_1476 ? idx_0_44 : 7'h0)
-      : (_idx_fromRight_T_2183 ? idx_8_4 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_7_4 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2190 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2191 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2192 = cnt_45 == 5'h9;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_9_5 =
-    cnt_45 > 5'h9
-      ? (_idx_fromRight_T_1401 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1421 ? idx_6_8 : 7'h0)
-        | (_idx_fromRight_T_1438 ? idx_5_8 : 7'h0)
-        | (_idx_fromRight_T_1452 ? idx_4_8 : 7'h0)
-        | (_idx_fromRight_T_1463 ? idx_3_8 : 7'h0)
-        | (_idx_fromRight_T_1471 ? idx_2_20 : 7'h0)
-        | (_idx_fromRight_T_1476 ? idx_1_20 : 7'h0)
-      : (_idx_fromRight_T_2183 ? idx_9_4 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_8_4 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_7_4 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2190 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2191 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2192 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2193 = cnt_45 == 5'hA;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_10_5 =
-    cnt_45 > 5'hA
-      ? (_idx_fromRight_T_1421 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1438 ? idx_6_8 : 7'h0)
-        | (_idx_fromRight_T_1452 ? idx_5_8 : 7'h0)
-        | (_idx_fromRight_T_1463 ? idx_4_8 : 7'h0)
-        | (_idx_fromRight_T_1471 ? idx_3_8 : 7'h0)
-        | (_idx_fromRight_T_1476 ? idx_2_20 : 7'h0)
-      : (_idx_fromRight_T_2183 ? idx_10_4 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_9_4 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_8_4 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_7_4 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2190 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2191 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2192 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2193 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2194 = cnt_45 == 5'hB;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_11_5 =
-    cnt_45 > 5'hB
-      ? (_idx_fromRight_T_1438 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1452 ? idx_6_8 : 7'h0)
-        | (_idx_fromRight_T_1463 ? idx_5_8 : 7'h0)
-        | (_idx_fromRight_T_1471 ? idx_4_8 : 7'h0)
-        | (_idx_fromRight_T_1476 ? idx_3_8 : 7'h0)
-      : (_idx_fromRight_T_2183 ? idx_11_4 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_10_4 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_9_4 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_8_4 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_7_4 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2190 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2191 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2192 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2193 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2194 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2195 = cnt_45 == 5'hC;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_12_5 =
-    cnt_45 > 5'hC
-      ? (_idx_fromRight_T_1452 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1463 ? idx_6_8 : 7'h0)
-        | (_idx_fromRight_T_1471 ? idx_5_8 : 7'h0)
-        | (_idx_fromRight_T_1476 ? idx_4_8 : 7'h0)
-      : (_idx_fromRight_T_2183 ? idx_12_4 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_11_4 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_10_4 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_9_4 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_8_4 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_7_4 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2190 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2191 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2192 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2193 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2194 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2195 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2196 = cnt_45 == 5'hD;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_13_5 =
-    cnt_45 > 5'hD
-      ? (_idx_fromRight_T_1463 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1471 ? idx_6_8 : 7'h0)
-        | (_idx_fromRight_T_1476 ? idx_5_8 : 7'h0)
-      : (_idx_fromRight_T_2183 ? idx_13_4 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_12_4 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_11_4 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_10_4 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_9_4 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_8_4 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_7_4 : 7'h0)
-        | (_idx_fromRight_T_2190 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2191 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2192 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2193 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2194 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2195 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2196 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2197 = cnt_45 == 5'hE;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_14_5 =
-    cnt_45 > 5'hE
-      ? (_idx_fromRight_T_1471 ? 7'h2F : 7'h0) | (_idx_fromRight_T_1476 ? idx_6_8 : 7'h0)
-      : (_idx_fromRight_T_2183 ? idx_14_4 : 7'h0)
-        | (_idx_fromRight_T_2184 ? idx_13_4 : 7'h0)
-        | (_idx_fromRight_T_2185 ? idx_12_4 : 7'h0)
-        | (_idx_fromRight_T_2186 ? idx_11_4 : 7'h0)
-        | (_idx_fromRight_T_2187 ? idx_10_4 : 7'h0)
-        | (_idx_fromRight_T_2188 ? idx_9_4 : 7'h0)
-        | (_idx_fromRight_T_2189 ? idx_8_4 : 7'h0)
-        | (_idx_fromRight_T_2190 ? idx_7_4 : 7'h0)
-        | (_idx_fromRight_T_2191 ? idx_6_12 : 7'h0)
-        | (_idx_fromRight_T_2192 ? idx_5_12 : 7'h0)
-        | (_idx_fromRight_T_2193 ? idx_4_12 : 7'h0)
-        | (_idx_fromRight_T_2194 ? idx_3_12 : 7'h0)
-        | (_idx_fromRight_T_2195 ? idx_2_28 : 7'h0)
-        | (_idx_fromRight_T_2196 ? idx_1_28 : 7'h0)
-        | (_idx_fromRight_T_2197 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [5:0]         sum_61 = {1'h0, cnt_45} + {1'h0, sum_60 > 5'h10 ? 5'h10 : sum_60};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_2574 = _cnt_T_61 == 5'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2575 = _cnt_T_61 == 5'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2576 = _cnt_T_61 == 5'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2577 = _cnt_T_61 == 5'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2578 = _cnt_T_61 == 5'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2579 = _cnt_T_61 == 5'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2580 = _cnt_T_61 == 5'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2581 = _cnt_T_61 == 5'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2582 = _cnt_T_61 == 5'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2583 = _cnt_T_61 == 5'h9;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2584 = _cnt_T_61 == 5'hA;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2585 = _cnt_T_61 == 5'hB;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2586 = _cnt_T_61 == 5'hC;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2587 = _cnt_T_61 == 5'hD;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2588 = _cnt_T_61 == 5'hE;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [5:0]         sum_62 =
-    {1'h0, _cnt_T_61} + {1'h0, sum_61 > 6'h10 ? 5'h10 : sum_61[4:0]};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [4:0]         _cnt_T_125 = sum_62 > 6'h10 ? 5'h10 : sum_62[4:0];	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_63 = {1'h0, _midi_io_held[64]} + {1'h0, _midi_io_held[65]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_63 = (&sum_63) ? 2'h2 : sum_63;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_64 = {6'h21, ~(_midi_io_held[66])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_64 = {1'h0, _midi_io_held[66]} + {1'h0, _midi_io_held[67]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_2631 = cnt_63 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_65 = {1'h0, cnt_63} + {1'h0, (&sum_64) ? 2'h2 : sum_64};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_65 = sum_65 > 3'h4 ? 3'h4 : sum_65;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_66 = {1'h0, _midi_io_held[68]} + {1'h0, _midi_io_held[69]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_66 = (&sum_66) ? 2'h2 : sum_66;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_67 = {6'h23, ~(_midi_io_held[70])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_67 = {1'h0, _midi_io_held[70]} + {1'h0, _midi_io_held[71]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_68 = (|cnt_66) ? {6'h22, ~(_midi_io_held[68])} : idx_0_67;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_2647 = cnt_66 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_32 =
-    cnt_66[1]
-      ? 7'h45
-      : (cnt_66 == 2'h0 ? 7'h47 : 7'h0) | (_idx_fromRight_T_2647 ? idx_0_67 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_32 =
-    (_idx_fromRight_T_2647 ? 7'h47 : 7'h0) | (cnt_66 == 2'h2 ? idx_0_67 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_68 = {1'h0, cnt_66} + {1'h0, (&sum_67) ? 2'h2 : sum_67};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_2667 = cnt_65 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2678 = cnt_65 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2689 = cnt_65 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2697 = cnt_65 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2702 = cnt_65 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [3:0]         sum_69 = {1'h0, cnt_65} + {1'h0, sum_68 > 3'h4 ? 3'h4 : sum_68};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [3:0]         cnt_69 = sum_69 > 4'h8 ? 4'h8 : sum_69;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_70 = {1'h0, _midi_io_held[72]} + {1'h0, _midi_io_held[73]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_70 = (&sum_70) ? 2'h2 : sum_70;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_71 = {6'h25, ~(_midi_io_held[74])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_71 = {1'h0, _midi_io_held[74]} + {1'h0, _midi_io_held[75]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_2713 = cnt_70 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_72 = {1'h0, cnt_70} + {1'h0, (&sum_71) ? 2'h2 : sum_71};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_72 = sum_72 > 3'h4 ? 3'h4 : sum_72;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_73 = {1'h0, _midi_io_held[76]} + {1'h0, _midi_io_held[77]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_73 = (&sum_73) ? 2'h2 : sum_73;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_74 = {6'h27, ~(_midi_io_held[78])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_74 = {1'h0, _midi_io_held[78]} + {1'h0, _midi_io_held[79]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_75 = (|cnt_73) ? {6'h26, ~(_midi_io_held[76])} : idx_0_74;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_2729 = cnt_73 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_35 =
-    cnt_73[1]
-      ? 7'h4D
-      : (cnt_73 == 2'h0 ? 7'h4F : 7'h0) | (_idx_fromRight_T_2729 ? idx_0_74 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_35 =
-    (_idx_fromRight_T_2729 ? 7'h4F : 7'h0) | (cnt_73 == 2'h2 ? idx_0_74 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_75 = {1'h0, cnt_73} + {1'h0, (&sum_74) ? 2'h2 : sum_74};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_2749 = cnt_72 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_76 =
-    (|cnt_72) ? ((|cnt_70) ? {6'h24, ~(_midi_io_held[72])} : idx_0_71) : idx_0_75;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_2760 = cnt_72 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_36 =
-    (|(cnt_72[2:1]))
-      ? (cnt_70[1]
-           ? 7'h49
-           : (cnt_70 == 2'h0 ? 7'h4B : 7'h0) | (_idx_fromRight_T_2713 ? idx_0_71 : 7'h0))
-      : (_idx_fromRight_T_2749 ? idx_1_35 : 7'h0)
-        | (_idx_fromRight_T_2760 ? idx_0_75 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2771 = cnt_72 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_36 =
-    cnt_72 > 3'h2
-      ? (_idx_fromRight_T_2713 ? 7'h4B : 7'h0) | (cnt_70 == 2'h2 ? idx_0_71 : 7'h0)
-      : (_idx_fromRight_T_2749 ? idx_2_35 : 7'h0)
-        | (_idx_fromRight_T_2760 ? idx_1_35 : 7'h0)
-        | (_idx_fromRight_T_2771 ? idx_0_75 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2779 = cnt_72 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_16 =
-    cnt_72[2]
-      ? 7'h4B
-      : (_idx_fromRight_T_2749 ? 7'h4F : 7'h0) | (_idx_fromRight_T_2760 ? idx_2_35 : 7'h0)
-        | (_idx_fromRight_T_2771 ? idx_1_35 : 7'h0)
-        | (_idx_fromRight_T_2779 ? idx_0_75 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_2784 = cnt_72 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_4_16 =
-    (_idx_fromRight_T_2760 ? 7'h4F : 7'h0) | (_idx_fromRight_T_2771 ? idx_2_35 : 7'h0)
-    | (_idx_fromRight_T_2779 ? idx_1_35 : 7'h0)
-    | (_idx_fromRight_T_2784 ? idx_0_75 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_5_16 =
-    (_idx_fromRight_T_2771 ? 7'h4F : 7'h0) | (_idx_fromRight_T_2779 ? idx_2_35 : 7'h0)
-    | (_idx_fromRight_T_2784 ? idx_1_35 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_6_16 =
-    (_idx_fromRight_T_2779 ? 7'h4F : 7'h0) | (_idx_fromRight_T_2784 ? idx_2_35 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [3:0]         sum_76 = {1'h0, cnt_72} + {1'h0, sum_75 > 3'h4 ? 3'h4 : sum_75};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_2861 = cnt_69 == 4'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2884 = cnt_69 == 4'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2907 = cnt_69 == 4'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2927 = cnt_69 == 4'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2944 = cnt_69 == 4'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2958 = cnt_69 == 4'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2969 = cnt_69 == 4'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2977 = cnt_69 == 4'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_2982 = cnt_69 == 4'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [4:0]         sum_77 = {1'h0, cnt_69} + {1'h0, sum_76 > 4'h8 ? 4'h8 : sum_76};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [4:0]         cnt_77 = sum_77 > 5'h10 ? 5'h10 : sum_77;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_78 = {1'h0, _midi_io_held[80]} + {1'h0, _midi_io_held[81]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_78 = (&sum_78) ? 2'h2 : sum_78;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_79 = {6'h29, ~(_midi_io_held[82])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_79 = {1'h0, _midi_io_held[82]} + {1'h0, _midi_io_held[83]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_2993 = cnt_78 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_80 = {1'h0, cnt_78} + {1'h0, (&sum_79) ? 2'h2 : sum_79};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_80 = sum_80 > 3'h4 ? 3'h4 : sum_80;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_81 = {1'h0, _midi_io_held[84]} + {1'h0, _midi_io_held[85]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_81 = (&sum_81) ? 2'h2 : sum_81;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_82 = {6'h2B, ~(_midi_io_held[86])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_82 = {1'h0, _midi_io_held[86]} + {1'h0, _midi_io_held[87]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_83 = (|cnt_81) ? {6'h2A, ~(_midi_io_held[84])} : idx_0_82;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_3009 = cnt_81 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_39 =
-    cnt_81[1]
-      ? 7'h55
-      : (cnt_81 == 2'h0 ? 7'h57 : 7'h0) | (_idx_fromRight_T_3009 ? idx_0_82 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_39 =
-    (_idx_fromRight_T_3009 ? 7'h57 : 7'h0) | (cnt_81 == 2'h2 ? idx_0_82 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_83 = {1'h0, cnt_81} + {1'h0, (&sum_82) ? 2'h2 : sum_82};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_3029 = cnt_80 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3040 = cnt_80 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3051 = cnt_80 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3059 = cnt_80 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3064 = cnt_80 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [3:0]         sum_84 = {1'h0, cnt_80} + {1'h0, sum_83 > 3'h4 ? 3'h4 : sum_83};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [3:0]         cnt_84 = sum_84 > 4'h8 ? 4'h8 : sum_84;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_85 = {1'h0, _midi_io_held[88]} + {1'h0, _midi_io_held[89]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_85 = (&sum_85) ? 2'h2 : sum_85;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_86 = {6'h2D, ~(_midi_io_held[90])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_86 = {1'h0, _midi_io_held[90]} + {1'h0, _midi_io_held[91]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_3075 = cnt_85 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_87 = {1'h0, cnt_85} + {1'h0, (&sum_86) ? 2'h2 : sum_86};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_87 = sum_87 > 3'h4 ? 3'h4 : sum_87;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_88 = {1'h0, _midi_io_held[92]} + {1'h0, _midi_io_held[93]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_88 = (&sum_88) ? 2'h2 : sum_88;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_89 = {6'h2F, ~(_midi_io_held[94])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_89 = {1'h0, _midi_io_held[94]} + {1'h0, _midi_io_held[95]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_90 = (|cnt_88) ? {6'h2E, ~(_midi_io_held[92])} : idx_0_89;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_3091 = cnt_88 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_42 =
-    cnt_88[1]
-      ? 7'h5D
-      : (cnt_88 == 2'h0 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3091 ? idx_0_89 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_42 =
-    (_idx_fromRight_T_3091 ? 7'h5F : 7'h0) | (cnt_88 == 2'h2 ? idx_0_89 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_90 = {1'h0, cnt_88} + {1'h0, (&sum_89) ? 2'h2 : sum_89};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_3111 = cnt_87 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_91 =
-    (|cnt_87) ? ((|cnt_85) ? {6'h2C, ~(_midi_io_held[88])} : idx_0_86) : idx_0_90;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_3122 = cnt_87 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_43 =
-    (|(cnt_87[2:1]))
-      ? (cnt_85[1]
-           ? 7'h59
-           : (cnt_85 == 2'h0 ? 7'h5B : 7'h0) | (_idx_fromRight_T_3075 ? idx_0_86 : 7'h0))
-      : (_idx_fromRight_T_3111 ? idx_1_42 : 7'h0)
-        | (_idx_fromRight_T_3122 ? idx_0_90 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3133 = cnt_87 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_43 =
-    cnt_87 > 3'h2
-      ? (_idx_fromRight_T_3075 ? 7'h5B : 7'h0) | (cnt_85 == 2'h2 ? idx_0_86 : 7'h0)
-      : (_idx_fromRight_T_3111 ? idx_2_42 : 7'h0)
-        | (_idx_fromRight_T_3122 ? idx_1_42 : 7'h0)
-        | (_idx_fromRight_T_3133 ? idx_0_90 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3141 = cnt_87 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_19 =
-    cnt_87[2]
-      ? 7'h5B
-      : (_idx_fromRight_T_3111 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3122 ? idx_2_42 : 7'h0)
-        | (_idx_fromRight_T_3133 ? idx_1_42 : 7'h0)
-        | (_idx_fromRight_T_3141 ? idx_0_90 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3146 = cnt_87 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_4_19 =
-    (_idx_fromRight_T_3122 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3133 ? idx_2_42 : 7'h0)
-    | (_idx_fromRight_T_3141 ? idx_1_42 : 7'h0)
-    | (_idx_fromRight_T_3146 ? idx_0_90 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_5_19 =
-    (_idx_fromRight_T_3133 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3141 ? idx_2_42 : 7'h0)
-    | (_idx_fromRight_T_3146 ? idx_1_42 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_6_19 =
-    (_idx_fromRight_T_3141 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3146 ? idx_2_42 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [3:0]         sum_91 = {1'h0, cnt_87} + {1'h0, sum_90 > 3'h4 ? 3'h4 : sum_90};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_3223 = cnt_84 == 4'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_92 =
-    (|cnt_84)
-      ? ((|cnt_80) ? ((|cnt_78) ? {6'h28, ~(_midi_io_held[80])} : idx_0_79) : idx_0_83)
-      : idx_0_91;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_3246 = cnt_84 == 4'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_44 =
-    (|(cnt_84[3:1]))
-      ? ((|(cnt_80[2:1]))
-           ? (cnt_78[1]
-                ? 7'h51
-                : (cnt_78 == 2'h0 ? 7'h53 : 7'h0)
-                  | (_idx_fromRight_T_2993 ? idx_0_79 : 7'h0))
-           : (_idx_fromRight_T_3029 ? idx_1_39 : 7'h0)
-             | (_idx_fromRight_T_3040 ? idx_0_83 : 7'h0))
-      : (_idx_fromRight_T_3223 ? idx_1_43 : 7'h0)
-        | (_idx_fromRight_T_3246 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3269 = cnt_84 == 4'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_44 =
-    cnt_84 > 4'h2
-      ? (cnt_80 > 3'h2
-           ? (_idx_fromRight_T_2993 ? 7'h53 : 7'h0) | (cnt_78 == 2'h2 ? idx_0_79 : 7'h0)
-           : (_idx_fromRight_T_3029 ? idx_2_39 : 7'h0)
-             | (_idx_fromRight_T_3040 ? idx_1_39 : 7'h0)
-             | (_idx_fromRight_T_3051 ? idx_0_83 : 7'h0))
-      : (_idx_fromRight_T_3223 ? idx_2_43 : 7'h0)
-        | (_idx_fromRight_T_3246 ? idx_1_43 : 7'h0)
-        | (_idx_fromRight_T_3269 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3289 = cnt_84 == 4'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_20 =
-    (|(cnt_84[3:2]))
-      ? (cnt_80[2]
-           ? 7'h53
-           : (_idx_fromRight_T_3029 ? 7'h57 : 7'h0)
-             | (_idx_fromRight_T_3040 ? idx_2_39 : 7'h0)
-             | (_idx_fromRight_T_3051 ? idx_1_39 : 7'h0)
-             | (_idx_fromRight_T_3059 ? idx_0_83 : 7'h0))
-      : (_idx_fromRight_T_3223 ? idx_3_19 : 7'h0)
-        | (_idx_fromRight_T_3246 ? idx_2_43 : 7'h0)
-        | (_idx_fromRight_T_3269 ? idx_1_43 : 7'h0)
-        | (_idx_fromRight_T_3289 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3306 = cnt_84 == 4'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_4_20 =
-    cnt_84 > 4'h4
-      ? (_idx_fromRight_T_3040 ? 7'h57 : 7'h0) | (_idx_fromRight_T_3051 ? idx_2_39 : 7'h0)
-        | (_idx_fromRight_T_3059 ? idx_1_39 : 7'h0)
-        | (_idx_fromRight_T_3064 ? idx_0_83 : 7'h0)
-      : (_idx_fromRight_T_3223 ? idx_4_19 : 7'h0)
-        | (_idx_fromRight_T_3246 ? idx_3_19 : 7'h0)
-        | (_idx_fromRight_T_3269 ? idx_2_43 : 7'h0)
-        | (_idx_fromRight_T_3289 ? idx_1_43 : 7'h0)
-        | (_idx_fromRight_T_3306 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3320 = cnt_84 == 4'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_5_20 =
-    cnt_84 > 4'h5
-      ? (_idx_fromRight_T_3051 ? 7'h57 : 7'h0) | (_idx_fromRight_T_3059 ? idx_2_39 : 7'h0)
-        | (_idx_fromRight_T_3064 ? idx_1_39 : 7'h0)
-      : (_idx_fromRight_T_3223 ? idx_5_19 : 7'h0)
-        | (_idx_fromRight_T_3246 ? idx_4_19 : 7'h0)
-        | (_idx_fromRight_T_3269 ? idx_3_19 : 7'h0)
-        | (_idx_fromRight_T_3289 ? idx_2_43 : 7'h0)
-        | (_idx_fromRight_T_3306 ? idx_1_43 : 7'h0)
-        | (_idx_fromRight_T_3320 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3331 = cnt_84 == 4'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_6_20 =
-    cnt_84 > 4'h6
-      ? (_idx_fromRight_T_3059 ? 7'h57 : 7'h0) | (_idx_fromRight_T_3064 ? idx_2_39 : 7'h0)
-      : (_idx_fromRight_T_3223 ? idx_6_19 : 7'h0)
-        | (_idx_fromRight_T_3246 ? idx_5_19 : 7'h0)
-        | (_idx_fromRight_T_3269 ? idx_4_19 : 7'h0)
-        | (_idx_fromRight_T_3289 ? idx_3_19 : 7'h0)
-        | (_idx_fromRight_T_3306 ? idx_2_43 : 7'h0)
-        | (_idx_fromRight_T_3320 ? idx_1_43 : 7'h0)
-        | (_idx_fromRight_T_3331 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3339 = cnt_84 == 4'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_7_8 =
-    cnt_84[3]
-      ? 7'h57
-      : (_idx_fromRight_T_3223 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3246 ? idx_6_19 : 7'h0)
-        | (_idx_fromRight_T_3269 ? idx_5_19 : 7'h0)
-        | (_idx_fromRight_T_3289 ? idx_4_19 : 7'h0)
-        | (_idx_fromRight_T_3306 ? idx_3_19 : 7'h0)
-        | (_idx_fromRight_T_3320 ? idx_2_43 : 7'h0)
-        | (_idx_fromRight_T_3331 ? idx_1_43 : 7'h0)
-        | (_idx_fromRight_T_3339 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3344 = cnt_84 == 4'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_8_8 =
-    (_idx_fromRight_T_3246 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3269 ? idx_6_19 : 7'h0)
-    | (_idx_fromRight_T_3289 ? idx_5_19 : 7'h0)
-    | (_idx_fromRight_T_3306 ? idx_4_19 : 7'h0)
-    | (_idx_fromRight_T_3320 ? idx_3_19 : 7'h0)
-    | (_idx_fromRight_T_3331 ? idx_2_43 : 7'h0)
-    | (_idx_fromRight_T_3339 ? idx_1_43 : 7'h0)
-    | (_idx_fromRight_T_3344 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_9_8 =
-    (_idx_fromRight_T_3269 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3289 ? idx_6_19 : 7'h0)
-    | (_idx_fromRight_T_3306 ? idx_5_19 : 7'h0)
-    | (_idx_fromRight_T_3320 ? idx_4_19 : 7'h0)
-    | (_idx_fromRight_T_3331 ? idx_3_19 : 7'h0)
-    | (_idx_fromRight_T_3339 ? idx_2_43 : 7'h0)
-    | (_idx_fromRight_T_3344 ? idx_1_43 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_10_8 =
-    (_idx_fromRight_T_3289 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3306 ? idx_6_19 : 7'h0)
-    | (_idx_fromRight_T_3320 ? idx_5_19 : 7'h0)
-    | (_idx_fromRight_T_3331 ? idx_4_19 : 7'h0)
-    | (_idx_fromRight_T_3339 ? idx_3_19 : 7'h0)
-    | (_idx_fromRight_T_3344 ? idx_2_43 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_11_8 =
-    (_idx_fromRight_T_3306 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3320 ? idx_6_19 : 7'h0)
-    | (_idx_fromRight_T_3331 ? idx_5_19 : 7'h0)
-    | (_idx_fromRight_T_3339 ? idx_4_19 : 7'h0)
-    | (_idx_fromRight_T_3344 ? idx_3_19 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_12_8 =
-    (_idx_fromRight_T_3320 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3331 ? idx_6_19 : 7'h0)
-    | (_idx_fromRight_T_3339 ? idx_5_19 : 7'h0)
-    | (_idx_fromRight_T_3344 ? idx_4_19 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_13_8 =
-    (_idx_fromRight_T_3331 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3339 ? idx_6_19 : 7'h0)
-    | (_idx_fromRight_T_3344 ? idx_5_19 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_14_8 =
-    (_idx_fromRight_T_3339 ? 7'h5F : 7'h0) | (_idx_fromRight_T_3344 ? idx_6_19 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [4:0]         sum_92 = {1'h0, cnt_84} + {1'h0, sum_91 > 4'h8 ? 4'h8 : sum_91};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_3689 = cnt_77 == 5'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3690 = cnt_77 == 5'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3691 = cnt_77 == 5'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3692 = cnt_77 == 5'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3693 = cnt_77 == 5'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3694 = cnt_77 == 5'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3695 = cnt_77 == 5'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3696 = cnt_77 == 5'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3697 = cnt_77 == 5'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3698 = cnt_77 == 5'h9;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3699 = cnt_77 == 5'hA;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3700 = cnt_77 == 5'hB;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3701 = cnt_77 == 5'hC;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3702 = cnt_77 == 5'hD;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3703 = cnt_77 == 5'hE;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [5:0]         sum_93 = {1'h0, cnt_77} + {1'h0, sum_92 > 5'h10 ? 5'h10 : sum_92};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [4:0]         _cnt_T_187 = sum_93 > 6'h10 ? 5'h10 : sum_93[4:0];	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_94 = {1'h0, _midi_io_held[96]} + {1'h0, _midi_io_held[97]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_94 = (&sum_94) ? 2'h2 : sum_94;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_95 = {6'h31, ~(_midi_io_held[98])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_95 = {1'h0, _midi_io_held[98]} + {1'h0, _midi_io_held[99]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_3746 = cnt_94 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_96 = {1'h0, cnt_94} + {1'h0, (&sum_95) ? 2'h2 : sum_95};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_96 = sum_96 > 3'h4 ? 3'h4 : sum_96;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_97 = {1'h0, _midi_io_held[100]} + {1'h0, _midi_io_held[101]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_97 = (&sum_97) ? 2'h2 : sum_97;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_98 = {6'h33, ~(_midi_io_held[102])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_98 = {1'h0, _midi_io_held[102]} + {1'h0, _midi_io_held[103]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_99 = (|cnt_97) ? {6'h32, ~(_midi_io_held[100])} : idx_0_98;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_3762 = cnt_97 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_47 =
-    cnt_97[1]
-      ? 7'h65
-      : (cnt_97 == 2'h0 ? 7'h67 : 7'h0) | (_idx_fromRight_T_3762 ? idx_0_98 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_47 =
-    (_idx_fromRight_T_3762 ? 7'h67 : 7'h0) | (cnt_97 == 2'h2 ? idx_0_98 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_99 = {1'h0, cnt_97} + {1'h0, (&sum_98) ? 2'h2 : sum_98};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_3782 = cnt_96 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3793 = cnt_96 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3804 = cnt_96 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3812 = cnt_96 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3817 = cnt_96 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [3:0]         sum_100 = {1'h0, cnt_96} + {1'h0, sum_99 > 3'h4 ? 3'h4 : sum_99};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [3:0]         cnt_100 = sum_100 > 4'h8 ? 4'h8 : sum_100;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_101 = {1'h0, _midi_io_held[104]} + {1'h0, _midi_io_held[105]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_101 = (&sum_101) ? 2'h2 : sum_101;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_102 = {6'h35, ~(_midi_io_held[106])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_102 = {1'h0, _midi_io_held[106]} + {1'h0, _midi_io_held[107]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_3828 = cnt_101 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_103 = {1'h0, cnt_101} + {1'h0, (&sum_102) ? 2'h2 : sum_102};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_103 = sum_103 > 3'h4 ? 3'h4 : sum_103;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_104 = {1'h0, _midi_io_held[108]} + {1'h0, _midi_io_held[109]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_104 = (&sum_104) ? 2'h2 : sum_104;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_105 = {6'h37, ~(_midi_io_held[110])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_105 = {1'h0, _midi_io_held[110]} + {1'h0, _midi_io_held[111]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_106 = (|cnt_104) ? {6'h36, ~(_midi_io_held[108])} : idx_0_105;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_3844 = cnt_104 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_50 =
-    cnt_104[1]
-      ? 7'h6D
-      : (cnt_104 == 2'h0 ? 7'h6F : 7'h0) | (_idx_fromRight_T_3844 ? idx_0_105 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_50 =
-    (_idx_fromRight_T_3844 ? 7'h6F : 7'h0) | (cnt_104 == 2'h2 ? idx_0_105 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_106 = {1'h0, cnt_104} + {1'h0, (&sum_105) ? 2'h2 : sum_105};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_3864 = cnt_103 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_107 =
-    (|cnt_103) ? ((|cnt_101) ? {6'h34, ~(_midi_io_held[104])} : idx_0_102) : idx_0_106;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_3875 = cnt_103 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_51 =
-    (|(cnt_103[2:1]))
-      ? (cnt_101[1]
-           ? 7'h69
-           : (cnt_101 == 2'h0 ? 7'h6B : 7'h0)
-             | (_idx_fromRight_T_3828 ? idx_0_102 : 7'h0))
-      : (_idx_fromRight_T_3864 ? idx_1_50 : 7'h0)
-        | (_idx_fromRight_T_3875 ? idx_0_106 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3886 = cnt_103 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_51 =
-    cnt_103 > 3'h2
-      ? (_idx_fromRight_T_3828 ? 7'h6B : 7'h0) | (cnt_101 == 2'h2 ? idx_0_102 : 7'h0)
-      : (_idx_fromRight_T_3864 ? idx_2_50 : 7'h0)
-        | (_idx_fromRight_T_3875 ? idx_1_50 : 7'h0)
-        | (_idx_fromRight_T_3886 ? idx_0_106 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3894 = cnt_103 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_23 =
-    cnt_103[2]
-      ? 7'h6B
-      : (_idx_fromRight_T_3864 ? 7'h6F : 7'h0) | (_idx_fromRight_T_3875 ? idx_2_50 : 7'h0)
-        | (_idx_fromRight_T_3886 ? idx_1_50 : 7'h0)
-        | (_idx_fromRight_T_3894 ? idx_0_106 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_3899 = cnt_103 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_4_23 =
-    (_idx_fromRight_T_3875 ? 7'h6F : 7'h0) | (_idx_fromRight_T_3886 ? idx_2_50 : 7'h0)
-    | (_idx_fromRight_T_3894 ? idx_1_50 : 7'h0)
-    | (_idx_fromRight_T_3899 ? idx_0_106 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_5_23 =
-    (_idx_fromRight_T_3886 ? 7'h6F : 7'h0) | (_idx_fromRight_T_3894 ? idx_2_50 : 7'h0)
-    | (_idx_fromRight_T_3899 ? idx_1_50 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_6_23 =
-    (_idx_fromRight_T_3894 ? 7'h6F : 7'h0) | (_idx_fromRight_T_3899 ? idx_2_50 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [3:0]         sum_107 = {1'h0, cnt_103} + {1'h0, sum_106 > 3'h4 ? 3'h4 : sum_106};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_3976 = cnt_100 == 4'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_3999 = cnt_100 == 4'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4022 = cnt_100 == 4'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4042 = cnt_100 == 4'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4059 = cnt_100 == 4'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4073 = cnt_100 == 4'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4084 = cnt_100 == 4'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4092 = cnt_100 == 4'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4097 = cnt_100 == 4'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [4:0]         sum_108 = {1'h0, cnt_100} + {1'h0, sum_107 > 4'h8 ? 4'h8 : sum_107};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [4:0]         cnt_108 = sum_108 > 5'h10 ? 5'h10 : sum_108;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_109 = {1'h0, _midi_io_held[112]} + {1'h0, _midi_io_held[113]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_109 = (&sum_109) ? 2'h2 : sum_109;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_110 = {6'h39, ~(_midi_io_held[114])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_110 = {1'h0, _midi_io_held[114]} + {1'h0, _midi_io_held[115]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_4108 = cnt_109 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_111 = {1'h0, cnt_109} + {1'h0, (&sum_110) ? 2'h2 : sum_110};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_111 = sum_111 > 3'h4 ? 3'h4 : sum_111;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_112 = {1'h0, _midi_io_held[116]} + {1'h0, _midi_io_held[117]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_112 = (&sum_112) ? 2'h2 : sum_112;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_113 = {6'h3B, ~(_midi_io_held[118])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_113 = {1'h0, _midi_io_held[118]} + {1'h0, _midi_io_held[119]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_114 = (|cnt_112) ? {6'h3A, ~(_midi_io_held[116])} : idx_0_113;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_4124 = cnt_112 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_54 =
-    cnt_112[1]
-      ? 7'h75
-      : (cnt_112 == 2'h0 ? 7'h77 : 7'h0) | (_idx_fromRight_T_4124 ? idx_0_113 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_54 =
-    (_idx_fromRight_T_4124 ? 7'h77 : 7'h0) | (cnt_112 == 2'h2 ? idx_0_113 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_114 = {1'h0, cnt_112} + {1'h0, (&sum_113) ? 2'h2 : sum_113};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_4144 = cnt_111 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4155 = cnt_111 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4166 = cnt_111 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4174 = cnt_111 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_4179 = cnt_111 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [3:0]         sum_115 = {1'h0, cnt_111} + {1'h0, sum_114 > 3'h4 ? 3'h4 : sum_114};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [3:0]         cnt_115 = sum_115 > 4'h8 ? 4'h8 : sum_115;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_116 = {1'h0, _midi_io_held[120]} + {1'h0, _midi_io_held[121]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_116 = (&sum_116) ? 2'h2 : sum_116;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_117 = {6'h3D, ~(_midi_io_held[122])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_117 = {1'h0, _midi_io_held[122]} + {1'h0, _midi_io_held[123]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire               _idx_fromRight_T_4190 = cnt_116 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [2:0]         sum_118 = {1'h0, cnt_116} + {1'h0, (&sum_117) ? 2'h2 : sum_117};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [2:0]         cnt_118 = sum_118 > 3'h4 ? 3'h4 : sum_118;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [1:0]         sum_119 = {1'h0, _midi_io_held[124]} + {1'h0, _midi_io_held[125]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [1:0]         cnt_119 = (&sum_119) ? 2'h2 : sum_119;	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  wire [6:0]         idx_0_120 = {6'h3F, ~(_midi_io_held[126])};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:24, :90:51
-  wire [1:0]         sum_120 = {1'h0, _midi_io_held[126]} + {1'h0, _midi_io_held[127]};	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:80:30, :84:23, :90:51
-  wire [6:0]         idx_0_121 = (|cnt_119) ? {6'h3E, ~(_midi_io_held[124])} : idx_0_120;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_4206 = cnt_119 == 2'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_57 =
-    cnt_119[1]
-      ? 7'h7D
-      : {7{cnt_119 == 2'h0}} | (_idx_fromRight_T_4206 ? idx_0_120 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_2_57 =
-    {7{_idx_fromRight_T_4206}} | (cnt_119 == 2'h2 ? idx_0_120 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [2:0]         sum_121 = {1'h0, cnt_119} + {1'h0, (&sum_120) ? 2'h2 : sum_120};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_4226 = cnt_118 == 3'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_122 =
-    (|cnt_118) ? ((|cnt_116) ? {6'h3C, ~(_midi_io_held[120])} : idx_0_117) : idx_0_121;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_4237 = cnt_118 == 3'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_58 =
-    (|(cnt_118[2:1]))
-      ? (cnt_116[1]
-           ? 7'h79
-           : (cnt_116 == 2'h0 ? 7'h7B : 7'h0)
-             | (_idx_fromRight_T_4190 ? idx_0_117 : 7'h0))
-      : (_idx_fromRight_T_4226 ? idx_1_57 : 7'h0)
-        | (_idx_fromRight_T_4237 ? idx_0_121 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4248 = cnt_118 == 3'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_58 =
-    cnt_118 > 3'h2
-      ? (_idx_fromRight_T_4190 ? 7'h7B : 7'h0) | (cnt_116 == 2'h2 ? idx_0_117 : 7'h0)
-      : (_idx_fromRight_T_4226 ? idx_2_57 : 7'h0)
-        | (_idx_fromRight_T_4237 ? idx_1_57 : 7'h0)
-        | (_idx_fromRight_T_4248 ? idx_0_121 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4256 = cnt_118 == 3'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_26 =
-    cnt_118[2]
-      ? 7'h7B
-      : {7{_idx_fromRight_T_4226}} | (_idx_fromRight_T_4237 ? idx_2_57 : 7'h0)
-        | (_idx_fromRight_T_4248 ? idx_1_57 : 7'h0)
-        | (_idx_fromRight_T_4256 ? idx_0_121 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4261 = cnt_118 == 3'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_4_26 =
-    {7{_idx_fromRight_T_4237}} | (_idx_fromRight_T_4248 ? idx_2_57 : 7'h0)
-    | (_idx_fromRight_T_4256 ? idx_1_57 : 7'h0)
-    | (_idx_fromRight_T_4261 ? idx_0_121 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_5_26 =
-    {7{_idx_fromRight_T_4248}} | (_idx_fromRight_T_4256 ? idx_2_57 : 7'h0)
-    | (_idx_fromRight_T_4261 ? idx_1_57 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_6_26 =
-    {7{_idx_fromRight_T_4256}} | (_idx_fromRight_T_4261 ? idx_2_57 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [3:0]         sum_122 = {1'h0, cnt_118} + {1'h0, sum_121 > 3'h4 ? 3'h4 : sum_121};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_4338 = cnt_115 == 4'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_123 =
-    (|cnt_115)
-      ? ((|cnt_111)
-           ? ((|cnt_109) ? {6'h38, ~(_midi_io_held[112])} : idx_0_110)
-           : idx_0_114)
-      : idx_0_122;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_4361 = cnt_115 == 4'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_59 =
-    (|(cnt_115[3:1]))
-      ? ((|(cnt_111[2:1]))
-           ? (cnt_109[1]
-                ? 7'h71
-                : (cnt_109 == 2'h0 ? 7'h73 : 7'h0)
-                  | (_idx_fromRight_T_4108 ? idx_0_110 : 7'h0))
-           : (_idx_fromRight_T_4144 ? idx_1_54 : 7'h0)
-             | (_idx_fromRight_T_4155 ? idx_0_114 : 7'h0))
-      : (_idx_fromRight_T_4338 ? idx_1_58 : 7'h0)
-        | (_idx_fromRight_T_4361 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4384 = cnt_115 == 4'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_59 =
-    cnt_115 > 4'h2
-      ? (cnt_111 > 3'h2
-           ? (_idx_fromRight_T_4108 ? 7'h73 : 7'h0) | (cnt_109 == 2'h2 ? idx_0_110 : 7'h0)
-           : (_idx_fromRight_T_4144 ? idx_2_54 : 7'h0)
-             | (_idx_fromRight_T_4155 ? idx_1_54 : 7'h0)
-             | (_idx_fromRight_T_4166 ? idx_0_114 : 7'h0))
-      : (_idx_fromRight_T_4338 ? idx_2_58 : 7'h0)
-        | (_idx_fromRight_T_4361 ? idx_1_58 : 7'h0)
-        | (_idx_fromRight_T_4384 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4404 = cnt_115 == 4'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_27 =
-    (|(cnt_115[3:2]))
-      ? (cnt_111[2]
-           ? 7'h73
-           : (_idx_fromRight_T_4144 ? 7'h77 : 7'h0)
-             | (_idx_fromRight_T_4155 ? idx_2_54 : 7'h0)
-             | (_idx_fromRight_T_4166 ? idx_1_54 : 7'h0)
-             | (_idx_fromRight_T_4174 ? idx_0_114 : 7'h0))
-      : (_idx_fromRight_T_4338 ? idx_3_26 : 7'h0)
-        | (_idx_fromRight_T_4361 ? idx_2_58 : 7'h0)
-        | (_idx_fromRight_T_4384 ? idx_1_58 : 7'h0)
-        | (_idx_fromRight_T_4404 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4421 = cnt_115 == 4'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_4_27 =
-    cnt_115 > 4'h4
-      ? (_idx_fromRight_T_4155 ? 7'h77 : 7'h0) | (_idx_fromRight_T_4166 ? idx_2_54 : 7'h0)
-        | (_idx_fromRight_T_4174 ? idx_1_54 : 7'h0)
-        | (_idx_fromRight_T_4179 ? idx_0_114 : 7'h0)
-      : (_idx_fromRight_T_4338 ? idx_4_26 : 7'h0)
-        | (_idx_fromRight_T_4361 ? idx_3_26 : 7'h0)
-        | (_idx_fromRight_T_4384 ? idx_2_58 : 7'h0)
-        | (_idx_fromRight_T_4404 ? idx_1_58 : 7'h0)
-        | (_idx_fromRight_T_4421 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4435 = cnt_115 == 4'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_5_27 =
-    cnt_115 > 4'h5
-      ? (_idx_fromRight_T_4166 ? 7'h77 : 7'h0) | (_idx_fromRight_T_4174 ? idx_2_54 : 7'h0)
-        | (_idx_fromRight_T_4179 ? idx_1_54 : 7'h0)
-      : (_idx_fromRight_T_4338 ? idx_5_26 : 7'h0)
-        | (_idx_fromRight_T_4361 ? idx_4_26 : 7'h0)
-        | (_idx_fromRight_T_4384 ? idx_3_26 : 7'h0)
-        | (_idx_fromRight_T_4404 ? idx_2_58 : 7'h0)
-        | (_idx_fromRight_T_4421 ? idx_1_58 : 7'h0)
-        | (_idx_fromRight_T_4435 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4446 = cnt_115 == 4'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_6_27 =
-    cnt_115 > 4'h6
-      ? (_idx_fromRight_T_4174 ? 7'h77 : 7'h0) | (_idx_fromRight_T_4179 ? idx_2_54 : 7'h0)
-      : (_idx_fromRight_T_4338 ? idx_6_26 : 7'h0)
-        | (_idx_fromRight_T_4361 ? idx_5_26 : 7'h0)
-        | (_idx_fromRight_T_4384 ? idx_4_26 : 7'h0)
-        | (_idx_fromRight_T_4404 ? idx_3_26 : 7'h0)
-        | (_idx_fromRight_T_4421 ? idx_2_58 : 7'h0)
-        | (_idx_fromRight_T_4435 ? idx_1_58 : 7'h0)
-        | (_idx_fromRight_T_4446 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4454 = cnt_115 == 4'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_7_11 =
-    cnt_115[3]
-      ? 7'h77
-      : {7{_idx_fromRight_T_4338}} | (_idx_fromRight_T_4361 ? idx_6_26 : 7'h0)
-        | (_idx_fromRight_T_4384 ? idx_5_26 : 7'h0)
-        | (_idx_fromRight_T_4404 ? idx_4_26 : 7'h0)
-        | (_idx_fromRight_T_4421 ? idx_3_26 : 7'h0)
-        | (_idx_fromRight_T_4435 ? idx_2_58 : 7'h0)
-        | (_idx_fromRight_T_4446 ? idx_1_58 : 7'h0)
-        | (_idx_fromRight_T_4454 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4459 = cnt_115 == 4'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:{20,25}
-  wire [6:0]         idx_8_11 =
-    {7{_idx_fromRight_T_4361}} | (_idx_fromRight_T_4384 ? idx_6_26 : 7'h0)
-    | (_idx_fromRight_T_4404 ? idx_5_26 : 7'h0)
-    | (_idx_fromRight_T_4421 ? idx_4_26 : 7'h0)
-    | (_idx_fromRight_T_4435 ? idx_3_26 : 7'h0)
-    | (_idx_fromRight_T_4446 ? idx_2_58 : 7'h0)
-    | (_idx_fromRight_T_4454 ? idx_1_58 : 7'h0)
-    | (_idx_fromRight_T_4459 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_9_11 =
-    {7{_idx_fromRight_T_4384}} | (_idx_fromRight_T_4404 ? idx_6_26 : 7'h0)
-    | (_idx_fromRight_T_4421 ? idx_5_26 : 7'h0)
-    | (_idx_fromRight_T_4435 ? idx_4_26 : 7'h0)
-    | (_idx_fromRight_T_4446 ? idx_3_26 : 7'h0)
-    | (_idx_fromRight_T_4454 ? idx_2_58 : 7'h0)
-    | (_idx_fromRight_T_4459 ? idx_1_58 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_10_11 =
-    {7{_idx_fromRight_T_4404}} | (_idx_fromRight_T_4421 ? idx_6_26 : 7'h0)
-    | (_idx_fromRight_T_4435 ? idx_5_26 : 7'h0)
-    | (_idx_fromRight_T_4446 ? idx_4_26 : 7'h0)
-    | (_idx_fromRight_T_4454 ? idx_3_26 : 7'h0)
-    | (_idx_fromRight_T_4459 ? idx_2_58 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_11_11 =
-    {7{_idx_fromRight_T_4421}} | (_idx_fromRight_T_4435 ? idx_6_26 : 7'h0)
-    | (_idx_fromRight_T_4446 ? idx_5_26 : 7'h0)
-    | (_idx_fromRight_T_4454 ? idx_4_26 : 7'h0)
-    | (_idx_fromRight_T_4459 ? idx_3_26 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_12_11 =
-    {7{_idx_fromRight_T_4435}} | (_idx_fromRight_T_4446 ? idx_6_26 : 7'h0)
-    | (_idx_fromRight_T_4454 ? idx_5_26 : 7'h0)
-    | (_idx_fromRight_T_4459 ? idx_4_26 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_13_11 =
-    {7{_idx_fromRight_T_4446}} | (_idx_fromRight_T_4454 ? idx_6_26 : 7'h0)
-    | (_idx_fromRight_T_4459 ? idx_5_26 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [6:0]         idx_14_11 =
-    {7{_idx_fromRight_T_4454}} | (_idx_fromRight_T_4459 ? idx_6_26 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:24, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [4:0]         sum_123 = {1'h0, cnt_115} + {1'h0, sum_122 > 4'h8 ? 4'h8 : sum_122};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_4804 = cnt_108 == 5'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_124 =
-    (|cnt_108)
-      ? ((|cnt_100)
-           ? ((|cnt_96)
-                ? ((|cnt_94) ? {6'h30, ~(_midi_io_held[96])} : idx_0_95)
-                : idx_0_99)
-           : idx_0_107)
-      : idx_0_123;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_4805 = cnt_108 == 5'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_60 =
-    (|(cnt_108[4:1]))
-      ? ((|(cnt_100[3:1]))
-           ? ((|(cnt_96[2:1]))
-                ? (cnt_94[1]
-                     ? 7'h61
-                     : (cnt_94 == 2'h0 ? 7'h63 : 7'h0)
-                       | (_idx_fromRight_T_3746 ? idx_0_95 : 7'h0))
-                : (_idx_fromRight_T_3782 ? idx_1_47 : 7'h0)
-                  | (_idx_fromRight_T_3793 ? idx_0_99 : 7'h0))
-           : (_idx_fromRight_T_3976 ? idx_1_51 : 7'h0)
-             | (_idx_fromRight_T_3999 ? idx_0_107 : 7'h0))
-      : (_idx_fromRight_T_4804 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4806 = cnt_108 == 5'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_60 =
-    cnt_108 > 5'h2
-      ? (cnt_100 > 4'h2
-           ? (cnt_96 > 3'h2
-                ? (_idx_fromRight_T_3746 ? 7'h63 : 7'h0)
-                  | (cnt_94 == 2'h2 ? idx_0_95 : 7'h0)
-                : (_idx_fromRight_T_3782 ? idx_2_47 : 7'h0)
-                  | (_idx_fromRight_T_3793 ? idx_1_47 : 7'h0)
-                  | (_idx_fromRight_T_3804 ? idx_0_99 : 7'h0))
-           : (_idx_fromRight_T_3976 ? idx_2_51 : 7'h0)
-             | (_idx_fromRight_T_3999 ? idx_1_51 : 7'h0)
-             | (_idx_fromRight_T_4022 ? idx_0_107 : 7'h0))
-      : (_idx_fromRight_T_4804 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4807 = cnt_108 == 5'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_28 =
-    (|(cnt_108[4:2]))
-      ? ((|(cnt_100[3:2]))
-           ? (cnt_96[2]
-                ? 7'h63
-                : (_idx_fromRight_T_3782 ? 7'h67 : 7'h0)
-                  | (_idx_fromRight_T_3793 ? idx_2_47 : 7'h0)
-                  | (_idx_fromRight_T_3804 ? idx_1_47 : 7'h0)
-                  | (_idx_fromRight_T_3812 ? idx_0_99 : 7'h0))
-           : (_idx_fromRight_T_3976 ? idx_3_23 : 7'h0)
-             | (_idx_fromRight_T_3999 ? idx_2_51 : 7'h0)
-             | (_idx_fromRight_T_4022 ? idx_1_51 : 7'h0)
-             | (_idx_fromRight_T_4042 ? idx_0_107 : 7'h0))
-      : (_idx_fromRight_T_4804 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4808 = cnt_108 == 5'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_4_28 =
-    cnt_108 > 5'h4
-      ? (cnt_100 > 4'h4
-           ? (_idx_fromRight_T_3793 ? 7'h67 : 7'h0)
-             | (_idx_fromRight_T_3804 ? idx_2_47 : 7'h0)
-             | (_idx_fromRight_T_3812 ? idx_1_47 : 7'h0)
-             | (_idx_fromRight_T_3817 ? idx_0_99 : 7'h0)
-           : (_idx_fromRight_T_3976 ? idx_4_23 : 7'h0)
-             | (_idx_fromRight_T_3999 ? idx_3_23 : 7'h0)
-             | (_idx_fromRight_T_4022 ? idx_2_51 : 7'h0)
-             | (_idx_fromRight_T_4042 ? idx_1_51 : 7'h0)
-             | (_idx_fromRight_T_4059 ? idx_0_107 : 7'h0))
-      : (_idx_fromRight_T_4804 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4809 = cnt_108 == 5'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_5_28 =
-    cnt_108 > 5'h5
-      ? (cnt_100 > 4'h5
-           ? (_idx_fromRight_T_3804 ? 7'h67 : 7'h0)
-             | (_idx_fromRight_T_3812 ? idx_2_47 : 7'h0)
-             | (_idx_fromRight_T_3817 ? idx_1_47 : 7'h0)
-           : (_idx_fromRight_T_3976 ? idx_5_23 : 7'h0)
-             | (_idx_fromRight_T_3999 ? idx_4_23 : 7'h0)
-             | (_idx_fromRight_T_4022 ? idx_3_23 : 7'h0)
-             | (_idx_fromRight_T_4042 ? idx_2_51 : 7'h0)
-             | (_idx_fromRight_T_4059 ? idx_1_51 : 7'h0)
-             | (_idx_fromRight_T_4073 ? idx_0_107 : 7'h0))
-      : (_idx_fromRight_T_4804 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4810 = cnt_108 == 5'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_6_28 =
-    cnt_108 > 5'h6
-      ? (cnt_100 > 4'h6
-           ? (_idx_fromRight_T_3812 ? 7'h67 : 7'h0)
-             | (_idx_fromRight_T_3817 ? idx_2_47 : 7'h0)
-           : (_idx_fromRight_T_3976 ? idx_6_23 : 7'h0)
-             | (_idx_fromRight_T_3999 ? idx_5_23 : 7'h0)
-             | (_idx_fromRight_T_4022 ? idx_4_23 : 7'h0)
-             | (_idx_fromRight_T_4042 ? idx_3_23 : 7'h0)
-             | (_idx_fromRight_T_4059 ? idx_2_51 : 7'h0)
-             | (_idx_fromRight_T_4073 ? idx_1_51 : 7'h0)
-             | (_idx_fromRight_T_4084 ? idx_0_107 : 7'h0))
-      : (_idx_fromRight_T_4804 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4811 = cnt_108 == 5'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_7_12 =
-    (|(cnt_108[4:3]))
-      ? (cnt_100[3]
-           ? 7'h67
-           : (_idx_fromRight_T_3976 ? 7'h6F : 7'h0)
-             | (_idx_fromRight_T_3999 ? idx_6_23 : 7'h0)
-             | (_idx_fromRight_T_4022 ? idx_5_23 : 7'h0)
-             | (_idx_fromRight_T_4042 ? idx_4_23 : 7'h0)
-             | (_idx_fromRight_T_4059 ? idx_3_23 : 7'h0)
-             | (_idx_fromRight_T_4073 ? idx_2_51 : 7'h0)
-             | (_idx_fromRight_T_4084 ? idx_1_51 : 7'h0)
-             | (_idx_fromRight_T_4092 ? idx_0_107 : 7'h0))
-      : (_idx_fromRight_T_4804 ? idx_7_11 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4811 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4812 = cnt_108 == 5'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_8_12 =
-    cnt_108 > 5'h8
-      ? (_idx_fromRight_T_3999 ? 7'h6F : 7'h0) | (_idx_fromRight_T_4022 ? idx_6_23 : 7'h0)
-        | (_idx_fromRight_T_4042 ? idx_5_23 : 7'h0)
-        | (_idx_fromRight_T_4059 ? idx_4_23 : 7'h0)
-        | (_idx_fromRight_T_4073 ? idx_3_23 : 7'h0)
-        | (_idx_fromRight_T_4084 ? idx_2_51 : 7'h0)
-        | (_idx_fromRight_T_4092 ? idx_1_51 : 7'h0)
-        | (_idx_fromRight_T_4097 ? idx_0_107 : 7'h0)
-      : (_idx_fromRight_T_4804 ? idx_8_11 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_7_11 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4811 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4812 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4813 = cnt_108 == 5'h9;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_9_12 =
-    cnt_108 > 5'h9
-      ? (_idx_fromRight_T_4022 ? 7'h6F : 7'h0) | (_idx_fromRight_T_4042 ? idx_6_23 : 7'h0)
-        | (_idx_fromRight_T_4059 ? idx_5_23 : 7'h0)
-        | (_idx_fromRight_T_4073 ? idx_4_23 : 7'h0)
-        | (_idx_fromRight_T_4084 ? idx_3_23 : 7'h0)
-        | (_idx_fromRight_T_4092 ? idx_2_51 : 7'h0)
-        | (_idx_fromRight_T_4097 ? idx_1_51 : 7'h0)
-      : (_idx_fromRight_T_4804 ? idx_9_11 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_8_11 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_7_11 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4811 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4812 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4813 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4814 = cnt_108 == 5'hA;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_10_12 =
-    cnt_108 > 5'hA
-      ? (_idx_fromRight_T_4042 ? 7'h6F : 7'h0) | (_idx_fromRight_T_4059 ? idx_6_23 : 7'h0)
-        | (_idx_fromRight_T_4073 ? idx_5_23 : 7'h0)
-        | (_idx_fromRight_T_4084 ? idx_4_23 : 7'h0)
-        | (_idx_fromRight_T_4092 ? idx_3_23 : 7'h0)
-        | (_idx_fromRight_T_4097 ? idx_2_51 : 7'h0)
-      : (_idx_fromRight_T_4804 ? idx_10_11 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_9_11 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_8_11 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_7_11 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4811 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4812 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4813 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4814 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4815 = cnt_108 == 5'hB;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_11_12 =
-    cnt_108 > 5'hB
-      ? (_idx_fromRight_T_4059 ? 7'h6F : 7'h0) | (_idx_fromRight_T_4073 ? idx_6_23 : 7'h0)
-        | (_idx_fromRight_T_4084 ? idx_5_23 : 7'h0)
-        | (_idx_fromRight_T_4092 ? idx_4_23 : 7'h0)
-        | (_idx_fromRight_T_4097 ? idx_3_23 : 7'h0)
-      : (_idx_fromRight_T_4804 ? idx_11_11 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_10_11 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_9_11 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_8_11 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_7_11 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4811 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4812 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4813 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4814 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4815 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4816 = cnt_108 == 5'hC;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_12_12 =
-    cnt_108 > 5'hC
-      ? (_idx_fromRight_T_4073 ? 7'h6F : 7'h0) | (_idx_fromRight_T_4084 ? idx_6_23 : 7'h0)
-        | (_idx_fromRight_T_4092 ? idx_5_23 : 7'h0)
-        | (_idx_fromRight_T_4097 ? idx_4_23 : 7'h0)
-      : (_idx_fromRight_T_4804 ? idx_12_11 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_11_11 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_10_11 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_9_11 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_8_11 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_7_11 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4811 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4812 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4813 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4814 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4815 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4816 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4817 = cnt_108 == 5'hD;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_13_12 =
-    cnt_108 > 5'hD
-      ? (_idx_fromRight_T_4084 ? 7'h6F : 7'h0) | (_idx_fromRight_T_4092 ? idx_6_23 : 7'h0)
-        | (_idx_fromRight_T_4097 ? idx_5_23 : 7'h0)
-      : (_idx_fromRight_T_4804 ? idx_13_11 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_12_11 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_11_11 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_10_11 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_9_11 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_8_11 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_7_11 : 7'h0)
-        | (_idx_fromRight_T_4811 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4812 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4813 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4814 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4815 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4816 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4817 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_4818 = cnt_108 == 5'hE;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_14_12 =
-    cnt_108 > 5'hE
-      ? (_idx_fromRight_T_4092 ? 7'h6F : 7'h0) | (_idx_fromRight_T_4097 ? idx_6_23 : 7'h0)
-      : (_idx_fromRight_T_4804 ? idx_14_11 : 7'h0)
-        | (_idx_fromRight_T_4805 ? idx_13_11 : 7'h0)
-        | (_idx_fromRight_T_4806 ? idx_12_11 : 7'h0)
-        | (_idx_fromRight_T_4807 ? idx_11_11 : 7'h0)
-        | (_idx_fromRight_T_4808 ? idx_10_11 : 7'h0)
-        | (_idx_fromRight_T_4809 ? idx_9_11 : 7'h0)
-        | (_idx_fromRight_T_4810 ? idx_8_11 : 7'h0)
-        | (_idx_fromRight_T_4811 ? idx_7_11 : 7'h0)
-        | (_idx_fromRight_T_4812 ? idx_6_27 : 7'h0)
-        | (_idx_fromRight_T_4813 ? idx_5_27 : 7'h0)
-        | (_idx_fromRight_T_4814 ? idx_4_27 : 7'h0)
-        | (_idx_fromRight_T_4815 ? idx_3_27 : 7'h0)
-        | (_idx_fromRight_T_4816 ? idx_2_59 : 7'h0)
-        | (_idx_fromRight_T_4817 ? idx_1_59 : 7'h0)
-        | (_idx_fromRight_T_4818 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [5:0]         sum_124 =
-    {1'h0, cnt_108} + {1'h0, sum_123 > 5'h10 ? 5'h10 : sum_123};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_5195 = _cnt_T_187 == 5'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_0_125 =
-    (|_cnt_T_187)
-      ? ((|cnt_77)
-           ? ((|cnt_69)
-                ? ((|cnt_65)
-                     ? ((|cnt_63) ? {6'h20, ~(_midi_io_held[64])} : idx_0_64)
-                     : idx_0_68)
-                : idx_0_76)
-           : idx_0_92)
-      : idx_0_124;	// \\src\\main\\scala\\SynthTop.scala:22:20, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51
-  wire               _idx_fromRight_T_5196 = _cnt_T_187 == 5'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_1_61 =
-    (|(_cnt_T_187[4:1]))
-      ? ((|(cnt_77[4:1]))
-           ? ((|(cnt_69[3:1]))
-                ? ((|(cnt_65[2:1]))
-                     ? (cnt_63[1]
-                          ? 7'h41
-                          : (cnt_63 == 2'h0 ? 7'h43 : 7'h0)
-                            | (_idx_fromRight_T_2631 ? idx_0_64 : 7'h0))
-                     : (_idx_fromRight_T_2667 ? idx_1_32 : 7'h0)
-                       | (_idx_fromRight_T_2678 ? idx_0_68 : 7'h0))
-                : (_idx_fromRight_T_2861 ? idx_1_36 : 7'h0)
-                  | (_idx_fromRight_T_2884 ? idx_0_76 : 7'h0))
-           : (_idx_fromRight_T_3689 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5197 = _cnt_T_187 == 5'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_2_61 =
-    _cnt_T_187 > 5'h2
-      ? (cnt_77 > 5'h2
-           ? (cnt_69 > 4'h2
-                ? (cnt_65 > 3'h2
-                     ? (_idx_fromRight_T_2631 ? 7'h43 : 7'h0)
-                       | (cnt_63 == 2'h2 ? idx_0_64 : 7'h0)
-                     : (_idx_fromRight_T_2667 ? idx_2_32 : 7'h0)
-                       | (_idx_fromRight_T_2678 ? idx_1_32 : 7'h0)
-                       | (_idx_fromRight_T_2689 ? idx_0_68 : 7'h0))
-                : (_idx_fromRight_T_2861 ? idx_2_36 : 7'h0)
-                  | (_idx_fromRight_T_2884 ? idx_1_36 : 7'h0)
-                  | (_idx_fromRight_T_2907 ? idx_0_76 : 7'h0))
-           : (_idx_fromRight_T_3689 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5198 = _cnt_T_187 == 5'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_3_29 =
-    (|(_cnt_T_187[4:2]))
-      ? ((|(cnt_77[4:2]))
-           ? ((|(cnt_69[3:2]))
-                ? (cnt_65[2]
-                     ? 7'h43
-                     : (_idx_fromRight_T_2667 ? 7'h47 : 7'h0)
-                       | (_idx_fromRight_T_2678 ? idx_2_32 : 7'h0)
-                       | (_idx_fromRight_T_2689 ? idx_1_32 : 7'h0)
-                       | (_idx_fromRight_T_2697 ? idx_0_68 : 7'h0))
-                : (_idx_fromRight_T_2861 ? idx_3_16 : 7'h0)
-                  | (_idx_fromRight_T_2884 ? idx_2_36 : 7'h0)
-                  | (_idx_fromRight_T_2907 ? idx_1_36 : 7'h0)
-                  | (_idx_fromRight_T_2927 ? idx_0_76 : 7'h0))
-           : (_idx_fromRight_T_3689 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5199 = _cnt_T_187 == 5'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_4_29 =
-    _cnt_T_187 > 5'h4
-      ? (cnt_77 > 5'h4
-           ? (cnt_69 > 4'h4
-                ? (_idx_fromRight_T_2678 ? 7'h47 : 7'h0)
-                  | (_idx_fromRight_T_2689 ? idx_2_32 : 7'h0)
-                  | (_idx_fromRight_T_2697 ? idx_1_32 : 7'h0)
-                  | (_idx_fromRight_T_2702 ? idx_0_68 : 7'h0)
-                : (_idx_fromRight_T_2861 ? idx_4_16 : 7'h0)
-                  | (_idx_fromRight_T_2884 ? idx_3_16 : 7'h0)
-                  | (_idx_fromRight_T_2907 ? idx_2_36 : 7'h0)
-                  | (_idx_fromRight_T_2927 ? idx_1_36 : 7'h0)
-                  | (_idx_fromRight_T_2944 ? idx_0_76 : 7'h0))
-           : (_idx_fromRight_T_3689 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5200 = _cnt_T_187 == 5'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_5_29 =
-    _cnt_T_187 > 5'h5
-      ? (cnt_77 > 5'h5
-           ? (cnt_69 > 4'h5
-                ? (_idx_fromRight_T_2689 ? 7'h47 : 7'h0)
-                  | (_idx_fromRight_T_2697 ? idx_2_32 : 7'h0)
-                  | (_idx_fromRight_T_2702 ? idx_1_32 : 7'h0)
-                : (_idx_fromRight_T_2861 ? idx_5_16 : 7'h0)
-                  | (_idx_fromRight_T_2884 ? idx_4_16 : 7'h0)
-                  | (_idx_fromRight_T_2907 ? idx_3_16 : 7'h0)
-                  | (_idx_fromRight_T_2927 ? idx_2_36 : 7'h0)
-                  | (_idx_fromRight_T_2944 ? idx_1_36 : 7'h0)
-                  | (_idx_fromRight_T_2958 ? idx_0_76 : 7'h0))
-           : (_idx_fromRight_T_3689 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5201 = _cnt_T_187 == 5'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_6_29 =
-    _cnt_T_187 > 5'h6
-      ? (cnt_77 > 5'h6
-           ? (cnt_69 > 4'h6
-                ? (_idx_fromRight_T_2697 ? 7'h47 : 7'h0)
-                  | (_idx_fromRight_T_2702 ? idx_2_32 : 7'h0)
-                : (_idx_fromRight_T_2861 ? idx_6_16 : 7'h0)
-                  | (_idx_fromRight_T_2884 ? idx_5_16 : 7'h0)
-                  | (_idx_fromRight_T_2907 ? idx_4_16 : 7'h0)
-                  | (_idx_fromRight_T_2927 ? idx_3_16 : 7'h0)
-                  | (_idx_fromRight_T_2944 ? idx_2_36 : 7'h0)
-                  | (_idx_fromRight_T_2958 ? idx_1_36 : 7'h0)
-                  | (_idx_fromRight_T_2969 ? idx_0_76 : 7'h0))
-           : (_idx_fromRight_T_3689 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5202 = _cnt_T_187 == 5'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_7_13 =
-    (|(_cnt_T_187[4:3]))
-      ? ((|(cnt_77[4:3]))
-           ? (cnt_69[3]
-                ? 7'h47
-                : (_idx_fromRight_T_2861 ? 7'h4F : 7'h0)
-                  | (_idx_fromRight_T_2884 ? idx_6_16 : 7'h0)
-                  | (_idx_fromRight_T_2907 ? idx_5_16 : 7'h0)
-                  | (_idx_fromRight_T_2927 ? idx_4_16 : 7'h0)
-                  | (_idx_fromRight_T_2944 ? idx_3_16 : 7'h0)
-                  | (_idx_fromRight_T_2958 ? idx_2_36 : 7'h0)
-                  | (_idx_fromRight_T_2969 ? idx_1_36 : 7'h0)
-                  | (_idx_fromRight_T_2977 ? idx_0_76 : 7'h0))
-           : (_idx_fromRight_T_3689 ? idx_7_8 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3696 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_7_12 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5202 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5203 = _cnt_T_187 == 5'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_8_13 =
-    _cnt_T_187 > 5'h8
-      ? (cnt_77 > 5'h8
-           ? (_idx_fromRight_T_2884 ? 7'h4F : 7'h0)
-             | (_idx_fromRight_T_2907 ? idx_6_16 : 7'h0)
-             | (_idx_fromRight_T_2927 ? idx_5_16 : 7'h0)
-             | (_idx_fromRight_T_2944 ? idx_4_16 : 7'h0)
-             | (_idx_fromRight_T_2958 ? idx_3_16 : 7'h0)
-             | (_idx_fromRight_T_2969 ? idx_2_36 : 7'h0)
-             | (_idx_fromRight_T_2977 ? idx_1_36 : 7'h0)
-             | (_idx_fromRight_T_2982 ? idx_0_76 : 7'h0)
-           : (_idx_fromRight_T_3689 ? idx_8_8 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_7_8 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3696 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3697 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_8_12 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_7_12 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5202 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5203 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5204 = _cnt_T_187 == 5'h9;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_9_13 =
-    _cnt_T_187 > 5'h9
-      ? (cnt_77 > 5'h9
-           ? (_idx_fromRight_T_2907 ? 7'h4F : 7'h0)
-             | (_idx_fromRight_T_2927 ? idx_6_16 : 7'h0)
-             | (_idx_fromRight_T_2944 ? idx_5_16 : 7'h0)
-             | (_idx_fromRight_T_2958 ? idx_4_16 : 7'h0)
-             | (_idx_fromRight_T_2969 ? idx_3_16 : 7'h0)
-             | (_idx_fromRight_T_2977 ? idx_2_36 : 7'h0)
-             | (_idx_fromRight_T_2982 ? idx_1_36 : 7'h0)
-           : (_idx_fromRight_T_3689 ? idx_9_8 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_8_8 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_7_8 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3696 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3697 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3698 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_9_12 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_8_12 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_7_12 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5202 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5203 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5204 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5205 = _cnt_T_187 == 5'hA;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_10_13 =
-    _cnt_T_187 > 5'hA
-      ? (cnt_77 > 5'hA
-           ? (_idx_fromRight_T_2927 ? 7'h4F : 7'h0)
-             | (_idx_fromRight_T_2944 ? idx_6_16 : 7'h0)
-             | (_idx_fromRight_T_2958 ? idx_5_16 : 7'h0)
-             | (_idx_fromRight_T_2969 ? idx_4_16 : 7'h0)
-             | (_idx_fromRight_T_2977 ? idx_3_16 : 7'h0)
-             | (_idx_fromRight_T_2982 ? idx_2_36 : 7'h0)
-           : (_idx_fromRight_T_3689 ? idx_10_8 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_9_8 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_8_8 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_7_8 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3696 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3697 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3698 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3699 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_10_12 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_9_12 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_8_12 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_7_12 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5202 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5203 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5204 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5205 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5206 = _cnt_T_187 == 5'hB;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_11_13 =
-    _cnt_T_187 > 5'hB
-      ? (cnt_77 > 5'hB
-           ? (_idx_fromRight_T_2944 ? 7'h4F : 7'h0)
-             | (_idx_fromRight_T_2958 ? idx_6_16 : 7'h0)
-             | (_idx_fromRight_T_2969 ? idx_5_16 : 7'h0)
-             | (_idx_fromRight_T_2977 ? idx_4_16 : 7'h0)
-             | (_idx_fromRight_T_2982 ? idx_3_16 : 7'h0)
-           : (_idx_fromRight_T_3689 ? idx_11_8 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_10_8 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_9_8 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_8_8 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_7_8 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3696 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3697 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3698 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3699 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3700 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_11_12 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_10_12 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_9_12 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_8_12 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_7_12 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5202 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5203 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5204 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5205 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5206 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5207 = _cnt_T_187 == 5'hC;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_12_13 =
-    _cnt_T_187 > 5'hC
-      ? (cnt_77 > 5'hC
-           ? (_idx_fromRight_T_2958 ? 7'h4F : 7'h0)
-             | (_idx_fromRight_T_2969 ? idx_6_16 : 7'h0)
-             | (_idx_fromRight_T_2977 ? idx_5_16 : 7'h0)
-             | (_idx_fromRight_T_2982 ? idx_4_16 : 7'h0)
-           : (_idx_fromRight_T_3689 ? idx_12_8 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_11_8 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_10_8 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_9_8 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_8_8 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_7_8 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3696 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3697 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3698 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3699 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3700 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3701 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_12_12 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_11_12 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_10_12 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_9_12 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_8_12 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_7_12 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5202 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5203 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5204 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5205 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5206 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5207 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5208 = _cnt_T_187 == 5'hD;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_13_13 =
-    _cnt_T_187 > 5'hD
-      ? (cnt_77 > 5'hD
-           ? (_idx_fromRight_T_2969 ? 7'h4F : 7'h0)
-             | (_idx_fromRight_T_2977 ? idx_6_16 : 7'h0)
-             | (_idx_fromRight_T_2982 ? idx_5_16 : 7'h0)
-           : (_idx_fromRight_T_3689 ? idx_13_8 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_12_8 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_11_8 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_10_8 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_9_8 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_8_8 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_7_8 : 7'h0)
-             | (_idx_fromRight_T_3696 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3697 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3698 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3699 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3700 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3701 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3702 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_13_12 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_12_12 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_11_12 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_10_12 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_9_12 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_8_12 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_7_12 : 7'h0)
-        | (_idx_fromRight_T_5202 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5203 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5204 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5205 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5206 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5207 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5208 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire               _idx_fromRight_T_5209 = _cnt_T_187 == 5'hE;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         idx_14_13 =
-    _cnt_T_187 > 5'hE
-      ? (cnt_77 > 5'hE
-           ? (_idx_fromRight_T_2977 ? 7'h4F : 7'h0)
-             | (_idx_fromRight_T_2982 ? idx_6_16 : 7'h0)
-           : (_idx_fromRight_T_3689 ? idx_14_8 : 7'h0)
-             | (_idx_fromRight_T_3690 ? idx_13_8 : 7'h0)
-             | (_idx_fromRight_T_3691 ? idx_12_8 : 7'h0)
-             | (_idx_fromRight_T_3692 ? idx_11_8 : 7'h0)
-             | (_idx_fromRight_T_3693 ? idx_10_8 : 7'h0)
-             | (_idx_fromRight_T_3694 ? idx_9_8 : 7'h0)
-             | (_idx_fromRight_T_3695 ? idx_8_8 : 7'h0)
-             | (_idx_fromRight_T_3696 ? idx_7_8 : 7'h0)
-             | (_idx_fromRight_T_3697 ? idx_6_20 : 7'h0)
-             | (_idx_fromRight_T_3698 ? idx_5_20 : 7'h0)
-             | (_idx_fromRight_T_3699 ? idx_4_20 : 7'h0)
-             | (_idx_fromRight_T_3700 ? idx_3_20 : 7'h0)
-             | (_idx_fromRight_T_3701 ? idx_2_44 : 7'h0)
-             | (_idx_fromRight_T_3702 ? idx_1_44 : 7'h0)
-             | (_idx_fromRight_T_3703 ? idx_0_92 : 7'h0))
-      : (_idx_fromRight_T_5195 ? idx_14_12 : 7'h0)
-        | (_idx_fromRight_T_5196 ? idx_13_12 : 7'h0)
-        | (_idx_fromRight_T_5197 ? idx_12_12 : 7'h0)
-        | (_idx_fromRight_T_5198 ? idx_11_12 : 7'h0)
-        | (_idx_fromRight_T_5199 ? idx_10_12 : 7'h0)
-        | (_idx_fromRight_T_5200 ? idx_9_12 : 7'h0)
-        | (_idx_fromRight_T_5201 ? idx_8_12 : 7'h0)
-        | (_idx_fromRight_T_5202 ? idx_7_12 : 7'h0)
-        | (_idx_fromRight_T_5203 ? idx_6_28 : 7'h0)
-        | (_idx_fromRight_T_5204 ? idx_5_28 : 7'h0)
-        | (_idx_fromRight_T_5205 ? idx_4_28 : 7'h0)
-        | (_idx_fromRight_T_5206 ? idx_3_28 : 7'h0)
-        | (_idx_fromRight_T_5207 ? idx_2_60 : 7'h0)
-        | (_idx_fromRight_T_5208 ? idx_1_60 : 7'h0)
-        | (_idx_fromRight_T_5209 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [5:0]         sum_125 =
-    {1'h0, _cnt_T_187} + {1'h0, sum_124 > 6'h10 ? 5'h10 : sum_124[4:0]};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire               _idx_fromRight_T_5586 = _cnt_T_125 == 5'h0;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5587 = _cnt_T_125 == 5'h1;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5588 = _cnt_T_125 == 5'h2;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5589 = _cnt_T_125 == 5'h3;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5590 = _cnt_T_125 == 5'h4;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5591 = _cnt_T_125 == 5'h5;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5592 = _cnt_T_125 == 5'h6;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5593 = _cnt_T_125 == 5'h7;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5594 = _cnt_T_125 == 5'h8;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5595 = _cnt_T_125 == 5'h9;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5596 = _cnt_T_125 == 5'hA;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5597 = _cnt_T_125 == 5'hB;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5598 = _cnt_T_125 == 5'hC;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5599 = _cnt_T_125 == 5'hD;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire               _idx_fromRight_T_5600 = _cnt_T_125 == 5'hE;	// \\src\\main\\scala\\Utils.scala:80:30, :85:20
-  wire [6:0]         heldNotes_15 =
-    _cnt_T_125[4]
-      ? (_cnt_T_61[4]
-           ? (cnt_14[4]
-                ? 7'hF
-                : (_idx_fromRight_T_1068 ? 7'h1F : 7'h0)
-                  | (_idx_fromRight_T_1069 ? idx_14_1 : 7'h0)
-                  | (_idx_fromRight_T_1070 ? idx_13_1 : 7'h0)
-                  | (_idx_fromRight_T_1071 ? idx_12_1 : 7'h0)
-                  | (_idx_fromRight_T_1072 ? idx_11_1 : 7'h0)
-                  | (_idx_fromRight_T_1073 ? idx_10_1 : 7'h0)
-                  | (_idx_fromRight_T_1074 ? idx_9_1 : 7'h0)
-                  | (_idx_fromRight_T_1075 ? idx_8_1 : 7'h0)
-                  | (_idx_fromRight_T_1076 ? idx_7_1 : 7'h0)
-                  | (_idx_fromRight_T_1077 ? idx_6_5 : 7'h0)
-                  | (_idx_fromRight_T_1078 ? idx_5_5 : 7'h0)
-                  | (_idx_fromRight_T_1079 ? idx_4_5 : 7'h0)
-                  | (_idx_fromRight_T_1080 ? idx_3_5 : 7'h0)
-                  | (_idx_fromRight_T_1081 ? idx_2_13 : 7'h0)
-                  | (_idx_fromRight_T_1082 ? idx_1_13 : 7'h0)
-                  | (cnt_14 == 5'hF ? idx_0_29 : 7'h0))
-           : (_idx_fromRight_T_2574
-                ? (cnt_45[4]
-                     ? 7'h2F
-                     : (_idx_fromRight_T_2183 ? 7'h3F : 7'h0)
-                       | (_idx_fromRight_T_2184 ? idx_14_4 : 7'h0)
-                       | (_idx_fromRight_T_2185 ? idx_13_4 : 7'h0)
-                       | (_idx_fromRight_T_2186 ? idx_12_4 : 7'h0)
-                       | (_idx_fromRight_T_2187 ? idx_11_4 : 7'h0)
-                       | (_idx_fromRight_T_2188 ? idx_10_4 : 7'h0)
-                       | (_idx_fromRight_T_2189 ? idx_9_4 : 7'h0)
-                       | (_idx_fromRight_T_2190 ? idx_8_4 : 7'h0)
-                       | (_idx_fromRight_T_2191 ? idx_7_4 : 7'h0)
-                       | (_idx_fromRight_T_2192 ? idx_6_12 : 7'h0)
-                       | (_idx_fromRight_T_2193 ? idx_5_12 : 7'h0)
-                       | (_idx_fromRight_T_2194 ? idx_4_12 : 7'h0)
-                       | (_idx_fromRight_T_2195 ? idx_3_12 : 7'h0)
-                       | (_idx_fromRight_T_2196 ? idx_2_28 : 7'h0)
-                       | (_idx_fromRight_T_2197 ? idx_1_28 : 7'h0)
-                       | (cnt_45 == 5'hF ? idx_0_60 : 7'h0))
-                : 7'h0) | (_idx_fromRight_T_2575 ? idx_14_5 : 7'h0)
-             | (_idx_fromRight_T_2576 ? idx_13_5 : 7'h0)
-             | (_idx_fromRight_T_2577 ? idx_12_5 : 7'h0)
-             | (_idx_fromRight_T_2578 ? idx_11_5 : 7'h0)
-             | (_idx_fromRight_T_2579 ? idx_10_5 : 7'h0)
-             | (_idx_fromRight_T_2580 ? idx_9_5 : 7'h0)
-             | (_idx_fromRight_T_2581 ? idx_8_5 : 7'h0)
-             | (_idx_fromRight_T_2582 ? idx_7_5 : 7'h0)
-             | (_idx_fromRight_T_2583 ? idx_6_13 : 7'h0)
-             | (_idx_fromRight_T_2584 ? idx_5_13 : 7'h0)
-             | (_idx_fromRight_T_2585 ? idx_4_13 : 7'h0)
-             | (_idx_fromRight_T_2586 ? idx_3_13 : 7'h0)
-             | (_idx_fromRight_T_2587 ? idx_2_29 : 7'h0)
-             | (_idx_fromRight_T_2588 ? idx_1_29 : 7'h0)
-             | (_cnt_T_61 == 5'hF ? idx_0_61 : 7'h0))
-      : (_idx_fromRight_T_5586
-           ? (_cnt_T_187[4]
-                ? (cnt_77[4]
-                     ? 7'h4F
-                     : (_idx_fromRight_T_3689 ? 7'h5F : 7'h0)
-                       | (_idx_fromRight_T_3690 ? idx_14_8 : 7'h0)
-                       | (_idx_fromRight_T_3691 ? idx_13_8 : 7'h0)
-                       | (_idx_fromRight_T_3692 ? idx_12_8 : 7'h0)
-                       | (_idx_fromRight_T_3693 ? idx_11_8 : 7'h0)
-                       | (_idx_fromRight_T_3694 ? idx_10_8 : 7'h0)
-                       | (_idx_fromRight_T_3695 ? idx_9_8 : 7'h0)
-                       | (_idx_fromRight_T_3696 ? idx_8_8 : 7'h0)
-                       | (_idx_fromRight_T_3697 ? idx_7_8 : 7'h0)
-                       | (_idx_fromRight_T_3698 ? idx_6_20 : 7'h0)
-                       | (_idx_fromRight_T_3699 ? idx_5_20 : 7'h0)
-                       | (_idx_fromRight_T_3700 ? idx_4_20 : 7'h0)
-                       | (_idx_fromRight_T_3701 ? idx_3_20 : 7'h0)
-                       | (_idx_fromRight_T_3702 ? idx_2_44 : 7'h0)
-                       | (_idx_fromRight_T_3703 ? idx_1_44 : 7'h0)
-                       | (cnt_77 == 5'hF ? idx_0_92 : 7'h0))
-                : (_idx_fromRight_T_5195
-                     ? (cnt_108[4]
-                          ? 7'h6F
-                          : {7{_idx_fromRight_T_4804}}
-                            | (_idx_fromRight_T_4805 ? idx_14_11 : 7'h0)
-                            | (_idx_fromRight_T_4806 ? idx_13_11 : 7'h0)
-                            | (_idx_fromRight_T_4807 ? idx_12_11 : 7'h0)
-                            | (_idx_fromRight_T_4808 ? idx_11_11 : 7'h0)
-                            | (_idx_fromRight_T_4809 ? idx_10_11 : 7'h0)
-                            | (_idx_fromRight_T_4810 ? idx_9_11 : 7'h0)
-                            | (_idx_fromRight_T_4811 ? idx_8_11 : 7'h0)
-                            | (_idx_fromRight_T_4812 ? idx_7_11 : 7'h0)
-                            | (_idx_fromRight_T_4813 ? idx_6_27 : 7'h0)
-                            | (_idx_fromRight_T_4814 ? idx_5_27 : 7'h0)
-                            | (_idx_fromRight_T_4815 ? idx_4_27 : 7'h0)
-                            | (_idx_fromRight_T_4816 ? idx_3_27 : 7'h0)
-                            | (_idx_fromRight_T_4817 ? idx_2_59 : 7'h0)
-                            | (_idx_fromRight_T_4818 ? idx_1_59 : 7'h0)
-                            | (cnt_108 == 5'hF ? idx_0_123 : 7'h0))
-                     : 7'h0) | (_idx_fromRight_T_5196 ? idx_14_12 : 7'h0)
-                  | (_idx_fromRight_T_5197 ? idx_13_12 : 7'h0)
-                  | (_idx_fromRight_T_5198 ? idx_12_12 : 7'h0)
-                  | (_idx_fromRight_T_5199 ? idx_11_12 : 7'h0)
-                  | (_idx_fromRight_T_5200 ? idx_10_12 : 7'h0)
-                  | (_idx_fromRight_T_5201 ? idx_9_12 : 7'h0)
-                  | (_idx_fromRight_T_5202 ? idx_8_12 : 7'h0)
-                  | (_idx_fromRight_T_5203 ? idx_7_12 : 7'h0)
-                  | (_idx_fromRight_T_5204 ? idx_6_28 : 7'h0)
-                  | (_idx_fromRight_T_5205 ? idx_5_28 : 7'h0)
-                  | (_idx_fromRight_T_5206 ? idx_4_28 : 7'h0)
-                  | (_idx_fromRight_T_5207 ? idx_3_28 : 7'h0)
-                  | (_idx_fromRight_T_5208 ? idx_2_60 : 7'h0)
-                  | (_idx_fromRight_T_5209 ? idx_1_60 : 7'h0)
-                  | (_cnt_T_187 == 5'hF ? idx_0_124 : 7'h0))
-           : 7'h0) | (_idx_fromRight_T_5587 ? idx_14_13 : 7'h0)
-        | (_idx_fromRight_T_5588 ? idx_13_13 : 7'h0)
-        | (_idx_fromRight_T_5589 ? idx_12_13 : 7'h0)
-        | (_idx_fromRight_T_5590 ? idx_11_13 : 7'h0)
-        | (_idx_fromRight_T_5591 ? idx_10_13 : 7'h0)
-        | (_idx_fromRight_T_5592 ? idx_9_13 : 7'h0)
-        | (_idx_fromRight_T_5593 ? idx_8_13 : 7'h0)
-        | (_idx_fromRight_T_5594 ? idx_7_13 : 7'h0)
-        | (_idx_fromRight_T_5595 ? idx_6_29 : 7'h0)
-        | (_idx_fromRight_T_5596 ? idx_5_29 : 7'h0)
-        | (_idx_fromRight_T_5597 ? idx_4_29 : 7'h0)
-        | (_idx_fromRight_T_5598 ? idx_3_29 : 7'h0)
-        | (_idx_fromRight_T_5599 ? idx_2_61 : 7'h0)
-        | (_idx_fromRight_T_5600 ? idx_1_61 : 7'h0)
-        | (_cnt_T_125 == 5'hF ? idx_0_125 : 7'h0);	// \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, src/main/scala/chisel3/util/Mux.scala:30:73
-  wire [5:0]         sum_126 =
-    {1'h0, _cnt_T_125} + {1'h0, sum_125 > 6'h10 ? 5'h10 : sum_125[4:0]};	// \\src\\main\\scala\\Utils.scala:80:30, :84:23, :85:{20,25}
-  wire [4:0]         _cnt_T_253 = sum_126 > 6'h10 ? 5'h10 : sum_126[4:0];	// \\src\\main\\scala\\Utils.scala:84:23, :85:{20,25}
-  MidiTop midi (	// \\src\\main\\scala\\SynthTop.scala:22:20
+      32'h8};	// \\src\\main\\scala\\SynthTop.scala:92:34
+  reg  [6:0]         nSetBits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:84:25
+  reg  [6:0]         nSetBits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:84:25
+  reg  [6:0]         nSetBits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:84:25
+  reg  [6:0]         nSetBits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:84:25
+  reg                nSetBits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:84:25
+  reg                nSetBits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:84:25
+  reg                nSetBits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:84:25
+  reg                nSetBits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:84:25
+  wire [31:0]        _synths_0_3_io_frequencyHz_T =
+    nSetBits_valid_0 ? _GEN[nSetBits_idx_0] : 32'h0;	// \\src\\main\\scala\\SynthTop.scala:84:25, :92:34
+  wire [31:0]        _synths_1_3_io_frequencyHz_T =
+    nSetBits_valid_1 ? _GEN[nSetBits_idx_1] : 32'h0;	// \\src\\main\\scala\\SynthTop.scala:84:25, :92:34
+  wire [31:0]        _synths_2_3_io_frequencyHz_T =
+    nSetBits_valid_2 ? _GEN[nSetBits_idx_2] : 32'h0;	// \\src\\main\\scala\\SynthTop.scala:84:25, :92:34
+  wire [31:0]        _synths_3_3_io_frequencyHz_T =
+    nSetBits_valid_3 ? _GEN[nSetBits_idx_3] : 32'h0;	// \\src\\main\\scala\\SynthTop.scala:84:25, :92:34
+  always @(posedge clock) begin	// \\src\\main\\scala\\SynthTop.scala:29:7
+    if (reset) begin	// \\src\\main\\scala\\SynthTop.scala:29:7
+      state <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22
+      nSetBits_idx_0 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:84:{25,38}
+      nSetBits_idx_1 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:84:{25,38}
+      nSetBits_idx_2 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:84:{25,38}
+      nSetBits_idx_3 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:84:{25,38}
+      nSetBits_valid_0 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:29:7, :84:25
+      nSetBits_valid_1 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:29:7, :84:25
+      nSetBits_valid_2 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:29:7, :84:25
+      nSetBits_valid_3 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:29:7, :84:25
+    end
+    else begin	// \\src\\main\\scala\\SynthTop.scala:29:7
+      automatic logic _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:84:25, :100:17, :108:40, :109:18
+      _GEN_0 = state & _firstNSetBits_io_out_valid;	// \\src\\main\\scala\\SynthTop.scala:54:29, :81:22, :84:25, :100:17, :108:40, :109:18
+      if (state)	// \\src\\main\\scala\\SynthTop.scala:81:22
+        state <= ~_GEN_0 & state;	// \\src\\main\\scala\\SynthTop.scala:81:22, :84:25, :100:17, :108:40, :109:18, :110:15
+      else	// \\src\\main\\scala\\SynthTop.scala:81:22
+        state <= _firstNSetBits_io_in_ready & ~state | state;	// \\src\\main\\scala\\SynthTop.scala:54:29, :81:22, :100:17, :103:38, :104:15, src/main/scala/chisel3/util/Decoupled.scala:51:35
+      if (state & _GEN_0) begin	// \\src\\main\\scala\\SynthTop.scala:81:22, :84:25, :100:17, :108:40, :109:18
+        nSetBits_idx_0 <= _firstNSetBits_io_out_bits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:54:29, :84:25
+        nSetBits_idx_1 <= _firstNSetBits_io_out_bits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:54:29, :84:25
+        nSetBits_idx_2 <= _firstNSetBits_io_out_bits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:54:29, :84:25
+        nSetBits_idx_3 <= _firstNSetBits_io_out_bits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:54:29, :84:25
+        nSetBits_valid_0 <= _firstNSetBits_io_out_bits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:54:29, :84:25
+        nSetBits_valid_1 <= _firstNSetBits_io_out_bits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:54:29, :84:25
+        nSetBits_valid_2 <= _firstNSetBits_io_out_bits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:54:29, :84:25
+        nSetBits_valid_3 <= _firstNSetBits_io_out_bits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:54:29, :84:25
+      end
+    end
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SynthTop.scala:29:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:29:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:29:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\SynthTop.scala:29:7
+      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\SynthTop.scala:29:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:29:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:29:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SynthTop.scala:29:7
+        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
+          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\SynthTop.scala:29:7
+        end	// \\src\\main\\scala\\SynthTop.scala:29:7
+        state = _RANDOM[1'h0][0];	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22
+        nSetBits_idx_0 = _RANDOM[1'h0][7:1];	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22, :84:25
+        nSetBits_idx_1 = _RANDOM[1'h0][14:8];	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22, :84:25
+        nSetBits_idx_2 = _RANDOM[1'h0][21:15];	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22, :84:25
+        nSetBits_idx_3 = _RANDOM[1'h0][28:22];	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22, :84:25
+        nSetBits_valid_0 = _RANDOM[1'h0][29];	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22, :84:25
+        nSetBits_valid_1 = _RANDOM[1'h0][30];	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22, :84:25
+        nSetBits_valid_2 = _RANDOM[1'h0][31];	// \\src\\main\\scala\\SynthTop.scala:29:7, :81:22, :84:25
+        nSetBits_valid_3 = _RANDOM[1'h1][0];	// \\src\\main\\scala\\SynthTop.scala:29:7, :84:25
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:29:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:29:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  MidiTop midi (	// \\src\\main\\scala\\SynthTop.scala:35:20
     .clock    (clock),
     .reset    (reset),
     .io_rx    (io_rx),
     .io_data1 (io_heldBin),
     .io_held  (_midi_io_held)
   );
-  PWMGenerator pwm (	// \\src\\main\\scala\\SynthTop.scala:59:19
+  PWMGenerator pwm (	// \\src\\main\\scala\\SynthTop.scala:45:19
     .clock         (clock),
     .reset         (reset),
-    .io_samples_0  (_synth_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_1  (_synth_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_2  (_synth_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_3  (_synth_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_4  (_synth_4_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_5  (_synth_5_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_6  (_synth_6_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_7  (_synth_7_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_8  (_synth_8_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_9  (_synth_9_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_10 (_synth_10_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_11 (_synth_11_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_12 (_synth_12_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_13 (_synth_13_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_14 (_synth_14_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_samples_15 (_synth_15_io_sample),	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .io_PWM_en     (|_midi_io_held),	// \\src\\main\\scala\\SynthTop.scala:22:20, :92:33
+    .io_samples_0  (_synths_0_0_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_1  (_synths_1_0_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_2  (_synths_2_0_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_3  (_synths_3_0_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_4  (_synths_0_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_5  (_synths_1_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_6  (_synths_2_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_7  (_synths_3_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_8  (_synths_0_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_9  (_synths_1_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_10 (_synths_2_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_11 (_synths_3_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_12 (_synths_0_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_13 (_synths_1_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_14 (_synths_2_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_samples_15 (_synths_3_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .io_PWM_en     (|_midi_io_held),	// \\src\\main\\scala\\SynthTop.scala:35:20, :115:33
     .io_PWM_out    (io_out)
   );
-  Synth synth (	// \\src\\main\\scala\\SynthTop.scala:76:25
-    .clock          (clock),
-    .reset          (reset),
-    .io_frequencyHz
-      ((|_cnt_T_253)
-         ? _GEN[(|_cnt_T_125)
-                  ? ((|_cnt_T_61)
-                       ? ((|cnt_14)
-                            ? ((|cnt_6)
-                                 ? ((|cnt_2)
-                                      ? ((|cnt) ? {6'h0, ~(_midi_io_held[0])} : idx_0_1)
-                                      : idx_0_5)
-                                 : idx_0_13)
-                            : idx_0_29)
-                       : idx_0_61)
-                  : idx_0_125]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:22:20, :83:34, \\src\\main\\scala\\Utils.scala:82:{24,31}, :85:20, :90:51, :97:63
-    .io_sample      (_synth_io_sample)
+  FirstNSetBits firstNSetBits (	// \\src\\main\\scala\\SynthTop.scala:54:29
+    .clock               (clock),
+    .reset               (reset),
+    .io_in_ready         (_firstNSetBits_io_in_ready),
+    .io_in_valid         (~state),	// \\src\\main\\scala\\SynthTop.scala:81:22, :100:17
+    .io_in_bits          (_midi_io_held),	// \\src\\main\\scala\\SynthTop.scala:35:20
+    .io_out_ready        (state & _firstNSetBits_io_out_valid),	// \\src\\main\\scala\\SynthTop.scala:54:29, :81:22, :100:17, src/main/scala/chisel3/util/Decoupled.scala:83:20
+    .io_out_valid        (_firstNSetBits_io_out_valid),
+    .io_out_bits_idx_0   (_firstNSetBits_io_out_bits_idx_0),
+    .io_out_bits_idx_1   (_firstNSetBits_io_out_bits_idx_1),
+    .io_out_bits_idx_2   (_firstNSetBits_io_out_bits_idx_2),
+    .io_out_bits_idx_3   (_firstNSetBits_io_out_bits_idx_3),
+    .io_out_bits_valid_0 (_firstNSetBits_io_out_bits_valid_0),
+    .io_out_bits_valid_1 (_firstNSetBits_io_out_bits_valid_1),
+    .io_out_bits_valid_2 (_firstNSetBits_io_out_bits_valid_2),
+    .io_out_bits_valid_3 (_firstNSetBits_io_out_bits_valid_3)
   );
-  Synth synth_1 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth synths_0_0 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      ((|(_cnt_T_253[4:1]))
-         ? _GEN[(|(_cnt_T_125[4:1]))
-                  ? ((|(_cnt_T_61[4:1]))
-                       ? ((|(cnt_14[4:1]))
-                            ? ((|(cnt_6[3:1]))
-                                 ? ((|(cnt_2[2:1]))
-                                      ? (cnt[1]
-                                           ? 7'h1
-                                           : (cnt == 2'h0 ? 7'h3 : 7'h0)
-                                             | (_idx_fromRight_T_10 ? idx_0_1 : 7'h0))
-                                      : (_idx_fromRight_T_46 ? idx_1_1 : 7'h0)
-                                        | (_idx_fromRight_T_57 ? idx_0_5 : 7'h0))
-                                 : (_idx_fromRight_T_240 ? idx_1_5 : 7'h0)
-                                   | (_idx_fromRight_T_263 ? idx_0_13 : 7'h0))
-                            : (_idx_fromRight_T_1068 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_1_io_sample)
+    .io_frequencyHz (_synths_0_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_0_0_io_sample)
   );
-  Synth synth_2 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_1 synths_0_1 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'h2
-         ? _GEN[_cnt_T_125 > 5'h2
-                  ? (_cnt_T_61 > 5'h2
-                       ? (cnt_14 > 5'h2
-                            ? (cnt_6 > 4'h2
-                                 ? (cnt_2 > 3'h2
-                                      ? (_idx_fromRight_T_10 ? 7'h3 : 7'h0)
-                                        | (cnt == 2'h2 ? idx_0_1 : 7'h0)
-                                      : (_idx_fromRight_T_46 ? idx_2_1 : 7'h0)
-                                        | (_idx_fromRight_T_57 ? idx_1_1 : 7'h0)
-                                        | (_idx_fromRight_T_68 ? idx_0_5 : 7'h0))
-                                 : (_idx_fromRight_T_240 ? idx_2_5 : 7'h0)
-                                   | (_idx_fromRight_T_263 ? idx_1_5 : 7'h0)
-                                   | (_idx_fromRight_T_286 ? idx_0_13 : 7'h0))
-                            : (_idx_fromRight_T_1068 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:{20,25}, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_2_io_sample)
+    .io_frequencyHz (_synths_0_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_0_1_io_sample)
   );
-  Synth synth_3 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_2 synths_0_2 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      ((|(_cnt_T_253[4:2]))
-         ? _GEN[(|(_cnt_T_125[4:2]))
-                  ? ((|(_cnt_T_61[4:2]))
-                       ? ((|(cnt_14[4:2]))
-                            ? ((|(cnt_6[3:2]))
-                                 ? (cnt_2[2]
-                                      ? 7'h3
-                                      : (_idx_fromRight_T_46 ? 7'h7 : 7'h0)
-                                        | (_idx_fromRight_T_57 ? idx_2_1 : 7'h0)
-                                        | (_idx_fromRight_T_68 ? idx_1_1 : 7'h0)
-                                        | (_idx_fromRight_T_76 ? idx_0_5 : 7'h0))
-                                 : (_idx_fromRight_T_240 ? idx_3_1 : 7'h0)
-                                   | (_idx_fromRight_T_263 ? idx_2_5 : 7'h0)
-                                   | (_idx_fromRight_T_286 ? idx_1_5 : 7'h0)
-                                   | (_idx_fromRight_T_306 ? idx_0_13 : 7'h0))
-                            : (_idx_fromRight_T_1068 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_3_io_sample)
+    .io_frequencyHz (_synths_0_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_0_2_io_sample)
   );
-  Synth_4 synth_4 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_3 synths_0_3 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'h4
-         ? _GEN[_cnt_T_125 > 5'h4
-                  ? (_cnt_T_61 > 5'h4
-                       ? (cnt_14 > 5'h4
-                            ? (cnt_6 > 4'h4
-                                 ? (_idx_fromRight_T_57 ? 7'h7 : 7'h0)
-                                   | (_idx_fromRight_T_68 ? idx_2_1 : 7'h0)
-                                   | (_idx_fromRight_T_76 ? idx_1_1 : 7'h0)
-                                   | (_idx_fromRight_T_81 ? idx_0_5 : 7'h0)
-                                 : (_idx_fromRight_T_240 ? idx_4_1 : 7'h0)
-                                   | (_idx_fromRight_T_263 ? idx_3_1 : 7'h0)
-                                   | (_idx_fromRight_T_286 ? idx_2_5 : 7'h0)
-                                   | (_idx_fromRight_T_306 ? idx_1_5 : 7'h0)
-                                   | (_idx_fromRight_T_323 ? idx_0_13 : 7'h0))
-                            : (_idx_fromRight_T_1068 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_4_io_sample)
+    .io_frequencyHz (_synths_0_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_0_3_io_sample)
   );
-  Synth_4 synth_5 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth synths_1_0 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'h5
-         ? _GEN[_cnt_T_125 > 5'h5
-                  ? (_cnt_T_61 > 5'h5
-                       ? (cnt_14 > 5'h5
-                            ? (cnt_6 > 4'h5
-                                 ? (_idx_fromRight_T_68 ? 7'h7 : 7'h0)
-                                   | (_idx_fromRight_T_76 ? idx_2_1 : 7'h0)
-                                   | (_idx_fromRight_T_81 ? idx_1_1 : 7'h0)
-                                 : (_idx_fromRight_T_240 ? idx_5_1 : 7'h0)
-                                   | (_idx_fromRight_T_263 ? idx_4_1 : 7'h0)
-                                   | (_idx_fromRight_T_286 ? idx_3_1 : 7'h0)
-                                   | (_idx_fromRight_T_306 ? idx_2_5 : 7'h0)
-                                   | (_idx_fromRight_T_323 ? idx_1_5 : 7'h0)
-                                   | (_idx_fromRight_T_337 ? idx_0_13 : 7'h0))
-                            : (_idx_fromRight_T_1068 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_5_io_sample)
+    .io_frequencyHz (_synths_1_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_1_0_io_sample)
   );
-  Synth_4 synth_6 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_1 synths_1_1 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'h6
-         ? _GEN[_cnt_T_125 > 5'h6
-                  ? (_cnt_T_61 > 5'h6
-                       ? (cnt_14 > 5'h6
-                            ? (cnt_6 > 4'h6
-                                 ? (_idx_fromRight_T_76 ? 7'h7 : 7'h0)
-                                   | (_idx_fromRight_T_81 ? idx_2_1 : 7'h0)
-                                 : (_idx_fromRight_T_240 ? idx_6_1 : 7'h0)
-                                   | (_idx_fromRight_T_263 ? idx_5_1 : 7'h0)
-                                   | (_idx_fromRight_T_286 ? idx_4_1 : 7'h0)
-                                   | (_idx_fromRight_T_306 ? idx_3_1 : 7'h0)
-                                   | (_idx_fromRight_T_323 ? idx_2_5 : 7'h0)
-                                   | (_idx_fromRight_T_337 ? idx_1_5 : 7'h0)
-                                   | (_idx_fromRight_T_348 ? idx_0_13 : 7'h0))
-                            : (_idx_fromRight_T_1068 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_6_io_sample)
+    .io_frequencyHz (_synths_1_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_1_1_io_sample)
   );
-  Synth_4 synth_7 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_2 synths_1_2 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      ((|(_cnt_T_253[4:3]))
-         ? _GEN[(|(_cnt_T_125[4:3]))
-                  ? ((|(_cnt_T_61[4:3]))
-                       ? ((|(cnt_14[4:3]))
-                            ? (cnt_6[3]
-                                 ? 7'h7
-                                 : (_idx_fromRight_T_240 ? 7'hF : 7'h0)
-                                   | (_idx_fromRight_T_263 ? idx_6_1 : 7'h0)
-                                   | (_idx_fromRight_T_286 ? idx_5_1 : 7'h0)
-                                   | (_idx_fromRight_T_306 ? idx_4_1 : 7'h0)
-                                   | (_idx_fromRight_T_323 ? idx_3_1 : 7'h0)
-                                   | (_idx_fromRight_T_337 ? idx_2_5 : 7'h0)
-                                   | (_idx_fromRight_T_348 ? idx_1_5 : 7'h0)
-                                   | (_idx_fromRight_T_356 ? idx_0_13 : 7'h0))
-                            : (_idx_fromRight_T_1068 ? idx_7_1 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1075 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_7_5 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2581 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_7_13 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5593 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_7_io_sample)
+    .io_frequencyHz (_synths_1_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_1_2_io_sample)
   );
-  Synth_8 synth_8 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_3 synths_1_3 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'h8
-         ? _GEN[_cnt_T_125 > 5'h8
-                  ? (_cnt_T_61 > 5'h8
-                       ? (cnt_14 > 5'h8
-                            ? (_idx_fromRight_T_263 ? 7'hF : 7'h0)
-                              | (_idx_fromRight_T_286 ? idx_6_1 : 7'h0)
-                              | (_idx_fromRight_T_306 ? idx_5_1 : 7'h0)
-                              | (_idx_fromRight_T_323 ? idx_4_1 : 7'h0)
-                              | (_idx_fromRight_T_337 ? idx_3_1 : 7'h0)
-                              | (_idx_fromRight_T_348 ? idx_2_5 : 7'h0)
-                              | (_idx_fromRight_T_356 ? idx_1_5 : 7'h0)
-                              | (_idx_fromRight_T_361 ? idx_0_13 : 7'h0)
-                            : (_idx_fromRight_T_1068 ? idx_8_1 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_7_1 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1075 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1076 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_8_5 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_7_5 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2581 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2582 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_8_13 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_7_13 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5593 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5594 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_8_io_sample)
+    .io_frequencyHz (_synths_1_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_1_3_io_sample)
   );
-  Synth_8 synth_9 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth synths_2_0 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'h9
-         ? _GEN[_cnt_T_125 > 5'h9
-                  ? (_cnt_T_61 > 5'h9
-                       ? (cnt_14 > 5'h9
-                            ? (_idx_fromRight_T_286 ? 7'hF : 7'h0)
-                              | (_idx_fromRight_T_306 ? idx_6_1 : 7'h0)
-                              | (_idx_fromRight_T_323 ? idx_5_1 : 7'h0)
-                              | (_idx_fromRight_T_337 ? idx_4_1 : 7'h0)
-                              | (_idx_fromRight_T_348 ? idx_3_1 : 7'h0)
-                              | (_idx_fromRight_T_356 ? idx_2_5 : 7'h0)
-                              | (_idx_fromRight_T_361 ? idx_1_5 : 7'h0)
-                            : (_idx_fromRight_T_1068 ? idx_9_1 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_8_1 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_7_1 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1075 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1076 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1077 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_9_5 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_8_5 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_7_5 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2581 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2582 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2583 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_9_13 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_8_13 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_7_13 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5593 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5594 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5595 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_9_io_sample)
+    .io_frequencyHz (_synths_2_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_2_0_io_sample)
   );
-  Synth_8 synth_10 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_1 synths_2_1 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'hA
-         ? _GEN[_cnt_T_125 > 5'hA
-                  ? (_cnt_T_61 > 5'hA
-                       ? (cnt_14 > 5'hA
-                            ? (_idx_fromRight_T_306 ? 7'hF : 7'h0)
-                              | (_idx_fromRight_T_323 ? idx_6_1 : 7'h0)
-                              | (_idx_fromRight_T_337 ? idx_5_1 : 7'h0)
-                              | (_idx_fromRight_T_348 ? idx_4_1 : 7'h0)
-                              | (_idx_fromRight_T_356 ? idx_3_1 : 7'h0)
-                              | (_idx_fromRight_T_361 ? idx_2_5 : 7'h0)
-                            : (_idx_fromRight_T_1068 ? idx_10_1 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_9_1 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_8_1 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_7_1 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1075 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1076 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1077 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1078 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_10_5 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_9_5 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_8_5 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_7_5 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2581 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2582 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2583 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2584 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_10_13 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_9_13 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_8_13 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_7_13 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5593 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5594 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5595 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5596 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_10_io_sample)
+    .io_frequencyHz (_synths_2_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_2_1_io_sample)
   );
-  Synth_8 synth_11 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_2 synths_2_2 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'hB
-         ? _GEN[_cnt_T_125 > 5'hB
-                  ? (_cnt_T_61 > 5'hB
-                       ? (cnt_14 > 5'hB
-                            ? (_idx_fromRight_T_323 ? 7'hF : 7'h0)
-                              | (_idx_fromRight_T_337 ? idx_6_1 : 7'h0)
-                              | (_idx_fromRight_T_348 ? idx_5_1 : 7'h0)
-                              | (_idx_fromRight_T_356 ? idx_4_1 : 7'h0)
-                              | (_idx_fromRight_T_361 ? idx_3_1 : 7'h0)
-                            : (_idx_fromRight_T_1068 ? idx_11_1 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_10_1 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_9_1 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_8_1 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_7_1 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1075 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1076 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1077 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1078 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1079 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_11_5 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_10_5 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_9_5 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_8_5 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_7_5 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2581 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2582 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2583 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2584 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2585 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_11_13 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_10_13 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_9_13 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_8_13 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_7_13 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5593 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5594 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5595 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5596 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5597 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_11_io_sample)
+    .io_frequencyHz (_synths_2_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_2_2_io_sample)
   );
-  Synth_12 synth_12 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_3 synths_2_3 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'hC
-         ? _GEN[_cnt_T_125 > 5'hC
-                  ? (_cnt_T_61 > 5'hC
-                       ? (cnt_14 > 5'hC
-                            ? (_idx_fromRight_T_337 ? 7'hF : 7'h0)
-                              | (_idx_fromRight_T_348 ? idx_6_1 : 7'h0)
-                              | (_idx_fromRight_T_356 ? idx_5_1 : 7'h0)
-                              | (_idx_fromRight_T_361 ? idx_4_1 : 7'h0)
-                            : (_idx_fromRight_T_1068 ? idx_12_1 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_11_1 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_10_1 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_9_1 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_8_1 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_7_1 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1075 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1076 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1077 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1078 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1079 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1080 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_12_5 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_11_5 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_10_5 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_9_5 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_8_5 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_7_5 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2581 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2582 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2583 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2584 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2585 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2586 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_12_13 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_11_13 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_10_13 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_9_13 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_8_13 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_7_13 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5593 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5594 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5595 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5596 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5597 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5598 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_12_io_sample)
+    .io_frequencyHz (_synths_2_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_2_3_io_sample)
   );
-  Synth_12 synth_13 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth synths_3_0 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'hD
-         ? _GEN[_cnt_T_125 > 5'hD
-                  ? (_cnt_T_61 > 5'hD
-                       ? (cnt_14 > 5'hD
-                            ? (_idx_fromRight_T_348 ? 7'hF : 7'h0)
-                              | (_idx_fromRight_T_356 ? idx_6_1 : 7'h0)
-                              | (_idx_fromRight_T_361 ? idx_5_1 : 7'h0)
-                            : (_idx_fromRight_T_1068 ? idx_13_1 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_12_1 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_11_1 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_10_1 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_9_1 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_8_1 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_7_1 : 7'h0)
-                              | (_idx_fromRight_T_1075 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1076 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1077 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1078 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1079 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1080 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1081 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_13_5 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_12_5 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_11_5 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_10_5 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_9_5 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_8_5 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_7_5 : 7'h0)
-                         | (_idx_fromRight_T_2581 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2582 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2583 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2584 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2585 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2586 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2587 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_13_13 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_12_13 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_11_13 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_10_13 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_9_13 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_8_13 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_7_13 : 7'h0)
-                    | (_idx_fromRight_T_5593 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5594 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5595 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5596 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5597 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5598 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5599 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_13_io_sample)
+    .io_frequencyHz (_synths_3_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_3_0_io_sample)
   );
-  Synth_12 synth_14 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_1 synths_3_1 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz
-      (_cnt_T_253 > 5'hE
-         ? _GEN[_cnt_T_125 > 5'hE
-                  ? (_cnt_T_61 > 5'hE
-                       ? (cnt_14 > 5'hE
-                            ? (_idx_fromRight_T_356 ? 7'hF : 7'h0)
-                              | (_idx_fromRight_T_361 ? idx_6_1 : 7'h0)
-                            : (_idx_fromRight_T_1068 ? idx_14_1 : 7'h0)
-                              | (_idx_fromRight_T_1069 ? idx_13_1 : 7'h0)
-                              | (_idx_fromRight_T_1070 ? idx_12_1 : 7'h0)
-                              | (_idx_fromRight_T_1071 ? idx_11_1 : 7'h0)
-                              | (_idx_fromRight_T_1072 ? idx_10_1 : 7'h0)
-                              | (_idx_fromRight_T_1073 ? idx_9_1 : 7'h0)
-                              | (_idx_fromRight_T_1074 ? idx_8_1 : 7'h0)
-                              | (_idx_fromRight_T_1075 ? idx_7_1 : 7'h0)
-                              | (_idx_fromRight_T_1076 ? idx_6_5 : 7'h0)
-                              | (_idx_fromRight_T_1077 ? idx_5_5 : 7'h0)
-                              | (_idx_fromRight_T_1078 ? idx_4_5 : 7'h0)
-                              | (_idx_fromRight_T_1079 ? idx_3_5 : 7'h0)
-                              | (_idx_fromRight_T_1080 ? idx_2_13 : 7'h0)
-                              | (_idx_fromRight_T_1081 ? idx_1_13 : 7'h0)
-                              | (_idx_fromRight_T_1082 ? idx_0_29 : 7'h0))
-                       : (_idx_fromRight_T_2574 ? idx_14_5 : 7'h0)
-                         | (_idx_fromRight_T_2575 ? idx_13_5 : 7'h0)
-                         | (_idx_fromRight_T_2576 ? idx_12_5 : 7'h0)
-                         | (_idx_fromRight_T_2577 ? idx_11_5 : 7'h0)
-                         | (_idx_fromRight_T_2578 ? idx_10_5 : 7'h0)
-                         | (_idx_fromRight_T_2579 ? idx_9_5 : 7'h0)
-                         | (_idx_fromRight_T_2580 ? idx_8_5 : 7'h0)
-                         | (_idx_fromRight_T_2581 ? idx_7_5 : 7'h0)
-                         | (_idx_fromRight_T_2582 ? idx_6_13 : 7'h0)
-                         | (_idx_fromRight_T_2583 ? idx_5_13 : 7'h0)
-                         | (_idx_fromRight_T_2584 ? idx_4_13 : 7'h0)
-                         | (_idx_fromRight_T_2585 ? idx_3_13 : 7'h0)
-                         | (_idx_fromRight_T_2586 ? idx_2_29 : 7'h0)
-                         | (_idx_fromRight_T_2587 ? idx_1_29 : 7'h0)
-                         | (_idx_fromRight_T_2588 ? idx_0_61 : 7'h0))
-                  : (_idx_fromRight_T_5586 ? idx_14_13 : 7'h0)
-                    | (_idx_fromRight_T_5587 ? idx_13_13 : 7'h0)
-                    | (_idx_fromRight_T_5588 ? idx_12_13 : 7'h0)
-                    | (_idx_fromRight_T_5589 ? idx_11_13 : 7'h0)
-                    | (_idx_fromRight_T_5590 ? idx_10_13 : 7'h0)
-                    | (_idx_fromRight_T_5591 ? idx_9_13 : 7'h0)
-                    | (_idx_fromRight_T_5592 ? idx_8_13 : 7'h0)
-                    | (_idx_fromRight_T_5593 ? idx_7_13 : 7'h0)
-                    | (_idx_fromRight_T_5594 ? idx_6_29 : 7'h0)
-                    | (_idx_fromRight_T_5595 ? idx_5_29 : 7'h0)
-                    | (_idx_fromRight_T_5596 ? idx_4_29 : 7'h0)
-                    | (_idx_fromRight_T_5597 ? idx_3_29 : 7'h0)
-                    | (_idx_fromRight_T_5598 ? idx_2_61 : 7'h0)
-                    | (_idx_fromRight_T_5599 ? idx_1_61 : 7'h0)
-                    | (_idx_fromRight_T_5600 ? idx_0_125 : 7'h0)]
-         : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:80:30, :82:{24,31}, :85:20, :97:63, src/main/scala/chisel3/util/Mux.scala:30:73
-    .io_sample      (_synth_14_io_sample)
+    .io_frequencyHz (_synths_3_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_3_1_io_sample)
   );
-  Synth_12 synth_15 (	// \\src\\main\\scala\\SynthTop.scala:76:25
+  Synth_2 synths_3_2 (	// \\src\\main\\scala\\SynthTop.scala:66:25
     .clock          (clock),
     .reset          (reset),
-    .io_frequencyHz (_cnt_T_253[4] ? _GEN[heldNotes_15] : 32'h0),	// \\src\\main\\scala\\SynthTop.scala:83:34, \\src\\main\\scala\\Utils.scala:82:24, :85:20, :97:63
-    .io_sample      (_synth_15_io_sample)
+    .io_frequencyHz (_synths_3_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_3_2_io_sample)
+  );
+  Synth_3 synths_3_3 (	// \\src\\main\\scala\\SynthTop.scala:66:25
+    .clock          (clock),
+    .reset          (reset),
+    .io_frequencyHz (_synths_3_3_io_frequencyHz_T),	// \\src\\main\\scala\\SynthTop.scala:92:34
+    .io_sample      (_synths_3_3_io_sample)
   );
 endmodule
 

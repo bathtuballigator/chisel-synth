@@ -232,11 +232,6 @@ class Oscillator(
       100_000_000 // clock freq in Hz to calculate increment for given frequency dynaically
 ) extends Module {
   val io = IO(new Bundle {
-    // // chisel hardware unsigned
-    // val increment = Input(
-    //   UInt(phaseWid.W)
-    // ) // increment value for the phase accumulator, calculated from frequency and sample rate
-    // // neeeds to be signed
     val frequencyHz = Input(
       UInt(32.W)
     ) // frequency of the wave in Hz, for dynamic frequency control
@@ -288,10 +283,12 @@ class PWMGenerator( // renamed to generator bc it uses the oscillator to generat
 
  val voiceSamples = RegNext(io.samples)
   // convert signed sample to unsigned PWM threshold
-  val sumSamples = RegNext(voiceSamples.reduceTree(_+&_)) // sum all voices with carry to avoid arithmetic overflow
+  val sumWid = sampleWid + log2Ceil(numVoices) // +& adds 1 bit per tree level
+  val sumSamples = Reg(SInt(sumWid.W))          // explicit width; RegNext would drop it
+  sumSamples := voiceSamples.reduceTree(_ +& _) // sum all voices with carry to avoid overflow
   val finalSample=Wire(SInt(sampleWid.W))
 
-  val sign=sumSamples(sampleWid-1) // get sign bit
+  val sign=sumSamples < 0.S // get sign bit
   val mag=Mux(sign, -sumSamples, sumSamples).asUInt // get magnitude of sumSamples
   val quotient=DivideByConstant(mag,BigInt(numVoices)).zext // divide by number of voices to normalize
   finalSample:=Mux(sign, -quotient, quotient) // restore sign to normalized value

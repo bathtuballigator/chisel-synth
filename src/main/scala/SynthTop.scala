@@ -9,52 +9,38 @@ class SynthTopIO extends Bundle {
   val heldBin = Output(UInt(7.W))
 }
 
-// Top module for the Synth
-// A voice here is 1 square wave frequency. The voices are toggled by midi input.
-// It outputs a bool `io.out`
-// The outputs are or-ed together in `io.out` - essentially adding the voices when
-// multiple are played.
+/** Top module for the Synth. polyphonyCount synths are generated for each voice
+  * type.
+  *
+  * A state machine handles
+  *   - Send midi signal to handler
+  *   - Let handler calculate the first n set notes
+  *   - Send equivalent frequency to Synth generators
+  *
+  * n is polyphony count.
+  *
+  * NOTE:
+  *   - This plays all unique voices at once when a note is held
+  *   - The polyphony is then the multiple frequencies overlapped as well as all
+  *     the diff voices.
+  *
+  * @param clockFrequency
+  */
 class SynthTop(
     clockFrequency: Int = Nexys4.clockFrequency
 ) extends Module {
   val io = IO(new SynthTopIO())
 
+  // Setup helper modules
   val midi = Module(
     new MidiTop(clkHz = clockFrequency, baud = Midi.midiBaudRate)
   )
   midi.io.rx := io.rx
 
-  // val outs: Vec[Bool] = Wire(Vec(Env.amntFreqTotal, Bool()))
-
-  // var voice_idx = 0
-  // for (voice <- Env.voiceList) {
-  //   for (i <- 0 until Env.amntFreqPerVoice) {
-  //     val synth = Module(
-  //       new Synth(
-  //         frequency = MidiUtils.midiToFreq(  // set frequency for note based on midi value
-  //           i + Env.rootMidiNote             // default root midi note is 60 i.e. C4
-  //         ),
-  //         clockFrequency = clockFrequency,
-  //         voice=voice
-  //       )
-  //     )
-
-  //     // midi linked to 60,61,62,63 for the first voice type, then 64,65,66,67 for the second, etc.
-  //     synth.io.play := midi.io.held(i+voice_idx*Env.amntFreqPerVoice + Env.rootMidiNote)
-  //     outs(i+voice_idx*Env.amntFreqPerVoice) := synth.io.out
-  //   }
-  //   voice_idx += 1
-  // }
-
-  // // Combine all voices. If any voice output is on, output is on.
-  // // For now this is fine. When changing duty cycle to control volume, we will need to
-  // // limit it somehow
-  // io.out := outs.reduce(_ || _)
-
   io.heldBin := midi.io.data1
 
   val sampleWid = 8
-  val voiceCount = Env.amntFreqTotal
+  val voiceCount = Env.amntSynths
 
   val pwm = Module(
     new PWMGenerator(
@@ -62,34 +48,71 @@ class SynthTop(
       numVoices = voiceCount
     )
   )
-  val midiLookupTable = MidiUtils.midiLookupTable(width = 32)
+  val midiToFreqLut = MidiUtils.midiLookupTable(width = 32)
 
-  // The first `voiceCount` held notes (lowest note first). heldNotes(k) is a midi note number.
-  val firstNSetBits = Module(new FirstNSetBits(n=voiceCount))
-  firstNSetBits.io.in.enq(midi.held)
+  // Handler for calculating first n set bits of midi
+  val firstNSetBits = Module(
+    new FirstNSetBits(n = Env.polyphonyCount, w = midi.io.held.getWidth)
+  )
 
-  for ((waveform, bank) <- Env.voiceList.zipWithIndex) {
-    for (i <- 0 until Env.amntFreqPerVoice) {
-      val idx = bank * Env.amntFreqPerVoice + i // index of voice in pwm module
-      val note = heldNotes(idx)
-      val pitchHz = midiLookupTable(note)
+  val synths: Seq[Seq[Synth]] = for {
+    i <- 0 until Env.polyphonyCount
+  } yield {
+
+    // waveform is voice type. bank is index of voice type in voiceList
+    for ((waveform, bank) <- Env.voiceList.zipWithIndex) yield {
+      val idx = bank * Env.polyphonyCount + i // one dimensional index
 
       val synth = Module(
-        new Synth(
+        new Synth( // TODO: Add decoupled to io
           sampleWid = sampleWid,
           clockFrequency = clockFrequency,
           voice = waveform
         )
       )
-      synth.io.frequencyHz := Mux(
-        heldValid(idx),
-        pitchHz,
-        0.U
-      ) // if note is held, play it, else play 0 Hz
       pwm.io.samples(idx) := synth.io.sample
+      synth
+    }
+  }
+
+  // FSM
+  //// Setup states for FSM
+  object S extends ChiselEnum { val enqMidi, waitDeq = Value }
+  val state = RegInit(S.enqMidi)
+
+  // Creates a reg with Bundle type of firstNSetBits.out.bits with zero-filled Vecs.
+  val nSetBits = RegInit(0.U.asTypeOf(chiselTypeOf(firstNSetBits.io.out.bits)))
+
+  //// Set defaults
+  firstNSetBits.io.in.noenq()
+  firstNSetBits.io.out.nodeq()
+  for ((midiVal, idx) <- nSetBits.idx.zipWithIndex) {
+    val isIdxValid = nSetBits.valid(idx)
+    for (synth <- synths(idx)) { // have all different voices play at once
+      synth.io.frequencyHz := Mux(
+        isIdxValid,
+        midiToFreqLut(midiVal),
+        0.U
+      )
+    }
+  }
+
+  switch(state) {
+    is(S.enqMidi) {
+      firstNSetBits.io.in.enq(midi.io.held)
+      when(firstNSetBits.io.in.fire) {
+        state := S.waitDeq
+      }
+    }
+    is(S.waitDeq) {
+      when(firstNSetBits.io.out.valid) {
+        nSetBits := firstNSetBits.io.out.deq()
+        state := S.enqMidi
+      }
     }
   }
 
   pwm.io.PWM_en := midi.io.held.orR // enable pwm if any note is held
+
   io.out := pwm.io.PWM_out
 }
