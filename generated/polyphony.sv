@@ -60,7 +60,7 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
 
   reg       r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:26
   reg       r;	// \\src\\main\\scala\\MidiUart.scala:16:18
-  reg [9:0] cnt;	// \\src\\main\\scala\\MidiUart.scala:18:20
+  reg [8:0] cnt;	// \\src\\main\\scala\\MidiUart.scala:18:20
   reg [3:0] bitn;	// \\src\\main\\scala\\MidiUart.scala:19:21
   reg       busy;	// \\src\\main\\scala\\MidiUart.scala:20:21
   reg [7:0] sh;	// \\src\\main\\scala\\MidiUart.scala:21:15
@@ -71,14 +71,14 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
     automatic logic _GEN_0;	// \\src\\main\\scala\\MidiUart.scala:36:15
     automatic logic _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:38:21
     automatic logic _GEN_2;	// \\src\\main\\scala\\MidiUart.scala:22:17, :36:24, :38:29, :42:15
-    _GEN = cnt == 10'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20, :33:18
+    _GEN = cnt == 9'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20, :33:18
     _GEN_0 = bitn == 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21, :36:15
     _GEN_1 = bitn < 4'h9;	// \\src\\main\\scala\\MidiUart.scala:19:21, :38:21
     _GEN_2 = _GEN_0 | _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:22:17, :36:{15,24}, :38:{21,29}, :42:15
     if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:6:7
       r_REG <= 1'h1;	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26
       r <= 1'h1;	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:18
-      cnt <= 10'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20
+      cnt <= 9'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20
       bitn <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21
       busy <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:6:7, :20:21
       valid <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:6:7, :23:22
@@ -88,7 +88,7 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
       r <= r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:{18,26}
       if (busy) begin	// \\src\\main\\scala\\MidiUart.scala:20:21
         if (_GEN) begin	// \\src\\main\\scala\\MidiUart.scala:33:18
-          cnt <= 10'h363;	// \\src\\main\\scala\\MidiUart.scala:18:20, :34:9
+          cnt <= 9'h1B1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :34:9
           bitn <= bitn + 4'h1;	// \\src\\main\\scala\\MidiUart.scala:19:21, :35:18
           if (_GEN_0)	// \\src\\main\\scala\\MidiUart.scala:36:15
             busy <= ~r & busy;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :37:{15,22}
@@ -96,13 +96,13 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
             busy <= _GEN_1 & busy;	// \\src\\main\\scala\\MidiUart.scala:20:21, :38:{21,29}, :41:12
         end
         else	// \\src\\main\\scala\\MidiUart.scala:33:18
-          cnt <= cnt - 10'h1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :48:16
+          cnt <= cnt - 9'h1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :48:16
       end
       else begin	// \\src\\main\\scala\\MidiUart.scala:20:21
         if (r) begin	// \\src\\main\\scala\\MidiUart.scala:16:18
         end
         else begin	// \\src\\main\\scala\\MidiUart.scala:16:18
-          cnt <= 10'h1B2;	// \\src\\main\\scala\\MidiUart.scala:18:20, :30:11
+          cnt <= 9'hD9;	// \\src\\main\\scala\\MidiUart.scala:18:20, :30:11
           bitn <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21
         end
         busy <= ~r | busy;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :28:{10,14}, :29:12
@@ -133,12 +133,12 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
         end	// \\src\\main\\scala\\MidiUart.scala:6:7
         r_REG = _RANDOM[1'h0][0];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26
         r = _RANDOM[1'h0][1];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:{18,26}
-        cnt = _RANDOM[1'h0][11:2];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :18:20
-        bitn = _RANDOM[1'h0][15:12];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :19:21
-        busy = _RANDOM[1'h0][16];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :20:21
-        sh = _RANDOM[1'h0][24:17];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :21:15
-        data = {_RANDOM[1'h0][31:25], _RANDOM[1'h1][0]};	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :22:17
-        valid = _RANDOM[1'h1][1];	// \\src\\main\\scala\\MidiUart.scala:6:7, :22:17, :23:22
+        cnt = _RANDOM[1'h0][10:2];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :18:20
+        bitn = _RANDOM[1'h0][14:11];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :19:21
+        busy = _RANDOM[1'h0][15];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :20:21
+        sh = _RANDOM[1'h0][23:16];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :21:15
+        data = _RANDOM[1'h0][31:24];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :22:17
+        valid = _RANDOM[1'h1][0];	// \\src\\main\\scala\\MidiUart.scala:6:7, :23:22
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:6:7
@@ -2842,7 +2842,19 @@ module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:29:7
   wire [6:0]         _midi_io_data1;	// \\src\\main\\scala\\SynthTop.scala:35:20
   wire [127:0]       _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:35:20
   wire [127:0][31:0] _GEN =
-    '{32'h83882,
+    '{32'h107105,
+      32'hF84C9,
+      32'hEA5CF,
+      32'hDD359,
+      32'hD0CB3,
+      32'hC5134,
+      32'hBA03A,
+      32'hAF92F,
+      32'hA5B84,
+      32'h9C6B3,
+      32'h93A3B,
+      32'h8B5A6,
+      32'h83882,
       32'h7C264,
       32'h752E8,
       32'h6E9AD,
@@ -2957,19 +2969,7 @@ module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:29:7
       32'h343,
       32'h314,
       32'h2E8,
-      32'h2BE,
-      32'h297,
-      32'h272,
-      32'h24F,
-      32'h22D,
-      32'h20E,
-      32'h1F1,
-      32'h1D5,
-      32'h1BA,
-      32'h1A2,
-      32'h18A,
-      32'h174,
-      32'h15F};	// \\src\\main\\scala\\SynthTop.scala:98:32
+      32'h2BE};	// \\src\\main\\scala\\SynthTop.scala:98:32
   reg  [6:0]         heldBin;	// \\src\\main\\scala\\SynthTop.scala:40:20
   reg  [127:0]       held;	// \\src\\main\\scala\\SynthTop.scala:41:17
   reg  [6:0]         nSetBits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:90:25
@@ -3356,7 +3356,7 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
       12'h2,
       12'h1,
       12'h0};	// \\src\\main\\scala\\SevenSegDisplay.scala:31:27
-  reg  [16:0]        tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
+  reg  [15:0]        tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
   reg  [1:0]         sel;	// src/main/scala/chisel3/util/Counter.scala:61:40
   wire [3:0][3:0]    _GEN_2 =
     {{_GEN_1[io_value][3:0]},
@@ -3366,18 +3366,18 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
   wire [3:0]         _GEN_3 = {_GEN, {{io_value > 7'h63}, {io_value > 7'h9}, {1'h1}}};	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, :34:{42,60}, :42:17
   always @(posedge clock) begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
     if (reset) begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
-      tick_c_value <= 17'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       sel <= 2'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
     end
-    else if (tick_c_value == 17'h1869F) begin	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
-      tick_c_value <= 17'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+    else if (tick_c_value == 16'hC34F) begin	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
+      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       if (sel == 2'h2)	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
         sel <= 2'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       else	// src/main/scala/chisel3/util/Counter.scala:73:24
         sel <= sel + 2'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
     end
     else	// src/main/scala/chisel3/util/Counter.scala:73:24
-      tick_c_value <= tick_c_value + 17'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
+      tick_c_value <= tick_c_value + 16'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
     `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
@@ -3390,8 +3390,8 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
-        tick_c_value = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
-        sel = _RANDOM[/*Zero width*/ 1'b0][18:17];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        tick_c_value = _RANDOM[/*Zero width*/ 1'b0][15:0];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        sel = _RANDOM[/*Zero width*/ 1'b0][17:16];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7

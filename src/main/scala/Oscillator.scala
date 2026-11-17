@@ -230,7 +230,7 @@ class Oscillator(
     sampleWid: Int, // the number of bits in the output sample
     phaseWid: Int, // the number of bits in the phase accumulator
     clkFreq: Int =
-      100_000_000 // clock freq in Hz to calculate increment for given frequency dynamically
+      Nexys4.clockFrequency // clock freq in Hz to calculate increment for given frequency dynamically
 ) extends Module {
   val io = IO(new Bundle {
     val increment = Input(
