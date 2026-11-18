@@ -3,10 +3,10 @@ import chisel3.experimental.Analog
 import chisel3.experimental.attach
 import chisel3.util._
 
-class MVP_TopIO extends Bundle {
+class MVP_TopIO(noteCount: Int) extends Bundle {
   val out = Output(Bool())
-  val sel = Input(Vec(Env.amntFreq, Bool()))
-  val frequencyHz = Input(Vec(Env.amntFreq, UInt(32.W)))
+  val sel = Input(Vec(noteCount, Bool()))
+  val frequencyHz = Input(Vec(noteCount, UInt(32.W)))
 }
 
 // Top module for MVP voices
@@ -15,20 +15,21 @@ class MVP_TopIO extends Bundle {
 // The outputs are or-ed together in `io.out` - essentially adding the voices when
 // multiple are played.
 class MVP_Top(
-    clockFrequency: Int = Nexys4.clockFrequency
+    clockFrequency: Int = Nexys4.clockFrequency,
+    config: SynthConfig = Env.config
     // TODO: Add param to toggle - if voices should be or-ed or handle sel as one hot.
     // Could it even be a function as a param? :O
 ) extends Module {
-  Env.config.requireMvpCompatible()
-  val io = IO(new MVP_TopIO())
+  config.requireMvpCompatible()
+  val io = IO(new MVP_TopIO(config.amountFreq))
 
-  val outs: Vec[Bool] = Wire(Vec(Env.amntFreq, Bool()))
+  val outs: Vec[Bool] = Wire(Vec(config.amountFreq, Bool()))
 
-  for (i <- 0 until Env.amntFreq) {
+  for (i <- 0 until config.amountFreq) {
     val mvp = Module(
       new MVP(
         frequency = MidiUtils.midiToFreq(  // set frequency for note based on midi value
-          i + Env.rootMidiNote             // default root midi note is 60 i.e. C4 
+          i + config.rootMidiNote
         ),
         clockFrequency = clockFrequency
       )

@@ -1,94 +1,78 @@
 import chisel3._
-import chisel3.experimental.Analog
-import chisel3.experimental.attach
-import chisel3.util._
+import chisel3.util.PopCount
 
 class SynthTopIO extends Bundle {
   val out = Output(Bool())
-  val rx = Input(Bool()) // midi rx
+  val rx = Input(Bool())
   val heldBin = Output(UInt(7.W))
 }
 
-// Top module for the Synth
-// A voice here is 1 square wave frequency. The voices are toggled by midi input.
-// It outputs a bool `io.out`
-// The outputs are or-ed together in `io.out` - essentially adding the voices when
-// multiple are played.
-class SynthTop(
-    clockFrequency: Int = Nexys4.clockFrequency
-) extends Module {
+class SynthTop(clockFrequency: Int = Nexys4.clockFrequency) extends Module {
   val io = IO(new SynthTopIO())
-
-  val midi = Module(
-    new MidiTop(clkHz = clockFrequency, baud = Midi.midiBaudRate)
-  )
+  val midi = Module(new MidiTop(clkHz = clockFrequency, baud = Midi.midiBaudRate))
+  val audio = Module(new SynthAudio(Env.voices, Env.amntFreqPerVoice, clockFrequency))
   midi.io.rx := io.rx
-
-  // val outs: Vec[Bool] = Wire(Vec(Env.amntFreqTotal, Bool()))
-
-  // var voice_idx = 0
-  // for (voice <- Env.voiceList) {
-  //   for (i <- 0 until Env.amntFreqPerVoice) {
-  //     val synth = Module(
-  //       new Synth(
-  //         frequency = MidiUtils.midiToFreq(  // set frequency for note based on midi value
-  //           i + Env.rootMidiNote             // default root midi note is 60 i.e. C4
-  //         ),
-  //         clockFrequency = clockFrequency,
-  //         voice=voice
-  //       )
-  //     )
-
-  //     // midi linked to 60,61,62,63 for the first voice type, then 64,65,66,67 for the second, etc.
-  //     synth.io.play := midi.io.held(i+voice_idx*Env.amntFreqPerVoice + Env.rootMidiNote)
-  //     outs(i+voice_idx*Env.amntFreqPerVoice) := synth.io.out
-  //   }
-  //   voice_idx += 1
-  // }
-
-  // // Combine all voices. If any voice output is on, output is on.
-  // // For now this is fine. When changing duty cycle to control volume, we will need to
-  // // limit it somehow
-  // io.out := outs.reduce(_ || _)
-
+  audio.io.held := midi.io.held
   io.heldBin := midi.io.data1
+  io.out := audio.io.out
+}
 
-  val sampleWid = 8
-  val voiceCount = Env.amntFreqTotal
+/** Keep each note in its assigned oscillator slot through its release.
+  * Each configured waveform contributes one bank of slots. When all slots
+  * are occupied, additional held notes wait for a slot instead of stealing it.
+  */
+class SynthAudio(
+    voices: Seq[VoiceConfig],
+    slotsPerVoice: Int,
+    clockFrequency: Int,
+    sampleWid: Int = 8
+) extends Module {
+  private val count = voices.size * slotsPerVoice
+  require(count >= 1 && count <= 128)
 
-  val pwm = Module(
-    new PWMGenerator(
-      sampleWid = sampleWid,
-      numVoices = voiceCount
-    )
-  )
-  val midiLookupTable = MidiUtils.midiLookupTable(width = 32)
+  val io = IO(new Bundle {
+    val held = Input(UInt(128.W))
+    val out = Output(Bool())
+  })
 
-  // The first `voiceCount` held notes (lowest note first). heldNotes(k) is a midi note number.
-  val (heldNotes, heldValid) = FirstNSetBits(midi.io.held, voiceCount)
+  val notes = RegInit(VecInit(Seq.fill(count)(0.U(7.W))))
+  val assigned = RegInit(VecInit(Seq.fill(count)(false.B)))
+  val busy = Wire(Vec(count, Bool()))
+  val midiFrequencies = MidiUtils.midiLookupTable()
+  val pwm = Module(new PWMGenerator(sampleWid, count))
 
-  for ((waveform, bank) <- Env.voiceList.zipWithIndex) {
-    for (i <- 0 until Env.amntFreqPerVoice) {
-      val idx = bank * Env.amntFreqPerVoice + i // index of voice in pwm module
-      val note = heldNotes(idx)
-      val pitchHz = midiLookupTable(note)
+  for ((config, bank) <- voices.zipWithIndex; slot <- 0 until slotsPerVoice) {
+    val index = bank * slotsPerVoice + slot
+    val waveform = config.waveform match {
+      case Waveform.Square   => OscillatorType.Square
+      case Waveform.Sine     => OscillatorType.Sine
+      case Waveform.Sawtooth => OscillatorType.Saw
+      case Waveform.Triangle => OscillatorType.Triangle
+    }
+    val synth = Module(new Synth(sampleWid, clockFrequency, waveform, config.envelope))
+    val gate = assigned(index) && io.held(notes(index))
+    synth.io.gate := gate
+    synth.io.frequencyHz := midiFrequencies(notes(index))
+    busy(index) := gate || synth.io.active
+    pwm.io.samples(index) := synth.io.sample
+  }
 
-      val synth = Module(
-        new Synth(
-          sampleWid = sampleWid,
-          clockFrequency = clockFrequency,
-          voice = waveform
-        )
-      )
-      synth.io.frequencyHz := Mux(
-        heldValid(idx),
-        pitchHz,
-        0.U
-      ) // if note is held, play it, else play 0 Hz
-      pwm.io.samples(idx) := synth.io.sample
+  val reserved = (0 until count).map { i =>
+    Mux(busy(i), 1.U(128.W) << notes(i), 0.U)(127, 0)
+  }.reduce(_ | _)
+
+  val (pendingNotes, pendingValid) = FirstNSetBits(io.held & ~reserved, count)
+  for (i <- 0 until count) {
+    when(!busy(i)) {
+      // Earlier free slots take the earlier pending notes.
+      val rank = if (i == 0) 0.U else PopCount((0 until i).map(j => !busy(j)))
+      val valid = if (i == 0) pendingValid(0) else pendingValid(rank)
+      val note = if (i == 0) pendingNotes(0) else pendingNotes(rank)
+      assigned(i) := valid
+      when(valid) { notes(i) := note }
     }
   }
 
-  pwm.io.PWM_en := midi.io.held.orR // enable pwm if any note is held
+  pwm.io.PWM_en := busy.asUInt.orR
   io.out := pwm.io.PWM_out
 }

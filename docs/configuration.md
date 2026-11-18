@@ -1,5 +1,19 @@
 # Configuration guide and voice format
 
+## ADSR on the MIDI synth
+
+`SynthTop` uses the configured waveform and envelope for each voice bank.
+The repository's `synth.env` enables the envelope for voice 0.
+Regenerate the board RTL with `sbt "runMain Nexys4Gen"` and rebuild the FPGA
+design to apply the setting.
+
+Each configured voice bank provides four note slots. Held notes keep their
+assigned slots; a released note keeps its pitch and slot until the envelope
+reaches zero. Additional held notes wait when all slots are occupied. The
+envelope scales the signed oscillator sample before PWM mixing; a disabled
+envelope passes the original sample while the key is held. The square-wave
+switch MVP (`MVP_Top`) still has its own configuration restrictions.
+
 This implements the configuration-file work in issue #18, with usage documentation
 for #30 and a parsed, validated voice format for #36. The ADSR implementation is separate work
 in #28. This document can be shared at a group meeting or in Discord.

@@ -1,5 +1,6 @@
 vivado/*
 !vivado/create_project.tcl
+!vivado/create_polyphony_project.tcl
 !vivado/MVP.xdc
 !vivado/README.md
 /MVP.sv
