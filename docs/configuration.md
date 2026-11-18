@@ -7,12 +7,24 @@ The repository's `synth.env` enables the envelope for voice 0.
 Regenerate the board RTL with `sbt "runMain Nexys4Gen"` and rebuild the FPGA
 design to apply the setting.
 
-Each configured voice bank provides four note slots. Held notes keep their
+Each configured voice bank provides `Env.polyphonyCount` note slots (currently
+four, matching main). Held notes keep their
 assigned slots; a released note keeps its pitch and slot until the envelope
 reaches zero. Additional held notes wait when all slots are occupied. The
 envelope scales the signed oscillator sample before PWM mixing; a disabled
 envelope passes the original sample while the key is held. The square-wave
 switch MVP (`MVP_Top`) still has its own configuration restrictions.
+
+The MIDI synth now uses main's registered phase-increment oscillator interface,
+sequential decoupled note selector, and pipelined PWM mixer. Pitch increments
+are calculated in the Scala MIDI lookup table for a 50 MHz clock. The polyphony
+XDC also specifies a 20 ns / 50 MHz clock. The actual clock supplied to the FPGA
+design must match; a timing constraint alone does not divide a 100 MHz source.
+
+Note selection runs separately for each configured waveform bank, so the same
+held keys play all configured waveforms. Notes released while selection is in
+progress are rechecked before assignment. Release tails retain their pitch and
+continue through PWM after the last key is released.
 
 This implements the configuration-file work in issue #18, with usage documentation
 for #30 and a parsed, validated voice format for #36. The ADSR implementation is separate work

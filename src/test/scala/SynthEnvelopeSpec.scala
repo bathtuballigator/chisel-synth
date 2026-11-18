@@ -9,7 +9,7 @@ class SynthEnvelopeSpec extends AnyFlatSpec with ChiselScalatestTester {
 
   "An enveloped oscillator" should "ramp signed samples and remain audible during release" in {
     test(new Synth(clockFrequency = clockHz, envelope = envelope)) { dut =>
-      dut.io.frequencyHz.poke(250.U) // 64 clocks per square-wave period
+      dut.io.increment.poke(((BigInt(1) << 32) / 64).U) // 64 clocks per square-wave period
       dut.io.gate.poke(false.B)
       dut.io.sample.expect(0.S)
       dut.io.active.expect(false.B)
@@ -39,8 +39,9 @@ class SynthEnvelopeSpec extends AnyFlatSpec with ChiselScalatestTester {
 
   it should "bypass gain for a disabled envelope and silence the oscillator on note-off" in {
     test(new Synth(clockFrequency = clockHz)) { dut =>
-      dut.io.frequencyHz.poke(250.U)
+      dut.io.increment.poke(((BigInt(1) << 32) / 64).U)
       dut.io.gate.poke(true.B)
+      dut.clock.step(4) // main's registered oscillator input must settle
       dut.io.active.expect(true.B)
       dut.io.sample.expect(127.S)
       dut.io.gate.poke(false.B)
@@ -49,14 +50,18 @@ class SynthEnvelopeSpec extends AnyFlatSpec with ChiselScalatestTester {
     }
   }
 
-  private class AudioProbe extends SynthAudio(
-    Seq(VoiceConfig(Waveform.Square, envelope)), 2, clockHz, sampleWid = 4
+  private class AudioProbe(
+      voices: Seq[VoiceConfig] = Seq(VoiceConfig(Waveform.Square, envelope)),
+      slots: Int = 2
+  ) extends SynthAudio(
+    voices, slots, clockHz, sampleWid = 4
   ) {
     val slotNotes = expose(notes)
+    val slotAssigned = expose(assigned)
   }
 
   "The PWM audio path" should "keep note assignments stable and play the final release tail" in {
-    test(new AudioProbe) { dut =>
+    test(new AudioProbe()) { dut =>
       def hold(notes: Int*): Unit =
         dut.io.held.poke(notes.foldLeft(BigInt(0))((mask, note) => mask.setBit(note)).U)
 
@@ -84,6 +89,47 @@ class SynthEnvelopeSpec extends AnyFlatSpec with ChiselScalatestTester {
       assert(hasPulses(), "PWM muted before the last note completed its release")
       dut.clock.step(640)
       assert(!hasPulses(), "PWM remained active after the release finished")
+    }
+  }
+
+  it should "layer the same held notes across configured waveform banks" in {
+    test(new AudioProbe(Seq(
+      VoiceConfig(Waveform.Square, envelope),
+      VoiceConfig(Waveform.Triangle, envelope)
+    ))) { dut =>
+      dut.io.held.poke((BigInt(0).setBit(60).setBit(69)).U)
+      dut.clock.step(64)
+      for (index <- 0 until 4) {
+        dut.slotAssigned(index).expect(true.B)
+        dut.slotNotes(index).expect((if (index % 2 == 0) 60 else 69).U)
+      }
+    }
+  }
+
+  it should "discard a note released while the sequential selector is working" in {
+    test(new AudioProbe()) { dut =>
+      dut.io.held.poke((BigInt(1) << 60).U)
+      dut.clock.step()
+      dut.io.held.poke(0.U)
+      dut.clock.step(32)
+      for (index <- 0 until 2) dut.slotAssigned(index).expect(false.B)
+      dut.io.out.expect(false.B)
+    }
+  }
+
+  it should "wait for release before assigning a waiting note to a full bank" in {
+    test(new AudioProbe(slots = 1)) { dut =>
+      dut.io.held.poke((BigInt(1) << 60).U)
+      dut.clock.step(512)
+      dut.io.held.poke((BigInt(0).setBit(60).setBit(69)).U)
+      dut.clock.step(32)
+      dut.slotNotes(0).expect(60.U)
+      dut.io.held.poke((BigInt(1) << 69).U)
+      dut.clock.step(32)
+      dut.slotNotes(0).expect(60.U)
+      dut.clock.step(640)
+      dut.slotAssigned(0).expect(true.B)
+      dut.slotNotes(0).expect(69.U)
     }
   }
 }

@@ -15,7 +15,7 @@ class PWMGeneratorSpec extends AnyFlatSpec with ChiselScalatestTester {
 
   // Measure the steady-state duty without assuming where the pulse begins.
   private def expectDuty(dut: PWMGenerator, highCycles: Int): Unit = {
-    dut.clock.step(period) // allow the new setting to settle
+    dut.clock.step(period * 2) // settle main's input/sum pipeline and latch duty
     val actual = (0 until period).count { _ =>
       val high = dut.io.PWM_out.peek().litToBoolean
       dut.clock.step()

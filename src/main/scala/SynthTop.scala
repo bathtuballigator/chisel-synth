@@ -1,5 +1,5 @@
 import chisel3._
-import chisel3.util.PopCount
+import chisel3.util.PriorityEncoder
 
 class SynthTopIO extends Bundle {
   val out = Output(Bool())
@@ -10,7 +10,7 @@ class SynthTopIO extends Bundle {
 class SynthTop(clockFrequency: Int = Nexys4.clockFrequency) extends Module {
   val io = IO(new SynthTopIO())
   val midi = Module(new MidiTop(clkHz = clockFrequency, baud = Midi.midiBaudRate))
-  val audio = Module(new SynthAudio(Env.voices, Env.amntFreqPerVoice, clockFrequency))
+  val audio = Module(new SynthAudio(Env.voices, Env.polyphonyCount, clockFrequency))
   midi.io.rx := io.rx
   audio.io.held := midi.io.held
   io.heldBin := midi.io.data1
@@ -38,7 +38,7 @@ class SynthAudio(
   val notes = RegInit(VecInit(Seq.fill(count)(0.U(7.W))))
   val assigned = RegInit(VecInit(Seq.fill(count)(false.B)))
   val busy = Wire(Vec(count, Bool()))
-  val midiFrequencies = MidiUtils.midiLookupTable()
+  val midiIncrements = MidiUtils.midiLookupTable(phaseWid = 32, clkHz = clockFrequency)
   val pwm = Module(new PWMGenerator(sampleWid, count))
 
   for ((config, bank) <- voices.zipWithIndex; slot <- 0 until slotsPerVoice) {
@@ -52,24 +52,42 @@ class SynthAudio(
     val synth = Module(new Synth(sampleWid, clockFrequency, waveform, config.envelope))
     val gate = assigned(index) && io.held(notes(index))
     synth.io.gate := gate
-    synth.io.frequencyHz := midiFrequencies(notes(index))
+    synth.io.increment := midiIncrements(notes(index))
     busy(index) := gate || synth.io.active
     pwm.io.samples(index) := synth.io.sample
   }
 
-  val reserved = (0 until count).map { i =>
-    Mux(busy(i), 1.U(128.W) << notes(i), 0.U)(127, 0)
-  }.reduce(_ | _)
+  // Use main's decoupled, sequential note selector. Each waveform bank selects
+  // the same held notes independently, so all configured voices layer together.
+  for (bank <- voices.indices) {
+    val indices = (0 until slotsPerVoice).map(slot => bank * slotsPerVoice + slot)
+    val reserved = indices.map { i =>
+      Mux(busy(i), 1.U(128.W) << notes(i), 0.U)(127, 0)
+    }.reduce(_ | _)
+    val selector = Module(new FirstNSetBits(n = slotsPerVoice, w = 128))
+    selector.io.in.valid := true.B
+    selector.io.in.bits := io.held & ~reserved
+    selector.io.out.ready := true.B
 
-  val (pendingNotes, pendingValid) = FirstNSetBits(io.held & ~reserved, count)
-  for (i <- 0 until count) {
-    when(!busy(i)) {
-      // Earlier free slots take the earlier pending notes.
-      val rank = if (i == 0) 0.U else PopCount((0 until i).map(j => !busy(j)))
-      val valid = if (i == 0) pendingValid(0) else pendingValid(rank)
-      val note = if (i == 0) pendingNotes(0) else pendingNotes(rank)
-      assigned(i) := valid
-      when(valid) { notes(i) := note }
+    // Selection takes multiple clocks. Recheck live gates/reservations when
+    // consuming a response so a note released during selection cannot start.
+    val candidates = Wire(Vec(slotsPerVoice, Bool()))
+    for (slot <- 0 until slotsPerVoice) {
+      val note = selector.io.out.bits.idx(slot)
+      candidates(slot) := selector.io.out.bits.valid(slot) &&
+        io.held(note) && !reserved(note)
+    }
+    val remaining = Wire(Vec(slotsPerVoice + 1, UInt(slotsPerVoice.W)))
+    remaining(0) := candidates.asUInt
+    for ((index, slot) <- indices.zipWithIndex) {
+      val allocate = selector.io.out.fire && !busy(index) && remaining(slot).orR
+      val chosen = PriorityEncoder(remaining(slot))
+      remaining(slot + 1) := Mux(allocate,
+        remaining(slot) & (remaining(slot) - 1.U), remaining(slot))
+      when(!busy(index)) {
+        assigned(index) := allocate
+        when(allocate) { notes(index) := selector.io.out.bits.idx(chosen) }
+      }
     }
   }
 

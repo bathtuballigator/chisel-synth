@@ -60,7 +60,7 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
 
   reg       r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:26
   reg       r;	// \\src\\main\\scala\\MidiUart.scala:16:18
-  reg [9:0] cnt;	// \\src\\main\\scala\\MidiUart.scala:18:20
+  reg [8:0] cnt;	// \\src\\main\\scala\\MidiUart.scala:18:20
   reg [3:0] bitn;	// \\src\\main\\scala\\MidiUart.scala:19:21
   reg       busy;	// \\src\\main\\scala\\MidiUart.scala:20:21
   reg [7:0] sh;	// \\src\\main\\scala\\MidiUart.scala:21:15
@@ -71,14 +71,14 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
     automatic logic _GEN_0;	// \\src\\main\\scala\\MidiUart.scala:36:15
     automatic logic _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:38:21
     automatic logic _GEN_2;	// \\src\\main\\scala\\MidiUart.scala:22:17, :36:24, :38:29, :42:15
-    _GEN = cnt == 10'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20, :33:18
+    _GEN = cnt == 9'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20, :33:18
     _GEN_0 = bitn == 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21, :36:15
     _GEN_1 = bitn < 4'h9;	// \\src\\main\\scala\\MidiUart.scala:19:21, :38:21
     _GEN_2 = _GEN_0 | _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:22:17, :36:{15,24}, :38:{21,29}, :42:15
     if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:6:7
       r_REG <= 1'h1;	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26
       r <= 1'h1;	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:18
-      cnt <= 10'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20
+      cnt <= 9'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20
       bitn <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21
       busy <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:6:7, :20:21
       valid <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:6:7, :23:22
@@ -88,7 +88,7 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
       r <= r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:{18,26}
       if (busy) begin	// \\src\\main\\scala\\MidiUart.scala:20:21
         if (_GEN) begin	// \\src\\main\\scala\\MidiUart.scala:33:18
-          cnt <= 10'h363;	// \\src\\main\\scala\\MidiUart.scala:18:20, :34:9
+          cnt <= 9'h1B1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :34:9
           bitn <= bitn + 4'h1;	// \\src\\main\\scala\\MidiUart.scala:19:21, :35:18
           if (_GEN_0)	// \\src\\main\\scala\\MidiUart.scala:36:15
             busy <= ~r & busy;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :37:{15,22}
@@ -96,13 +96,13 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
             busy <= _GEN_1 & busy;	// \\src\\main\\scala\\MidiUart.scala:20:21, :38:{21,29}, :41:12
         end
         else	// \\src\\main\\scala\\MidiUart.scala:33:18
-          cnt <= cnt - 10'h1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :48:16
+          cnt <= cnt - 9'h1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :48:16
       end
       else begin	// \\src\\main\\scala\\MidiUart.scala:20:21
         if (r) begin	// \\src\\main\\scala\\MidiUart.scala:16:18
         end
         else begin	// \\src\\main\\scala\\MidiUart.scala:16:18
-          cnt <= 10'h1B2;	// \\src\\main\\scala\\MidiUart.scala:18:20, :30:11
+          cnt <= 9'hD9;	// \\src\\main\\scala\\MidiUart.scala:18:20, :30:11
           bitn <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21
         end
         busy <= ~r | busy;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :28:{10,14}, :29:12
@@ -133,12 +133,12 @@ module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
         end	// \\src\\main\\scala\\MidiUart.scala:6:7
         r_REG = _RANDOM[1'h0][0];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26
         r = _RANDOM[1'h0][1];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:{18,26}
-        cnt = _RANDOM[1'h0][11:2];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :18:20
-        bitn = _RANDOM[1'h0][15:12];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :19:21
-        busy = _RANDOM[1'h0][16];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :20:21
-        sh = _RANDOM[1'h0][24:17];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :21:15
-        data = {_RANDOM[1'h0][31:25], _RANDOM[1'h1][0]};	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :22:17
-        valid = _RANDOM[1'h1][1];	// \\src\\main\\scala\\MidiUart.scala:6:7, :22:17, :23:22
+        cnt = _RANDOM[1'h0][10:2];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :18:20
+        bitn = _RANDOM[1'h0][14:11];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :19:21
+        busy = _RANDOM[1'h0][15];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :20:21
+        sh = _RANDOM[1'h0][23:16];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :21:15
+        data = _RANDOM[1'h0][31:24];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :22:17
+        valid = _RANDOM[1'h1][0];	// \\src\\main\\scala\\MidiUart.scala:6:7, :23:22
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:6:7
@@ -1079,113 +1079,161 @@ module MidiTop(	// \\src\\main\\scala\\MidiUart.scala:133:7
      held_0};	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21, :162:19
 endmodule
 
-module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:260:7
-  input        clock,	// \\src\\main\\scala\\Oscillator.scala:260:7
-               reset,	// \\src\\main\\scala\\Oscillator.scala:260:7
-  input  [7:0] io_samples_0,	// \\src\\main\\scala\\Oscillator.scala:267:14
-               io_samples_1,	// \\src\\main\\scala\\Oscillator.scala:267:14
-               io_samples_2,	// \\src\\main\\scala\\Oscillator.scala:267:14
-               io_samples_3,	// \\src\\main\\scala\\Oscillator.scala:267:14
-  input        io_PWM_en,	// \\src\\main\\scala\\Oscillator.scala:267:14
-  output       io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:267:14
+module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:267:7
+  input        clock,	// \\src\\main\\scala\\Oscillator.scala:267:7
+               reset,	// \\src\\main\\scala\\Oscillator.scala:267:7
+  input  [7:0] io_samples_0,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_1,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_2,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_3,	// \\src\\main\\scala\\Oscillator.scala:274:14
+  input        io_PWM_en,	// \\src\\main\\scala\\Oscillator.scala:274:14
+  output       io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:274:14
 );
 
-  reg [7:0] pwmCounter;	// \\src\\main\\scala\\Oscillator.scala:284:27
-  reg [7:0] duty;	// \\src\\main\\scala\\Oscillator.scala:287:19
-  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:260:7
-    if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:260:7
-      pwmCounter <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:284:27
-      duty <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:284:27, :287:19
+  reg [7:0] voiceSamples_0;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0] voiceSamples_1;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0] voiceSamples_2;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0] voiceSamples_3;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [9:0] sumSamples;	// \\src\\main\\scala\\Oscillator.scala:285:23
+  reg [7:0] pwmCounter;	// \\src\\main\\scala\\Oscillator.scala:299:27
+  reg [7:0] duty;	// \\src\\main\\scala\\Oscillator.scala:302:21
+  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:267:7
+    automatic logic [8:0] _sumSamples_T;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0] _sumSamples_T_1;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    _sumSamples_T =
+      {voiceSamples_0[7], voiceSamples_0} + {voiceSamples_1[7], voiceSamples_1};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    _sumSamples_T_1 =
+      {voiceSamples_2[7], voiceSamples_2} + {voiceSamples_3[7], voiceSamples_3};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    voiceSamples_0 <= io_samples_0;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_1 <= io_samples_1;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_2 <= io_samples_2;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_3 <= io_samples_3;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    sumSamples <=
+      {_sumSamples_T[8], _sumSamples_T} + {_sumSamples_T_1[8], _sumSamples_T_1};	// \\src\\main\\scala\\Oscillator.scala:285:23, :286:43
+    if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:267:7
+      pwmCounter <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:299:27
+      duty <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:299:27, :302:21
     end
-    else begin	// \\src\\main\\scala\\Oscillator.scala:260:7
-      pwmCounter <= pwmCounter + 8'h1;	// \\src\\main\\scala\\Oscillator.scala:284:27, :285:28
-      if (&pwmCounter) begin	// \\src\\main\\scala\\Oscillator.scala:284:27, :289:19
-        automatic logic [8:0]  _sumSamples_T =
-          {io_samples_0[7], io_samples_0} + {io_samples_1[7], io_samples_1};	// \\src\\main\\scala\\Oscillator.scala:275:43
-        automatic logic [8:0]  _sumSamples_T_1 =
-          {io_samples_2[7], io_samples_2} + {io_samples_3[7], io_samples_3};	// \\src\\main\\scala\\Oscillator.scala:275:43
-        automatic logic [9:0]  sumSamples =
-          {_sumSamples_T[8], _sumSamples_T} + {_sumSamples_T_1[8], _sumSamples_T_1};	// \\src\\main\\scala\\Oscillator.scala:275:43
-        automatic logic [10:0] _finalSample_T =
-          $signed({sumSamples[9], sumSamples}) / 11'sh4;	// \\src\\main\\scala\\Oscillator.scala:275:43, :277:26
-        duty <= io_PWM_en ? _finalSample_T[7:0] ^ 8'h80 : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:277:{14,26}, :279:36, :284:27, :287:19, :291:14
+    else begin	// \\src\\main\\scala\\Oscillator.scala:267:7
+      pwmCounter <= pwmCounter + 8'h1;	// \\src\\main\\scala\\Oscillator.scala:299:27, :300:28
+      if (&pwmCounter) begin	// \\src\\main\\scala\\Oscillator.scala:299:27, :304:19
+        automatic logic       sign;	// \\src\\main\\scala\\Oscillator.scala:289:23
+        automatic logic [9:0] _mag_T;	// \\src\\main\\scala\\Oscillator.scala:289:23, :290:21
+        sign = $signed(sumSamples) < 10'sh0;	// \\src\\main\\scala\\Oscillator.scala:285:23, :289:23, :292:26
+        _mag_T = 10'h0 - sumSamples;	// \\src\\main\\scala\\Oscillator.scala:285:23, :289:23, :290:21, :292:26
+        duty <=
+          io_PWM_en
+            ? (sign ? 8'h0 - (sign ? _mag_T[9:2] : sumSamples[9:2]) : sumSamples[9:2])
+              ^ 8'h80
+            : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:285:23, :289:23, :290:{14,21}, :292:{19,26}, :294:36, :299:27, :302:21, :306:16
       end
     end
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:260:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:260:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:260:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:267:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:267:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:267:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\Oscillator.scala:260:7
-      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\Oscillator.scala:260:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:260:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:260:7
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:267:7
+      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\Oscillator.scala:267:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:267:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:267:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:260:7
-        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:260:7
-        pwmCounter = _RANDOM[/*Zero width*/ 1'b0][7:0];	// \\src\\main\\scala\\Oscillator.scala:260:7, :284:27
-        duty = _RANDOM[/*Zero width*/ 1'b0][15:8];	// \\src\\main\\scala\\Oscillator.scala:260:7, :284:27, :287:19
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:267:7
+        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
+          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:267:7
+        end	// \\src\\main\\scala\\Oscillator.scala:267:7
+        voiceSamples_0 = _RANDOM[1'h0][7:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_1 = _RANDOM[1'h0][15:8];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_2 = _RANDOM[1'h0][23:16];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_3 = _RANDOM[1'h0][31:24];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        sumSamples = _RANDOM[1'h1][9:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23
+        pwmCounter = _RANDOM[1'h1][17:10];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23, :299:27
+        duty = _RANDOM[1'h1][25:18];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23, :302:21
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:260:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:260:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:267:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:267:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_PWM_out = io_PWM_en & pwmCounter < duty;	// \\src\\main\\scala\\Oscillator.scala:260:7, :284:27, :287:19, :296:{27,42}
+  assign io_PWM_out = io_PWM_en & pwmCounter < duty;	// \\src\\main\\scala\\Oscillator.scala:267:7, :299:27, :302:21, :315:{27,42}
 endmodule
 
-module SquareOscillator(	// \\src\\main\\scala\\Oscillator.scala:43:7
-  input         clock,	// \\src\\main\\scala\\Oscillator.scala:43:7
-                reset,	// \\src\\main\\scala\\Oscillator.scala:43:7
-  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:22:14
-  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:22:14
+module SquareOscillator(	// \\src\\main\\scala\\Oscillator.scala:46:7
+  input         clock,	// \\src\\main\\scala\\Oscillator.scala:46:7
+                reset,	// \\src\\main\\scala\\Oscillator.scala:46:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:21:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:21:14
 );
 
-  reg [31:0] acc;	// \\src\\main\\scala\\Oscillator.scala:50:20
-  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:43:7
-    if (reset)	// \\src\\main\\scala\\Oscillator.scala:43:7
-      acc <= 32'h0;	// \\src\\main\\scala\\Oscillator.scala:50:20
-    else	// \\src\\main\\scala\\Oscillator.scala:43:7
-      acc <= acc + io_increment;	// \\src\\main\\scala\\Oscillator.scala:50:20, :52:14
+  reg [31:0] increment;	// \\src\\main\\scala\\Oscillator.scala:43:26
+  reg [31:0] acc;	// \\src\\main\\scala\\Oscillator.scala:53:20
+  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:46:7
+    increment <= io_increment;	// \\src\\main\\scala\\Oscillator.scala:43:26
+    if (reset)	// \\src\\main\\scala\\Oscillator.scala:46:7
+      acc <= 32'h0;	// \\src\\main\\scala\\Oscillator.scala:53:20
+    else	// \\src\\main\\scala\\Oscillator.scala:46:7
+      acc <= acc + increment;	// \\src\\main\\scala\\Oscillator.scala:43:26, :53:20, :55:14
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:43:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:43:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:43:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:46:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:46:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:46:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\Oscillator.scala:43:7
-      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\Oscillator.scala:43:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:43:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:43:7
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:46:7
+      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\Oscillator.scala:46:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:46:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:46:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:43:7
-        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:43:7
-        acc = _RANDOM[/*Zero width*/ 1'b0];	// \\src\\main\\scala\\Oscillator.scala:43:7, :50:20
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:46:7
+        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
+          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:46:7
+        end	// \\src\\main\\scala\\Oscillator.scala:46:7
+        increment = _RANDOM[1'h0];	// \\src\\main\\scala\\Oscillator.scala:43:26, :46:7
+        acc = _RANDOM[1'h1];	// \\src\\main\\scala\\Oscillator.scala:46:7, :53:20
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:43:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:43:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:46:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:46:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_sample = acc[31] ? 8'h81 : 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:43:7, :50:20, :58:19, :59:8
+  assign io_sample = acc[31] ? 8'h81 : 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:46:7, :53:20, :61:19, :62:8
 endmodule
 
-module Oscillator(	// \\src\\main\\scala\\Oscillator.scala:222:7
-  input         clock,	// \\src\\main\\scala\\Oscillator.scala:222:7
-                reset,	// \\src\\main\\scala\\Oscillator.scala:222:7
-  input  [31:0] io_frequencyHz,	// \\src\\main\\scala\\Oscillator.scala:229:14
-  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:229:14
+module Oscillator(	// \\src\\main\\scala\\Oscillator.scala:227:7
+  input         clock,	// \\src\\main\\scala\\Oscillator.scala:227:7
+                reset,	// \\src\\main\\scala\\Oscillator.scala:227:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:235:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:235:14
 );
 
-  wire [7:0]  _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:243:47
-  wire        validPitch = (|io_frequencyHz) & io_frequencyHz < 32'h2FAF080;	// \\src\\main\\scala\\Oscillator.scala:248:{38,45,64}
-  wire [63:0] increment = {io_frequencyHz, 32'h0} / 64'h5F5E100;	// \\src\\main\\scala\\Oscillator.scala:249:{37,49}
-  SquareOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:243:47
+  wire [7:0]  _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:250:13
+  reg  [31:0] increment;	// \\src\\main\\scala\\Oscillator.scala:257:26
+  always @(posedge clock)	// \\src\\main\\scala\\Oscillator.scala:227:7
+    increment <= io_increment;	// \\src\\main\\scala\\Oscillator.scala:257:26
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:227:7
+      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:227:7
+        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:227:7
+        increment = _RANDOM[/*Zero width*/ 1'b0];	// \\src\\main\\scala\\Oscillator.scala:227:7, :257:26
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  SquareOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:250:13
     .clock        (clock),
     .reset        (reset),
-    .io_increment (validPitch ? increment[31:0] : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:248:45, :249:{37,49}, :252:28
+    .io_increment ((|increment) ? increment : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:257:26, :259:16, :262:26
     .io_sample    (_osc_io_sample)
   );
-  assign io_sample = validPitch ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:222:7, :243:47, :248:45, :253:21
+  assign io_sample = (|increment) ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:227:7, :250:13, :257:26, :259:16, :263:19
 endmodule
 
 module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
@@ -1196,14 +1244,14 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
   output        io_active	// \\src\\main\\scala\\ADSREnvelope.scala:17:14
 );
 
-  reg [16:0] tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
+  reg [15:0] tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
   reg [2:0]  state;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22
   reg [15:0] level;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22
   always @(posedge clock) begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      tick_c_value <= 17'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       state <= 3'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :73:17
-      level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22
+      level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, src/main/scala/chisel3/util/Counter.scala:61:40
     end
     else begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
       automatic logic tick;	// src/main/scala/chisel3/util/Counter.scala:73:24
@@ -1216,7 +1264,7 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
       automatic logic _GEN_5;	// \\src\\main\\scala\\ADSREnvelope.scala:52:29
       automatic logic _GEN_6;	// \\src\\main\\scala\\ADSREnvelope.scala:60:20
       automatic logic _GEN_7;	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
-      tick = tick_c_value == 17'h1869F;	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
+      tick = tick_c_value == 16'hC34F;	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
       _GEN = state == 3'h4;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :45:44
       _GEN_0 = io_gate & (state == 3'h0 | _GEN);	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :45:{16,26,35,44}, :73:17
       _GEN_1 = state == 3'h1;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :46:11, :47:33
@@ -1227,9 +1275,9 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
       _GEN_6 = {1'h0, level} < 17'hB5C3;	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22, :52:21, :60:20
       _GEN_7 = level < 16'h149;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :71:20
       if (tick)	// src/main/scala/chisel3/util/Counter.scala:73:24
-        tick_c_value <= 17'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+        tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       else	// src/main/scala/chisel3/util/Counter.scala:73:24
-        tick_c_value <= tick_c_value + 17'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
+        tick_c_value <= tick_c_value + 16'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
       if (_GEN_0)	// \\src\\main\\scala\\ADSREnvelope.scala:45:16
         state <= 3'h1;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :46:11
       else if (_GEN_4)	// \\src\\main\\scala\\ADSREnvelope.scala:47:23
@@ -1266,7 +1314,7 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
         level <= 16'hB333;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :60:34
       else if (_GEN) begin	// \\src\\main\\scala\\ADSREnvelope.scala:45:44
         if (_GEN_7)	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
-          level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22
+          level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, src/main/scala/chisel3/util/Counter.scala:61:40
         else	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
           level <= level - 16'h148;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :75:26
       end
@@ -1285,9 +1333,9 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
         for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
           _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
         end	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-        tick_c_value = _RANDOM[1'h0][16:0];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, src/main/scala/chisel3/util/Counter.scala:61:40
-        state = _RANDOM[1'h0][19:17];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :42:22, src/main/scala/chisel3/util/Counter.scala:61:40
-        level = {_RANDOM[1'h0][31:20], _RANDOM[1'h1][3:0]};	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22, src/main/scala/chisel3/util/Counter.scala:61:40
+        tick_c_value = _RANDOM[1'h0][15:0];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        state = _RANDOM[1'h0][18:16];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :42:22, src/main/scala/chisel3/util/Counter.scala:61:40
+        level = {_RANDOM[1'h0][31:19], _RANDOM[1'h1][2:0]};	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22, src/main/scala/chisel3/util/Counter.scala:61:40
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
@@ -1301,7 +1349,7 @@ endmodule
 module Synth(	// \\src\\main\\scala\\Synth.scala:11:7
   input         clock,	// \\src\\main\\scala\\Synth.scala:11:7
                 reset,	// \\src\\main\\scala\\Synth.scala:11:7
-  input  [31:0] io_frequencyHz,	// \\src\\main\\scala\\Synth.scala:17:14
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Synth.scala:17:14
   input         io_gate,	// \\src\\main\\scala\\Synth.scala:17:14
   output [7:0]  io_sample,	// \\src\\main\\scala\\Synth.scala:17:14
   output        io_active	// \\src\\main\\scala\\Synth.scala:17:14
@@ -1315,10 +1363,10 @@ module Synth(	// \\src\\main\\scala\\Synth.scala:11:7
   wire [25:0] active_scaled =
     $signed({_active_scaled_T_1[24], _active_scaled_T_1}) / 26'shFFFF;	// \\src\\main\\scala\\Synth.scala:40:{33,47}
   Oscillator osc (	// \\src\\main\\scala\\Synth.scala:20:11
-    .clock          (clock),
-    .reset          (reset),
-    .io_frequencyHz (io_gate | _active_adsr_io_active ? io_frequencyHz : 32'h0),	// \\src\\main\\scala\\Synth.scala:31:22, :47:{28,37}
-    .io_sample      (_osc_io_sample)
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (io_gate | _active_adsr_io_active ? io_increment : 32'h0),	// \\src\\main\\scala\\Synth.scala:31:22, :47:{26,35}
+    .io_sample    (_osc_io_sample)
   );
   ADSREnvelope active_adsr (	// \\src\\main\\scala\\Synth.scala:31:22
     .clock     (clock),
@@ -1331,6 +1379,161 @@ module Synth(	// \\src\\main\\scala\\Synth.scala:11:7
   assign io_active = _active_adsr_io_active;	// \\src\\main\\scala\\Synth.scala:11:7, :31:22
 endmodule
 
+module FirstNSetBits(	// \\src\\main\\scala\\Utils.scala:64:7
+  input          clock,	// \\src\\main\\scala\\Utils.scala:64:7
+                 reset,	// \\src\\main\\scala\\Utils.scala:64:7
+  input  [127:0] io_in_bits,	// \\src\\main\\scala\\Utils.scala:70:14
+  output         io_out_valid,	// \\src\\main\\scala\\Utils.scala:70:14
+  output [6:0]   io_out_bits_idx_0,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_idx_1,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_idx_2,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_idx_3,	// \\src\\main\\scala\\Utils.scala:70:14
+  output         io_out_bits_valid_0,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_valid_1,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_valid_2,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_valid_3	// \\src\\main\\scala\\Utils.scala:70:14
+);
+
+  reg  [1:0]   state;	// \\src\\main\\scala\\Utils.scala:76:22
+  reg  [127:0] bits;	// \\src\\main\\scala\\Utils.scala:78:17
+  reg  [1:0]   cnt;	// \\src\\main\\scala\\Utils.scala:79:16
+  reg  [6:0]   idx_0;	// \\src\\main\\scala\\Utils.scala:80:16
+  reg  [6:0]   idx_1;	// \\src\\main\\scala\\Utils.scala:80:16
+  reg  [6:0]   idx_2;	// \\src\\main\\scala\\Utils.scala:80:16
+  reg  [6:0]   idx_3;	// \\src\\main\\scala\\Utils.scala:80:16
+  reg          vld_0;	// \\src\\main\\scala\\Utils.scala:81:20
+  reg          vld_1;	// \\src\\main\\scala\\Utils.scala:81:20
+  reg          vld_2;	// \\src\\main\\scala\\Utils.scala:81:20
+  reg          vld_3;	// \\src\\main\\scala\\Utils.scala:81:20
+  wire         io_out_valid_0 = state == 2'h2;	// \\src\\main\\scala\\Utils.scala:76:22, :101:25
+  always @(posedge clock) begin	// \\src\\main\\scala\\Utils.scala:64:7
+    automatic logic [127:0] _oh_T_1;	// \\src\\main\\scala\\Utils.scala:84:26
+    automatic logic [127:0] oh;	// \\src\\main\\scala\\Utils.scala:84:17
+    automatic logic         _GEN;	// \\src\\main\\scala\\Utils.scala:105:17
+    automatic logic [63:0]  idx_hi;	// \\src\\main\\scala\\Utils.scala:84:17, src/main/scala/chisel3/util/OneHot.scala:30:18
+    automatic logic [62:0]  _idx_T_1;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [30:0]  _idx_T_3;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [14:0]  _idx_T_5;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [6:0]   _idx_T_7;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [2:0]   _idx_T_9;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [6:0]   _idx_T_18;	// src/main/scala/chisel3/util/OneHot.scala:32:10
+    automatic logic         _GEN_0;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
+    automatic logic         _GEN_1;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
+    automatic logic         _GEN_2;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
+    automatic logic         _GEN_3;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
+    _oh_T_1 = ~bits + 128'h1;	// \\src\\main\\scala\\Utils.scala:78:17, :84:{20,26}
+    oh = bits & _oh_T_1;	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}
+    _GEN = state == 2'h1;	// \\src\\main\\scala\\Utils.scala:76:22, :105:17, :116:18
+    idx_hi = bits[127:64] & _oh_T_1[127:64];	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18
+    _idx_T_1 = idx_hi[63:1] | bits[63:1] & _oh_T_1[63:1];	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_3 = _idx_T_1[62:32] | _idx_T_1[30:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_5 = _idx_T_3[30:16] | _idx_T_3[14:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_7 = _idx_T_5[14:8] | _idx_T_5[6:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_9 = _idx_T_7[6:4] | _idx_T_7[2:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_18 =
+      {|idx_hi,
+       |(_idx_T_1[62:31]),
+       |(_idx_T_3[30:15]),
+       |(_idx_T_5[14:7]),
+       |(_idx_T_7[6:3]),
+       |(_idx_T_9[2:1]),
+       _idx_T_9[2] | _idx_T_9[0]};	// \\src\\main\\scala\\Utils.scala:84:17, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:{10,14,28}
+    _GEN_0 = _GEN & (|bits) & cnt == 2'h0;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
+    _GEN_1 = _GEN & (|bits) & cnt == 2'h1;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
+    _GEN_2 = _GEN & (|bits) & cnt == 2'h2;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :101:25, :105:17, :115:{17,22}, :116:18
+    _GEN_3 = _GEN & (|bits) & (&cnt);	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
+    if (reset) begin	// \\src\\main\\scala\\Utils.scala:64:7
+      state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
+      vld_0 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+      vld_1 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+      vld_2 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+      vld_3 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+    end
+    else if (|state) begin	// \\src\\main\\scala\\Utils.scala:76:22, :100:24
+      if (_GEN) begin	// \\src\\main\\scala\\Utils.scala:105:17
+        if ((bits & ~oh) == 128'h0 | (&cnt))	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :84:{17,26}, :85:{19,21}, :116:18, :122:{18,22}
+          state <= 2'h2;	// \\src\\main\\scala\\Utils.scala:76:22, :101:25
+      end
+      else if (state == 2'h2 & io_out_valid_0)	// \\src\\main\\scala\\Utils.scala:76:22, :101:25, :105:17, :125:{25,33}
+        state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
+      vld_0 <= _GEN_0 | vld_0;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+      vld_1 <= _GEN_1 | vld_1;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+      vld_2 <= _GEN_2 | vld_2;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+      vld_3 <= _GEN_3 | vld_3;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+    end
+    else begin	// \\src\\main\\scala\\Utils.scala:100:24
+      state <= 2'h1;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
+      vld_0 <= (|state) & vld_0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
+      vld_1 <= (|state) & vld_1;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
+      vld_2 <= (|state) & vld_2;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
+      vld_3 <= (|state) & vld_3;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
+    end
+    if (|state) begin	// \\src\\main\\scala\\Utils.scala:76:22, :100:24
+      automatic logic _GEN_4;	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:22, :118:14
+      _GEN_4 = _GEN & (|bits);	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:{17,22}, :118:14
+      bits <= ({128{~_GEN_4}} | ~oh) & bits;	// \\src\\main\\scala\\Utils.scala:78:17, :84:17, :85:21, :105:17, :115:22, :118:14
+      if (_GEN_4)	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:22, :118:14
+        cnt <= cnt + 2'h1;	// \\src\\main\\scala\\Utils.scala:79:16, :116:18, :119:20
+    end
+    else begin	// \\src\\main\\scala\\Utils.scala:100:24
+      bits <= io_in_bits;	// \\src\\main\\scala\\Utils.scala:78:17
+      cnt <= 2'h0;	// \\src\\main\\scala\\Utils.scala:79:16, :116:18
+    end
+    if ((|state) & _GEN_0)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
+      idx_0 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_1)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
+      idx_1 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_2)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
+      idx_2 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_3)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
+      idx_3 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Utils.scala:64:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Utils.scala:64:7
+      automatic logic [31:0] _RANDOM[0:5];	// \\src\\main\\scala\\Utils.scala:64:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:64:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:64:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Utils.scala:64:7
+        for (logic [2:0] i = 3'h0; i < 3'h6; i += 3'h1) begin
+          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\Utils.scala:64:7
+        end	// \\src\\main\\scala\\Utils.scala:64:7
+        state = _RANDOM[3'h0][1:0];	// \\src\\main\\scala\\Utils.scala:64:7, :76:22
+        bits =
+          {_RANDOM[3'h0][31:2],
+           _RANDOM[3'h1],
+           _RANDOM[3'h2],
+           _RANDOM[3'h3],
+           _RANDOM[3'h4][1:0]};	// \\src\\main\\scala\\Utils.scala:64:7, :76:22, :78:17
+        cnt = _RANDOM[3'h4][3:2];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :79:16
+        idx_0 = _RANDOM[3'h4][10:4];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
+        idx_1 = _RANDOM[3'h4][17:11];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
+        idx_2 = _RANDOM[3'h4][24:18];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
+        idx_3 = _RANDOM[3'h4][31:25];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
+        vld_0 = _RANDOM[3'h5][0];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+        vld_1 = _RANDOM[3'h5][1];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+        vld_2 = _RANDOM[3'h5][2];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+        vld_3 = _RANDOM[3'h5][3];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_out_valid = io_out_valid_0;	// \\src\\main\\scala\\Utils.scala:64:7, :101:25
+  assign io_out_bits_idx_0 = idx_0;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
+  assign io_out_bits_idx_1 = idx_1;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
+  assign io_out_bits_idx_2 = idx_2;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
+  assign io_out_bits_idx_3 = idx_3;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
+  assign io_out_bits_valid_0 = vld_0;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+  assign io_out_bits_valid_1 = vld_1;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+  assign io_out_bits_valid_2 = vld_2;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+  assign io_out_bits_valid_3 = vld_3;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+endmodule
+
 module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
   input          clock,	// \\src\\main\\scala\\SynthTop.scala:24:7
                  reset,	// \\src\\main\\scala\\SynthTop.scala:24:7
@@ -1338,6 +1541,15 @@ module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
   output         io_out	// \\src\\main\\scala\\SynthTop.scala:33:14
 );
 
+  wire               _selector_io_out_valid;	// \\src\\main\\scala\\SynthTop.scala:67:26
+  wire [6:0]         _selector_io_out_bits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:67:26
+  wire [6:0]         _selector_io_out_bits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:67:26
+  wire [6:0]         _selector_io_out_bits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:67:26
+  wire [6:0]         _selector_io_out_bits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:67:26
+  wire               _selector_io_out_bits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:67:26
+  wire               _selector_io_out_bits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:67:26
+  wire               _selector_io_out_bits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:67:26
+  wire               _selector_io_out_bits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:67:26
   wire [7:0]         _synth_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
   wire               _synth_3_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
   wire [7:0]         _synth_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
@@ -1347,134 +1559,134 @@ module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
   wire [7:0]         _synth_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
   wire               _synth_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
   wire [127:0][31:0] _GEN =
-    '{32'h30FF,
-      32'h2E3F,
-      32'h2BA7,
-      32'h2934,
-      32'h26E4,
-      32'h24B5,
-      32'h22A5,
-      32'h20B4,
-      32'h1EDE,
-      32'h1D22,
-      32'h1B80,
-      32'h19F4,
-      32'h187F,
-      32'h171F,
-      32'h15D3,
-      32'h149A,
-      32'h1372,
-      32'h125A,
-      32'h1152,
-      32'h105A,
-      32'hF6F,
-      32'hE91,
-      32'hDC0,
-      32'hCFA,
-      32'hC3F,
-      32'hB8F,
-      32'hAE9,
-      32'hA4D,
-      32'h9B9,
-      32'h92D,
-      32'h8A9,
-      32'h82D,
-      32'h7B7,
-      32'h748,
-      32'h6E0,
-      32'h67D,
-      32'h61F,
-      32'h5C7,
-      32'h574,
-      32'h526,
-      32'h4DC,
-      32'h496,
-      32'h454,
-      32'h416,
-      32'h3DB,
-      32'h3A4,
-      32'h370,
-      32'h33E,
-      32'h30F,
-      32'h2E3,
-      32'h2BA,
-      32'h293,
-      32'h26E,
-      32'h24B,
-      32'h22A,
-      32'h20B,
-      32'h1ED,
-      32'h1D2,
-      32'h1B8,
-      32'h19F,
-      32'h187,
-      32'h171,
-      32'h15D,
-      32'h149,
-      32'h137,
-      32'h125,
-      32'h115,
-      32'h105,
-      32'hF6,
-      32'hE9,
-      32'hDC,
-      32'hCF,
-      32'hC3,
-      32'hB8,
-      32'hAE,
-      32'hA4,
-      32'h9B,
-      32'h92,
-      32'h8A,
-      32'h82,
-      32'h7B,
-      32'h74,
-      32'h6E,
-      32'h67,
-      32'h61,
-      32'h5C,
-      32'h57,
-      32'h52,
-      32'h4D,
-      32'h49,
-      32'h45,
-      32'h41,
-      32'h3D,
-      32'h3A,
-      32'h37,
-      32'h33,
-      32'h30,
-      32'h2E,
-      32'h2B,
-      32'h29,
-      32'h26,
-      32'h24,
-      32'h22,
-      32'h20,
-      32'h1E,
-      32'h1D,
-      32'h1B,
-      32'h19,
-      32'h18,
-      32'h17,
-      32'h15,
-      32'h14,
-      32'h13,
-      32'h12,
-      32'h11,
-      32'h10,
-      32'hF,
-      32'hE,
-      32'hD,
-      32'hC,
-      32'hC,
-      32'hB,
-      32'hA,
-      32'hA,
-      32'h9,
-      32'h9,
-      32'h8,
-      32'h8};	// \\src\\main\\scala\\SynthTop.scala:55:26
+    '{32'h107105,
+      32'hF84C9,
+      32'hEA5CF,
+      32'hDD359,
+      32'hD0CB3,
+      32'hC5134,
+      32'hBA03A,
+      32'hAF92F,
+      32'hA5B84,
+      32'h9C6B3,
+      32'h93A3B,
+      32'h8B5A6,
+      32'h83882,
+      32'h7C264,
+      32'h752E8,
+      32'h6E9AD,
+      32'h6865A,
+      32'h6289A,
+      32'h5D01D,
+      32'h57C97,
+      32'h52DC2,
+      32'h4E359,
+      32'h49D1E,
+      32'h45AD3,
+      32'h41C41,
+      32'h3E132,
+      32'h3A974,
+      32'h374D6,
+      32'h3432D,
+      32'h3144D,
+      32'h2E80E,
+      32'h2BE4C,
+      32'h296E1,
+      32'h271AD,
+      32'h24E8F,
+      32'h22D6A,
+      32'h20E21,
+      32'h1F099,
+      32'h1D4BA,
+      32'h1BA6B,
+      32'h1A196,
+      32'h18A26,
+      32'h17407,
+      32'h15F26,
+      32'h14B71,
+      32'h138D6,
+      32'h12747,
+      32'h116B5,
+      32'h10710,
+      32'hF84D,
+      32'hEA5D,
+      32'hDD36,
+      32'hD0CB,
+      32'hC513,
+      32'hBA04,
+      32'hAF93,
+      32'hA5B8,
+      32'h9C6B,
+      32'h93A4,
+      32'h8B5A,
+      32'h8388,
+      32'h7C26,
+      32'h752E,
+      32'h6E9B,
+      32'h6866,
+      32'h628A,
+      32'h5D02,
+      32'h57C9,
+      32'h52DC,
+      32'h4E36,
+      32'h49D2,
+      32'h45AD,
+      32'h41C4,
+      32'h3E13,
+      32'h3A97,
+      32'h374D,
+      32'h3433,
+      32'h3145,
+      32'h2E81,
+      32'h2BE5,
+      32'h296E,
+      32'h271B,
+      32'h24E9,
+      32'h22D7,
+      32'h20E2,
+      32'h1F0A,
+      32'h1D4C,
+      32'h1BA7,
+      32'h1A19,
+      32'h18A2,
+      32'h1740,
+      32'h15F2,
+      32'h14B7,
+      32'h138D,
+      32'h1274,
+      32'h116B,
+      32'h1071,
+      32'hF85,
+      32'hEA6,
+      32'hDD3,
+      32'hD0D,
+      32'hC51,
+      32'hBA0,
+      32'hAF9,
+      32'hA5C,
+      32'h9C7,
+      32'h93A,
+      32'h8B6,
+      32'h839,
+      32'h7C2,
+      32'h753,
+      32'h6EA,
+      32'h686,
+      32'h629,
+      32'h5D0,
+      32'h57D,
+      32'h52E,
+      32'h4E3,
+      32'h49D,
+      32'h45B,
+      32'h41C,
+      32'h3E1,
+      32'h3A9,
+      32'h375,
+      32'h343,
+      32'h314,
+      32'h2E8,
+      32'h2BE};	// \\src\\main\\scala\\SynthTop.scala:55:24
   reg  [6:0]         notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22
   reg  [6:0]         notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22
   reg  [6:0]         notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22
@@ -1495,6 +1707,13 @@ module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
   wire [127:0]       _gate_T_6 = io_held >> notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
   wire               gate_3 = assigned_3 & _gate_T_6[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
   wire               busy_3 = gate_3 | _synth_3_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
+  wire [254:0]       _reserved_T = 255'h1 << notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
+  wire [254:0]       _reserved_T_3 = 255'h1 << notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
+  wire [254:0]       _reserved_T_6 = 255'h1 << notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
+  wire [254:0]       _reserved_T_9 = 255'h1 << notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
+  wire [127:0]       reserved =
+    (busy_0 ? _reserved_T[127:0] : 128'h0) | (busy_1 ? _reserved_T_3[127:0] : 128'h0)
+    | (busy_2 ? _reserved_T_6[127:0] : 128'h0) | (busy_3 ? _reserved_T_9[127:0] : 128'h0);	// \\src\\main\\scala\\SynthTop.scala:56:25, :65:{10,31}, :66:16
   always @(posedge clock) begin	// \\src\\main\\scala\\SynthTop.scala:24:7
     if (reset) begin	// \\src\\main\\scala\\SynthTop.scala:24:7
       notes_0 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
@@ -1507,1912 +1726,79 @@ module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
       assigned_3 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
     end
     else begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-      automatic logic [254:0]    _reserved_T_9;	// \\src\\main\\scala\\SynthTop.scala:61:29
-      automatic logic [254:0]    _reserved_T_6;	// \\src\\main\\scala\\SynthTop.scala:61:29
-      automatic logic [254:0]    _reserved_T_3;	// \\src\\main\\scala\\SynthTop.scala:61:29
-      automatic logic [254:0]    _reserved_T;	// \\src\\main\\scala\\SynthTop.scala:61:29
-      automatic logic [127:0]    _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:64:62
-      automatic logic            _idx_fromRight_T_1;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_3;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_1;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_1;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_10;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_2;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_2;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_17;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_3;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_3;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_3;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_19;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_4;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_4;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_5;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_26;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_1;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_1;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_5;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_46;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_47;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_48;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_6;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_13;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_58;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_7;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_7;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_7;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_60;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_8;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_8;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_67;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_9;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_9;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_74;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_10;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_10;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_10;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_76;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_11;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_11;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_12;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_83;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_4;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_4;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_12;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_103;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_13;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_104;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_5;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_105;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_5;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_13;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_128;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_129;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_130;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_14;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_29;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_140;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_15;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_15;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_15;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_142;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_16;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_16;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_149;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_17;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_17;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_156;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_18;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_18;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_18;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_158;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_19;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_19;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_20;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_165;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_8;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_8;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_20;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_185;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_186;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_187;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_21;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_43;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_197;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_22;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_22;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_22;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_199;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_23;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_23;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_206;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_24;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_24;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_213;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_25;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_25;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_25;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_215;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_26;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_26;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_27;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_222;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_11;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_11;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_27;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_242;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_28;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_243;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_12;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_244;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_12;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_28;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_267;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_29;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_268;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_13;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_269;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_13;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_29;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_292;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_293;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_294;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_30;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_61;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_304;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_31;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_31;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_31;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_306;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_32;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_32;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_313;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_33;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_33;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_320;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_34;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_34;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_34;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_322;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_35;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_35;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_36;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_329;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_16;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_16;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_36;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_349;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_350;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_351;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_37;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_75;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_361;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_38;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_38;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_38;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_363;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_39;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_39;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_370;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_40;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_40;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_377;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_41;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_41;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_41;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_379;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_42;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_42;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_43;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_386;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_19;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_19;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_43;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_406;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_44;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_407;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_20;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_408;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_20;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_44;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_431;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_432;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_433;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_45;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_91;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_443;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_46;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_46;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_46;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_445;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_47;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_47;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_452;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_48;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_48;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_459;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_49;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_49;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_49;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_461;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_50;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_50;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_51;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_468;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_23;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_23;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_51;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_488;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_489;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_490;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_52;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_105;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_500;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_53;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_53;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_53;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_502;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_54;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_54;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_509;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_55;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_55;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_516;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_56;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_56;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_56;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_518;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_57;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_57;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_58;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_525;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_26;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_26;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_58;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_545;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_59;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_546;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_27;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_547;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_27;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_59;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_570;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_60;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_571;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_28;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_572;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_28;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_60;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_595;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_61;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_596;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_29;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_597;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_29;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_61;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_620;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_621;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_622;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_62;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_125;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_632;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_63;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_63;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_63;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_634;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_64;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_64;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_641;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_65;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_65;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_648;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_66;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_66;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_66;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_650;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_67;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_67;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_68;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_657;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_32;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_32;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_68;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_677;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_678;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_679;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_69;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_139;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_689;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_70;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_70;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_70;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_691;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_71;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_71;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_698;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_72;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_72;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_705;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_73;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_73;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_73;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_707;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_74;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_74;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_75;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_714;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_35;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_35;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_75;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_734;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_76;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_735;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_36;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_736;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_36;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_76;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_759;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_760;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_761;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_77;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_155;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_771;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_78;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_78;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_78;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_773;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_79;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_79;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_780;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_80;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_80;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_787;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_81;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_81;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_81;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_789;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_82;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_82;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_83;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_796;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_39;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_39;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_83;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_816;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_817;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_818;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_84;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_169;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_828;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_85;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_85;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_85;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_830;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_86;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_86;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_837;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_87;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_87;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_844;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_88;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_88;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_88;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_846;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_89;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_89;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_90;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_853;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_42;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_42;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_90;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_873;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_91;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_874;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_43;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_875;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_43;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_91;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_898;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_92;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_899;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_44;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_900;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_44;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_92;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_923;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_924;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_925;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_93;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_187;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_935;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_94;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_94;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_94;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_937;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_95;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_95;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_944;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_96;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_96;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_951;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_97;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_97;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_97;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_953;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_98;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_98;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_99;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_960;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_47;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_47;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_99;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_980;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_981;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_982;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_100;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_201;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_992;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_101;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_101;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_101;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_994;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_102;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_102;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1001;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_103;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_103;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1008;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_104;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_104;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_104;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1010;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_105;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_105;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_106;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1017;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_50;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_50;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_106;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1037;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_107;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1038;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_51;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1039;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_51;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_107;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1062;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_1063;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_1064;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_108;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_217;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1074;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_109;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_109;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_109;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1076;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_110;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_110;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1083;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_111;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_111;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1090;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_112;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_112;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_112;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1092;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_113;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_113;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_114;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1099;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_54;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_54;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_114;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1119;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_1120;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_1121;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_115;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_231;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1131;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_116;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_116;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_116;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1133;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_117;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_117;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1140;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [2:0]      sum_118;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      cnt_118;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1147;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_119;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_119;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [1:0]      cnt_119;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic            _idx_fromRight_T_1149;	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:56:51
-      automatic logic [6:0]      idx_0_120;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [1:0]      sum_120;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [6:0]      idx_0_121;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1156;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_57;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [6:0]      idx_2_57;	// src/main/scala/chisel3/util/Mux.scala:30:73
-      automatic logic [2:0]      sum_121;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1176;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_122;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1177;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_58;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1178;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_58;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_122;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1201;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_123;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1202;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_59;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1203;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_59;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_123;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1226;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_124;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1227;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_60;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1228;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_60;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_124;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1251;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_0_125;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1252;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_1_61;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic            _idx_fromRight_T_1253;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [6:0]      idx_2_61;	// \\src\\main\\scala\\Utils.scala:48:24
-      automatic logic [3:0]      sum_125;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic            _idx_fromRight_T_1276;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_1277;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic            _idx_fromRight_T_1278;	// \\src\\main\\scala\\Utils.scala:46:30
-      automatic logic [3:0]      sum_126;	// \\src\\main\\scala\\Utils.scala:50:23
-      automatic logic [2:0]      _cnt_T_253;	// \\src\\main\\scala\\Utils.scala:51:20
-      automatic logic [1:0]      _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:71:19
-      automatic logic [3:0]      _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:71:19
-      automatic logic [3:0][6:0] _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:72:30
-      automatic logic [1:0]      _GEN_4 = {1'h0, ~busy_1};	// \\src\\main\\scala\\SynthTop.scala:24:7, :56:25, :66:10, :68:47
-      automatic logic [1:0]      rank_1;	// \\src\\main\\scala\\SynthTop.scala:68:47
-      automatic logic [1:0]      _rank_T_8;	// \\src\\main\\scala\\SynthTop.scala:68:47
-      _reserved_T_9 = 255'h1 << notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22, :61:29
-      _reserved_T_6 = 255'h1 << notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22, :61:29
-      _reserved_T_3 = 255'h1 << notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22, :61:29
-      _reserved_T = 255'h1 << notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22, :61:29
-      _GEN_0 =
-        ~((busy_0 ? _reserved_T[127:0] : 128'h0)
-          | (busy_1 ? _reserved_T_3[127:0] : 128'h0)
-          | (busy_2 ? _reserved_T_6[127:0] : 128'h0)
-          | (busy_3 ? _reserved_T_9[127:0] : 128'h0));	// \\src\\main\\scala\\SynthTop.scala:56:25, :61:{8,29}, :62:14, :64:62
-      _idx_fromRight_T_1 = io_held[0] & _GEN_0[0];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0 = {6'h0, ~_idx_fromRight_T_1};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum = {1'h0, _idx_fromRight_T_1} + {1'h0, io_held[1] & _GEN_0[1]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt = (&sum) ? 2'h2 : sum;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_3 = io_held[2] & _GEN_0[2];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_1 = {6'h1, ~_idx_fromRight_T_3};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_1 = {1'h0, _idx_fromRight_T_3} + {1'h0, io_held[3] & _GEN_0[3]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_10 = cnt == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_2 = {1'h0, cnt} + {1'h0, (&sum_1) ? 2'h2 : sum_1};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_2 = sum_2 > 3'h4 ? 3'h4 : sum_2;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_17 = io_held[4] & _GEN_0[4];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_3 = {6'h2, ~_idx_fromRight_T_17};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_3 = {1'h0, _idx_fromRight_T_17} + {1'h0, io_held[5] & _GEN_0[5]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_3 = (&sum_3) ? 2'h2 : sum_3;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_19 = io_held[6] & _GEN_0[6];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_4 = {6'h3, ~_idx_fromRight_T_19};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_4 = {1'h0, _idx_fromRight_T_19} + {1'h0, io_held[7] & _GEN_0[7]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_5 = (|cnt_3) ? idx_0_3 : idx_0_4;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_26 = cnt_3 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_1 =
-        cnt_3[1]
-          ? 7'h5
-          : (cnt_3 == 2'h0 ? 7'h7 : 7'h0) | (_idx_fromRight_T_26 ? idx_0_4 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_1 = (_idx_fromRight_T_26 ? 7'h7 : 7'h0) | (cnt_3 == 2'h2 ? idx_0_4 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_5 = {1'h0, cnt_3} + {1'h0, (&sum_4) ? 2'h2 : sum_4};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_46 = cnt_2 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_47 = cnt_2 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_48 = cnt_2 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_6 = {1'h0, cnt_2} + {1'h0, sum_5 > 3'h4 ? 3'h4 : sum_5};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_13 = sum_6 > 4'h4 ? 3'h4 : sum_6[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_58 = io_held[8] & _GEN_0[8];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_7 = {6'h4, ~_idx_fromRight_T_58};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_7 = {1'h0, _idx_fromRight_T_58} + {1'h0, io_held[9] & _GEN_0[9]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_7 = (&sum_7) ? 2'h2 : sum_7;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_60 = io_held[10] & _GEN_0[10];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_8 = {6'h5, ~_idx_fromRight_T_60};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_8 = {1'h0, _idx_fromRight_T_60} + {1'h0, io_held[11] & _GEN_0[11]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_67 = cnt_7 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_9 = {1'h0, cnt_7} + {1'h0, (&sum_8) ? 2'h2 : sum_8};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_9 = sum_9 > 3'h4 ? 3'h4 : sum_9;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_74 = io_held[12] & _GEN_0[12];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_10 = {6'h6, ~_idx_fromRight_T_74};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_10 = {1'h0, _idx_fromRight_T_74} + {1'h0, io_held[13] & _GEN_0[13]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_10 = (&sum_10) ? 2'h2 : sum_10;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_76 = io_held[14] & _GEN_0[14];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_11 = {6'h7, ~_idx_fromRight_T_76};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_11 = {1'h0, _idx_fromRight_T_76} + {1'h0, io_held[15] & _GEN_0[15]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_12 = (|cnt_10) ? idx_0_10 : idx_0_11;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_83 = cnt_10 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_4 =
-        cnt_10[1]
-          ? 7'hD
-          : (cnt_10 == 2'h0 ? 7'hF : 7'h0) | (_idx_fromRight_T_83 ? idx_0_11 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_4 = (_idx_fromRight_T_83 ? 7'hF : 7'h0) | (cnt_10 == 2'h2 ? idx_0_11 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_12 = {1'h0, cnt_10} + {1'h0, (&sum_11) ? 2'h2 : sum_11};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_103 = cnt_9 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_13 = (|cnt_9) ? ((|cnt_7) ? idx_0_7 : idx_0_8) : idx_0_12;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_104 = cnt_9 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_5 =
-        (|(cnt_9[2:1]))
-          ? (cnt_7[1]
-               ? 7'h9
-               : (cnt_7 == 2'h0 ? 7'hB : 7'h0) | (_idx_fromRight_T_67 ? idx_0_8 : 7'h0))
-          : (_idx_fromRight_T_103 ? idx_1_4 : 7'h0)
-            | (_idx_fromRight_T_104 ? idx_0_12 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_105 = cnt_9 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_5 =
-        cnt_9 > 3'h2
-          ? (_idx_fromRight_T_67 ? 7'hB : 7'h0) | (cnt_7 == 2'h2 ? idx_0_8 : 7'h0)
-          : (_idx_fromRight_T_103 ? idx_2_4 : 7'h0)
-            | (_idx_fromRight_T_104 ? idx_1_4 : 7'h0)
-            | (_idx_fromRight_T_105 ? idx_0_12 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_13 = {1'h0, cnt_9} + {1'h0, sum_12 > 3'h4 ? 3'h4 : sum_12};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_128 = _cnt_T_13 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_129 = _cnt_T_13 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_130 = _cnt_T_13 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_14 = {1'h0, _cnt_T_13} + {1'h0, sum_13 > 4'h4 ? 3'h4 : sum_13[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_29 = sum_14 > 4'h4 ? 3'h4 : sum_14[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_140 = io_held[16] & _GEN_0[16];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_15 = {6'h8, ~_idx_fromRight_T_140};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_15 = {1'h0, _idx_fromRight_T_140} + {1'h0, io_held[17] & _GEN_0[17]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_15 = (&sum_15) ? 2'h2 : sum_15;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_142 = io_held[18] & _GEN_0[18];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_16 = {6'h9, ~_idx_fromRight_T_142};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_16 = {1'h0, _idx_fromRight_T_142} + {1'h0, io_held[19] & _GEN_0[19]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_149 = cnt_15 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_17 = {1'h0, cnt_15} + {1'h0, (&sum_16) ? 2'h2 : sum_16};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_17 = sum_17 > 3'h4 ? 3'h4 : sum_17;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_156 = io_held[20] & _GEN_0[20];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_18 = {6'hA, ~_idx_fromRight_T_156};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_18 = {1'h0, _idx_fromRight_T_156} + {1'h0, io_held[21] & _GEN_0[21]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_18 = (&sum_18) ? 2'h2 : sum_18;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_158 = io_held[22] & _GEN_0[22];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_19 = {6'hB, ~_idx_fromRight_T_158};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_19 = {1'h0, _idx_fromRight_T_158} + {1'h0, io_held[23] & _GEN_0[23]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_20 = (|cnt_18) ? idx_0_18 : idx_0_19;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_165 = cnt_18 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_8 =
-        cnt_18[1]
-          ? 7'h15
-          : (cnt_18 == 2'h0 ? 7'h17 : 7'h0) | (_idx_fromRight_T_165 ? idx_0_19 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_8 =
-        (_idx_fromRight_T_165 ? 7'h17 : 7'h0) | (cnt_18 == 2'h2 ? idx_0_19 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_20 = {1'h0, cnt_18} + {1'h0, (&sum_19) ? 2'h2 : sum_19};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_185 = cnt_17 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_186 = cnt_17 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_187 = cnt_17 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_21 = {1'h0, cnt_17} + {1'h0, sum_20 > 3'h4 ? 3'h4 : sum_20};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_43 = sum_21 > 4'h4 ? 3'h4 : sum_21[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_197 = io_held[24] & _GEN_0[24];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_22 = {6'hC, ~_idx_fromRight_T_197};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_22 = {1'h0, _idx_fromRight_T_197} + {1'h0, io_held[25] & _GEN_0[25]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_22 = (&sum_22) ? 2'h2 : sum_22;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_199 = io_held[26] & _GEN_0[26];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_23 = {6'hD, ~_idx_fromRight_T_199};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_23 = {1'h0, _idx_fromRight_T_199} + {1'h0, io_held[27] & _GEN_0[27]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_206 = cnt_22 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_24 = {1'h0, cnt_22} + {1'h0, (&sum_23) ? 2'h2 : sum_23};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_24 = sum_24 > 3'h4 ? 3'h4 : sum_24;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_213 = io_held[28] & _GEN_0[28];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_25 = {6'hE, ~_idx_fromRight_T_213};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_25 = {1'h0, _idx_fromRight_T_213} + {1'h0, io_held[29] & _GEN_0[29]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_25 = (&sum_25) ? 2'h2 : sum_25;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_215 = io_held[30] & _GEN_0[30];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_26 = {6'hF, ~_idx_fromRight_T_215};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_26 = {1'h0, _idx_fromRight_T_215} + {1'h0, io_held[31] & _GEN_0[31]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_27 = (|cnt_25) ? idx_0_25 : idx_0_26;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_222 = cnt_25 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_11 =
-        cnt_25[1]
-          ? 7'h1D
-          : (cnt_25 == 2'h0 ? 7'h1F : 7'h0) | (_idx_fromRight_T_222 ? idx_0_26 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_11 =
-        (_idx_fromRight_T_222 ? 7'h1F : 7'h0) | (cnt_25 == 2'h2 ? idx_0_26 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_27 = {1'h0, cnt_25} + {1'h0, (&sum_26) ? 2'h2 : sum_26};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_242 = cnt_24 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_28 = (|cnt_24) ? ((|cnt_22) ? idx_0_22 : idx_0_23) : idx_0_27;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_243 = cnt_24 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_12 =
-        (|(cnt_24[2:1]))
-          ? (cnt_22[1]
-               ? 7'h19
-               : (cnt_22 == 2'h0 ? 7'h1B : 7'h0)
-                 | (_idx_fromRight_T_206 ? idx_0_23 : 7'h0))
-          : (_idx_fromRight_T_242 ? idx_1_11 : 7'h0)
-            | (_idx_fromRight_T_243 ? idx_0_27 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_244 = cnt_24 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_12 =
-        cnt_24 > 3'h2
-          ? (_idx_fromRight_T_206 ? 7'h1B : 7'h0) | (cnt_22 == 2'h2 ? idx_0_23 : 7'h0)
-          : (_idx_fromRight_T_242 ? idx_2_11 : 7'h0)
-            | (_idx_fromRight_T_243 ? idx_1_11 : 7'h0)
-            | (_idx_fromRight_T_244 ? idx_0_27 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_28 = {1'h0, cnt_24} + {1'h0, sum_27 > 3'h4 ? 3'h4 : sum_27};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_267 = _cnt_T_43 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_29 =
-        (|_cnt_T_43)
-          ? ((|cnt_17) ? ((|cnt_15) ? idx_0_15 : idx_0_16) : idx_0_20)
-          : idx_0_28;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_268 = _cnt_T_43 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_13 =
-        (|(_cnt_T_43[2:1]))
-          ? ((|(cnt_17[2:1]))
-               ? (cnt_15[1]
-                    ? 7'h11
-                    : (cnt_15 == 2'h0 ? 7'h13 : 7'h0)
-                      | (_idx_fromRight_T_149 ? idx_0_16 : 7'h0))
-               : (_idx_fromRight_T_185 ? idx_1_8 : 7'h0)
-                 | (_idx_fromRight_T_186 ? idx_0_20 : 7'h0))
-          : (_idx_fromRight_T_267 ? idx_1_12 : 7'h0)
-            | (_idx_fromRight_T_268 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_269 = _cnt_T_43 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_13 =
-        _cnt_T_43 > 3'h2
-          ? (cnt_17 > 3'h2
-               ? (_idx_fromRight_T_149 ? 7'h13 : 7'h0)
-                 | (cnt_15 == 2'h2 ? idx_0_16 : 7'h0)
-               : (_idx_fromRight_T_185 ? idx_2_8 : 7'h0)
-                 | (_idx_fromRight_T_186 ? idx_1_8 : 7'h0)
-                 | (_idx_fromRight_T_187 ? idx_0_20 : 7'h0))
-          : (_idx_fromRight_T_267 ? idx_2_12 : 7'h0)
-            | (_idx_fromRight_T_268 ? idx_1_12 : 7'h0)
-            | (_idx_fromRight_T_269 ? idx_0_28 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_29 = {1'h0, _cnt_T_43} + {1'h0, sum_28 > 4'h4 ? 3'h4 : sum_28[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_292 = _cnt_T_29 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_293 = _cnt_T_29 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_294 = _cnt_T_29 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_30 = {1'h0, _cnt_T_29} + {1'h0, sum_29 > 4'h4 ? 3'h4 : sum_29[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_61 = sum_30 > 4'h4 ? 3'h4 : sum_30[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_304 = io_held[32] & _GEN_0[32];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_31 = {6'h10, ~_idx_fromRight_T_304};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_31 = {1'h0, _idx_fromRight_T_304} + {1'h0, io_held[33] & _GEN_0[33]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_31 = (&sum_31) ? 2'h2 : sum_31;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_306 = io_held[34] & _GEN_0[34];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_32 = {6'h11, ~_idx_fromRight_T_306};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_32 = {1'h0, _idx_fromRight_T_306} + {1'h0, io_held[35] & _GEN_0[35]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_313 = cnt_31 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_33 = {1'h0, cnt_31} + {1'h0, (&sum_32) ? 2'h2 : sum_32};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_33 = sum_33 > 3'h4 ? 3'h4 : sum_33;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_320 = io_held[36] & _GEN_0[36];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_34 = {6'h12, ~_idx_fromRight_T_320};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_34 = {1'h0, _idx_fromRight_T_320} + {1'h0, io_held[37] & _GEN_0[37]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_34 = (&sum_34) ? 2'h2 : sum_34;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_322 = io_held[38] & _GEN_0[38];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_35 = {6'h13, ~_idx_fromRight_T_322};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_35 = {1'h0, _idx_fromRight_T_322} + {1'h0, io_held[39] & _GEN_0[39]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_36 = (|cnt_34) ? idx_0_34 : idx_0_35;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_329 = cnt_34 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_16 =
-        cnt_34[1]
-          ? 7'h25
-          : (cnt_34 == 2'h0 ? 7'h27 : 7'h0) | (_idx_fromRight_T_329 ? idx_0_35 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_16 =
-        (_idx_fromRight_T_329 ? 7'h27 : 7'h0) | (cnt_34 == 2'h2 ? idx_0_35 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_36 = {1'h0, cnt_34} + {1'h0, (&sum_35) ? 2'h2 : sum_35};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_349 = cnt_33 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_350 = cnt_33 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_351 = cnt_33 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_37 = {1'h0, cnt_33} + {1'h0, sum_36 > 3'h4 ? 3'h4 : sum_36};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_75 = sum_37 > 4'h4 ? 3'h4 : sum_37[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_361 = io_held[40] & _GEN_0[40];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_38 = {6'h14, ~_idx_fromRight_T_361};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_38 = {1'h0, _idx_fromRight_T_361} + {1'h0, io_held[41] & _GEN_0[41]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_38 = (&sum_38) ? 2'h2 : sum_38;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_363 = io_held[42] & _GEN_0[42];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_39 = {6'h15, ~_idx_fromRight_T_363};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_39 = {1'h0, _idx_fromRight_T_363} + {1'h0, io_held[43] & _GEN_0[43]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_370 = cnt_38 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_40 = {1'h0, cnt_38} + {1'h0, (&sum_39) ? 2'h2 : sum_39};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_40 = sum_40 > 3'h4 ? 3'h4 : sum_40;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_377 = io_held[44] & _GEN_0[44];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_41 = {6'h16, ~_idx_fromRight_T_377};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_41 = {1'h0, _idx_fromRight_T_377} + {1'h0, io_held[45] & _GEN_0[45]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_41 = (&sum_41) ? 2'h2 : sum_41;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_379 = io_held[46] & _GEN_0[46];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_42 = {6'h17, ~_idx_fromRight_T_379};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_42 = {1'h0, _idx_fromRight_T_379} + {1'h0, io_held[47] & _GEN_0[47]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_43 = (|cnt_41) ? idx_0_41 : idx_0_42;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_386 = cnt_41 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_19 =
-        cnt_41[1]
-          ? 7'h2D
-          : (cnt_41 == 2'h0 ? 7'h2F : 7'h0) | (_idx_fromRight_T_386 ? idx_0_42 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_19 =
-        (_idx_fromRight_T_386 ? 7'h2F : 7'h0) | (cnt_41 == 2'h2 ? idx_0_42 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_43 = {1'h0, cnt_41} + {1'h0, (&sum_42) ? 2'h2 : sum_42};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_406 = cnt_40 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_44 = (|cnt_40) ? ((|cnt_38) ? idx_0_38 : idx_0_39) : idx_0_43;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_407 = cnt_40 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_20 =
-        (|(cnt_40[2:1]))
-          ? (cnt_38[1]
-               ? 7'h29
-               : (cnt_38 == 2'h0 ? 7'h2B : 7'h0)
-                 | (_idx_fromRight_T_370 ? idx_0_39 : 7'h0))
-          : (_idx_fromRight_T_406 ? idx_1_19 : 7'h0)
-            | (_idx_fromRight_T_407 ? idx_0_43 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_408 = cnt_40 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_20 =
-        cnt_40 > 3'h2
-          ? (_idx_fromRight_T_370 ? 7'h2B : 7'h0) | (cnt_38 == 2'h2 ? idx_0_39 : 7'h0)
-          : (_idx_fromRight_T_406 ? idx_2_19 : 7'h0)
-            | (_idx_fromRight_T_407 ? idx_1_19 : 7'h0)
-            | (_idx_fromRight_T_408 ? idx_0_43 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_44 = {1'h0, cnt_40} + {1'h0, sum_43 > 3'h4 ? 3'h4 : sum_43};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_431 = _cnt_T_75 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_432 = _cnt_T_75 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_433 = _cnt_T_75 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_45 = {1'h0, _cnt_T_75} + {1'h0, sum_44 > 4'h4 ? 3'h4 : sum_44[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_91 = sum_45 > 4'h4 ? 3'h4 : sum_45[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_443 = io_held[48] & _GEN_0[48];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_46 = {6'h18, ~_idx_fromRight_T_443};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_46 = {1'h0, _idx_fromRight_T_443} + {1'h0, io_held[49] & _GEN_0[49]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_46 = (&sum_46) ? 2'h2 : sum_46;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_445 = io_held[50] & _GEN_0[50];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_47 = {6'h19, ~_idx_fromRight_T_445};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_47 = {1'h0, _idx_fromRight_T_445} + {1'h0, io_held[51] & _GEN_0[51]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_452 = cnt_46 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_48 = {1'h0, cnt_46} + {1'h0, (&sum_47) ? 2'h2 : sum_47};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_48 = sum_48 > 3'h4 ? 3'h4 : sum_48;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_459 = io_held[52] & _GEN_0[52];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_49 = {6'h1A, ~_idx_fromRight_T_459};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_49 = {1'h0, _idx_fromRight_T_459} + {1'h0, io_held[53] & _GEN_0[53]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_49 = (&sum_49) ? 2'h2 : sum_49;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_461 = io_held[54] & _GEN_0[54];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_50 = {6'h1B, ~_idx_fromRight_T_461};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_50 = {1'h0, _idx_fromRight_T_461} + {1'h0, io_held[55] & _GEN_0[55]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_51 = (|cnt_49) ? idx_0_49 : idx_0_50;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_468 = cnt_49 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_23 =
-        cnt_49[1]
-          ? 7'h35
-          : (cnt_49 == 2'h0 ? 7'h37 : 7'h0) | (_idx_fromRight_T_468 ? idx_0_50 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_23 =
-        (_idx_fromRight_T_468 ? 7'h37 : 7'h0) | (cnt_49 == 2'h2 ? idx_0_50 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_51 = {1'h0, cnt_49} + {1'h0, (&sum_50) ? 2'h2 : sum_50};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_488 = cnt_48 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_489 = cnt_48 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_490 = cnt_48 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_52 = {1'h0, cnt_48} + {1'h0, sum_51 > 3'h4 ? 3'h4 : sum_51};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_105 = sum_52 > 4'h4 ? 3'h4 : sum_52[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_500 = io_held[56] & _GEN_0[56];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_53 = {6'h1C, ~_idx_fromRight_T_500};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_53 = {1'h0, _idx_fromRight_T_500} + {1'h0, io_held[57] & _GEN_0[57]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_53 = (&sum_53) ? 2'h2 : sum_53;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_502 = io_held[58] & _GEN_0[58];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_54 = {6'h1D, ~_idx_fromRight_T_502};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_54 = {1'h0, _idx_fromRight_T_502} + {1'h0, io_held[59] & _GEN_0[59]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_509 = cnt_53 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_55 = {1'h0, cnt_53} + {1'h0, (&sum_54) ? 2'h2 : sum_54};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_55 = sum_55 > 3'h4 ? 3'h4 : sum_55;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_516 = io_held[60] & _GEN_0[60];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_56 = {6'h1E, ~_idx_fromRight_T_516};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_56 = {1'h0, _idx_fromRight_T_516} + {1'h0, io_held[61] & _GEN_0[61]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_56 = (&sum_56) ? 2'h2 : sum_56;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_518 = io_held[62] & _GEN_0[62];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_57 = {6'h1F, ~_idx_fromRight_T_518};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_57 = {1'h0, _idx_fromRight_T_518} + {1'h0, io_held[63] & _GEN_0[63]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_58 = (|cnt_56) ? idx_0_56 : idx_0_57;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_525 = cnt_56 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_26 =
-        cnt_56[1]
-          ? 7'h3D
-          : (cnt_56 == 2'h0 ? 7'h3F : 7'h0) | (_idx_fromRight_T_525 ? idx_0_57 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_26 =
-        (_idx_fromRight_T_525 ? 7'h3F : 7'h0) | (cnt_56 == 2'h2 ? idx_0_57 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_58 = {1'h0, cnt_56} + {1'h0, (&sum_57) ? 2'h2 : sum_57};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_545 = cnt_55 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_59 = (|cnt_55) ? ((|cnt_53) ? idx_0_53 : idx_0_54) : idx_0_58;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_546 = cnt_55 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_27 =
-        (|(cnt_55[2:1]))
-          ? (cnt_53[1]
-               ? 7'h39
-               : (cnt_53 == 2'h0 ? 7'h3B : 7'h0)
-                 | (_idx_fromRight_T_509 ? idx_0_54 : 7'h0))
-          : (_idx_fromRight_T_545 ? idx_1_26 : 7'h0)
-            | (_idx_fromRight_T_546 ? idx_0_58 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_547 = cnt_55 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_27 =
-        cnt_55 > 3'h2
-          ? (_idx_fromRight_T_509 ? 7'h3B : 7'h0) | (cnt_53 == 2'h2 ? idx_0_54 : 7'h0)
-          : (_idx_fromRight_T_545 ? idx_2_26 : 7'h0)
-            | (_idx_fromRight_T_546 ? idx_1_26 : 7'h0)
-            | (_idx_fromRight_T_547 ? idx_0_58 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_59 = {1'h0, cnt_55} + {1'h0, sum_58 > 3'h4 ? 3'h4 : sum_58};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_570 = _cnt_T_105 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_60 =
-        (|_cnt_T_105)
-          ? ((|cnt_48) ? ((|cnt_46) ? idx_0_46 : idx_0_47) : idx_0_51)
-          : idx_0_59;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_571 = _cnt_T_105 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_28 =
-        (|(_cnt_T_105[2:1]))
-          ? ((|(cnt_48[2:1]))
-               ? (cnt_46[1]
-                    ? 7'h31
-                    : (cnt_46 == 2'h0 ? 7'h33 : 7'h0)
-                      | (_idx_fromRight_T_452 ? idx_0_47 : 7'h0))
-               : (_idx_fromRight_T_488 ? idx_1_23 : 7'h0)
-                 | (_idx_fromRight_T_489 ? idx_0_51 : 7'h0))
-          : (_idx_fromRight_T_570 ? idx_1_27 : 7'h0)
-            | (_idx_fromRight_T_571 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_572 = _cnt_T_105 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_28 =
-        _cnt_T_105 > 3'h2
-          ? (cnt_48 > 3'h2
-               ? (_idx_fromRight_T_452 ? 7'h33 : 7'h0)
-                 | (cnt_46 == 2'h2 ? idx_0_47 : 7'h0)
-               : (_idx_fromRight_T_488 ? idx_2_23 : 7'h0)
-                 | (_idx_fromRight_T_489 ? idx_1_23 : 7'h0)
-                 | (_idx_fromRight_T_490 ? idx_0_51 : 7'h0))
-          : (_idx_fromRight_T_570 ? idx_2_27 : 7'h0)
-            | (_idx_fromRight_T_571 ? idx_1_27 : 7'h0)
-            | (_idx_fromRight_T_572 ? idx_0_59 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_60 = {1'h0, _cnt_T_105} + {1'h0, sum_59 > 4'h4 ? 3'h4 : sum_59[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_595 = _cnt_T_91 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_61 =
-        (|_cnt_T_91)
-          ? ((|_cnt_T_75)
-               ? ((|cnt_33) ? ((|cnt_31) ? idx_0_31 : idx_0_32) : idx_0_36)
-               : idx_0_44)
-          : idx_0_60;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_596 = _cnt_T_91 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_29 =
-        (|(_cnt_T_91[2:1]))
-          ? ((|(_cnt_T_75[2:1]))
-               ? ((|(cnt_33[2:1]))
-                    ? (cnt_31[1]
-                         ? 7'h21
-                         : (cnt_31 == 2'h0 ? 7'h23 : 7'h0)
-                           | (_idx_fromRight_T_313 ? idx_0_32 : 7'h0))
-                    : (_idx_fromRight_T_349 ? idx_1_16 : 7'h0)
-                      | (_idx_fromRight_T_350 ? idx_0_36 : 7'h0))
-               : (_idx_fromRight_T_431 ? idx_1_20 : 7'h0)
-                 | (_idx_fromRight_T_432 ? idx_0_44 : 7'h0))
-          : (_idx_fromRight_T_595 ? idx_1_28 : 7'h0)
-            | (_idx_fromRight_T_596 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_597 = _cnt_T_91 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_29 =
-        _cnt_T_91 > 3'h2
-          ? (_cnt_T_75 > 3'h2
-               ? (cnt_33 > 3'h2
-                    ? (_idx_fromRight_T_313 ? 7'h23 : 7'h0)
-                      | (cnt_31 == 2'h2 ? idx_0_32 : 7'h0)
-                    : (_idx_fromRight_T_349 ? idx_2_16 : 7'h0)
-                      | (_idx_fromRight_T_350 ? idx_1_16 : 7'h0)
-                      | (_idx_fromRight_T_351 ? idx_0_36 : 7'h0))
-               : (_idx_fromRight_T_431 ? idx_2_20 : 7'h0)
-                 | (_idx_fromRight_T_432 ? idx_1_20 : 7'h0)
-                 | (_idx_fromRight_T_433 ? idx_0_44 : 7'h0))
-          : (_idx_fromRight_T_595 ? idx_2_28 : 7'h0)
-            | (_idx_fromRight_T_596 ? idx_1_28 : 7'h0)
-            | (_idx_fromRight_T_597 ? idx_0_60 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_61 = {1'h0, _cnt_T_91} + {1'h0, sum_60 > 4'h4 ? 3'h4 : sum_60[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_620 = _cnt_T_61 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_621 = _cnt_T_61 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_622 = _cnt_T_61 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_62 = {1'h0, _cnt_T_61} + {1'h0, sum_61 > 4'h4 ? 3'h4 : sum_61[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_125 = sum_62 > 4'h4 ? 3'h4 : sum_62[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_632 = io_held[64] & _GEN_0[64];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_63 = {6'h20, ~_idx_fromRight_T_632};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_63 = {1'h0, _idx_fromRight_T_632} + {1'h0, io_held[65] & _GEN_0[65]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_63 = (&sum_63) ? 2'h2 : sum_63;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_634 = io_held[66] & _GEN_0[66];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_64 = {6'h21, ~_idx_fromRight_T_634};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_64 = {1'h0, _idx_fromRight_T_634} + {1'h0, io_held[67] & _GEN_0[67]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_641 = cnt_63 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_65 = {1'h0, cnt_63} + {1'h0, (&sum_64) ? 2'h2 : sum_64};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_65 = sum_65 > 3'h4 ? 3'h4 : sum_65;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_648 = io_held[68] & _GEN_0[68];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_66 = {6'h22, ~_idx_fromRight_T_648};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_66 = {1'h0, _idx_fromRight_T_648} + {1'h0, io_held[69] & _GEN_0[69]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_66 = (&sum_66) ? 2'h2 : sum_66;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_650 = io_held[70] & _GEN_0[70];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_67 = {6'h23, ~_idx_fromRight_T_650};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_67 = {1'h0, _idx_fromRight_T_650} + {1'h0, io_held[71] & _GEN_0[71]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_68 = (|cnt_66) ? idx_0_66 : idx_0_67;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_657 = cnt_66 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_32 =
-        cnt_66[1]
-          ? 7'h45
-          : (cnt_66 == 2'h0 ? 7'h47 : 7'h0) | (_idx_fromRight_T_657 ? idx_0_67 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_32 =
-        (_idx_fromRight_T_657 ? 7'h47 : 7'h0) | (cnt_66 == 2'h2 ? idx_0_67 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_68 = {1'h0, cnt_66} + {1'h0, (&sum_67) ? 2'h2 : sum_67};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_677 = cnt_65 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_678 = cnt_65 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_679 = cnt_65 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_69 = {1'h0, cnt_65} + {1'h0, sum_68 > 3'h4 ? 3'h4 : sum_68};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_139 = sum_69 > 4'h4 ? 3'h4 : sum_69[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_689 = io_held[72] & _GEN_0[72];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_70 = {6'h24, ~_idx_fromRight_T_689};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_70 = {1'h0, _idx_fromRight_T_689} + {1'h0, io_held[73] & _GEN_0[73]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_70 = (&sum_70) ? 2'h2 : sum_70;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_691 = io_held[74] & _GEN_0[74];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_71 = {6'h25, ~_idx_fromRight_T_691};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_71 = {1'h0, _idx_fromRight_T_691} + {1'h0, io_held[75] & _GEN_0[75]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_698 = cnt_70 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_72 = {1'h0, cnt_70} + {1'h0, (&sum_71) ? 2'h2 : sum_71};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_72 = sum_72 > 3'h4 ? 3'h4 : sum_72;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_705 = io_held[76] & _GEN_0[76];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_73 = {6'h26, ~_idx_fromRight_T_705};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_73 = {1'h0, _idx_fromRight_T_705} + {1'h0, io_held[77] & _GEN_0[77]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_73 = (&sum_73) ? 2'h2 : sum_73;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_707 = io_held[78] & _GEN_0[78];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_74 = {6'h27, ~_idx_fromRight_T_707};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_74 = {1'h0, _idx_fromRight_T_707} + {1'h0, io_held[79] & _GEN_0[79]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_75 = (|cnt_73) ? idx_0_73 : idx_0_74;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_714 = cnt_73 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_35 =
-        cnt_73[1]
-          ? 7'h4D
-          : (cnt_73 == 2'h0 ? 7'h4F : 7'h0) | (_idx_fromRight_T_714 ? idx_0_74 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_35 =
-        (_idx_fromRight_T_714 ? 7'h4F : 7'h0) | (cnt_73 == 2'h2 ? idx_0_74 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_75 = {1'h0, cnt_73} + {1'h0, (&sum_74) ? 2'h2 : sum_74};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_734 = cnt_72 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_76 = (|cnt_72) ? ((|cnt_70) ? idx_0_70 : idx_0_71) : idx_0_75;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_735 = cnt_72 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_36 =
-        (|(cnt_72[2:1]))
-          ? (cnt_70[1]
-               ? 7'h49
-               : (cnt_70 == 2'h0 ? 7'h4B : 7'h0)
-                 | (_idx_fromRight_T_698 ? idx_0_71 : 7'h0))
-          : (_idx_fromRight_T_734 ? idx_1_35 : 7'h0)
-            | (_idx_fromRight_T_735 ? idx_0_75 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_736 = cnt_72 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_36 =
-        cnt_72 > 3'h2
-          ? (_idx_fromRight_T_698 ? 7'h4B : 7'h0) | (cnt_70 == 2'h2 ? idx_0_71 : 7'h0)
-          : (_idx_fromRight_T_734 ? idx_2_35 : 7'h0)
-            | (_idx_fromRight_T_735 ? idx_1_35 : 7'h0)
-            | (_idx_fromRight_T_736 ? idx_0_75 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_76 = {1'h0, cnt_72} + {1'h0, sum_75 > 3'h4 ? 3'h4 : sum_75};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_759 = _cnt_T_139 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_760 = _cnt_T_139 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_761 = _cnt_T_139 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_77 = {1'h0, _cnt_T_139} + {1'h0, sum_76 > 4'h4 ? 3'h4 : sum_76[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_155 = sum_77 > 4'h4 ? 3'h4 : sum_77[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_771 = io_held[80] & _GEN_0[80];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_78 = {6'h28, ~_idx_fromRight_T_771};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_78 = {1'h0, _idx_fromRight_T_771} + {1'h0, io_held[81] & _GEN_0[81]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_78 = (&sum_78) ? 2'h2 : sum_78;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_773 = io_held[82] & _GEN_0[82];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_79 = {6'h29, ~_idx_fromRight_T_773};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_79 = {1'h0, _idx_fromRight_T_773} + {1'h0, io_held[83] & _GEN_0[83]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_780 = cnt_78 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_80 = {1'h0, cnt_78} + {1'h0, (&sum_79) ? 2'h2 : sum_79};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_80 = sum_80 > 3'h4 ? 3'h4 : sum_80;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_787 = io_held[84] & _GEN_0[84];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_81 = {6'h2A, ~_idx_fromRight_T_787};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_81 = {1'h0, _idx_fromRight_T_787} + {1'h0, io_held[85] & _GEN_0[85]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_81 = (&sum_81) ? 2'h2 : sum_81;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_789 = io_held[86] & _GEN_0[86];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_82 = {6'h2B, ~_idx_fromRight_T_789};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_82 = {1'h0, _idx_fromRight_T_789} + {1'h0, io_held[87] & _GEN_0[87]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_83 = (|cnt_81) ? idx_0_81 : idx_0_82;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_796 = cnt_81 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_39 =
-        cnt_81[1]
-          ? 7'h55
-          : (cnt_81 == 2'h0 ? 7'h57 : 7'h0) | (_idx_fromRight_T_796 ? idx_0_82 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_39 =
-        (_idx_fromRight_T_796 ? 7'h57 : 7'h0) | (cnt_81 == 2'h2 ? idx_0_82 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_83 = {1'h0, cnt_81} + {1'h0, (&sum_82) ? 2'h2 : sum_82};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_816 = cnt_80 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_817 = cnt_80 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_818 = cnt_80 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_84 = {1'h0, cnt_80} + {1'h0, sum_83 > 3'h4 ? 3'h4 : sum_83};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_169 = sum_84 > 4'h4 ? 3'h4 : sum_84[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_828 = io_held[88] & _GEN_0[88];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_85 = {6'h2C, ~_idx_fromRight_T_828};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_85 = {1'h0, _idx_fromRight_T_828} + {1'h0, io_held[89] & _GEN_0[89]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_85 = (&sum_85) ? 2'h2 : sum_85;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_830 = io_held[90] & _GEN_0[90];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_86 = {6'h2D, ~_idx_fromRight_T_830};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_86 = {1'h0, _idx_fromRight_T_830} + {1'h0, io_held[91] & _GEN_0[91]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_837 = cnt_85 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_87 = {1'h0, cnt_85} + {1'h0, (&sum_86) ? 2'h2 : sum_86};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_87 = sum_87 > 3'h4 ? 3'h4 : sum_87;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_844 = io_held[92] & _GEN_0[92];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_88 = {6'h2E, ~_idx_fromRight_T_844};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_88 = {1'h0, _idx_fromRight_T_844} + {1'h0, io_held[93] & _GEN_0[93]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_88 = (&sum_88) ? 2'h2 : sum_88;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_846 = io_held[94] & _GEN_0[94];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_89 = {6'h2F, ~_idx_fromRight_T_846};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_89 = {1'h0, _idx_fromRight_T_846} + {1'h0, io_held[95] & _GEN_0[95]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_90 = (|cnt_88) ? idx_0_88 : idx_0_89;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_853 = cnt_88 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_42 =
-        cnt_88[1]
-          ? 7'h5D
-          : (cnt_88 == 2'h0 ? 7'h5F : 7'h0) | (_idx_fromRight_T_853 ? idx_0_89 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_42 =
-        (_idx_fromRight_T_853 ? 7'h5F : 7'h0) | (cnt_88 == 2'h2 ? idx_0_89 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_90 = {1'h0, cnt_88} + {1'h0, (&sum_89) ? 2'h2 : sum_89};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_873 = cnt_87 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_91 = (|cnt_87) ? ((|cnt_85) ? idx_0_85 : idx_0_86) : idx_0_90;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_874 = cnt_87 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_43 =
-        (|(cnt_87[2:1]))
-          ? (cnt_85[1]
-               ? 7'h59
-               : (cnt_85 == 2'h0 ? 7'h5B : 7'h0)
-                 | (_idx_fromRight_T_837 ? idx_0_86 : 7'h0))
-          : (_idx_fromRight_T_873 ? idx_1_42 : 7'h0)
-            | (_idx_fromRight_T_874 ? idx_0_90 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_875 = cnt_87 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_43 =
-        cnt_87 > 3'h2
-          ? (_idx_fromRight_T_837 ? 7'h5B : 7'h0) | (cnt_85 == 2'h2 ? idx_0_86 : 7'h0)
-          : (_idx_fromRight_T_873 ? idx_2_42 : 7'h0)
-            | (_idx_fromRight_T_874 ? idx_1_42 : 7'h0)
-            | (_idx_fromRight_T_875 ? idx_0_90 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_91 = {1'h0, cnt_87} + {1'h0, sum_90 > 3'h4 ? 3'h4 : sum_90};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_898 = _cnt_T_169 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_92 =
-        (|_cnt_T_169)
-          ? ((|cnt_80) ? ((|cnt_78) ? idx_0_78 : idx_0_79) : idx_0_83)
-          : idx_0_91;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_899 = _cnt_T_169 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_44 =
-        (|(_cnt_T_169[2:1]))
-          ? ((|(cnt_80[2:1]))
-               ? (cnt_78[1]
-                    ? 7'h51
-                    : (cnt_78 == 2'h0 ? 7'h53 : 7'h0)
-                      | (_idx_fromRight_T_780 ? idx_0_79 : 7'h0))
-               : (_idx_fromRight_T_816 ? idx_1_39 : 7'h0)
-                 | (_idx_fromRight_T_817 ? idx_0_83 : 7'h0))
-          : (_idx_fromRight_T_898 ? idx_1_43 : 7'h0)
-            | (_idx_fromRight_T_899 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_900 = _cnt_T_169 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_44 =
-        _cnt_T_169 > 3'h2
-          ? (cnt_80 > 3'h2
-               ? (_idx_fromRight_T_780 ? 7'h53 : 7'h0)
-                 | (cnt_78 == 2'h2 ? idx_0_79 : 7'h0)
-               : (_idx_fromRight_T_816 ? idx_2_39 : 7'h0)
-                 | (_idx_fromRight_T_817 ? idx_1_39 : 7'h0)
-                 | (_idx_fromRight_T_818 ? idx_0_83 : 7'h0))
-          : (_idx_fromRight_T_898 ? idx_2_43 : 7'h0)
-            | (_idx_fromRight_T_899 ? idx_1_43 : 7'h0)
-            | (_idx_fromRight_T_900 ? idx_0_91 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_92 = {1'h0, _cnt_T_169} + {1'h0, sum_91 > 4'h4 ? 3'h4 : sum_91[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_923 = _cnt_T_155 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_924 = _cnt_T_155 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_925 = _cnt_T_155 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_93 = {1'h0, _cnt_T_155} + {1'h0, sum_92 > 4'h4 ? 3'h4 : sum_92[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_187 = sum_93 > 4'h4 ? 3'h4 : sum_93[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_935 = io_held[96] & _GEN_0[96];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_94 = {6'h30, ~_idx_fromRight_T_935};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_94 = {1'h0, _idx_fromRight_T_935} + {1'h0, io_held[97] & _GEN_0[97]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_94 = (&sum_94) ? 2'h2 : sum_94;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_937 = io_held[98] & _GEN_0[98];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_95 = {6'h31, ~_idx_fromRight_T_937};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_95 = {1'h0, _idx_fromRight_T_937} + {1'h0, io_held[99] & _GEN_0[99]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_944 = cnt_94 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_96 = {1'h0, cnt_94} + {1'h0, (&sum_95) ? 2'h2 : sum_95};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_96 = sum_96 > 3'h4 ? 3'h4 : sum_96;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_951 = io_held[100] & _GEN_0[100];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_97 = {6'h32, ~_idx_fromRight_T_951};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_97 = {1'h0, _idx_fromRight_T_951} + {1'h0, io_held[101] & _GEN_0[101]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_97 = (&sum_97) ? 2'h2 : sum_97;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_953 = io_held[102] & _GEN_0[102];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_98 = {6'h33, ~_idx_fromRight_T_953};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_98 = {1'h0, _idx_fromRight_T_953} + {1'h0, io_held[103] & _GEN_0[103]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_99 = (|cnt_97) ? idx_0_97 : idx_0_98;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_960 = cnt_97 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_47 =
-        cnt_97[1]
-          ? 7'h65
-          : (cnt_97 == 2'h0 ? 7'h67 : 7'h0) | (_idx_fromRight_T_960 ? idx_0_98 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_47 =
-        (_idx_fromRight_T_960 ? 7'h67 : 7'h0) | (cnt_97 == 2'h2 ? idx_0_98 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_99 = {1'h0, cnt_97} + {1'h0, (&sum_98) ? 2'h2 : sum_98};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_980 = cnt_96 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_981 = cnt_96 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_982 = cnt_96 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_100 = {1'h0, cnt_96} + {1'h0, sum_99 > 3'h4 ? 3'h4 : sum_99};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_201 = sum_100 > 4'h4 ? 3'h4 : sum_100[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_992 = io_held[104] & _GEN_0[104];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_101 = {6'h34, ~_idx_fromRight_T_992};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_101 = {1'h0, _idx_fromRight_T_992} + {1'h0, io_held[105] & _GEN_0[105]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_101 = (&sum_101) ? 2'h2 : sum_101;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_994 = io_held[106] & _GEN_0[106];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_102 = {6'h35, ~_idx_fromRight_T_994};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_102 = {1'h0, _idx_fromRight_T_994} + {1'h0, io_held[107] & _GEN_0[107]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_1001 = cnt_101 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_103 = {1'h0, cnt_101} + {1'h0, (&sum_102) ? 2'h2 : sum_102};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_103 = sum_103 > 3'h4 ? 3'h4 : sum_103;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1008 = io_held[108] & _GEN_0[108];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_104 = {6'h36, ~_idx_fromRight_T_1008};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_104 = {1'h0, _idx_fromRight_T_1008} + {1'h0, io_held[109] & _GEN_0[109]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_104 = (&sum_104) ? 2'h2 : sum_104;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1010 = io_held[110] & _GEN_0[110];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_105 = {6'h37, ~_idx_fromRight_T_1010};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_105 = {1'h0, _idx_fromRight_T_1010} + {1'h0, io_held[111] & _GEN_0[111]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_106 = (|cnt_104) ? idx_0_104 : idx_0_105;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_1017 = cnt_104 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_50 =
-        cnt_104[1]
-          ? 7'h6D
-          : (cnt_104 == 2'h0 ? 7'h6F : 7'h0) | (_idx_fromRight_T_1017 ? idx_0_105 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_50 =
-        (_idx_fromRight_T_1017 ? 7'h6F : 7'h0) | (cnt_104 == 2'h2 ? idx_0_105 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_106 = {1'h0, cnt_104} + {1'h0, (&sum_105) ? 2'h2 : sum_105};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1037 = cnt_103 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_107 = (|cnt_103) ? ((|cnt_101) ? idx_0_101 : idx_0_102) : idx_0_106;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_1038 = cnt_103 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_51 =
-        (|(cnt_103[2:1]))
-          ? (cnt_101[1]
-               ? 7'h69
-               : (cnt_101 == 2'h0 ? 7'h6B : 7'h0)
-                 | (_idx_fromRight_T_1001 ? idx_0_102 : 7'h0))
-          : (_idx_fromRight_T_1037 ? idx_1_50 : 7'h0)
-            | (_idx_fromRight_T_1038 ? idx_0_106 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_1039 = cnt_103 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_51 =
-        cnt_103 > 3'h2
-          ? (_idx_fromRight_T_1001 ? 7'h6B : 7'h0) | (cnt_101 == 2'h2 ? idx_0_102 : 7'h0)
-          : (_idx_fromRight_T_1037 ? idx_2_50 : 7'h0)
-            | (_idx_fromRight_T_1038 ? idx_1_50 : 7'h0)
-            | (_idx_fromRight_T_1039 ? idx_0_106 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_107 = {1'h0, cnt_103} + {1'h0, sum_106 > 3'h4 ? 3'h4 : sum_106};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1062 = _cnt_T_201 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_1063 = _cnt_T_201 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_1064 = _cnt_T_201 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_108 = {1'h0, _cnt_T_201} + {1'h0, sum_107 > 4'h4 ? 3'h4 : sum_107[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_217 = sum_108 > 4'h4 ? 3'h4 : sum_108[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1074 = io_held[112] & _GEN_0[112];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_109 = {6'h38, ~_idx_fromRight_T_1074};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_109 = {1'h0, _idx_fromRight_T_1074} + {1'h0, io_held[113] & _GEN_0[113]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_109 = (&sum_109) ? 2'h2 : sum_109;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1076 = io_held[114] & _GEN_0[114];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_110 = {6'h39, ~_idx_fromRight_T_1076};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_110 = {1'h0, _idx_fromRight_T_1076} + {1'h0, io_held[115] & _GEN_0[115]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_1083 = cnt_109 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_111 = {1'h0, cnt_109} + {1'h0, (&sum_110) ? 2'h2 : sum_110};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_111 = sum_111 > 3'h4 ? 3'h4 : sum_111;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1090 = io_held[116] & _GEN_0[116];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_112 = {6'h3A, ~_idx_fromRight_T_1090};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_112 = {1'h0, _idx_fromRight_T_1090} + {1'h0, io_held[117] & _GEN_0[117]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_112 = (&sum_112) ? 2'h2 : sum_112;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1092 = io_held[118] & _GEN_0[118];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_113 = {6'h3B, ~_idx_fromRight_T_1092};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_113 = {1'h0, _idx_fromRight_T_1092} + {1'h0, io_held[119] & _GEN_0[119]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_114 = (|cnt_112) ? idx_0_112 : idx_0_113;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_1099 = cnt_112 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_54 =
-        cnt_112[1]
-          ? 7'h75
-          : (cnt_112 == 2'h0 ? 7'h77 : 7'h0) | (_idx_fromRight_T_1099 ? idx_0_113 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_54 =
-        (_idx_fromRight_T_1099 ? 7'h77 : 7'h0) | (cnt_112 == 2'h2 ? idx_0_113 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_114 = {1'h0, cnt_112} + {1'h0, (&sum_113) ? 2'h2 : sum_113};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1119 = cnt_111 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_1120 = cnt_111 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_1121 = cnt_111 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_115 = {1'h0, cnt_111} + {1'h0, sum_114 > 3'h4 ? 3'h4 : sum_114};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_231 = sum_115 > 4'h4 ? 3'h4 : sum_115[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1131 = io_held[120] & _GEN_0[120];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_116 = {6'h3C, ~_idx_fromRight_T_1131};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_116 = {1'h0, _idx_fromRight_T_1131} + {1'h0, io_held[121] & _GEN_0[121]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_116 = (&sum_116) ? 2'h2 : sum_116;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1133 = io_held[122] & _GEN_0[122];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_117 = {6'h3D, ~_idx_fromRight_T_1133};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_117 = {1'h0, _idx_fromRight_T_1133} + {1'h0, io_held[123] & _GEN_0[123]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      _idx_fromRight_T_1140 = cnt_116 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_118 = {1'h0, cnt_116} + {1'h0, (&sum_117) ? 2'h2 : sum_117};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      cnt_118 = sum_118 > 3'h4 ? 3'h4 : sum_118;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1147 = io_held[124] & _GEN_0[124];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_119 = {6'h3E, ~_idx_fromRight_T_1147};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_119 = {1'h0, _idx_fromRight_T_1147} + {1'h0, io_held[125] & _GEN_0[125]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      cnt_119 = (&sum_119) ? 2'h2 : sum_119;	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1149 = io_held[126] & _GEN_0[126];	// \\src\\main\\scala\\SynthTop.scala:64:{60,62}, \\src\\main\\scala\\Utils.scala:56:51
-      idx_0_120 = {6'h3F, ~_idx_fromRight_T_1149};	// \\src\\main\\scala\\SynthTop.scala:64:60, \\src\\main\\scala\\Utils.scala:48:24, :56:51
-      sum_120 = {1'h0, _idx_fromRight_T_1149} + {1'h0, io_held[127] & _GEN_0[127]};	// \\src\\main\\scala\\SynthTop.scala:24:7, :64:{60,62}, \\src\\main\\scala\\Utils.scala:50:23, :56:51
-      idx_0_121 = (|cnt_119) ? idx_0_119 : idx_0_120;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_1156 = cnt_119 == 2'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_57 =
-        cnt_119[1]
-          ? 7'h7D
-          : {7{cnt_119 == 2'h0}} | (_idx_fromRight_T_1156 ? idx_0_120 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      idx_2_57 = {7{_idx_fromRight_T_1156}} | (cnt_119 == 2'h2 ? idx_0_120 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:24, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_121 = {1'h0, cnt_119} + {1'h0, (&sum_120) ? 2'h2 : sum_120};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1176 = cnt_118 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_122 = (|cnt_118) ? ((|cnt_116) ? idx_0_116 : idx_0_117) : idx_0_121;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_1177 = cnt_118 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_58 =
-        (|(cnt_118[2:1]))
-          ? (cnt_116[1]
-               ? 7'h79
-               : (cnt_116 == 2'h0 ? 7'h7B : 7'h0)
-                 | (_idx_fromRight_T_1140 ? idx_0_117 : 7'h0))
-          : (_idx_fromRight_T_1176 ? idx_1_57 : 7'h0)
-            | (_idx_fromRight_T_1177 ? idx_0_121 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_1178 = cnt_118 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_58 =
-        cnt_118 > 3'h2
-          ? (_idx_fromRight_T_1140 ? 7'h7B : 7'h0) | (cnt_116 == 2'h2 ? idx_0_117 : 7'h0)
-          : (_idx_fromRight_T_1176 ? idx_2_57 : 7'h0)
-            | (_idx_fromRight_T_1177 ? idx_1_57 : 7'h0)
-            | (_idx_fromRight_T_1178 ? idx_0_121 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_122 = {1'h0, cnt_118} + {1'h0, sum_121 > 3'h4 ? 3'h4 : sum_121};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1201 = _cnt_T_231 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_123 =
-        (|_cnt_T_231)
-          ? ((|cnt_111) ? ((|cnt_109) ? idx_0_109 : idx_0_110) : idx_0_114)
-          : idx_0_122;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_1202 = _cnt_T_231 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_59 =
-        (|(_cnt_T_231[2:1]))
-          ? ((|(cnt_111[2:1]))
-               ? (cnt_109[1]
-                    ? 7'h71
-                    : (cnt_109 == 2'h0 ? 7'h73 : 7'h0)
-                      | (_idx_fromRight_T_1083 ? idx_0_110 : 7'h0))
-               : (_idx_fromRight_T_1119 ? idx_1_54 : 7'h0)
-                 | (_idx_fromRight_T_1120 ? idx_0_114 : 7'h0))
-          : (_idx_fromRight_T_1201 ? idx_1_58 : 7'h0)
-            | (_idx_fromRight_T_1202 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_1203 = _cnt_T_231 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_59 =
-        _cnt_T_231 > 3'h2
-          ? (cnt_111 > 3'h2
-               ? (_idx_fromRight_T_1083 ? 7'h73 : 7'h0)
-                 | (cnt_109 == 2'h2 ? idx_0_110 : 7'h0)
-               : (_idx_fromRight_T_1119 ? idx_2_54 : 7'h0)
-                 | (_idx_fromRight_T_1120 ? idx_1_54 : 7'h0)
-                 | (_idx_fromRight_T_1121 ? idx_0_114 : 7'h0))
-          : (_idx_fromRight_T_1201 ? idx_2_58 : 7'h0)
-            | (_idx_fromRight_T_1202 ? idx_1_58 : 7'h0)
-            | (_idx_fromRight_T_1203 ? idx_0_122 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_123 = {1'h0, _cnt_T_231} + {1'h0, sum_122 > 4'h4 ? 3'h4 : sum_122[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1226 = _cnt_T_217 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_124 =
-        (|_cnt_T_217)
-          ? ((|_cnt_T_201)
-               ? ((|cnt_96) ? ((|cnt_94) ? idx_0_94 : idx_0_95) : idx_0_99)
-               : idx_0_107)
-          : idx_0_123;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_1227 = _cnt_T_217 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_60 =
-        (|(_cnt_T_217[2:1]))
-          ? ((|(_cnt_T_201[2:1]))
-               ? ((|(cnt_96[2:1]))
-                    ? (cnt_94[1]
-                         ? 7'h61
-                         : (cnt_94 == 2'h0 ? 7'h63 : 7'h0)
-                           | (_idx_fromRight_T_944 ? idx_0_95 : 7'h0))
-                    : (_idx_fromRight_T_980 ? idx_1_47 : 7'h0)
-                      | (_idx_fromRight_T_981 ? idx_0_99 : 7'h0))
-               : (_idx_fromRight_T_1062 ? idx_1_51 : 7'h0)
-                 | (_idx_fromRight_T_1063 ? idx_0_107 : 7'h0))
-          : (_idx_fromRight_T_1226 ? idx_1_59 : 7'h0)
-            | (_idx_fromRight_T_1227 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_1228 = _cnt_T_217 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_60 =
-        _cnt_T_217 > 3'h2
-          ? (_cnt_T_201 > 3'h2
-               ? (cnt_96 > 3'h2
-                    ? (_idx_fromRight_T_944 ? 7'h63 : 7'h0)
-                      | (cnt_94 == 2'h2 ? idx_0_95 : 7'h0)
-                    : (_idx_fromRight_T_980 ? idx_2_47 : 7'h0)
-                      | (_idx_fromRight_T_981 ? idx_1_47 : 7'h0)
-                      | (_idx_fromRight_T_982 ? idx_0_99 : 7'h0))
-               : (_idx_fromRight_T_1062 ? idx_2_51 : 7'h0)
-                 | (_idx_fromRight_T_1063 ? idx_1_51 : 7'h0)
-                 | (_idx_fromRight_T_1064 ? idx_0_107 : 7'h0))
-          : (_idx_fromRight_T_1226 ? idx_2_59 : 7'h0)
-            | (_idx_fromRight_T_1227 ? idx_1_59 : 7'h0)
-            | (_idx_fromRight_T_1228 ? idx_0_123 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_124 = {1'h0, _cnt_T_217} + {1'h0, sum_123 > 4'h4 ? 3'h4 : sum_123[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1251 = _cnt_T_187 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_0_125 =
-        (|_cnt_T_187)
-          ? ((|_cnt_T_155)
-               ? ((|_cnt_T_139)
-                    ? ((|cnt_65) ? ((|cnt_63) ? idx_0_63 : idx_0_64) : idx_0_68)
-                    : idx_0_76)
-               : idx_0_92)
-          : idx_0_124;	// \\src\\main\\scala\\Utils.scala:48:{24,31}, :51:20
-      _idx_fromRight_T_1252 = _cnt_T_187 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_1_61 =
-        (|(_cnt_T_187[2:1]))
-          ? ((|(_cnt_T_155[2:1]))
-               ? ((|(_cnt_T_139[2:1]))
-                    ? ((|(cnt_65[2:1]))
-                         ? (cnt_63[1]
-                              ? 7'h41
-                              : (cnt_63 == 2'h0 ? 7'h43 : 7'h0)
-                                | (_idx_fromRight_T_641 ? idx_0_64 : 7'h0))
-                         : (_idx_fromRight_T_677 ? idx_1_32 : 7'h0)
-                           | (_idx_fromRight_T_678 ? idx_0_68 : 7'h0))
-                    : (_idx_fromRight_T_759 ? idx_1_36 : 7'h0)
-                      | (_idx_fromRight_T_760 ? idx_0_76 : 7'h0))
-               : (_idx_fromRight_T_923 ? idx_1_44 : 7'h0)
-                 | (_idx_fromRight_T_924 ? idx_0_92 : 7'h0))
-          : (_idx_fromRight_T_1251 ? idx_1_60 : 7'h0)
-            | (_idx_fromRight_T_1252 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:20, src/main/scala/chisel3/util/Mux.scala:30:73
-      _idx_fromRight_T_1253 = _cnt_T_187 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      idx_2_61 =
-        _cnt_T_187 > 3'h2
-          ? (_cnt_T_155 > 3'h2
-               ? (_cnt_T_139 > 3'h2
-                    ? (cnt_65 > 3'h2
-                         ? (_idx_fromRight_T_641 ? 7'h43 : 7'h0)
-                           | (cnt_63 == 2'h2 ? idx_0_64 : 7'h0)
-                         : (_idx_fromRight_T_677 ? idx_2_32 : 7'h0)
-                           | (_idx_fromRight_T_678 ? idx_1_32 : 7'h0)
-                           | (_idx_fromRight_T_679 ? idx_0_68 : 7'h0))
-                    : (_idx_fromRight_T_759 ? idx_2_36 : 7'h0)
-                      | (_idx_fromRight_T_760 ? idx_1_36 : 7'h0)
-                      | (_idx_fromRight_T_761 ? idx_0_76 : 7'h0))
-               : (_idx_fromRight_T_923 ? idx_2_44 : 7'h0)
-                 | (_idx_fromRight_T_924 ? idx_1_44 : 7'h0)
-                 | (_idx_fromRight_T_925 ? idx_0_92 : 7'h0))
-          : (_idx_fromRight_T_1251 ? idx_2_60 : 7'h0)
-            | (_idx_fromRight_T_1252 ? idx_1_60 : 7'h0)
-            | (_idx_fromRight_T_1253 ? idx_0_124 : 7'h0);	// \\src\\main\\scala\\SynthTop.scala:38:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      sum_125 = {1'h0, _cnt_T_187} + {1'h0, sum_124 > 4'h4 ? 3'h4 : sum_124[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _idx_fromRight_T_1276 = _cnt_T_125 == 3'h0;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_1277 = _cnt_T_125 == 3'h1;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      _idx_fromRight_T_1278 = _cnt_T_125 == 3'h2;	// \\src\\main\\scala\\Utils.scala:46:30, :51:20
-      sum_126 = {1'h0, _cnt_T_125} + {1'h0, sum_125 > 4'h4 ? 3'h4 : sum_125[2:0]};	// \\src\\main\\scala\\SynthTop.scala:24:7, \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _cnt_T_253 = sum_126 > 4'h4 ? 3'h4 : sum_126[2:0];	// \\src\\main\\scala\\Utils.scala:50:23, :51:{20,25}
-      _GEN_1 = {1'h0, ~busy_0};	// \\src\\main\\scala\\SynthTop.scala:24:7, :56:25, :66:10, :71:19
-      _GEN_2 =
-        {{_cnt_T_253[2]}, {_cnt_T_253 > 3'h2}, {|(_cnt_T_253[2:1])}, {|_cnt_T_253}};	// \\src\\main\\scala\\SynthTop.scala:71:19, \\src\\main\\scala\\Utils.scala:46:30, :51:20, :63:63
-      _GEN_3 =
-        {{_cnt_T_125[2]
-            ? (_cnt_T_61[2]
-                 ? (_cnt_T_29[2]
-                      ? (_cnt_T_13[2]
-                           ? (cnt_2[2]
-                                ? 7'h3
-                                : (_idx_fromRight_T_46 ? 7'h7 : 7'h0)
-                                  | (_idx_fromRight_T_47 ? idx_2_1 : 7'h0)
-                                  | (_idx_fromRight_T_48 ? idx_1_1 : 7'h0)
-                                  | (cnt_2 == 3'h3 ? idx_0_5 : 7'h0))
-                           : (_idx_fromRight_T_128
-                                ? (cnt_9[2]
-                                     ? 7'hB
-                                     : (_idx_fromRight_T_103 ? 7'hF : 7'h0)
-                                       | (_idx_fromRight_T_104 ? idx_2_4 : 7'h0)
-                                       | (_idx_fromRight_T_105 ? idx_1_4 : 7'h0)
-                                       | (cnt_9 == 3'h3 ? idx_0_12 : 7'h0))
-                                : 7'h0) | (_idx_fromRight_T_129 ? idx_2_5 : 7'h0)
-                             | (_idx_fromRight_T_130 ? idx_1_5 : 7'h0)
-                             | (_cnt_T_13 == 3'h3 ? idx_0_13 : 7'h0))
-                      : (_idx_fromRight_T_292
-                           ? (_cnt_T_43[2]
-                                ? (cnt_17[2]
-                                     ? 7'h13
-                                     : (_idx_fromRight_T_185 ? 7'h17 : 7'h0)
-                                       | (_idx_fromRight_T_186 ? idx_2_8 : 7'h0)
-                                       | (_idx_fromRight_T_187 ? idx_1_8 : 7'h0)
-                                       | (cnt_17 == 3'h3 ? idx_0_20 : 7'h0))
-                                : (_idx_fromRight_T_267
-                                     ? (cnt_24[2]
-                                          ? 7'h1B
-                                          : (_idx_fromRight_T_242 ? 7'h1F : 7'h0)
-                                            | (_idx_fromRight_T_243 ? idx_2_11 : 7'h0)
-                                            | (_idx_fromRight_T_244 ? idx_1_11 : 7'h0)
-                                            | (cnt_24 == 3'h3 ? idx_0_27 : 7'h0))
-                                     : 7'h0) | (_idx_fromRight_T_268 ? idx_2_12 : 7'h0)
-                                  | (_idx_fromRight_T_269 ? idx_1_12 : 7'h0)
-                                  | (_cnt_T_43 == 3'h3 ? idx_0_28 : 7'h0))
-                           : 7'h0) | (_idx_fromRight_T_293 ? idx_2_13 : 7'h0)
-                        | (_idx_fromRight_T_294 ? idx_1_13 : 7'h0)
-                        | (_cnt_T_29 == 3'h3 ? idx_0_29 : 7'h0))
-                 : (_idx_fromRight_T_620
-                      ? (_cnt_T_91[2]
-                           ? (_cnt_T_75[2]
-                                ? (cnt_33[2]
-                                     ? 7'h23
-                                     : (_idx_fromRight_T_349 ? 7'h27 : 7'h0)
-                                       | (_idx_fromRight_T_350 ? idx_2_16 : 7'h0)
-                                       | (_idx_fromRight_T_351 ? idx_1_16 : 7'h0)
-                                       | (cnt_33 == 3'h3 ? idx_0_36 : 7'h0))
-                                : (_idx_fromRight_T_431
-                                     ? (cnt_40[2]
-                                          ? 7'h2B
-                                          : (_idx_fromRight_T_406 ? 7'h2F : 7'h0)
-                                            | (_idx_fromRight_T_407 ? idx_2_19 : 7'h0)
-                                            | (_idx_fromRight_T_408 ? idx_1_19 : 7'h0)
-                                            | (cnt_40 == 3'h3 ? idx_0_43 : 7'h0))
-                                     : 7'h0) | (_idx_fromRight_T_432 ? idx_2_20 : 7'h0)
-                                  | (_idx_fromRight_T_433 ? idx_1_20 : 7'h0)
-                                  | (_cnt_T_75 == 3'h3 ? idx_0_44 : 7'h0))
-                           : (_idx_fromRight_T_595
-                                ? (_cnt_T_105[2]
-                                     ? (cnt_48[2]
-                                          ? 7'h33
-                                          : (_idx_fromRight_T_488 ? 7'h37 : 7'h0)
-                                            | (_idx_fromRight_T_489 ? idx_2_23 : 7'h0)
-                                            | (_idx_fromRight_T_490 ? idx_1_23 : 7'h0)
-                                            | (cnt_48 == 3'h3 ? idx_0_51 : 7'h0))
-                                     : (_idx_fromRight_T_570
-                                          ? (cnt_55[2]
-                                               ? 7'h3B
-                                               : (_idx_fromRight_T_545 ? 7'h3F : 7'h0)
-                                                 | (_idx_fromRight_T_546
-                                                      ? idx_2_26
-                                                      : 7'h0)
-                                                 | (_idx_fromRight_T_547
-                                                      ? idx_1_26
-                                                      : 7'h0)
-                                                 | (cnt_55 == 3'h3 ? idx_0_58 : 7'h0))
-                                          : 7'h0)
-                                       | (_idx_fromRight_T_571 ? idx_2_27 : 7'h0)
-                                       | (_idx_fromRight_T_572 ? idx_1_27 : 7'h0)
-                                       | (_cnt_T_105 == 3'h3 ? idx_0_59 : 7'h0))
-                                : 7'h0) | (_idx_fromRight_T_596 ? idx_2_28 : 7'h0)
-                             | (_idx_fromRight_T_597 ? idx_1_28 : 7'h0)
-                             | (_cnt_T_91 == 3'h3 ? idx_0_60 : 7'h0))
-                      : 7'h0) | (_idx_fromRight_T_621 ? idx_2_29 : 7'h0)
-                   | (_idx_fromRight_T_622 ? idx_1_29 : 7'h0)
-                   | (_cnt_T_61 == 3'h3 ? idx_0_61 : 7'h0))
-            : (_idx_fromRight_T_1276
-                 ? (_cnt_T_187[2]
-                      ? (_cnt_T_155[2]
-                           ? (_cnt_T_139[2]
-                                ? (cnt_65[2]
-                                     ? 7'h43
-                                     : (_idx_fromRight_T_677 ? 7'h47 : 7'h0)
-                                       | (_idx_fromRight_T_678 ? idx_2_32 : 7'h0)
-                                       | (_idx_fromRight_T_679 ? idx_1_32 : 7'h0)
-                                       | (cnt_65 == 3'h3 ? idx_0_68 : 7'h0))
-                                : (_idx_fromRight_T_759
-                                     ? (cnt_72[2]
-                                          ? 7'h4B
-                                          : (_idx_fromRight_T_734 ? 7'h4F : 7'h0)
-                                            | (_idx_fromRight_T_735 ? idx_2_35 : 7'h0)
-                                            | (_idx_fromRight_T_736 ? idx_1_35 : 7'h0)
-                                            | (cnt_72 == 3'h3 ? idx_0_75 : 7'h0))
-                                     : 7'h0) | (_idx_fromRight_T_760 ? idx_2_36 : 7'h0)
-                                  | (_idx_fromRight_T_761 ? idx_1_36 : 7'h0)
-                                  | (_cnt_T_139 == 3'h3 ? idx_0_76 : 7'h0))
-                           : (_idx_fromRight_T_923
-                                ? (_cnt_T_169[2]
-                                     ? (cnt_80[2]
-                                          ? 7'h53
-                                          : (_idx_fromRight_T_816 ? 7'h57 : 7'h0)
-                                            | (_idx_fromRight_T_817 ? idx_2_39 : 7'h0)
-                                            | (_idx_fromRight_T_818 ? idx_1_39 : 7'h0)
-                                            | (cnt_80 == 3'h3 ? idx_0_83 : 7'h0))
-                                     : (_idx_fromRight_T_898
-                                          ? (cnt_87[2]
-                                               ? 7'h5B
-                                               : (_idx_fromRight_T_873 ? 7'h5F : 7'h0)
-                                                 | (_idx_fromRight_T_874
-                                                      ? idx_2_42
-                                                      : 7'h0)
-                                                 | (_idx_fromRight_T_875
-                                                      ? idx_1_42
-                                                      : 7'h0)
-                                                 | (cnt_87 == 3'h3 ? idx_0_90 : 7'h0))
-                                          : 7'h0)
-                                       | (_idx_fromRight_T_899 ? idx_2_43 : 7'h0)
-                                       | (_idx_fromRight_T_900 ? idx_1_43 : 7'h0)
-                                       | (_cnt_T_169 == 3'h3 ? idx_0_91 : 7'h0))
-                                : 7'h0) | (_idx_fromRight_T_924 ? idx_2_44 : 7'h0)
-                             | (_idx_fromRight_T_925 ? idx_1_44 : 7'h0)
-                             | (_cnt_T_155 == 3'h3 ? idx_0_92 : 7'h0))
-                      : (_idx_fromRight_T_1251
-                           ? (_cnt_T_217[2]
-                                ? (_cnt_T_201[2]
-                                     ? (cnt_96[2]
-                                          ? 7'h63
-                                          : (_idx_fromRight_T_980 ? 7'h67 : 7'h0)
-                                            | (_idx_fromRight_T_981 ? idx_2_47 : 7'h0)
-                                            | (_idx_fromRight_T_982 ? idx_1_47 : 7'h0)
-                                            | (cnt_96 == 3'h3 ? idx_0_99 : 7'h0))
-                                     : (_idx_fromRight_T_1062
-                                          ? (cnt_103[2]
-                                               ? 7'h6B
-                                               : (_idx_fromRight_T_1037 ? 7'h6F : 7'h0)
-                                                 | (_idx_fromRight_T_1038
-                                                      ? idx_2_50
-                                                      : 7'h0)
-                                                 | (_idx_fromRight_T_1039
-                                                      ? idx_1_50
-                                                      : 7'h0)
-                                                 | (cnt_103 == 3'h3 ? idx_0_106 : 7'h0))
-                                          : 7'h0)
-                                       | (_idx_fromRight_T_1063 ? idx_2_51 : 7'h0)
-                                       | (_idx_fromRight_T_1064 ? idx_1_51 : 7'h0)
-                                       | (_cnt_T_201 == 3'h3 ? idx_0_107 : 7'h0))
-                                : (_idx_fromRight_T_1226
-                                     ? (_cnt_T_231[2]
-                                          ? (cnt_111[2]
-                                               ? 7'h73
-                                               : (_idx_fromRight_T_1119 ? 7'h77 : 7'h0)
-                                                 | (_idx_fromRight_T_1120
-                                                      ? idx_2_54
-                                                      : 7'h0)
-                                                 | (_idx_fromRight_T_1121
-                                                      ? idx_1_54
-                                                      : 7'h0)
-                                                 | (cnt_111 == 3'h3 ? idx_0_114 : 7'h0))
-                                          : (_idx_fromRight_T_1201
-                                               ? (cnt_118[2]
-                                                    ? 7'h7B
-                                                    : {7{_idx_fromRight_T_1176}}
-                                                      | (_idx_fromRight_T_1177
-                                                           ? idx_2_57
-                                                           : 7'h0)
-                                                      | (_idx_fromRight_T_1178
-                                                           ? idx_1_57
-                                                           : 7'h0)
-                                                      | (cnt_118 == 3'h3
-                                                           ? idx_0_121
-                                                           : 7'h0))
-                                               : 7'h0)
-                                            | (_idx_fromRight_T_1202 ? idx_2_58 : 7'h0)
-                                            | (_idx_fromRight_T_1203 ? idx_1_58 : 7'h0)
-                                            | (_cnt_T_231 == 3'h3 ? idx_0_122 : 7'h0))
-                                     : 7'h0) | (_idx_fromRight_T_1227 ? idx_2_59 : 7'h0)
-                                  | (_idx_fromRight_T_1228 ? idx_1_59 : 7'h0)
-                                  | (_cnt_T_217 == 3'h3 ? idx_0_123 : 7'h0))
-                           : 7'h0) | (_idx_fromRight_T_1252 ? idx_2_60 : 7'h0)
-                        | (_idx_fromRight_T_1253 ? idx_1_60 : 7'h0)
-                        | (_cnt_T_187 == 3'h3 ? idx_0_124 : 7'h0))
-                 : 7'h0) | (_idx_fromRight_T_1277 ? idx_2_61 : 7'h0)
-              | (_idx_fromRight_T_1278 ? idx_1_61 : 7'h0)
-              | (_cnt_T_125 == 3'h3 ? idx_0_125 : 7'h0)},
-         {_cnt_T_125 > 3'h2
-            ? (_cnt_T_61 > 3'h2
-                 ? (_cnt_T_29 > 3'h2
-                      ? (_cnt_T_13 > 3'h2
-                           ? (cnt_2 > 3'h2
-                                ? (_idx_fromRight_T_10 ? 7'h3 : 7'h0)
-                                  | (cnt == 2'h2 ? idx_0_1 : 7'h0)
-                                : (_idx_fromRight_T_46 ? idx_2_1 : 7'h0)
-                                  | (_idx_fromRight_T_47 ? idx_1_1 : 7'h0)
-                                  | (_idx_fromRight_T_48 ? idx_0_5 : 7'h0))
-                           : (_idx_fromRight_T_128 ? idx_2_5 : 7'h0)
-                             | (_idx_fromRight_T_129 ? idx_1_5 : 7'h0)
-                             | (_idx_fromRight_T_130 ? idx_0_13 : 7'h0))
-                      : (_idx_fromRight_T_292 ? idx_2_13 : 7'h0)
-                        | (_idx_fromRight_T_293 ? idx_1_13 : 7'h0)
-                        | (_idx_fromRight_T_294 ? idx_0_29 : 7'h0))
-                 : (_idx_fromRight_T_620 ? idx_2_29 : 7'h0)
-                   | (_idx_fromRight_T_621 ? idx_1_29 : 7'h0)
-                   | (_idx_fromRight_T_622 ? idx_0_61 : 7'h0))
-            : (_idx_fromRight_T_1276 ? idx_2_61 : 7'h0)
-              | (_idx_fromRight_T_1277 ? idx_1_61 : 7'h0)
-              | (_idx_fromRight_T_1278 ? idx_0_125 : 7'h0)},
-         {(|(_cnt_T_125[2:1]))
-            ? ((|(_cnt_T_61[2:1]))
-                 ? ((|(_cnt_T_29[2:1]))
-                      ? ((|(_cnt_T_13[2:1]))
-                           ? ((|(cnt_2[2:1]))
-                                ? (cnt[1]
-                                     ? 7'h1
-                                     : (cnt == 2'h0 ? 7'h3 : 7'h0)
-                                       | (_idx_fromRight_T_10 ? idx_0_1 : 7'h0))
-                                : (_idx_fromRight_T_46 ? idx_1_1 : 7'h0)
-                                  | (_idx_fromRight_T_47 ? idx_0_5 : 7'h0))
-                           : (_idx_fromRight_T_128 ? idx_1_5 : 7'h0)
-                             | (_idx_fromRight_T_129 ? idx_0_13 : 7'h0))
-                      : (_idx_fromRight_T_292 ? idx_1_13 : 7'h0)
-                        | (_idx_fromRight_T_293 ? idx_0_29 : 7'h0))
-                 : (_idx_fromRight_T_620 ? idx_1_29 : 7'h0)
-                   | (_idx_fromRight_T_621 ? idx_0_61 : 7'h0))
-            : (_idx_fromRight_T_1276 ? idx_1_61 : 7'h0)
-              | (_idx_fromRight_T_1277 ? idx_0_125 : 7'h0)},
-         {(|_cnt_T_125)
-            ? ((|_cnt_T_61)
-                 ? ((|_cnt_T_29)
-                      ? ((|_cnt_T_13)
-                           ? ((|cnt_2) ? ((|cnt) ? idx_0 : idx_0_1) : idx_0_5)
-                           : idx_0_13)
-                      : idx_0_29)
-                 : idx_0_61)
-            : idx_0_125}};	// \\src\\main\\scala\\SynthTop.scala:38:30, :72:30, \\src\\main\\scala\\Utils.scala:46:30, :48:{24,31}, :51:{20,25}, src/main/scala/chisel3/util/Mux.scala:30:73
-      rank_1 = _GEN_1 + _GEN_4;	// \\src\\main\\scala\\SynthTop.scala:68:47, :71:19
-      _rank_T_8 = _GEN_1 + _GEN_4 + {1'h0, ~busy_2};	// \\src\\main\\scala\\SynthTop.scala:24:7, :56:25, :66:10, :68:47, :71:19
-      if (~busy_0 & (|_cnt_T_253)) begin	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :66:{10,20}, :72:{19,30}, \\src\\main\\scala\\Utils.scala:51:20, :63:63
-        if (|_cnt_T_125) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-          if (|_cnt_T_61) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|_cnt_T_29) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|_cnt_T_13) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                if (|cnt_2) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                  if (|cnt)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                    notes_0 <= idx_0;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-                  else	// \\src\\main\\scala\\Utils.scala:48:31
-                    notes_0 <= idx_0_1;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-                end
-                else if (|cnt_3)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                  notes_0 <= idx_0_3;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-                else	// \\src\\main\\scala\\Utils.scala:48:31
-                  notes_0 <= idx_0_4;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              end
-              else if (|cnt_9) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                if (|cnt_7)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                  notes_0 <= idx_0_7;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-                else	// \\src\\main\\scala\\Utils.scala:48:31
-                  notes_0 <= idx_0_8;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              end
-              else if (|cnt_10)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_10;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_11;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|_cnt_T_43) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_17) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                if (|cnt_15)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                  notes_0 <= idx_0_15;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-                else	// \\src\\main\\scala\\Utils.scala:48:31
-                  notes_0 <= idx_0_16;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              end
-              else if (|cnt_18)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_18;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_19;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_24) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_22)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_22;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_23;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_25)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_25;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_26;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|_cnt_T_91) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|_cnt_T_75) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_33) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                if (|cnt_31)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                  notes_0 <= idx_0_31;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-                else	// \\src\\main\\scala\\Utils.scala:48:31
-                  notes_0 <= idx_0_32;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              end
-              else if (|cnt_34)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_34;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_35;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_40) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_38)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_38;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_39;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_41)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_41;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_42;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|_cnt_T_105) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|cnt_48) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_46)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_46;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_47;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_49)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_49;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_50;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|cnt_55) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|cnt_53)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_53;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_54;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|cnt_56)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            notes_0 <= idx_0_56;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          else	// \\src\\main\\scala\\Utils.scala:48:31
-            notes_0 <= idx_0_57;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-        end
-        else if (|_cnt_T_187) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-          if (|_cnt_T_155) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|_cnt_T_139) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_65) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                if (|cnt_63)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                  notes_0 <= idx_0_63;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-                else	// \\src\\main\\scala\\Utils.scala:48:31
-                  notes_0 <= idx_0_64;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              end
-              else if (|cnt_66)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_66;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_67;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_72) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_70)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_70;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_71;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_73)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_73;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_74;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|_cnt_T_169) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|cnt_80) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_78)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_78;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_79;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_81)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_81;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_82;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|cnt_87) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|cnt_85)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_85;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_86;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|cnt_88)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            notes_0 <= idx_0_88;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          else	// \\src\\main\\scala\\Utils.scala:48:31
-            notes_0 <= idx_0_89;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-        end
-        else if (|_cnt_T_217) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-          if (|_cnt_T_201) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|cnt_96) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              if (|cnt_94)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-                notes_0 <= idx_0_94;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-              else	// \\src\\main\\scala\\Utils.scala:48:31
-                notes_0 <= idx_0_95;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            end
-            else if (|cnt_97)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_97;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_98;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|cnt_103) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|cnt_101)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_101;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_102;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|cnt_104)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            notes_0 <= idx_0_104;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          else	// \\src\\main\\scala\\Utils.scala:48:31
-            notes_0 <= idx_0_105;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-        end
-        else if (|_cnt_T_231) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-          if (|cnt_111) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            if (|cnt_109)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-              notes_0 <= idx_0_109;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-            else	// \\src\\main\\scala\\Utils.scala:48:31
-              notes_0 <= idx_0_110;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          end
-          else if (|cnt_112)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            notes_0 <= idx_0_112;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          else	// \\src\\main\\scala\\Utils.scala:48:31
-            notes_0 <= idx_0_113;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-        end
-        else if (|cnt_118) begin	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-          if (|cnt_116)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-            notes_0 <= idx_0_116;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-          else	// \\src\\main\\scala\\Utils.scala:48:31
-            notes_0 <= idx_0_117;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-        end
-        else if (|cnt_119)	// \\src\\main\\scala\\Utils.scala:48:31, :51:20
-          notes_0 <= idx_0_119;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-        else	// \\src\\main\\scala\\Utils.scala:48:31
-          notes_0 <= idx_0_120;	// \\src\\main\\scala\\SynthTop.scala:38:22, \\src\\main\\scala\\Utils.scala:48:24
-      end
-      if (~busy_1 & _GEN_2[_GEN_1])	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :66:{10,20}, :71:19, :72:{19,30}
-        notes_1 <= _GEN_3[_GEN_1];	// \\src\\main\\scala\\SynthTop.scala:38:22, :71:19, :72:30
-      if (~busy_2 & _GEN_2[rank_1])	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :66:{10,20}, :68:47, :71:19, :72:{19,30}
-        notes_2 <= _GEN_3[rank_1];	// \\src\\main\\scala\\SynthTop.scala:38:22, :68:47, :72:30
-      if (~busy_3 & _GEN_2[_rank_T_8])	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :66:{10,20}, :68:47, :71:19, :72:{19,30}
-        notes_3 <= _GEN_3[_rank_T_8];	// \\src\\main\\scala\\SynthTop.scala:38:22, :68:47, :72:30
+      automatic logic [127:0]    _GEN_0 = {121'h0, _selector_io_out_bits_idx_0};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
+      automatic logic [127:0]    _candidates_0_T_3 = reserved >> _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
+      automatic logic [127:0]    _candidates_0_T = io_held >> _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:78:16
+      automatic logic            candidates_0;	// \\src\\main\\scala\\SynthTop.scala:78:23
+      automatic logic [127:0]    _GEN_1 = {121'h0, _selector_io_out_bits_idx_1};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
+      automatic logic [127:0]    _candidates_1_T_3 = reserved >> _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
+      automatic logic [127:0]    _candidates_1_T = io_held >> _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:78:16
+      automatic logic            candidates_1;	// \\src\\main\\scala\\SynthTop.scala:78:23
+      automatic logic [127:0]    _GEN_2 = {121'h0, _selector_io_out_bits_idx_2};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
+      automatic logic [127:0]    _candidates_2_T_3 = reserved >> _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
+      automatic logic [127:0]    _candidates_2_T = io_held >> _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:78:16
+      automatic logic            candidates_2;	// \\src\\main\\scala\\SynthTop.scala:78:23
+      automatic logic [127:0]    _GEN_3 = {121'h0, _selector_io_out_bits_idx_3};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
+      automatic logic [127:0]    _candidates_3_T_3 = reserved >> _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
+      automatic logic [127:0]    _candidates_3_T = io_held >> _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:78:16
+      automatic logic            candidates_3 =
+        _selector_io_out_bits_valid_3 & _candidates_3_T[0] & ~(_candidates_3_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
+      automatic logic [3:0]      remaining_0;	// \\src\\main\\scala\\SynthTop.scala:81:32
+      automatic logic            allocate;	// \\src\\main\\scala\\SynthTop.scala:83:59
+      automatic logic [3:0]      remaining_1;	// \\src\\main\\scala\\SynthTop.scala:85:33
+      automatic logic [3:0][6:0] _GEN_4;	// \\src\\main\\scala\\SynthTop.scala:89:39
+      automatic logic            allocate_1;	// \\src\\main\\scala\\SynthTop.scala:83:59
+      automatic logic [3:0]      remaining_2;	// \\src\\main\\scala\\SynthTop.scala:85:33
+      automatic logic            allocate_2;	// \\src\\main\\scala\\SynthTop.scala:83:59
+      automatic logic [3:0]      remaining_3;	// \\src\\main\\scala\\SynthTop.scala:85:33
+      automatic logic            allocate_3;	// \\src\\main\\scala\\SynthTop.scala:83:59
+      candidates_0 =
+        _selector_io_out_bits_valid_0 & _candidates_0_T[0] & ~(_candidates_0_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
+      candidates_1 =
+        _selector_io_out_bits_valid_1 & _candidates_1_T[0] & ~(_candidates_1_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
+      candidates_2 =
+        _selector_io_out_bits_valid_2 & _candidates_2_T[0] & ~(_candidates_2_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
+      remaining_0 = {candidates_3, candidates_2, candidates_1, candidates_0};	// \\src\\main\\scala\\SynthTop.scala:78:23, :81:32
+      allocate = _selector_io_out_valid & ~busy_0 & (|remaining_0);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :81:32, :83:{46,59,78}
+      remaining_1 =
+        ({4{~allocate}} | {candidates_3, candidates_2, candidates_1, candidates_0} - 4'h1)
+        & remaining_0;	// \\src\\main\\scala\\SynthTop.scala:78:23, :81:32, :83:59, :85:33, :86:44
+      _GEN_4 =
+        {{_selector_io_out_bits_idx_3},
+         {_selector_io_out_bits_idx_2},
+         {_selector_io_out_bits_idx_1},
+         {_selector_io_out_bits_idx_0}};	// \\src\\main\\scala\\SynthTop.scala:67:26, :89:39
+      allocate_1 = _selector_io_out_valid & ~busy_1 & (|remaining_1);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
+      remaining_2 = ({4{~allocate_1}} | remaining_1 - 4'h1) & remaining_1;	// \\src\\main\\scala\\SynthTop.scala:83:59, :85:33, :86:44
+      allocate_2 = _selector_io_out_valid & ~busy_2 & (|remaining_2);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
+      remaining_3 = ({4{~allocate_2}} | remaining_2 - 4'h1) & remaining_2;	// \\src\\main\\scala\\SynthTop.scala:83:59, :85:33, :86:44
+      allocate_3 = _selector_io_out_valid & ~busy_3 & (|remaining_3);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
+      if (~busy_0 & allocate)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
+        notes_0 <=
+          _GEN_4[candidates_0 ? 2'h0 : candidates_1 ? 2'h1 : {1'h1, ~candidates_2}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :78:23, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70
+      if (~busy_1 & allocate_1)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
+        notes_1 <=
+          _GEN_4[remaining_1[0]
+                   ? 2'h0
+                   : remaining_1[1] ? 2'h1 : {1'h1, ~(remaining_1[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
+      if (~busy_2 & allocate_2)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
+        notes_2 <=
+          _GEN_4[remaining_2[0]
+                   ? 2'h0
+                   : remaining_2[1] ? 2'h1 : {1'h1, ~(remaining_2[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
+      if (~busy_3 & allocate_3)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
+        notes_3 <=
+          _GEN_4[remaining_3[0]
+                   ? 2'h0
+                   : remaining_3[1] ? 2'h1 : {1'h1, ~(remaining_3[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
       if (~busy_0)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_0 <= |_cnt_T_253;	// \\src\\main\\scala\\SynthTop.scala:39:25, \\src\\main\\scala\\Utils.scala:51:20, :63:63
+        assigned_0 <= allocate;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
       if (~busy_1)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_1 <= _GEN_2[_GEN_1];	// \\src\\main\\scala\\SynthTop.scala:39:25, :71:19
+        assigned_1 <= allocate_1;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
       if (~busy_2)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_2 <= _GEN_2[rank_1];	// \\src\\main\\scala\\SynthTop.scala:39:25, :68:47, :71:19
+        assigned_2 <= allocate_2;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
       if (~busy_3)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_3 <= _GEN_2[_rank_T_8];	// \\src\\main\\scala\\SynthTop.scala:39:25, :68:47, :71:19
+        assigned_3 <= allocate_3;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SynthTop.scala:24:7
@@ -3447,40 +1833,54 @@ module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
     .io_samples_1 (_synth_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
     .io_samples_2 (_synth_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
     .io_samples_3 (_synth_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_PWM_en    (|{busy_3, busy_2, busy_1, busy_0}),	// \\src\\main\\scala\\SynthTop.scala:56:25, :76:{25,32}
+    .io_PWM_en    (|{busy_3, busy_2, busy_1, busy_0}),	// \\src\\main\\scala\\SynthTop.scala:56:25, :94:{25,32}
     .io_PWM_out   (io_out)
   );
   Synth synth (	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .clock          (clock),
-    .reset          (reset),
-    .io_frequencyHz (_GEN[notes_0]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:26
-    .io_gate        (gate),	// \\src\\main\\scala\\SynthTop.scala:53:32
-    .io_sample      (_synth_io_sample),
-    .io_active      (_synth_io_active)
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_GEN[notes_0]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
+    .io_gate      (gate),	// \\src\\main\\scala\\SynthTop.scala:53:32
+    .io_sample    (_synth_io_sample),
+    .io_active    (_synth_io_active)
   );
   Synth synth_1 (	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .clock          (clock),
-    .reset          (reset),
-    .io_frequencyHz (_GEN[notes_1]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:26
-    .io_gate        (gate_1),	// \\src\\main\\scala\\SynthTop.scala:53:32
-    .io_sample      (_synth_1_io_sample),
-    .io_active      (_synth_1_io_active)
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_GEN[notes_1]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
+    .io_gate      (gate_1),	// \\src\\main\\scala\\SynthTop.scala:53:32
+    .io_sample    (_synth_1_io_sample),
+    .io_active    (_synth_1_io_active)
   );
   Synth synth_2 (	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .clock          (clock),
-    .reset          (reset),
-    .io_frequencyHz (_GEN[notes_2]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:26
-    .io_gate        (gate_2),	// \\src\\main\\scala\\SynthTop.scala:53:32
-    .io_sample      (_synth_2_io_sample),
-    .io_active      (_synth_2_io_active)
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_GEN[notes_2]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
+    .io_gate      (gate_2),	// \\src\\main\\scala\\SynthTop.scala:53:32
+    .io_sample    (_synth_2_io_sample),
+    .io_active    (_synth_2_io_active)
   );
   Synth synth_3 (	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .clock          (clock),
-    .reset          (reset),
-    .io_frequencyHz (_GEN[notes_3]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:26
-    .io_gate        (gate_3),	// \\src\\main\\scala\\SynthTop.scala:53:32
-    .io_sample      (_synth_3_io_sample),
-    .io_active      (_synth_3_io_active)
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_GEN[notes_3]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
+    .io_gate      (gate_3),	// \\src\\main\\scala\\SynthTop.scala:53:32
+    .io_sample    (_synth_3_io_sample),
+    .io_active    (_synth_3_io_active)
+  );
+  FirstNSetBits selector (	// \\src\\main\\scala\\SynthTop.scala:67:26
+    .clock               (clock),
+    .reset               (reset),
+    .io_in_bits          (io_held & ~reserved),	// \\src\\main\\scala\\SynthTop.scala:66:16, :69:{36,38}
+    .io_out_valid        (_selector_io_out_valid),
+    .io_out_bits_idx_0   (_selector_io_out_bits_idx_0),
+    .io_out_bits_idx_1   (_selector_io_out_bits_idx_1),
+    .io_out_bits_idx_2   (_selector_io_out_bits_idx_2),
+    .io_out_bits_idx_3   (_selector_io_out_bits_idx_3),
+    .io_out_bits_valid_0 (_selector_io_out_bits_valid_0),
+    .io_out_bits_valid_1 (_selector_io_out_bits_valid_1),
+    .io_out_bits_valid_2 (_selector_io_out_bits_valid_2),
+    .io_out_bits_valid_3 (_selector_io_out_bits_valid_3)
   );
 endmodule
 
@@ -3663,7 +2063,7 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
       12'h2,
       12'h1,
       12'h0};	// \\src\\main\\scala\\SevenSegDisplay.scala:31:27
-  reg  [16:0]        tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
+  reg  [15:0]        tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
   reg  [1:0]         sel;	// src/main/scala/chisel3/util/Counter.scala:61:40
   wire [3:0][3:0]    _GEN_2 =
     {{_GEN_1[io_value][3:0]},
@@ -3673,18 +2073,18 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
   wire [3:0]         _GEN_3 = {_GEN, {{io_value > 7'h63}, {io_value > 7'h9}, {1'h1}}};	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, :34:{42,60}, :42:17
   always @(posedge clock) begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
     if (reset) begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
-      tick_c_value <= 17'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       sel <= 2'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
     end
-    else if (tick_c_value == 17'h1869F) begin	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
-      tick_c_value <= 17'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+    else if (tick_c_value == 16'hC34F) begin	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
+      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       if (sel == 2'h2)	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
         sel <= 2'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       else	// src/main/scala/chisel3/util/Counter.scala:73:24
         sel <= sel + 2'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
     end
     else	// src/main/scala/chisel3/util/Counter.scala:73:24
-      tick_c_value <= tick_c_value + 17'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
+      tick_c_value <= tick_c_value + 16'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
     `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
@@ -3697,8 +2097,8 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
-        tick_c_value = _RANDOM[/*Zero width*/ 1'b0][16:0];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
-        sel = _RANDOM[/*Zero width*/ 1'b0][18:17];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        tick_c_value = _RANDOM[/*Zero width*/ 1'b0][15:0];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        sel = _RANDOM[/*Zero width*/ 1'b0][17:16];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7

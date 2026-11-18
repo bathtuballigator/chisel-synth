@@ -1,13 +1,13 @@
 import chisel3._
 
 class SynthIO(sampleWid: Int) extends Bundle {
-  val frequencyHz = Input(UInt(32.W)) // Frequency to play in Hz
+  val increment = Input(UInt(32.W)) // Precomputed phase increment, as on main.
   val gate = Input(Bool())
   val sample=Output(SInt(sampleWid.W))
   val active = Output(Bool())
 }
 
-// synth module produces a single signed sample based on input frequency
+// A precomputed phase increment drives the oscillator; ADSR scales its sample.
 class Synth(
     sampleWid: Int = 8, // default to 8 bit
     clockFrequency: Int = Nexys4.clockFrequency, // Hz
@@ -44,6 +44,6 @@ class Synth(
     io.sample := Mux(io.gate, osc.io.sample, 0.S)
     io.gate
   }
-  osc.io.frequencyHz := Mux(io.gate || active, io.frequencyHz, 0.U)
+  osc.io.increment := Mux(io.gate || active, io.increment, 0.U)
   io.active := active
 }
