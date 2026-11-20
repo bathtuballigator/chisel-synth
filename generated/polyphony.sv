@@ -1086,30 +1086,102 @@ module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:267:7
                io_samples_1,	// \\src\\main\\scala\\Oscillator.scala:274:14
                io_samples_2,	// \\src\\main\\scala\\Oscillator.scala:274:14
                io_samples_3,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_4,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_5,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_6,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_7,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_8,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_9,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_10,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_11,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_12,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_13,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_14,	// \\src\\main\\scala\\Oscillator.scala:274:14
+               io_samples_15,	// \\src\\main\\scala\\Oscillator.scala:274:14
   input        io_PWM_en,	// \\src\\main\\scala\\Oscillator.scala:274:14
   output       io_PWM_out	// \\src\\main\\scala\\Oscillator.scala:274:14
 );
 
-  reg [7:0] voiceSamples_0;	// \\src\\main\\scala\\Oscillator.scala:282:28
-  reg [7:0] voiceSamples_1;	// \\src\\main\\scala\\Oscillator.scala:282:28
-  reg [7:0] voiceSamples_2;	// \\src\\main\\scala\\Oscillator.scala:282:28
-  reg [7:0] voiceSamples_3;	// \\src\\main\\scala\\Oscillator.scala:282:28
-  reg [9:0] sumSamples;	// \\src\\main\\scala\\Oscillator.scala:285:23
-  reg [7:0] pwmCounter;	// \\src\\main\\scala\\Oscillator.scala:299:27
-  reg [7:0] duty;	// \\src\\main\\scala\\Oscillator.scala:302:21
+  reg [7:0]  voiceSamples_0;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_1;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_2;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_3;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_4;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_5;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_6;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_7;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_8;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_9;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_10;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_11;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_12;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_13;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_14;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [7:0]  voiceSamples_15;	// \\src\\main\\scala\\Oscillator.scala:282:28
+  reg [11:0] sumSamples;	// \\src\\main\\scala\\Oscillator.scala:285:23
+  reg [7:0]  pwmCounter;	// \\src\\main\\scala\\Oscillator.scala:299:27
+  reg [7:0]  duty;	// \\src\\main\\scala\\Oscillator.scala:302:21
   always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:267:7
-    automatic logic [8:0] _sumSamples_T;	// \\src\\main\\scala\\Oscillator.scala:286:43
-    automatic logic [8:0] _sumSamples_T_1;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0]  _sumSamples_T;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0]  _sumSamples_T_1;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0]  _sumSamples_T_2;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0]  _sumSamples_T_3;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0]  _sumSamples_T_4;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0]  _sumSamples_T_5;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0]  _sumSamples_T_6;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [8:0]  _sumSamples_T_7;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [9:0]  _sumSamples_T_8;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [9:0]  _sumSamples_T_9;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [9:0]  _sumSamples_T_10;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [9:0]  _sumSamples_T_11;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [10:0] _sumSamples_T_12;	// \\src\\main\\scala\\Oscillator.scala:286:43
+    automatic logic [10:0] _sumSamples_T_13;	// \\src\\main\\scala\\Oscillator.scala:286:43
     _sumSamples_T =
       {voiceSamples_0[7], voiceSamples_0} + {voiceSamples_1[7], voiceSamples_1};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
     _sumSamples_T_1 =
       {voiceSamples_2[7], voiceSamples_2} + {voiceSamples_3[7], voiceSamples_3};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    _sumSamples_T_2 =
+      {voiceSamples_4[7], voiceSamples_4} + {voiceSamples_5[7], voiceSamples_5};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    _sumSamples_T_3 =
+      {voiceSamples_6[7], voiceSamples_6} + {voiceSamples_7[7], voiceSamples_7};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    _sumSamples_T_4 =
+      {voiceSamples_8[7], voiceSamples_8} + {voiceSamples_9[7], voiceSamples_9};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    _sumSamples_T_5 =
+      {voiceSamples_10[7], voiceSamples_10} + {voiceSamples_11[7], voiceSamples_11};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    _sumSamples_T_6 =
+      {voiceSamples_12[7], voiceSamples_12} + {voiceSamples_13[7], voiceSamples_13};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    _sumSamples_T_7 =
+      {voiceSamples_14[7], voiceSamples_14} + {voiceSamples_15[7], voiceSamples_15};	// \\src\\main\\scala\\Oscillator.scala:282:28, :286:43
+    _sumSamples_T_8 =
+      {_sumSamples_T[8], _sumSamples_T} + {_sumSamples_T_1[8], _sumSamples_T_1};	// \\src\\main\\scala\\Oscillator.scala:286:43
+    _sumSamples_T_9 =
+      {_sumSamples_T_2[8], _sumSamples_T_2} + {_sumSamples_T_3[8], _sumSamples_T_3};	// \\src\\main\\scala\\Oscillator.scala:286:43
+    _sumSamples_T_10 =
+      {_sumSamples_T_4[8], _sumSamples_T_4} + {_sumSamples_T_5[8], _sumSamples_T_5};	// \\src\\main\\scala\\Oscillator.scala:286:43
+    _sumSamples_T_11 =
+      {_sumSamples_T_6[8], _sumSamples_T_6} + {_sumSamples_T_7[8], _sumSamples_T_7};	// \\src\\main\\scala\\Oscillator.scala:286:43
+    _sumSamples_T_12 =
+      {_sumSamples_T_8[9], _sumSamples_T_8} + {_sumSamples_T_9[9], _sumSamples_T_9};	// \\src\\main\\scala\\Oscillator.scala:286:43
+    _sumSamples_T_13 =
+      {_sumSamples_T_10[9], _sumSamples_T_10} + {_sumSamples_T_11[9], _sumSamples_T_11};	// \\src\\main\\scala\\Oscillator.scala:286:43
     voiceSamples_0 <= io_samples_0;	// \\src\\main\\scala\\Oscillator.scala:282:28
     voiceSamples_1 <= io_samples_1;	// \\src\\main\\scala\\Oscillator.scala:282:28
     voiceSamples_2 <= io_samples_2;	// \\src\\main\\scala\\Oscillator.scala:282:28
     voiceSamples_3 <= io_samples_3;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_4 <= io_samples_4;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_5 <= io_samples_5;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_6 <= io_samples_6;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_7 <= io_samples_7;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_8 <= io_samples_8;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_9 <= io_samples_9;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_10 <= io_samples_10;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_11 <= io_samples_11;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_12 <= io_samples_12;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_13 <= io_samples_13;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_14 <= io_samples_14;	// \\src\\main\\scala\\Oscillator.scala:282:28
+    voiceSamples_15 <= io_samples_15;	// \\src\\main\\scala\\Oscillator.scala:282:28
     sumSamples <=
-      {_sumSamples_T[8], _sumSamples_T} + {_sumSamples_T_1[8], _sumSamples_T_1};	// \\src\\main\\scala\\Oscillator.scala:285:23, :286:43
+      {_sumSamples_T_12[10], _sumSamples_T_12} + {_sumSamples_T_13[10], _sumSamples_T_13};	// \\src\\main\\scala\\Oscillator.scala:285:23, :286:43
     if (reset) begin	// \\src\\main\\scala\\Oscillator.scala:267:7
       pwmCounter <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:299:27
       duty <= 8'h0;	// \\src\\main\\scala\\Oscillator.scala:299:27, :302:21
@@ -1117,13 +1189,13 @@ module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:267:7
     else begin	// \\src\\main\\scala\\Oscillator.scala:267:7
       pwmCounter <= pwmCounter + 8'h1;	// \\src\\main\\scala\\Oscillator.scala:299:27, :300:28
       if (&pwmCounter) begin	// \\src\\main\\scala\\Oscillator.scala:299:27, :304:19
-        automatic logic       sign;	// \\src\\main\\scala\\Oscillator.scala:289:23
-        automatic logic [9:0] _mag_T;	// \\src\\main\\scala\\Oscillator.scala:289:23, :290:21
-        sign = $signed(sumSamples) < 10'sh0;	// \\src\\main\\scala\\Oscillator.scala:285:23, :289:23, :292:26
-        _mag_T = 10'h0 - sumSamples;	// \\src\\main\\scala\\Oscillator.scala:285:23, :289:23, :290:21, :292:26
+        automatic logic        sign;	// \\src\\main\\scala\\Oscillator.scala:289:23
+        automatic logic [11:0] _mag_T;	// \\src\\main\\scala\\Oscillator.scala:289:23, :290:21
+        sign = $signed(sumSamples) < 12'sh0;	// \\src\\main\\scala\\Oscillator.scala:285:23, :289:23
+        _mag_T = 12'h0 - sumSamples;	// \\src\\main\\scala\\Oscillator.scala:285:23, :289:23, :290:21
         duty <=
           io_PWM_en
-            ? (sign ? 8'h0 - (sign ? _mag_T[9:2] : sumSamples[9:2]) : sumSamples[9:2])
+            ? (sign ? 8'h0 - (sign ? _mag_T[11:4] : sumSamples[11:4]) : sumSamples[11:4])
               ^ 8'h80
             : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:285:23, :289:23, :290:{14,21}, :292:{19,26}, :294:36, :299:27, :302:21, :306:16
       end
@@ -1134,21 +1206,33 @@ module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:267:7
       `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:267:7
     `endif // FIRRTL_BEFORE_INITIAL
     initial begin	// \\src\\main\\scala\\Oscillator.scala:267:7
-      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\Oscillator.scala:267:7
+      automatic logic [31:0] _RANDOM[0:4];	// \\src\\main\\scala\\Oscillator.scala:267:7
       `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:267:7
         `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:267:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:267:7
-        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
-          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:267:7
+        for (logic [2:0] i = 3'h0; i < 3'h5; i += 3'h1) begin
+          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:267:7
         end	// \\src\\main\\scala\\Oscillator.scala:267:7
-        voiceSamples_0 = _RANDOM[1'h0][7:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
-        voiceSamples_1 = _RANDOM[1'h0][15:8];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
-        voiceSamples_2 = _RANDOM[1'h0][23:16];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
-        voiceSamples_3 = _RANDOM[1'h0][31:24];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
-        sumSamples = _RANDOM[1'h1][9:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23
-        pwmCounter = _RANDOM[1'h1][17:10];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23, :299:27
-        duty = _RANDOM[1'h1][25:18];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23, :302:21
+        voiceSamples_0 = _RANDOM[3'h0][7:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_1 = _RANDOM[3'h0][15:8];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_2 = _RANDOM[3'h0][23:16];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_3 = _RANDOM[3'h0][31:24];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_4 = _RANDOM[3'h1][7:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_5 = _RANDOM[3'h1][15:8];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_6 = _RANDOM[3'h1][23:16];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_7 = _RANDOM[3'h1][31:24];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_8 = _RANDOM[3'h2][7:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_9 = _RANDOM[3'h2][15:8];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_10 = _RANDOM[3'h2][23:16];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_11 = _RANDOM[3'h2][31:24];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_12 = _RANDOM[3'h3][7:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_13 = _RANDOM[3'h3][15:8];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_14 = _RANDOM[3'h3][23:16];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        voiceSamples_15 = _RANDOM[3'h3][31:24];	// \\src\\main\\scala\\Oscillator.scala:267:7, :282:28
+        sumSamples = _RANDOM[3'h4][11:0];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23
+        pwmCounter = _RANDOM[3'h4][19:12];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23, :299:27
+        duty = _RANDOM[3'h4][27:20];	// \\src\\main\\scala\\Oscillator.scala:267:7, :285:23, :302:21
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:267:7
@@ -1156,6 +1240,1286 @@ module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:267:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
   assign io_PWM_out = io_PWM_en & pwmCounter < duty;	// \\src\\main\\scala\\Oscillator.scala:267:7, :299:27, :302:21, :315:{27,42}
+endmodule
+
+module FirstNSetBits(	// \\src\\main\\scala\\Utils.scala:64:7
+  input          clock,	// \\src\\main\\scala\\Utils.scala:64:7
+                 reset,	// \\src\\main\\scala\\Utils.scala:64:7
+  output         io_in_ready,	// \\src\\main\\scala\\Utils.scala:70:14
+  input          io_in_valid,	// \\src\\main\\scala\\Utils.scala:70:14
+  input  [127:0] io_in_bits,	// \\src\\main\\scala\\Utils.scala:70:14
+  input          io_out_ready,	// \\src\\main\\scala\\Utils.scala:70:14
+  output         io_out_valid,	// \\src\\main\\scala\\Utils.scala:70:14
+  output [6:0]   io_out_bits_idx_0,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_idx_1,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_idx_2,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_idx_3,	// \\src\\main\\scala\\Utils.scala:70:14
+  output         io_out_bits_valid_0,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_valid_1,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_valid_2,	// \\src\\main\\scala\\Utils.scala:70:14
+                 io_out_bits_valid_3	// \\src\\main\\scala\\Utils.scala:70:14
+);
+
+  reg  [1:0]   state;	// \\src\\main\\scala\\Utils.scala:76:22
+  reg  [127:0] bits;	// \\src\\main\\scala\\Utils.scala:78:17
+  reg  [1:0]   cnt;	// \\src\\main\\scala\\Utils.scala:79:16
+  reg  [6:0]   idx_0;	// \\src\\main\\scala\\Utils.scala:80:16
+  reg  [6:0]   idx_1;	// \\src\\main\\scala\\Utils.scala:80:16
+  reg  [6:0]   idx_2;	// \\src\\main\\scala\\Utils.scala:80:16
+  reg  [6:0]   idx_3;	// \\src\\main\\scala\\Utils.scala:80:16
+  reg          vld_0;	// \\src\\main\\scala\\Utils.scala:81:20
+  reg          vld_1;	// \\src\\main\\scala\\Utils.scala:81:20
+  reg          vld_2;	// \\src\\main\\scala\\Utils.scala:81:20
+  reg          vld_3;	// \\src\\main\\scala\\Utils.scala:81:20
+  wire         io_out_valid_0 = state == 2'h2;	// \\src\\main\\scala\\Utils.scala:76:22, :101:25
+  always @(posedge clock) begin	// \\src\\main\\scala\\Utils.scala:64:7
+    automatic logic [127:0] _oh_T_1;	// \\src\\main\\scala\\Utils.scala:84:26
+    automatic logic [127:0] oh;	// \\src\\main\\scala\\Utils.scala:84:17
+    automatic logic         _GEN;	// src/main/scala/chisel3/util/Decoupled.scala:51:35
+    automatic logic         _GEN_0;	// \\src\\main\\scala\\Utils.scala:105:17
+    automatic logic [63:0]  idx_hi;	// \\src\\main\\scala\\Utils.scala:84:17, src/main/scala/chisel3/util/OneHot.scala:30:18
+    automatic logic [62:0]  _idx_T_1;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [30:0]  _idx_T_3;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [14:0]  _idx_T_5;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [6:0]   _idx_T_7;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [2:0]   _idx_T_9;	// src/main/scala/chisel3/util/OneHot.scala:32:28
+    automatic logic [6:0]   _idx_T_18;	// src/main/scala/chisel3/util/OneHot.scala:32:10
+    automatic logic         _GEN_1;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
+    automatic logic         _GEN_2;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
+    automatic logic         _GEN_3;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
+    automatic logic         _GEN_4;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
+    _oh_T_1 = ~bits + 128'h1;	// \\src\\main\\scala\\Utils.scala:78:17, :84:{20,26}
+    oh = bits & _oh_T_1;	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}
+    _GEN = ~(|state) & io_in_valid;	// \\src\\main\\scala\\Utils.scala:76:22, :100:24, src/main/scala/chisel3/util/Decoupled.scala:51:35
+    _GEN_0 = state == 2'h1;	// \\src\\main\\scala\\Utils.scala:76:22, :105:17, :116:18
+    idx_hi = bits[127:64] & _oh_T_1[127:64];	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18
+    _idx_T_1 = idx_hi[63:1] | bits[63:1] & _oh_T_1[63:1];	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_3 = _idx_T_1[62:32] | _idx_T_1[30:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_5 = _idx_T_3[30:16] | _idx_T_3[14:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_7 = _idx_T_5[14:8] | _idx_T_5[6:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_9 = _idx_T_7[6:4] | _idx_T_7[2:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    _idx_T_18 =
+      {|idx_hi,
+       |(_idx_T_1[62:31]),
+       |(_idx_T_3[30:15]),
+       |(_idx_T_5[14:7]),
+       |(_idx_T_7[6:3]),
+       |(_idx_T_9[2:1]),
+       _idx_T_9[2] | _idx_T_9[0]};	// \\src\\main\\scala\\Utils.scala:84:17, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:{10,14,28}
+    _GEN_1 = _GEN_0 & (|bits) & cnt == 2'h0;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
+    _GEN_2 = _GEN_0 & (|bits) & cnt == 2'h1;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
+    _GEN_3 = _GEN_0 & (|bits) & cnt == 2'h2;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :101:25, :105:17, :115:{17,22}, :116:18
+    _GEN_4 = _GEN_0 & (|bits) & (&cnt);	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
+    if (reset) begin	// \\src\\main\\scala\\Utils.scala:64:7
+      state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
+      vld_0 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+      vld_1 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+      vld_2 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+      vld_3 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+    end
+    else if (|state) begin	// \\src\\main\\scala\\Utils.scala:76:22, :100:24
+      if (_GEN_0) begin	// \\src\\main\\scala\\Utils.scala:105:17
+        if ((bits & ~oh) == 128'h0 | (&cnt))	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :84:{17,26}, :85:{19,21}, :116:18, :122:{18,22}
+          state <= 2'h2;	// \\src\\main\\scala\\Utils.scala:76:22, :101:25
+      end
+      else if (state == 2'h2 & io_out_ready & io_out_valid_0)	// \\src\\main\\scala\\Utils.scala:76:22, :101:25, :105:17, :125:{25,33}
+        state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
+      vld_0 <= _GEN_1 | vld_0;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+      vld_1 <= _GEN_2 | vld_1;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+      vld_2 <= _GEN_3 | vld_2;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+      vld_3 <= _GEN_4 | vld_3;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+    end
+    else begin	// \\src\\main\\scala\\Utils.scala:100:24
+      if (_GEN)	// src/main/scala/chisel3/util/Decoupled.scala:51:35
+        state <= 2'h1;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
+      vld_0 <= ~_GEN & vld_0;	// \\src\\main\\scala\\Utils.scala:81:20, :107:24, :110:23, src/main/scala/chisel3/util/Decoupled.scala:51:35
+      vld_1 <= ~_GEN & vld_1;	// \\src\\main\\scala\\Utils.scala:81:20, :107:24, :110:23, src/main/scala/chisel3/util/Decoupled.scala:51:35
+      vld_2 <= ~_GEN & vld_2;	// \\src\\main\\scala\\Utils.scala:81:20, :107:24, :110:23, src/main/scala/chisel3/util/Decoupled.scala:51:35
+      vld_3 <= ~_GEN & vld_3;	// \\src\\main\\scala\\Utils.scala:81:20, :107:24, :110:23, src/main/scala/chisel3/util/Decoupled.scala:51:35
+    end
+    if (|state) begin	// \\src\\main\\scala\\Utils.scala:76:22, :100:24
+      automatic logic _GEN_5;	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:22, :118:14
+      _GEN_5 = _GEN_0 & (|bits);	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:{17,22}, :118:14
+      bits <= ({128{~_GEN_5}} | ~oh) & bits;	// \\src\\main\\scala\\Utils.scala:78:17, :84:17, :85:21, :105:17, :115:22, :118:14
+      if (_GEN_5)	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:22, :118:14
+        cnt <= cnt + 2'h1;	// \\src\\main\\scala\\Utils.scala:79:16, :116:18, :119:20
+    end
+    else if (_GEN) begin	// src/main/scala/chisel3/util/Decoupled.scala:51:35
+      bits <= io_in_bits;	// \\src\\main\\scala\\Utils.scala:78:17
+      cnt <= 2'h0;	// \\src\\main\\scala\\Utils.scala:79:16, :116:18
+    end
+    if ((|state) & _GEN_1)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
+      idx_0 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_2)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
+      idx_1 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_3)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
+      idx_2 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_4)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
+      idx_3 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Utils.scala:64:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Utils.scala:64:7
+      automatic logic [31:0] _RANDOM[0:5];	// \\src\\main\\scala\\Utils.scala:64:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:64:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:64:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Utils.scala:64:7
+        for (logic [2:0] i = 3'h0; i < 3'h6; i += 3'h1) begin
+          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\Utils.scala:64:7
+        end	// \\src\\main\\scala\\Utils.scala:64:7
+        state = _RANDOM[3'h0][1:0];	// \\src\\main\\scala\\Utils.scala:64:7, :76:22
+        bits =
+          {_RANDOM[3'h0][31:2],
+           _RANDOM[3'h1],
+           _RANDOM[3'h2],
+           _RANDOM[3'h3],
+           _RANDOM[3'h4][1:0]};	// \\src\\main\\scala\\Utils.scala:64:7, :76:22, :78:17
+        cnt = _RANDOM[3'h4][3:2];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :79:16
+        idx_0 = _RANDOM[3'h4][10:4];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
+        idx_1 = _RANDOM[3'h4][17:11];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
+        idx_2 = _RANDOM[3'h4][24:18];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
+        idx_3 = _RANDOM[3'h4][31:25];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
+        vld_0 = _RANDOM[3'h5][0];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+        vld_1 = _RANDOM[3'h5][1];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+        vld_2 = _RANDOM[3'h5][2];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+        vld_3 = _RANDOM[3'h5][3];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_in_ready = ~(|state);	// \\src\\main\\scala\\Utils.scala:64:7, :76:22, :100:24
+  assign io_out_valid = io_out_valid_0;	// \\src\\main\\scala\\Utils.scala:64:7, :101:25
+  assign io_out_bits_idx_0 = idx_0;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
+  assign io_out_bits_idx_1 = idx_1;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
+  assign io_out_bits_idx_2 = idx_2;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
+  assign io_out_bits_idx_3 = idx_3;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
+  assign io_out_bits_valid_0 = vld_0;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+  assign io_out_bits_valid_1 = vld_1;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+  assign io_out_bits_valid_2 = vld_2;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+  assign io_out_bits_valid_3 = vld_3;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+endmodule
+
+module SineOscillator(	// \\src\\main\\scala\\Oscillator.scala:186:7
+  input         clock,	// \\src\\main\\scala\\Oscillator.scala:186:7
+                reset,	// \\src\\main\\scala\\Oscillator.scala:186:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:21:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:21:14
+);
+
+  wire [1023:0][7:0] _GEN =
+    '{8'h0,
+      8'hFF,
+      8'hFE,
+      8'hFD,
+      8'hFD,
+      8'hFC,
+      8'hFB,
+      8'hFA,
+      8'hF9,
+      8'hF9,
+      8'hF8,
+      8'hF7,
+      8'hF6,
+      8'hF6,
+      8'hF5,
+      8'hF4,
+      8'hF3,
+      8'hF3,
+      8'hF2,
+      8'hF1,
+      8'hF0,
+      8'hEF,
+      8'hEF,
+      8'hEE,
+      8'hED,
+      8'hEC,
+      8'hEC,
+      8'hEB,
+      8'hEA,
+      8'hE9,
+      8'hE8,
+      8'hE8,
+      8'hE7,
+      8'hE6,
+      8'hE5,
+      8'hE5,
+      8'hE4,
+      8'hE3,
+      8'hE2,
+      8'hE2,
+      8'hE1,
+      8'hE0,
+      8'hDF,
+      8'hDF,
+      8'hDE,
+      8'hDD,
+      8'hDC,
+      8'hDC,
+      8'hDB,
+      8'hDA,
+      8'hD9,
+      8'hD9,
+      8'hD8,
+      8'hD7,
+      8'hD6,
+      8'hD6,
+      8'hD5,
+      8'hD4,
+      8'hD4,
+      8'hD3,
+      8'hD2,
+      8'hD1,
+      8'hD1,
+      8'hD0,
+      8'hCF,
+      8'hCE,
+      8'hCE,
+      8'hCD,
+      8'hCC,
+      8'hCC,
+      8'hCB,
+      8'hCA,
+      8'hC9,
+      8'hC9,
+      8'hC8,
+      8'hC7,
+      8'hC7,
+      8'hC6,
+      8'hC5,
+      8'hC5,
+      8'hC4,
+      8'hC3,
+      8'hC3,
+      8'hC2,
+      8'hC1,
+      8'hC1,
+      8'hC0,
+      8'hBF,
+      8'hBF,
+      8'hBE,
+      8'hBD,
+      8'hBD,
+      8'hBC,
+      8'hBB,
+      8'hBB,
+      8'hBA,
+      8'hB9,
+      8'hB9,
+      8'hB8,
+      8'hB7,
+      8'hB7,
+      8'hB6,
+      8'hB5,
+      8'hB5,
+      8'hB4,
+      8'hB4,
+      8'hB3,
+      8'hB2,
+      8'hB2,
+      8'hB1,
+      8'hB1,
+      8'hB0,
+      8'hAF,
+      8'hAF,
+      8'hAE,
+      8'hAE,
+      8'hAD,
+      8'hAC,
+      8'hAC,
+      8'hAB,
+      8'hAB,
+      8'hAA,
+      8'hA9,
+      8'hA9,
+      8'hA8,
+      8'hA8,
+      8'hA7,
+      8'hA7,
+      8'hA6,
+      8'hA6,
+      8'hA5,
+      8'hA5,
+      8'hA4,
+      8'hA3,
+      8'hA3,
+      8'hA2,
+      8'hA2,
+      8'hA1,
+      8'hA1,
+      8'hA0,
+      8'hA0,
+      8'h9F,
+      8'h9F,
+      8'h9E,
+      8'h9E,
+      8'h9D,
+      8'h9D,
+      8'h9C,
+      8'h9C,
+      8'h9B,
+      8'h9B,
+      8'h9A,
+      8'h9A,
+      8'h9A,
+      8'h99,
+      8'h99,
+      8'h98,
+      8'h98,
+      8'h97,
+      8'h97,
+      8'h96,
+      8'h96,
+      8'h96,
+      8'h95,
+      8'h95,
+      8'h94,
+      8'h94,
+      8'h94,
+      8'h93,
+      8'h93,
+      8'h92,
+      8'h92,
+      8'h92,
+      8'h91,
+      8'h91,
+      8'h90,
+      8'h90,
+      8'h90,
+      8'h8F,
+      8'h8F,
+      8'h8F,
+      8'h8E,
+      8'h8E,
+      8'h8E,
+      8'h8D,
+      8'h8D,
+      8'h8D,
+      8'h8C,
+      8'h8C,
+      8'h8C,
+      8'h8B,
+      8'h8B,
+      8'h8B,
+      8'h8B,
+      8'h8A,
+      8'h8A,
+      8'h8A,
+      8'h89,
+      8'h89,
+      8'h89,
+      8'h89,
+      8'h88,
+      8'h88,
+      8'h88,
+      8'h88,
+      8'h87,
+      8'h87,
+      8'h87,
+      8'h87,
+      8'h87,
+      8'h86,
+      8'h86,
+      8'h86,
+      8'h86,
+      8'h85,
+      8'h85,
+      8'h85,
+      8'h85,
+      8'h85,
+      8'h85,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h81,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h82,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h83,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h84,
+      8'h85,
+      8'h85,
+      8'h85,
+      8'h85,
+      8'h85,
+      8'h85,
+      8'h86,
+      8'h86,
+      8'h86,
+      8'h86,
+      8'h87,
+      8'h87,
+      8'h87,
+      8'h87,
+      8'h87,
+      8'h88,
+      8'h88,
+      8'h88,
+      8'h88,
+      8'h89,
+      8'h89,
+      8'h89,
+      8'h89,
+      8'h8A,
+      8'h8A,
+      8'h8A,
+      8'h8B,
+      8'h8B,
+      8'h8B,
+      8'h8B,
+      8'h8C,
+      8'h8C,
+      8'h8C,
+      8'h8D,
+      8'h8D,
+      8'h8D,
+      8'h8E,
+      8'h8E,
+      8'h8E,
+      8'h8F,
+      8'h8F,
+      8'h8F,
+      8'h90,
+      8'h90,
+      8'h90,
+      8'h91,
+      8'h91,
+      8'h92,
+      8'h92,
+      8'h92,
+      8'h93,
+      8'h93,
+      8'h94,
+      8'h94,
+      8'h94,
+      8'h95,
+      8'h95,
+      8'h96,
+      8'h96,
+      8'h96,
+      8'h97,
+      8'h97,
+      8'h98,
+      8'h98,
+      8'h99,
+      8'h99,
+      8'h9A,
+      8'h9A,
+      8'h9A,
+      8'h9B,
+      8'h9B,
+      8'h9C,
+      8'h9C,
+      8'h9D,
+      8'h9D,
+      8'h9E,
+      8'h9E,
+      8'h9F,
+      8'h9F,
+      8'hA0,
+      8'hA0,
+      8'hA1,
+      8'hA1,
+      8'hA2,
+      8'hA2,
+      8'hA3,
+      8'hA3,
+      8'hA4,
+      8'hA5,
+      8'hA5,
+      8'hA6,
+      8'hA6,
+      8'hA7,
+      8'hA7,
+      8'hA8,
+      8'hA8,
+      8'hA9,
+      8'hA9,
+      8'hAA,
+      8'hAB,
+      8'hAB,
+      8'hAC,
+      8'hAC,
+      8'hAD,
+      8'hAE,
+      8'hAE,
+      8'hAF,
+      8'hAF,
+      8'hB0,
+      8'hB1,
+      8'hB1,
+      8'hB2,
+      8'hB2,
+      8'hB3,
+      8'hB4,
+      8'hB4,
+      8'hB5,
+      8'hB5,
+      8'hB6,
+      8'hB7,
+      8'hB7,
+      8'hB8,
+      8'hB9,
+      8'hB9,
+      8'hBA,
+      8'hBB,
+      8'hBB,
+      8'hBC,
+      8'hBD,
+      8'hBD,
+      8'hBE,
+      8'hBF,
+      8'hBF,
+      8'hC0,
+      8'hC1,
+      8'hC1,
+      8'hC2,
+      8'hC3,
+      8'hC3,
+      8'hC4,
+      8'hC5,
+      8'hC5,
+      8'hC6,
+      8'hC7,
+      8'hC7,
+      8'hC8,
+      8'hC9,
+      8'hC9,
+      8'hCA,
+      8'hCB,
+      8'hCC,
+      8'hCC,
+      8'hCD,
+      8'hCE,
+      8'hCE,
+      8'hCF,
+      8'hD0,
+      8'hD1,
+      8'hD1,
+      8'hD2,
+      8'hD3,
+      8'hD4,
+      8'hD4,
+      8'hD5,
+      8'hD6,
+      8'hD6,
+      8'hD7,
+      8'hD8,
+      8'hD9,
+      8'hD9,
+      8'hDA,
+      8'hDB,
+      8'hDC,
+      8'hDC,
+      8'hDD,
+      8'hDE,
+      8'hDF,
+      8'hDF,
+      8'hE0,
+      8'hE1,
+      8'hE2,
+      8'hE2,
+      8'hE3,
+      8'hE4,
+      8'hE5,
+      8'hE5,
+      8'hE6,
+      8'hE7,
+      8'hE8,
+      8'hE8,
+      8'hE9,
+      8'hEA,
+      8'hEB,
+      8'hEC,
+      8'hEC,
+      8'hED,
+      8'hEE,
+      8'hEF,
+      8'hEF,
+      8'hF0,
+      8'hF1,
+      8'hF2,
+      8'hF3,
+      8'hF3,
+      8'hF4,
+      8'hF5,
+      8'hF6,
+      8'hF6,
+      8'hF7,
+      8'hF8,
+      8'hF9,
+      8'hF9,
+      8'hFA,
+      8'hFB,
+      8'hFC,
+      8'hFD,
+      8'hFD,
+      8'hFE,
+      8'hFF,
+      8'h0,
+      8'h0,
+      8'h0,
+      8'h1,
+      8'h2,
+      8'h3,
+      8'h3,
+      8'h4,
+      8'h5,
+      8'h6,
+      8'h7,
+      8'h7,
+      8'h8,
+      8'h9,
+      8'hA,
+      8'hA,
+      8'hB,
+      8'hC,
+      8'hD,
+      8'hD,
+      8'hE,
+      8'hF,
+      8'h10,
+      8'h11,
+      8'h11,
+      8'h12,
+      8'h13,
+      8'h14,
+      8'h14,
+      8'h15,
+      8'h16,
+      8'h17,
+      8'h18,
+      8'h18,
+      8'h19,
+      8'h1A,
+      8'h1B,
+      8'h1B,
+      8'h1C,
+      8'h1D,
+      8'h1E,
+      8'h1E,
+      8'h1F,
+      8'h20,
+      8'h21,
+      8'h21,
+      8'h22,
+      8'h23,
+      8'h24,
+      8'h24,
+      8'h25,
+      8'h26,
+      8'h27,
+      8'h27,
+      8'h28,
+      8'h29,
+      8'h2A,
+      8'h2A,
+      8'h2B,
+      8'h2C,
+      8'h2C,
+      8'h2D,
+      8'h2E,
+      8'h2F,
+      8'h2F,
+      8'h30,
+      8'h31,
+      8'h32,
+      8'h32,
+      8'h33,
+      8'h34,
+      8'h34,
+      8'h35,
+      8'h36,
+      8'h37,
+      8'h37,
+      8'h38,
+      8'h39,
+      8'h39,
+      8'h3A,
+      8'h3B,
+      8'h3B,
+      8'h3C,
+      8'h3D,
+      8'h3D,
+      8'h3E,
+      8'h3F,
+      8'h3F,
+      8'h40,
+      8'h41,
+      8'h41,
+      8'h42,
+      8'h43,
+      8'h43,
+      8'h44,
+      8'h45,
+      8'h45,
+      8'h46,
+      8'h47,
+      8'h47,
+      8'h48,
+      8'h49,
+      8'h49,
+      8'h4A,
+      8'h4B,
+      8'h4B,
+      8'h4C,
+      8'h4C,
+      8'h4D,
+      8'h4E,
+      8'h4E,
+      8'h4F,
+      8'h4F,
+      8'h50,
+      8'h51,
+      8'h51,
+      8'h52,
+      8'h52,
+      8'h53,
+      8'h54,
+      8'h54,
+      8'h55,
+      8'h55,
+      8'h56,
+      8'h57,
+      8'h57,
+      8'h58,
+      8'h58,
+      8'h59,
+      8'h59,
+      8'h5A,
+      8'h5A,
+      8'h5B,
+      8'h5B,
+      8'h5C,
+      8'h5D,
+      8'h5D,
+      8'h5E,
+      8'h5E,
+      8'h5F,
+      8'h5F,
+      8'h60,
+      8'h60,
+      8'h61,
+      8'h61,
+      8'h62,
+      8'h62,
+      8'h63,
+      8'h63,
+      8'h64,
+      8'h64,
+      8'h65,
+      8'h65,
+      8'h66,
+      8'h66,
+      8'h66,
+      8'h67,
+      8'h67,
+      8'h68,
+      8'h68,
+      8'h69,
+      8'h69,
+      8'h6A,
+      8'h6A,
+      8'h6A,
+      8'h6B,
+      8'h6B,
+      8'h6C,
+      8'h6C,
+      8'h6C,
+      8'h6D,
+      8'h6D,
+      8'h6E,
+      8'h6E,
+      8'h6E,
+      8'h6F,
+      8'h6F,
+      8'h70,
+      8'h70,
+      8'h70,
+      8'h71,
+      8'h71,
+      8'h71,
+      8'h72,
+      8'h72,
+      8'h72,
+      8'h73,
+      8'h73,
+      8'h73,
+      8'h74,
+      8'h74,
+      8'h74,
+      8'h75,
+      8'h75,
+      8'h75,
+      8'h75,
+      8'h76,
+      8'h76,
+      8'h76,
+      8'h77,
+      8'h77,
+      8'h77,
+      8'h77,
+      8'h78,
+      8'h78,
+      8'h78,
+      8'h78,
+      8'h79,
+      8'h79,
+      8'h79,
+      8'h79,
+      8'h79,
+      8'h7A,
+      8'h7A,
+      8'h7A,
+      8'h7A,
+      8'h7B,
+      8'h7B,
+      8'h7B,
+      8'h7B,
+      8'h7B,
+      8'h7B,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7F,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7E,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7D,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7C,
+      8'h7B,
+      8'h7B,
+      8'h7B,
+      8'h7B,
+      8'h7B,
+      8'h7B,
+      8'h7A,
+      8'h7A,
+      8'h7A,
+      8'h7A,
+      8'h79,
+      8'h79,
+      8'h79,
+      8'h79,
+      8'h79,
+      8'h78,
+      8'h78,
+      8'h78,
+      8'h78,
+      8'h77,
+      8'h77,
+      8'h77,
+      8'h77,
+      8'h76,
+      8'h76,
+      8'h76,
+      8'h75,
+      8'h75,
+      8'h75,
+      8'h75,
+      8'h74,
+      8'h74,
+      8'h74,
+      8'h73,
+      8'h73,
+      8'h73,
+      8'h72,
+      8'h72,
+      8'h72,
+      8'h71,
+      8'h71,
+      8'h71,
+      8'h70,
+      8'h70,
+      8'h70,
+      8'h6F,
+      8'h6F,
+      8'h6E,
+      8'h6E,
+      8'h6E,
+      8'h6D,
+      8'h6D,
+      8'h6C,
+      8'h6C,
+      8'h6C,
+      8'h6B,
+      8'h6B,
+      8'h6A,
+      8'h6A,
+      8'h6A,
+      8'h69,
+      8'h69,
+      8'h68,
+      8'h68,
+      8'h67,
+      8'h67,
+      8'h66,
+      8'h66,
+      8'h66,
+      8'h65,
+      8'h65,
+      8'h64,
+      8'h64,
+      8'h63,
+      8'h63,
+      8'h62,
+      8'h62,
+      8'h61,
+      8'h61,
+      8'h60,
+      8'h60,
+      8'h5F,
+      8'h5F,
+      8'h5E,
+      8'h5E,
+      8'h5D,
+      8'h5D,
+      8'h5C,
+      8'h5B,
+      8'h5B,
+      8'h5A,
+      8'h5A,
+      8'h59,
+      8'h59,
+      8'h58,
+      8'h58,
+      8'h57,
+      8'h57,
+      8'h56,
+      8'h55,
+      8'h55,
+      8'h54,
+      8'h54,
+      8'h53,
+      8'h52,
+      8'h52,
+      8'h51,
+      8'h51,
+      8'h50,
+      8'h4F,
+      8'h4F,
+      8'h4E,
+      8'h4E,
+      8'h4D,
+      8'h4C,
+      8'h4C,
+      8'h4B,
+      8'h4B,
+      8'h4A,
+      8'h49,
+      8'h49,
+      8'h48,
+      8'h47,
+      8'h47,
+      8'h46,
+      8'h45,
+      8'h45,
+      8'h44,
+      8'h43,
+      8'h43,
+      8'h42,
+      8'h41,
+      8'h41,
+      8'h40,
+      8'h3F,
+      8'h3F,
+      8'h3E,
+      8'h3D,
+      8'h3D,
+      8'h3C,
+      8'h3B,
+      8'h3B,
+      8'h3A,
+      8'h39,
+      8'h39,
+      8'h38,
+      8'h37,
+      8'h37,
+      8'h36,
+      8'h35,
+      8'h34,
+      8'h34,
+      8'h33,
+      8'h32,
+      8'h32,
+      8'h31,
+      8'h30,
+      8'h2F,
+      8'h2F,
+      8'h2E,
+      8'h2D,
+      8'h2C,
+      8'h2C,
+      8'h2B,
+      8'h2A,
+      8'h2A,
+      8'h29,
+      8'h28,
+      8'h27,
+      8'h27,
+      8'h26,
+      8'h25,
+      8'h24,
+      8'h24,
+      8'h23,
+      8'h22,
+      8'h21,
+      8'h21,
+      8'h20,
+      8'h1F,
+      8'h1E,
+      8'h1E,
+      8'h1D,
+      8'h1C,
+      8'h1B,
+      8'h1B,
+      8'h1A,
+      8'h19,
+      8'h18,
+      8'h18,
+      8'h17,
+      8'h16,
+      8'h15,
+      8'h14,
+      8'h14,
+      8'h13,
+      8'h12,
+      8'h11,
+      8'h11,
+      8'h10,
+      8'hF,
+      8'hE,
+      8'hD,
+      8'hD,
+      8'hC,
+      8'hB,
+      8'hA,
+      8'hA,
+      8'h9,
+      8'h8,
+      8'h7,
+      8'h7,
+      8'h6,
+      8'h5,
+      8'h4,
+      8'h3,
+      8'h3,
+      8'h2,
+      8'h1,
+      8'h0,
+      8'h0};	// \\src\\main\\scala\\Oscillator.scala:223:13
+  reg  [31:0]        increment;	// \\src\\main\\scala\\Oscillator.scala:43:26
+  reg  [31:0]        acc;	// \\src\\main\\scala\\Oscillator.scala:213:20
+  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:186:7
+    increment <= io_increment;	// \\src\\main\\scala\\Oscillator.scala:43:26
+    if (reset)	// \\src\\main\\scala\\Oscillator.scala:186:7
+      acc <= 32'h0;	// \\src\\main\\scala\\Oscillator.scala:213:20
+    else	// \\src\\main\\scala\\Oscillator.scala:186:7
+      acc <= acc + increment;	// \\src\\main\\scala\\Oscillator.scala:43:26, :213:20, :215:14
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:186:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:186:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:186:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:186:7
+      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\Oscillator.scala:186:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:186:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:186:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:186:7
+        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
+          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:186:7
+        end	// \\src\\main\\scala\\Oscillator.scala:186:7
+        increment = _RANDOM[1'h0];	// \\src\\main\\scala\\Oscillator.scala:43:26, :186:7
+        acc = _RANDOM[1'h1];	// \\src\\main\\scala\\Oscillator.scala:186:7, :213:20
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:186:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:186:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_sample = _GEN[acc[31:22]];	// \\src\\main\\scala\\Oscillator.scala:186:7, :213:20, :217:16, :223:13
+endmodule
+
+module Oscillator(	// \\src\\main\\scala\\Oscillator.scala:227:7
+  input         clock,	// \\src\\main\\scala\\Oscillator.scala:227:7
+                reset,	// \\src\\main\\scala\\Oscillator.scala:227:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:235:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:235:14
+);
+
+  wire [7:0]  _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:248:13
+  reg  [31:0] increment;	// \\src\\main\\scala\\Oscillator.scala:257:26
+  always @(posedge clock)	// \\src\\main\\scala\\Oscillator.scala:227:7
+    increment <= io_increment;	// \\src\\main\\scala\\Oscillator.scala:257:26
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:227:7
+      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:227:7
+        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:227:7
+        increment = _RANDOM[/*Zero width*/ 1'b0];	// \\src\\main\\scala\\Oscillator.scala:227:7, :257:26
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  SineOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:248:13
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment ((|increment) ? increment : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:257:26, :259:16, :262:26
+    .io_sample    (_osc_io_sample)
+  );
+  assign io_sample = (|increment) ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:227:7, :248:13, :257:26, :259:16, :263:19
+endmodule
+
+module Synth(	// \\src\\main\\scala\\Synth.scala:11:7
+  input         clock,	// \\src\\main\\scala\\Synth.scala:11:7
+                reset,	// \\src\\main\\scala\\Synth.scala:11:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Synth.scala:16:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Synth.scala:16:14
+);
+
+  Oscillator osc (	// \\src\\main\\scala\\Synth.scala:19:11
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (io_increment),
+    .io_sample    (io_sample)
+  );
 endmodule
 
 module SquareOscillator(	// \\src\\main\\scala\\Oscillator.scala:46:7
@@ -1198,7 +2562,7 @@ module SquareOscillator(	// \\src\\main\\scala\\Oscillator.scala:46:7
   assign io_sample = acc[31] ? 8'h81 : 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:46:7, :53:20, :61:19, :62:8
 endmodule
 
-module Oscillator(	// \\src\\main\\scala\\Oscillator.scala:227:7
+module Oscillator_1(	// \\src\\main\\scala\\Oscillator.scala:227:7
   input         clock,	// \\src\\main\\scala\\Oscillator.scala:227:7
                 reset,	// \\src\\main\\scala\\Oscillator.scala:227:7
   input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:235:14
@@ -1236,328 +2600,247 @@ module Oscillator(	// \\src\\main\\scala\\Oscillator.scala:227:7
   assign io_sample = (|increment) ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:227:7, :250:13, :257:26, :259:16, :263:19
 endmodule
 
-module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-  input         clock,	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-                reset,	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-                io_gate,	// \\src\\main\\scala\\ADSREnvelope.scala:17:14
-  output [15:0] io_level,	// \\src\\main\\scala\\ADSREnvelope.scala:17:14
-  output        io_active	// \\src\\main\\scala\\ADSREnvelope.scala:17:14
-);
-
-  reg [15:0] tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
-  reg [2:0]  state;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22
-  reg [15:0] level;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22
-  always @(posedge clock) begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-    if (reset) begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
-      state <= 3'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :73:17
-      level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, src/main/scala/chisel3/util/Counter.scala:61:40
-    end
-    else begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      automatic logic tick;	// src/main/scala/chisel3/util/Counter.scala:73:24
-      automatic logic _GEN;	// \\src\\main\\scala\\ADSREnvelope.scala:45:44
-      automatic logic _GEN_0;	// \\src\\main\\scala\\ADSREnvelope.scala:45:16
-      automatic logic _GEN_1;	// \\src\\main\\scala\\ADSREnvelope.scala:47:33
-      automatic logic _GEN_2;	// \\src\\main\\scala\\ADSREnvelope.scala:47:53
-      automatic logic _GEN_3;	// \\src\\main\\scala\\ADSREnvelope.scala:47:72
-      automatic logic _GEN_4;	// \\src\\main\\scala\\ADSREnvelope.scala:47:23
-      automatic logic _GEN_5;	// \\src\\main\\scala\\ADSREnvelope.scala:52:29
-      automatic logic _GEN_6;	// \\src\\main\\scala\\ADSREnvelope.scala:60:20
-      automatic logic _GEN_7;	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
-      tick = tick_c_value == 16'hC34F;	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
-      _GEN = state == 3'h4;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :45:44
-      _GEN_0 = io_gate & (state == 3'h0 | _GEN);	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :45:{16,26,35,44}, :73:17
-      _GEN_1 = state == 3'h1;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :46:11, :47:33
-      _GEN_2 = state == 3'h2;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :47:53, :54:17
-      _GEN_3 = state == 3'h3;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :47:72, :62:17
-      _GEN_4 = ~io_gate & (_GEN_1 | _GEN_2 | _GEN_3);	// \\src\\main\\scala\\ADSREnvelope.scala:47:{14,23,33,53,63,72}
-      _GEN_5 = 16'hFFFF - level < 16'h199B;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :52:{21,29}
-      _GEN_6 = {1'h0, level} < 17'hB5C3;	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22, :52:21, :60:20
-      _GEN_7 = level < 16'h149;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :71:20
-      if (tick)	// src/main/scala/chisel3/util/Counter.scala:73:24
-        tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
-      else	// src/main/scala/chisel3/util/Counter.scala:73:24
-        tick_c_value <= tick_c_value + 16'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
-      if (_GEN_0)	// \\src\\main\\scala\\ADSREnvelope.scala:45:16
-        state <= 3'h1;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :46:11
-      else if (_GEN_4)	// \\src\\main\\scala\\ADSREnvelope.scala:47:23
-        state <= 3'h4;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :45:44
-      else if (tick) begin	// src/main/scala/chisel3/util/Counter.scala:73:24
-        if (_GEN_1) begin	// \\src\\main\\scala\\ADSREnvelope.scala:47:33
-          if (_GEN_5)	// \\src\\main\\scala\\ADSREnvelope.scala:52:29
-            state <= 3'h2;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :54:17
-        end
-        else if (_GEN_2) begin	// \\src\\main\\scala\\ADSREnvelope.scala:47:53
-          if (_GEN_6)	// \\src\\main\\scala\\ADSREnvelope.scala:60:20
-            state <= 3'h3;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :62:17
-        end
-        else if (_GEN_3 | ~(_GEN & _GEN_7)) begin	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :45:44, :47:72, :50:19, :71:{20,36}, :73:17
-        end
-        else	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :50:19
-          state <= 3'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :73:17
-      end
-      if (_GEN_0 | _GEN_4 | ~tick) begin	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :45:{16,58}, :47:{23,88}, :49:20, src/main/scala/chisel3/util/Counter.scala:73:24
-      end
-      else if (_GEN_1) begin	// \\src\\main\\scala\\ADSREnvelope.scala:47:33
-        if (_GEN_5)	// \\src\\main\\scala\\ADSREnvelope.scala:52:29
-          level <= 16'hFFFF;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :52:21
-        else	// \\src\\main\\scala\\ADSREnvelope.scala:52:29
-          level <= level + 16'h199A;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :56:26
-      end
-      else if (_GEN_2) begin	// \\src\\main\\scala\\ADSREnvelope.scala:47:53
-        if (_GEN_6)	// \\src\\main\\scala\\ADSREnvelope.scala:60:20
-          level <= 16'hB333;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :60:34
-        else	// \\src\\main\\scala\\ADSREnvelope.scala:60:20
-          level <= level - 16'h28F;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :64:26
-      end
-      else if (_GEN_3)	// \\src\\main\\scala\\ADSREnvelope.scala:47:72
-        level <= 16'hB333;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :60:34
-      else if (_GEN) begin	// \\src\\main\\scala\\ADSREnvelope.scala:45:44
-        if (_GEN_7)	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
-          level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, src/main/scala/chisel3/util/Counter.scala:61:40
-        else	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
-          level <= level - 16'h148;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :75:26
-      end
-    end
-  end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-    `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
-          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-        end	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-        tick_c_value = _RANDOM[1'h0][15:0];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, src/main/scala/chisel3/util/Counter.scala:61:40
-        state = _RANDOM[1'h0][18:16];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :42:22, src/main/scala/chisel3/util/Counter.scala:61:40
-        level = {_RANDOM[1'h0][31:19], _RANDOM[1'h1][2:0]};	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22, src/main/scala/chisel3/util/Counter.scala:61:40
-      `endif // RANDOMIZE_REG_INIT
-    end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-    `endif // FIRRTL_AFTER_INITIAL
-  `endif // ENABLE_INITIAL_REG_
-  assign io_level = level;	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22
-  assign io_active = |state;	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :42:22, :82:22
-endmodule
-
-module Synth(	// \\src\\main\\scala\\Synth.scala:11:7
+module Synth_1(	// \\src\\main\\scala\\Synth.scala:11:7
   input         clock,	// \\src\\main\\scala\\Synth.scala:11:7
                 reset,	// \\src\\main\\scala\\Synth.scala:11:7
-  input  [31:0] io_increment,	// \\src\\main\\scala\\Synth.scala:17:14
-  input         io_gate,	// \\src\\main\\scala\\Synth.scala:17:14
-  output [7:0]  io_sample,	// \\src\\main\\scala\\Synth.scala:17:14
-  output        io_active	// \\src\\main\\scala\\Synth.scala:17:14
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Synth.scala:16:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Synth.scala:16:14
 );
 
-  wire [15:0] _active_adsr_io_level;	// \\src\\main\\scala\\Synth.scala:31:22
-  wire        _active_adsr_io_active;	// \\src\\main\\scala\\Synth.scala:31:22
-  wire [7:0]  _osc_io_sample;	// \\src\\main\\scala\\Synth.scala:20:11
-  wire [24:0] _active_scaled_T_1 =
-    {{17{_osc_io_sample[7]}}, _osc_io_sample} * {9'h0, _active_adsr_io_level};	// \\src\\main\\scala\\Synth.scala:20:11, :31:22, :40:33
-  wire [25:0] active_scaled =
-    $signed({_active_scaled_T_1[24], _active_scaled_T_1}) / 26'shFFFF;	// \\src\\main\\scala\\Synth.scala:40:{33,47}
-  Oscillator osc (	// \\src\\main\\scala\\Synth.scala:20:11
+  Oscillator_1 osc (	// \\src\\main\\scala\\Synth.scala:19:11
     .clock        (clock),
     .reset        (reset),
-    .io_increment (io_gate | _active_adsr_io_active ? io_increment : 32'h0),	// \\src\\main\\scala\\Synth.scala:31:22, :47:{26,35}
-    .io_sample    (_osc_io_sample)
+    .io_increment (io_increment),
+    .io_sample    (io_sample)
   );
-  ADSREnvelope active_adsr (	// \\src\\main\\scala\\Synth.scala:31:22
-    .clock     (clock),
-    .reset     (reset),
-    .io_gate   (io_gate),
-    .io_level  (_active_adsr_io_level),
-    .io_active (_active_adsr_io_active)
-  );
-  assign io_sample = _active_adsr_io_active ? active_scaled[7:0] : 8'h0;	// \\src\\main\\scala\\Synth.scala:11:7, :31:22, :40:47, :41:21
-  assign io_active = _active_adsr_io_active;	// \\src\\main\\scala\\Synth.scala:11:7, :31:22
 endmodule
 
-module FirstNSetBits(	// \\src\\main\\scala\\Utils.scala:64:7
-  input          clock,	// \\src\\main\\scala\\Utils.scala:64:7
-                 reset,	// \\src\\main\\scala\\Utils.scala:64:7
-  input  [127:0] io_in_bits,	// \\src\\main\\scala\\Utils.scala:70:14
-  output         io_out_valid,	// \\src\\main\\scala\\Utils.scala:70:14
-  output [6:0]   io_out_bits_idx_0,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_idx_1,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_idx_2,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_idx_3,	// \\src\\main\\scala\\Utils.scala:70:14
-  output         io_out_bits_valid_0,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_valid_1,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_valid_2,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_valid_3	// \\src\\main\\scala\\Utils.scala:70:14
+module SawOscillator(	// \\src\\main\\scala\\Oscillator.scala:109:7
+  input         clock,	// \\src\\main\\scala\\Oscillator.scala:109:7
+                reset,	// \\src\\main\\scala\\Oscillator.scala:109:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:21:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:21:14
 );
 
-  reg  [1:0]   state;	// \\src\\main\\scala\\Utils.scala:76:22
-  reg  [127:0] bits;	// \\src\\main\\scala\\Utils.scala:78:17
-  reg  [1:0]   cnt;	// \\src\\main\\scala\\Utils.scala:79:16
-  reg  [6:0]   idx_0;	// \\src\\main\\scala\\Utils.scala:80:16
-  reg  [6:0]   idx_1;	// \\src\\main\\scala\\Utils.scala:80:16
-  reg  [6:0]   idx_2;	// \\src\\main\\scala\\Utils.scala:80:16
-  reg  [6:0]   idx_3;	// \\src\\main\\scala\\Utils.scala:80:16
-  reg          vld_0;	// \\src\\main\\scala\\Utils.scala:81:20
-  reg          vld_1;	// \\src\\main\\scala\\Utils.scala:81:20
-  reg          vld_2;	// \\src\\main\\scala\\Utils.scala:81:20
-  reg          vld_3;	// \\src\\main\\scala\\Utils.scala:81:20
-  wire         io_out_valid_0 = state == 2'h2;	// \\src\\main\\scala\\Utils.scala:76:22, :101:25
-  always @(posedge clock) begin	// \\src\\main\\scala\\Utils.scala:64:7
-    automatic logic [127:0] _oh_T_1;	// \\src\\main\\scala\\Utils.scala:84:26
-    automatic logic [127:0] oh;	// \\src\\main\\scala\\Utils.scala:84:17
-    automatic logic         _GEN;	// \\src\\main\\scala\\Utils.scala:105:17
-    automatic logic [63:0]  idx_hi;	// \\src\\main\\scala\\Utils.scala:84:17, src/main/scala/chisel3/util/OneHot.scala:30:18
-    automatic logic [62:0]  _idx_T_1;	// src/main/scala/chisel3/util/OneHot.scala:32:28
-    automatic logic [30:0]  _idx_T_3;	// src/main/scala/chisel3/util/OneHot.scala:32:28
-    automatic logic [14:0]  _idx_T_5;	// src/main/scala/chisel3/util/OneHot.scala:32:28
-    automatic logic [6:0]   _idx_T_7;	// src/main/scala/chisel3/util/OneHot.scala:32:28
-    automatic logic [2:0]   _idx_T_9;	// src/main/scala/chisel3/util/OneHot.scala:32:28
-    automatic logic [6:0]   _idx_T_18;	// src/main/scala/chisel3/util/OneHot.scala:32:10
-    automatic logic         _GEN_0;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
-    automatic logic         _GEN_1;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
-    automatic logic         _GEN_2;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
-    automatic logic         _GEN_3;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
-    _oh_T_1 = ~bits + 128'h1;	// \\src\\main\\scala\\Utils.scala:78:17, :84:{20,26}
-    oh = bits & _oh_T_1;	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}
-    _GEN = state == 2'h1;	// \\src\\main\\scala\\Utils.scala:76:22, :105:17, :116:18
-    idx_hi = bits[127:64] & _oh_T_1[127:64];	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18
-    _idx_T_1 = idx_hi[63:1] | bits[63:1] & _oh_T_1[63:1];	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-    _idx_T_3 = _idx_T_1[62:32] | _idx_T_1[30:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-    _idx_T_5 = _idx_T_3[30:16] | _idx_T_3[14:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-    _idx_T_7 = _idx_T_5[14:8] | _idx_T_5[6:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-    _idx_T_9 = _idx_T_7[6:4] | _idx_T_7[2:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
-    _idx_T_18 =
-      {|idx_hi,
-       |(_idx_T_1[62:31]),
-       |(_idx_T_3[30:15]),
-       |(_idx_T_5[14:7]),
-       |(_idx_T_7[6:3]),
-       |(_idx_T_9[2:1]),
-       _idx_T_9[2] | _idx_T_9[0]};	// \\src\\main\\scala\\Utils.scala:84:17, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:{10,14,28}
-    _GEN_0 = _GEN & (|bits) & cnt == 2'h0;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
-    _GEN_1 = _GEN & (|bits) & cnt == 2'h1;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
-    _GEN_2 = _GEN & (|bits) & cnt == 2'h2;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :101:25, :105:17, :115:{17,22}, :116:18
-    _GEN_3 = _GEN & (|bits) & (&cnt);	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
-    if (reset) begin	// \\src\\main\\scala\\Utils.scala:64:7
-      state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
-      vld_0 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
-      vld_1 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
-      vld_2 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
-      vld_3 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
-    end
-    else if (|state) begin	// \\src\\main\\scala\\Utils.scala:76:22, :100:24
-      if (_GEN) begin	// \\src\\main\\scala\\Utils.scala:105:17
-        if ((bits & ~oh) == 128'h0 | (&cnt))	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :84:{17,26}, :85:{19,21}, :116:18, :122:{18,22}
-          state <= 2'h2;	// \\src\\main\\scala\\Utils.scala:76:22, :101:25
-      end
-      else if (state == 2'h2 & io_out_valid_0)	// \\src\\main\\scala\\Utils.scala:76:22, :101:25, :105:17, :125:{25,33}
-        state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
-      vld_0 <= _GEN_0 | vld_0;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
-      vld_1 <= _GEN_1 | vld_1;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
-      vld_2 <= _GEN_2 | vld_2;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
-      vld_3 <= _GEN_3 | vld_3;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
-    end
-    else begin	// \\src\\main\\scala\\Utils.scala:100:24
-      state <= 2'h1;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
-      vld_0 <= (|state) & vld_0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
-      vld_1 <= (|state) & vld_1;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
-      vld_2 <= (|state) & vld_2;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
-      vld_3 <= (|state) & vld_3;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
-    end
-    if (|state) begin	// \\src\\main\\scala\\Utils.scala:76:22, :100:24
-      automatic logic _GEN_4;	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:22, :118:14
-      _GEN_4 = _GEN & (|bits);	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:{17,22}, :118:14
-      bits <= ({128{~_GEN_4}} | ~oh) & bits;	// \\src\\main\\scala\\Utils.scala:78:17, :84:17, :85:21, :105:17, :115:22, :118:14
-      if (_GEN_4)	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:22, :118:14
-        cnt <= cnt + 2'h1;	// \\src\\main\\scala\\Utils.scala:79:16, :116:18, :119:20
-    end
-    else begin	// \\src\\main\\scala\\Utils.scala:100:24
-      bits <= io_in_bits;	// \\src\\main\\scala\\Utils.scala:78:17
-      cnt <= 2'h0;	// \\src\\main\\scala\\Utils.scala:79:16, :116:18
-    end
-    if ((|state) & _GEN_0)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
-      idx_0 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
-    if ((|state) & _GEN_1)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
-      idx_1 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
-    if ((|state) & _GEN_2)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
-      idx_2 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
-    if ((|state) & _GEN_3)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
-      idx_3 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+  reg  [31:0] increment;	// \\src\\main\\scala\\Oscillator.scala:43:26
+  reg  [31:0] acc;	// \\src\\main\\scala\\Oscillator.scala:115:20
+  wire [79:0] scaled_res = {40'h0, {8'h0, acc} * 40'hFE} * 80'h10000000101;	// \\src\\main\\scala\\Oscillator.scala:115:20, :136:38, \\src\\main\\scala\\Utils.scala:51:31
+  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:109:7
+    increment <= io_increment;	// \\src\\main\\scala\\Oscillator.scala:43:26
+    if (reset)	// \\src\\main\\scala\\Oscillator.scala:109:7
+      acc <= 32'h0;	// \\src\\main\\scala\\Oscillator.scala:115:20
+    else	// \\src\\main\\scala\\Oscillator.scala:109:7
+      acc <= acc + increment;	// \\src\\main\\scala\\Oscillator.scala:43:26, :115:20, :117:14
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Utils.scala:64:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:109:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:109:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:109:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\Utils.scala:64:7
-      automatic logic [31:0] _RANDOM[0:5];	// \\src\\main\\scala\\Utils.scala:64:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:64:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:64:7
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:109:7
+      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\Oscillator.scala:109:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:109:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:109:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Utils.scala:64:7
-        for (logic [2:0] i = 3'h0; i < 3'h6; i += 3'h1) begin
-          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\Utils.scala:64:7
-        end	// \\src\\main\\scala\\Utils.scala:64:7
-        state = _RANDOM[3'h0][1:0];	// \\src\\main\\scala\\Utils.scala:64:7, :76:22
-        bits =
-          {_RANDOM[3'h0][31:2],
-           _RANDOM[3'h1],
-           _RANDOM[3'h2],
-           _RANDOM[3'h3],
-           _RANDOM[3'h4][1:0]};	// \\src\\main\\scala\\Utils.scala:64:7, :76:22, :78:17
-        cnt = _RANDOM[3'h4][3:2];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :79:16
-        idx_0 = _RANDOM[3'h4][10:4];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
-        idx_1 = _RANDOM[3'h4][17:11];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
-        idx_2 = _RANDOM[3'h4][24:18];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
-        idx_3 = _RANDOM[3'h4][31:25];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
-        vld_0 = _RANDOM[3'h5][0];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-        vld_1 = _RANDOM[3'h5][1];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-        vld_2 = _RANDOM[3'h5][2];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-        vld_3 = _RANDOM[3'h5][3];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:109:7
+        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
+          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:109:7
+        end	// \\src\\main\\scala\\Oscillator.scala:109:7
+        increment = _RANDOM[1'h0];	// \\src\\main\\scala\\Oscillator.scala:43:26, :109:7
+        acc = _RANDOM[1'h1];	// \\src\\main\\scala\\Oscillator.scala:109:7, :115:20
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:109:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:109:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_out_valid = io_out_valid_0;	// \\src\\main\\scala\\Utils.scala:64:7, :101:25
-  assign io_out_bits_idx_0 = idx_0;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
-  assign io_out_bits_idx_1 = idx_1;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
-  assign io_out_bits_idx_2 = idx_2;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
-  assign io_out_bits_idx_3 = idx_3;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
-  assign io_out_bits_valid_0 = vld_0;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-  assign io_out_bits_valid_1 = vld_1;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-  assign io_out_bits_valid_2 = vld_2;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-  assign io_out_bits_valid_3 = vld_3;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+  assign io_sample = scaled_res[79:72] - 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:109:7, :139:30, \\src\\main\\scala\\Utils.scala:51:31
 endmodule
 
-module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
-  input          clock,	// \\src\\main\\scala\\SynthTop.scala:24:7
-                 reset,	// \\src\\main\\scala\\SynthTop.scala:24:7
-  input  [127:0] io_held,	// \\src\\main\\scala\\SynthTop.scala:33:14
-  output         io_out	// \\src\\main\\scala\\SynthTop.scala:33:14
+module Oscillator_2(	// \\src\\main\\scala\\Oscillator.scala:227:7
+  input         clock,	// \\src\\main\\scala\\Oscillator.scala:227:7
+                reset,	// \\src\\main\\scala\\Oscillator.scala:227:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:235:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:235:14
 );
 
-  wire               _selector_io_out_valid;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [6:0]         _selector_io_out_bits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [6:0]         _selector_io_out_bits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [6:0]         _selector_io_out_bits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [6:0]         _selector_io_out_bits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire               _selector_io_out_bits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire               _selector_io_out_bits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire               _selector_io_out_bits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire               _selector_io_out_bits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [7:0]         _synth_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire               _synth_3_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire [7:0]         _synth_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire               _synth_2_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire [7:0]         _synth_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire               _synth_1_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire [7:0]         _synth_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire               _synth_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
+  wire [7:0]  _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:252:13
+  reg  [31:0] increment;	// \\src\\main\\scala\\Oscillator.scala:257:26
+  always @(posedge clock)	// \\src\\main\\scala\\Oscillator.scala:227:7
+    increment <= io_increment;	// \\src\\main\\scala\\Oscillator.scala:257:26
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:227:7
+      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:227:7
+        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:227:7
+        increment = _RANDOM[/*Zero width*/ 1'b0];	// \\src\\main\\scala\\Oscillator.scala:227:7, :257:26
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  SawOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:252:13
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment ((|increment) ? increment : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:257:26, :259:16, :262:26
+    .io_sample    (_osc_io_sample)
+  );
+  assign io_sample = (|increment) ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:227:7, :252:13, :257:26, :259:16, :263:19
+endmodule
+
+module Synth_2(	// \\src\\main\\scala\\Synth.scala:11:7
+  input         clock,	// \\src\\main\\scala\\Synth.scala:11:7
+                reset,	// \\src\\main\\scala\\Synth.scala:11:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Synth.scala:16:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Synth.scala:16:14
+);
+
+  Oscillator_2 osc (	// \\src\\main\\scala\\Synth.scala:19:11
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (io_increment),
+    .io_sample    (io_sample)
+  );
+endmodule
+
+module TriangleOscillator(	// \\src\\main\\scala\\Oscillator.scala:144:7
+  input         clock,	// \\src\\main\\scala\\Oscillator.scala:144:7
+                reset,	// \\src\\main\\scala\\Oscillator.scala:144:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:21:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:21:14
+);
+
+  reg  [31:0] increment;	// \\src\\main\\scala\\Oscillator.scala:43:26
+  reg  [31:0] acc;	// \\src\\main\\scala\\Oscillator.scala:151:20
+  wire [77:0] scaled_res =
+    {39'h0, {8'h0, acc[30:0] ^ {31{acc[31]}}} * 39'hFE} * 78'h8000000101;	// \\src\\main\\scala\\Oscillator.scala:151:20, :162:17, :167:{22,28,46}, :174:41, \\src\\main\\scala\\Utils.scala:51:31
+  always @(posedge clock) begin	// \\src\\main\\scala\\Oscillator.scala:144:7
+    increment <= io_increment;	// \\src\\main\\scala\\Oscillator.scala:43:26
+    if (reset)	// \\src\\main\\scala\\Oscillator.scala:144:7
+      acc <= 32'h0;	// \\src\\main\\scala\\Oscillator.scala:151:20
+    else	// \\src\\main\\scala\\Oscillator.scala:144:7
+      acc <= acc + increment;	// \\src\\main\\scala\\Oscillator.scala:43:26, :151:20, :153:14
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:144:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:144:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:144:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:144:7
+      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\Oscillator.scala:144:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:144:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:144:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:144:7
+        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
+          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:144:7
+        end	// \\src\\main\\scala\\Oscillator.scala:144:7
+        increment = _RANDOM[1'h0];	// \\src\\main\\scala\\Oscillator.scala:43:26, :144:7
+        acc = _RANDOM[1'h1];	// \\src\\main\\scala\\Oscillator.scala:144:7, :151:20
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:144:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:144:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_sample = scaled_res[77:70] - 8'h7F;	// \\src\\main\\scala\\Oscillator.scala:144:7, :178:30, \\src\\main\\scala\\Utils.scala:51:31
+endmodule
+
+module Oscillator_3(	// \\src\\main\\scala\\Oscillator.scala:227:7
+  input         clock,	// \\src\\main\\scala\\Oscillator.scala:227:7
+                reset,	// \\src\\main\\scala\\Oscillator.scala:227:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Oscillator.scala:235:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Oscillator.scala:235:14
+);
+
+  wire [7:0]  _osc_io_sample;	// \\src\\main\\scala\\Oscillator.scala:254:13
+  reg  [31:0] increment;	// \\src\\main\\scala\\Oscillator.scala:257:26
+  always @(posedge clock)	// \\src\\main\\scala\\Oscillator.scala:227:7
+    increment <= io_increment;	// \\src\\main\\scala\\Oscillator.scala:257:26
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `endif // FIRRTL_BEFORE_INITIAL
+    initial begin	// \\src\\main\\scala\\Oscillator.scala:227:7
+      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Oscillator.scala:227:7
+        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\Oscillator.scala:227:7
+        increment = _RANDOM[/*Zero width*/ 1'b0];	// \\src\\main\\scala\\Oscillator.scala:227:7, :257:26
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Oscillator.scala:227:7
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  TriangleOscillator osc (	// \\src\\main\\scala\\Oscillator.scala:254:13
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment ((|increment) ? increment : 32'h0),	// \\src\\main\\scala\\Oscillator.scala:257:26, :259:16, :262:26
+    .io_sample    (_osc_io_sample)
+  );
+  assign io_sample = (|increment) ? _osc_io_sample : 8'h0;	// \\src\\main\\scala\\Oscillator.scala:227:7, :254:13, :257:26, :259:16, :263:19
+endmodule
+
+module Synth_3(	// \\src\\main\\scala\\Synth.scala:11:7
+  input         clock,	// \\src\\main\\scala\\Synth.scala:11:7
+                reset,	// \\src\\main\\scala\\Synth.scala:11:7
+  input  [31:0] io_increment,	// \\src\\main\\scala\\Synth.scala:16:14
+  output [7:0]  io_sample	// \\src\\main\\scala\\Synth.scala:16:14
+);
+
+  Oscillator_3 osc (	// \\src\\main\\scala\\Synth.scala:19:11
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (io_increment),
+    .io_sample    (io_sample)
+  );
+endmodule
+
+module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:29:7
+  input        clock,	// \\src\\main\\scala\\SynthTop.scala:29:7
+               reset,	// \\src\\main\\scala\\SynthTop.scala:29:7
+  output       io_out,	// \\src\\main\\scala\\SynthTop.scala:32:14
+  input        io_rx,	// \\src\\main\\scala\\SynthTop.scala:32:14
+  output [6:0] io_heldBin	// \\src\\main\\scala\\SynthTop.scala:32:14
+);
+
+  reg                state;	// \\src\\main\\scala\\SynthTop.scala:87:22
+  wire [7:0]         _synths_3_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_3_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_3_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_3_0_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_2_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_2_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_2_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_2_0_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_1_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_1_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_1_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_1_0_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_0_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_0_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_0_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire [7:0]         _synths_0_0_io_sample;	// \\src\\main\\scala\\SynthTop.scala:72:25
+  wire               _firstNSetBits_io_in_ready;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire               _firstNSetBits_io_out_valid;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire [6:0]         _firstNSetBits_io_out_bits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire [6:0]         _firstNSetBits_io_out_bits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire [6:0]         _firstNSetBits_io_out_bits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire [6:0]         _firstNSetBits_io_out_bits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire               _firstNSetBits_io_out_bits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire               _firstNSetBits_io_out_bits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire               _firstNSetBits_io_out_bits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire               _firstNSetBits_io_out_bits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:60:29
+  wire [6:0]         _midi_io_data1;	// \\src\\main\\scala\\SynthTop.scala:35:20
+  wire [127:0]       _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:35:20
   wire [127:0][31:0] _GEN =
     '{32'h107105,
       32'hF84C9,
@@ -1686,226 +2969,236 @@ module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
       32'h343,
       32'h314,
       32'h2E8,
-      32'h2BE};	// \\src\\main\\scala\\SynthTop.scala:55:24
-  reg  [6:0]         notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22
-  reg  [6:0]         notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22
-  reg  [6:0]         notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22
-  reg  [6:0]         notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22
-  reg                assigned_0;	// \\src\\main\\scala\\SynthTop.scala:39:25
-  reg                assigned_1;	// \\src\\main\\scala\\SynthTop.scala:39:25
-  reg                assigned_2;	// \\src\\main\\scala\\SynthTop.scala:39:25
-  reg                assigned_3;	// \\src\\main\\scala\\SynthTop.scala:39:25
-  wire [127:0]       _gate_T = io_held >> notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
-  wire               gate = assigned_0 & _gate_T[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
-  wire               busy_0 = gate | _synth_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
-  wire [127:0]       _gate_T_2 = io_held >> notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
-  wire               gate_1 = assigned_1 & _gate_T_2[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
-  wire               busy_1 = gate_1 | _synth_1_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
-  wire [127:0]       _gate_T_4 = io_held >> notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
-  wire               gate_2 = assigned_2 & _gate_T_4[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
-  wire               busy_2 = gate_2 | _synth_2_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
-  wire [127:0]       _gate_T_6 = io_held >> notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
-  wire               gate_3 = assigned_3 & _gate_T_6[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
-  wire               busy_3 = gate_3 | _synth_3_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
-  wire [254:0]       _reserved_T = 255'h1 << notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
-  wire [254:0]       _reserved_T_3 = 255'h1 << notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
-  wire [254:0]       _reserved_T_6 = 255'h1 << notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
-  wire [254:0]       _reserved_T_9 = 255'h1 << notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
-  wire [127:0]       reserved =
-    (busy_0 ? _reserved_T[127:0] : 128'h0) | (busy_1 ? _reserved_T_3[127:0] : 128'h0)
-    | (busy_2 ? _reserved_T_6[127:0] : 128'h0) | (busy_3 ? _reserved_T_9[127:0] : 128'h0);	// \\src\\main\\scala\\SynthTop.scala:56:25, :65:{10,31}, :66:16
-  always @(posedge clock) begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-    if (reset) begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-      notes_0 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
-      notes_1 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
-      notes_2 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
-      notes_3 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
-      assigned_0 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
-      assigned_1 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
-      assigned_2 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
-      assigned_3 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
+      32'h2BE};	// \\src\\main\\scala\\SynthTop.scala:98:32
+  reg  [6:0]         heldBin;	// \\src\\main\\scala\\SynthTop.scala:40:20
+  reg  [127:0]       held;	// \\src\\main\\scala\\SynthTop.scala:41:17
+  reg  [6:0]         nSetBits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:90:25
+  reg  [6:0]         nSetBits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:90:25
+  reg  [6:0]         nSetBits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:90:25
+  reg  [6:0]         nSetBits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:90:25
+  reg                nSetBits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:90:25
+  reg                nSetBits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:90:25
+  reg                nSetBits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:90:25
+  reg                nSetBits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:90:25
+  wire [31:0]        _synths_0_3_io_increment_T =
+    nSetBits_valid_0 ? _GEN[nSetBits_idx_0] : 32'h0;	// \\src\\main\\scala\\SynthTop.scala:90:25, :98:32
+  wire [31:0]        _synths_1_3_io_increment_T =
+    nSetBits_valid_1 ? _GEN[nSetBits_idx_1] : 32'h0;	// \\src\\main\\scala\\SynthTop.scala:90:25, :98:32
+  wire [31:0]        _synths_2_3_io_increment_T =
+    nSetBits_valid_2 ? _GEN[nSetBits_idx_2] : 32'h0;	// \\src\\main\\scala\\SynthTop.scala:90:25, :98:32
+  wire [31:0]        _synths_3_3_io_increment_T =
+    nSetBits_valid_3 ? _GEN[nSetBits_idx_3] : 32'h0;	// \\src\\main\\scala\\SynthTop.scala:90:25, :98:32
+  always @(posedge clock) begin	// \\src\\main\\scala\\SynthTop.scala:29:7
+    heldBin <= _midi_io_data1;	// \\src\\main\\scala\\SynthTop.scala:35:20, :40:20
+    held <= _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:35:20, :41:17
+    if (reset) begin	// \\src\\main\\scala\\SynthTop.scala:29:7
+      state <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:87:22
+      nSetBits_idx_0 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:90:{25,38}
+      nSetBits_idx_1 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:90:{25,38}
+      nSetBits_idx_2 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:90:{25,38}
+      nSetBits_idx_3 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:90:{25,38}
+      nSetBits_valid_0 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:87:22, :90:25
+      nSetBits_valid_1 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:87:22, :90:25
+      nSetBits_valid_2 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:87:22, :90:25
+      nSetBits_valid_3 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:87:22, :90:25
     end
-    else begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-      automatic logic [127:0]    _GEN_0 = {121'h0, _selector_io_out_bits_idx_0};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
-      automatic logic [127:0]    _candidates_0_T_3 = reserved >> _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
-      automatic logic [127:0]    _candidates_0_T = io_held >> _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:78:16
-      automatic logic            candidates_0;	// \\src\\main\\scala\\SynthTop.scala:78:23
-      automatic logic [127:0]    _GEN_1 = {121'h0, _selector_io_out_bits_idx_1};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
-      automatic logic [127:0]    _candidates_1_T_3 = reserved >> _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
-      automatic logic [127:0]    _candidates_1_T = io_held >> _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:78:16
-      automatic logic            candidates_1;	// \\src\\main\\scala\\SynthTop.scala:78:23
-      automatic logic [127:0]    _GEN_2 = {121'h0, _selector_io_out_bits_idx_2};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
-      automatic logic [127:0]    _candidates_2_T_3 = reserved >> _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
-      automatic logic [127:0]    _candidates_2_T = io_held >> _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:78:16
-      automatic logic            candidates_2;	// \\src\\main\\scala\\SynthTop.scala:78:23
-      automatic logic [127:0]    _GEN_3 = {121'h0, _selector_io_out_bits_idx_3};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
-      automatic logic [127:0]    _candidates_3_T_3 = reserved >> _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
-      automatic logic [127:0]    _candidates_3_T = io_held >> _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:78:16
-      automatic logic            candidates_3 =
-        _selector_io_out_bits_valid_3 & _candidates_3_T[0] & ~(_candidates_3_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
-      automatic logic [3:0]      remaining_0;	// \\src\\main\\scala\\SynthTop.scala:81:32
-      automatic logic            allocate;	// \\src\\main\\scala\\SynthTop.scala:83:59
-      automatic logic [3:0]      remaining_1;	// \\src\\main\\scala\\SynthTop.scala:85:33
-      automatic logic [3:0][6:0] _GEN_4;	// \\src\\main\\scala\\SynthTop.scala:89:39
-      automatic logic            allocate_1;	// \\src\\main\\scala\\SynthTop.scala:83:59
-      automatic logic [3:0]      remaining_2;	// \\src\\main\\scala\\SynthTop.scala:85:33
-      automatic logic            allocate_2;	// \\src\\main\\scala\\SynthTop.scala:83:59
-      automatic logic [3:0]      remaining_3;	// \\src\\main\\scala\\SynthTop.scala:85:33
-      automatic logic            allocate_3;	// \\src\\main\\scala\\SynthTop.scala:83:59
-      candidates_0 =
-        _selector_io_out_bits_valid_0 & _candidates_0_T[0] & ~(_candidates_0_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
-      candidates_1 =
-        _selector_io_out_bits_valid_1 & _candidates_1_T[0] & ~(_candidates_1_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
-      candidates_2 =
-        _selector_io_out_bits_valid_2 & _candidates_2_T[0] & ~(_candidates_2_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
-      remaining_0 = {candidates_3, candidates_2, candidates_1, candidates_0};	// \\src\\main\\scala\\SynthTop.scala:78:23, :81:32
-      allocate = _selector_io_out_valid & ~busy_0 & (|remaining_0);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :81:32, :83:{46,59,78}
-      remaining_1 =
-        ({4{~allocate}} | {candidates_3, candidates_2, candidates_1, candidates_0} - 4'h1)
-        & remaining_0;	// \\src\\main\\scala\\SynthTop.scala:78:23, :81:32, :83:59, :85:33, :86:44
-      _GEN_4 =
-        {{_selector_io_out_bits_idx_3},
-         {_selector_io_out_bits_idx_2},
-         {_selector_io_out_bits_idx_1},
-         {_selector_io_out_bits_idx_0}};	// \\src\\main\\scala\\SynthTop.scala:67:26, :89:39
-      allocate_1 = _selector_io_out_valid & ~busy_1 & (|remaining_1);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
-      remaining_2 = ({4{~allocate_1}} | remaining_1 - 4'h1) & remaining_1;	// \\src\\main\\scala\\SynthTop.scala:83:59, :85:33, :86:44
-      allocate_2 = _selector_io_out_valid & ~busy_2 & (|remaining_2);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
-      remaining_3 = ({4{~allocate_2}} | remaining_2 - 4'h1) & remaining_2;	// \\src\\main\\scala\\SynthTop.scala:83:59, :85:33, :86:44
-      allocate_3 = _selector_io_out_valid & ~busy_3 & (|remaining_3);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
-      if (~busy_0 & allocate)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
-        notes_0 <=
-          _GEN_4[candidates_0 ? 2'h0 : candidates_1 ? 2'h1 : {1'h1, ~candidates_2}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :78:23, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70
-      if (~busy_1 & allocate_1)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
-        notes_1 <=
-          _GEN_4[remaining_1[0]
-                   ? 2'h0
-                   : remaining_1[1] ? 2'h1 : {1'h1, ~(remaining_1[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
-      if (~busy_2 & allocate_2)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
-        notes_2 <=
-          _GEN_4[remaining_2[0]
-                   ? 2'h0
-                   : remaining_2[1] ? 2'h1 : {1'h1, ~(remaining_2[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
-      if (~busy_3 & allocate_3)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
-        notes_3 <=
-          _GEN_4[remaining_3[0]
-                   ? 2'h0
-                   : remaining_3[1] ? 2'h1 : {1'h1, ~(remaining_3[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
-      if (~busy_0)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_0 <= allocate;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
-      if (~busy_1)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_1 <= allocate_1;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
-      if (~busy_2)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_2 <= allocate_2;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
-      if (~busy_3)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_3 <= allocate_3;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
+    else begin	// \\src\\main\\scala\\SynthTop.scala:29:7
+      automatic logic _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:90:25, :106:17, :114:40, :115:18
+      _GEN_0 = state & _firstNSetBits_io_out_valid;	// \\src\\main\\scala\\SynthTop.scala:60:29, :87:22, :90:25, :106:17, :114:40, :115:18
+      if (state)	// \\src\\main\\scala\\SynthTop.scala:87:22
+        state <= ~_GEN_0 & state;	// \\src\\main\\scala\\SynthTop.scala:87:22, :90:25, :106:17, :114:40, :115:18, :116:15
+      else	// \\src\\main\\scala\\SynthTop.scala:87:22
+        state <= _firstNSetBits_io_in_ready & ~state | state;	// \\src\\main\\scala\\SynthTop.scala:60:29, :87:22, :106:17, :109:38, :110:15, src/main/scala/chisel3/util/Decoupled.scala:51:35
+      if (state & _GEN_0) begin	// \\src\\main\\scala\\SynthTop.scala:87:22, :90:25, :106:17, :114:40, :115:18
+        nSetBits_idx_0 <= _firstNSetBits_io_out_bits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:60:29, :90:25
+        nSetBits_idx_1 <= _firstNSetBits_io_out_bits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:60:29, :90:25
+        nSetBits_idx_2 <= _firstNSetBits_io_out_bits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:60:29, :90:25
+        nSetBits_idx_3 <= _firstNSetBits_io_out_bits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:60:29, :90:25
+        nSetBits_valid_0 <= _firstNSetBits_io_out_bits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:60:29, :90:25
+        nSetBits_valid_1 <= _firstNSetBits_io_out_bits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:60:29, :90:25
+        nSetBits_valid_2 <= _firstNSetBits_io_out_bits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:60:29, :90:25
+        nSetBits_valid_3 <= _firstNSetBits_io_out_bits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:60:29, :90:25
+      end
     end
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SynthTop.scala:24:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:24:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:24:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SynthTop.scala:29:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:29:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:29:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\SynthTop.scala:24:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:24:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:24:7
+    initial begin	// \\src\\main\\scala\\SynthTop.scala:29:7
+      automatic logic [31:0] _RANDOM[0:5];	// \\src\\main\\scala\\SynthTop.scala:29:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:29:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:29:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SynthTop.scala:24:7
-        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\SynthTop.scala:24:7
-        notes_0 = _RANDOM[/*Zero width*/ 1'b0][6:0];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22
-        notes_1 = _RANDOM[/*Zero width*/ 1'b0][13:7];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22
-        notes_2 = _RANDOM[/*Zero width*/ 1'b0][20:14];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22
-        notes_3 = _RANDOM[/*Zero width*/ 1'b0][27:21];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22
-        assigned_0 = _RANDOM[/*Zero width*/ 1'b0][28];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :39:25
-        assigned_1 = _RANDOM[/*Zero width*/ 1'b0][29];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :39:25
-        assigned_2 = _RANDOM[/*Zero width*/ 1'b0][30];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :39:25
-        assigned_3 = _RANDOM[/*Zero width*/ 1'b0][31];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :39:25
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SynthTop.scala:29:7
+        for (logic [2:0] i = 3'h0; i < 3'h6; i += 3'h1) begin
+          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\SynthTop.scala:29:7
+        end	// \\src\\main\\scala\\SynthTop.scala:29:7
+        heldBin = _RANDOM[3'h0][6:0];	// \\src\\main\\scala\\SynthTop.scala:29:7, :40:20
+        held =
+          {_RANDOM[3'h0][31:7],
+           _RANDOM[3'h1],
+           _RANDOM[3'h2],
+           _RANDOM[3'h3],
+           _RANDOM[3'h4][6:0]};	// \\src\\main\\scala\\SynthTop.scala:29:7, :40:20, :41:17
+        state = _RANDOM[3'h4][7];	// \\src\\main\\scala\\SynthTop.scala:29:7, :41:17, :87:22
+        nSetBits_idx_0 = _RANDOM[3'h4][14:8];	// \\src\\main\\scala\\SynthTop.scala:29:7, :41:17, :90:25
+        nSetBits_idx_1 = _RANDOM[3'h4][21:15];	// \\src\\main\\scala\\SynthTop.scala:29:7, :41:17, :90:25
+        nSetBits_idx_2 = _RANDOM[3'h4][28:22];	// \\src\\main\\scala\\SynthTop.scala:29:7, :41:17, :90:25
+        nSetBits_idx_3 = {_RANDOM[3'h4][31:29], _RANDOM[3'h5][3:0]};	// \\src\\main\\scala\\SynthTop.scala:29:7, :41:17, :90:25
+        nSetBits_valid_0 = _RANDOM[3'h5][4];	// \\src\\main\\scala\\SynthTop.scala:29:7, :90:25
+        nSetBits_valid_1 = _RANDOM[3'h5][5];	// \\src\\main\\scala\\SynthTop.scala:29:7, :90:25
+        nSetBits_valid_2 = _RANDOM[3'h5][6];	// \\src\\main\\scala\\SynthTop.scala:29:7, :90:25
+        nSetBits_valid_3 = _RANDOM[3'h5][7];	// \\src\\main\\scala\\SynthTop.scala:29:7, :90:25
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:24:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:24:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:29:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:29:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  PWMGenerator pwm (	// \\src\\main\\scala\\SynthTop.scala:42:19
-    .clock        (clock),
-    .reset        (reset),
-    .io_samples_0 (_synth_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_samples_1 (_synth_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_samples_2 (_synth_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_samples_3 (_synth_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_PWM_en    (|{busy_3, busy_2, busy_1, busy_0}),	// \\src\\main\\scala\\SynthTop.scala:56:25, :94:{25,32}
-    .io_PWM_out   (io_out)
-  );
-  Synth synth (	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .clock        (clock),
-    .reset        (reset),
-    .io_increment (_GEN[notes_0]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
-    .io_gate      (gate),	// \\src\\main\\scala\\SynthTop.scala:53:32
-    .io_sample    (_synth_io_sample),
-    .io_active    (_synth_io_active)
-  );
-  Synth synth_1 (	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .clock        (clock),
-    .reset        (reset),
-    .io_increment (_GEN[notes_1]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
-    .io_gate      (gate_1),	// \\src\\main\\scala\\SynthTop.scala:53:32
-    .io_sample    (_synth_1_io_sample),
-    .io_active    (_synth_1_io_active)
-  );
-  Synth synth_2 (	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .clock        (clock),
-    .reset        (reset),
-    .io_increment (_GEN[notes_2]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
-    .io_gate      (gate_2),	// \\src\\main\\scala\\SynthTop.scala:53:32
-    .io_sample    (_synth_2_io_sample),
-    .io_active    (_synth_2_io_active)
-  );
-  Synth synth_3 (	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .clock        (clock),
-    .reset        (reset),
-    .io_increment (_GEN[notes_3]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
-    .io_gate      (gate_3),	// \\src\\main\\scala\\SynthTop.scala:53:32
-    .io_sample    (_synth_3_io_sample),
-    .io_active    (_synth_3_io_active)
-  );
-  FirstNSetBits selector (	// \\src\\main\\scala\\SynthTop.scala:67:26
-    .clock               (clock),
-    .reset               (reset),
-    .io_in_bits          (io_held & ~reserved),	// \\src\\main\\scala\\SynthTop.scala:66:16, :69:{36,38}
-    .io_out_valid        (_selector_io_out_valid),
-    .io_out_bits_idx_0   (_selector_io_out_bits_idx_0),
-    .io_out_bits_idx_1   (_selector_io_out_bits_idx_1),
-    .io_out_bits_idx_2   (_selector_io_out_bits_idx_2),
-    .io_out_bits_idx_3   (_selector_io_out_bits_idx_3),
-    .io_out_bits_valid_0 (_selector_io_out_bits_valid_0),
-    .io_out_bits_valid_1 (_selector_io_out_bits_valid_1),
-    .io_out_bits_valid_2 (_selector_io_out_bits_valid_2),
-    .io_out_bits_valid_3 (_selector_io_out_bits_valid_3)
-  );
-endmodule
-
-module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:10:7
-  input        clock,	// \\src\\main\\scala\\SynthTop.scala:10:7
-               reset,	// \\src\\main\\scala\\SynthTop.scala:10:7
-  output       io_out,	// \\src\\main\\scala\\SynthTop.scala:11:14
-  input        io_rx,	// \\src\\main\\scala\\SynthTop.scala:11:14
-  output [6:0] io_heldBin	// \\src\\main\\scala\\SynthTop.scala:11:14
-);
-
-  wire [127:0] _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:12:20
-  MidiTop midi (	// \\src\\main\\scala\\SynthTop.scala:12:20
+  MidiTop midi (	// \\src\\main\\scala\\SynthTop.scala:35:20
     .clock    (clock),
     .reset    (reset),
     .io_rx    (io_rx),
-    .io_data1 (io_heldBin),
+    .io_data1 (_midi_io_data1),
     .io_held  (_midi_io_held)
   );
-  SynthAudio audio (	// \\src\\main\\scala\\SynthTop.scala:13:21
-    .clock   (clock),
-    .reset   (reset),
-    .io_held (_midi_io_held),	// \\src\\main\\scala\\SynthTop.scala:12:20
-    .io_out  (io_out)
+  PWMGenerator pwm (	// \\src\\main\\scala\\SynthTop.scala:50:19
+    .clock         (clock),
+    .reset         (reset),
+    .io_samples_0  (_synths_0_0_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_1  (_synths_1_0_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_2  (_synths_2_0_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_3  (_synths_3_0_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_4  (_synths_0_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_5  (_synths_1_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_6  (_synths_2_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_7  (_synths_3_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_8  (_synths_0_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_9  (_synths_1_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_10 (_synths_2_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_11 (_synths_3_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_12 (_synths_0_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_13 (_synths_1_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_14 (_synths_2_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_samples_15 (_synths_3_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .io_PWM_en     (|held),	// \\src\\main\\scala\\SynthTop.scala:41:17, :121:25
+    .io_PWM_out    (io_out)
   );
+  FirstNSetBits firstNSetBits (	// \\src\\main\\scala\\SynthTop.scala:60:29
+    .clock               (clock),
+    .reset               (reset),
+    .io_in_ready         (_firstNSetBits_io_in_ready),
+    .io_in_valid         (~state),	// \\src\\main\\scala\\SynthTop.scala:87:22, :106:17
+    .io_in_bits          (held),	// \\src\\main\\scala\\SynthTop.scala:41:17
+    .io_out_ready        (state & _firstNSetBits_io_out_valid),	// \\src\\main\\scala\\SynthTop.scala:60:29, :87:22, :106:17, src/main/scala/chisel3/util/Decoupled.scala:83:20
+    .io_out_valid        (_firstNSetBits_io_out_valid),
+    .io_out_bits_idx_0   (_firstNSetBits_io_out_bits_idx_0),
+    .io_out_bits_idx_1   (_firstNSetBits_io_out_bits_idx_1),
+    .io_out_bits_idx_2   (_firstNSetBits_io_out_bits_idx_2),
+    .io_out_bits_idx_3   (_firstNSetBits_io_out_bits_idx_3),
+    .io_out_bits_valid_0 (_firstNSetBits_io_out_bits_valid_0),
+    .io_out_bits_valid_1 (_firstNSetBits_io_out_bits_valid_1),
+    .io_out_bits_valid_2 (_firstNSetBits_io_out_bits_valid_2),
+    .io_out_bits_valid_3 (_firstNSetBits_io_out_bits_valid_3)
+  );
+  Synth synths_0_0 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_0_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_0_0_io_sample)
+  );
+  Synth_1 synths_0_1 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_0_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_0_1_io_sample)
+  );
+  Synth_2 synths_0_2 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_0_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_0_2_io_sample)
+  );
+  Synth_3 synths_0_3 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_0_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_0_3_io_sample)
+  );
+  Synth synths_1_0 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_1_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_1_0_io_sample)
+  );
+  Synth_1 synths_1_1 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_1_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_1_1_io_sample)
+  );
+  Synth_2 synths_1_2 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_1_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_1_2_io_sample)
+  );
+  Synth_3 synths_1_3 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_1_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_1_3_io_sample)
+  );
+  Synth synths_2_0 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_2_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_2_0_io_sample)
+  );
+  Synth_1 synths_2_1 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_2_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_2_1_io_sample)
+  );
+  Synth_2 synths_2_2 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_2_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_2_2_io_sample)
+  );
+  Synth_3 synths_2_3 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_2_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_2_3_io_sample)
+  );
+  Synth synths_3_0 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_3_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_3_0_io_sample)
+  );
+  Synth_1 synths_3_1 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_3_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_3_1_io_sample)
+  );
+  Synth_2 synths_3_2 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_3_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_3_2_io_sample)
+  );
+  Synth_3 synths_3_3 (	// \\src\\main\\scala\\SynthTop.scala:72:25
+    .clock        (clock),
+    .reset        (reset),
+    .io_increment (_synths_3_3_io_increment_T),	// \\src\\main\\scala\\SynthTop.scala:98:32
+    .io_sample    (_synths_3_3_io_sample)
+  );
+  assign io_heldBin = heldBin;	// \\src\\main\\scala\\SynthTop.scala:29:7, :40:20
 endmodule
 
 module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
