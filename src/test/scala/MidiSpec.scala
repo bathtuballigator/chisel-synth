@@ -8,8 +8,7 @@ import scala.util.Try
 
 /** EphemeralSimulator needs Verilator; tests are cancelled (skipped) without it. */
 object Verilator {
-  lazy val available: Boolean =
-    Try(Seq("verilator", "--version").!(ProcessLogger(_ => ())) == 0).getOrElse(false)
+  lazy val available: Boolean =Try(Seq("verilator", "--version").!(ProcessLogger(_ => ())) == 0).getOrElse(false)
 }
 
 /** End-to-end tests: serialized bits on the rx pin -> decoded events. */

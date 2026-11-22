@@ -148,33 +148,26 @@ class MidiTop(clkHz: Int = Nexys4.clockFrequency, baud: Int = Midi.midiBaudRate)
   val m = parser.io.msg
 
   val msg = Reg(chiselTypeOf(m.bits))
-  val readyReg = RegInit(true.B)
+  val msgVld = RegNext(m.fire, false.B)
+  when(m.fire) {msg := m.bits}
+  m.ready := true.B
 
   val kind = msg.status(7, 4)
 
   // Note-on with velocity 0 means note-off
-  val isOn = kind === Midi.noteOn.U && msg.data2 =/= 0.U
-  val isOff = (kind === Midi.noteOff.U || (kind === Midi.noteOn.U && msg.data2 === 0.U))
-
-  io.noteOn := isOn
-  io.noteOff := isOff
-  io.cc := kind === 0xb.U
-  io.bend := kind === 0xe.U
-  io.channel := msg.status(3, 0)
-  io.data1 := msg.data1
-  io.data2 := msg.data2
+  val isOn = msgVld && (kind === Midi.noteOn.U && msg.data2 =/= 0.U)
+  val isOff = msgVld && (kind === Midi.noteOff.U || (kind === Midi.noteOn.U && msg.data2 === 0.U))
 
   val held = RegInit(VecInit(Seq.fill(128)(false.B)))
   when(isOn) { held(m.bits.data1) := true.B }
   when(isOff) { held(m.bits.data1) := false.B }
 
-  when(m.fire) {
-    msg := m.bits
-    readyReg := false.B
-  }.otherwise {
-    readyReg := true.B
-  }
-
+  io.noteOn := isOn
+  io.noteOff := isOff
+  io.cc := msgVld && kind === 0xb.U
+  io.bend := msgVld && kind === 0xe.U
+  io.channel := msg.status(3, 0)
+  io.data1 := msg.data1
+  io.data2 := msg.data2
   io.held := held.asUInt
-  m.ready := readyReg
 }
