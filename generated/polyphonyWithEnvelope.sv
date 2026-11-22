@@ -50,904 +50,880 @@
   `endif // not def ENABLE_INITIAL_MEM_
 `endif // not def SYNTHESIS
 
-module UartRx(	// \\src\\main\\scala\\MidiUart.scala:6:7
-  input        clock,	// \\src\\main\\scala\\MidiUart.scala:6:7
-               reset,	// \\src\\main\\scala\\MidiUart.scala:6:7
-               io_rx,	// \\src\\main\\scala\\MidiUart.scala:7:14
-  output       io_out_valid,	// \\src\\main\\scala\\MidiUart.scala:7:14
-  output [7:0] io_out_bits	// \\src\\main\\scala\\MidiUart.scala:7:14
+module UartRx(	// \\src\\main\\scala\\MidiUart.scala:16:7
+  input        clock,	// \\src\\main\\scala\\MidiUart.scala:16:7
+               reset,	// \\src\\main\\scala\\MidiUart.scala:16:7
+               io_rxd,	// \\src\\main\\scala\\MidiUart.scala:17:14
+  output       io_channel_valid,	// \\src\\main\\scala\\MidiUart.scala:17:14
+  output [7:0] io_channel_bits	// \\src\\main\\scala\\MidiUart.scala:17:14
 );
 
-  reg       r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:26
-  reg       r;	// \\src\\main\\scala\\MidiUart.scala:16:18
-  reg [8:0] cnt;	// \\src\\main\\scala\\MidiUart.scala:18:20
-  reg [3:0] bitn;	// \\src\\main\\scala\\MidiUart.scala:19:21
-  reg       busy;	// \\src\\main\\scala\\MidiUart.scala:20:21
-  reg [7:0] sh;	// \\src\\main\\scala\\MidiUart.scala:21:15
-  reg [7:0] data;	// \\src\\main\\scala\\MidiUart.scala:22:17
-  reg       valid;	// \\src\\main\\scala\\MidiUart.scala:23:22
-  always @(posedge clock) begin	// \\src\\main\\scala\\MidiUart.scala:6:7
-    automatic logic _GEN;	// \\src\\main\\scala\\MidiUart.scala:33:18
-    automatic logic _GEN_0;	// \\src\\main\\scala\\MidiUart.scala:36:15
-    automatic logic _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:38:21
-    automatic logic _GEN_2;	// \\src\\main\\scala\\MidiUart.scala:22:17, :36:24, :38:29, :42:15
-    _GEN = cnt == 9'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20, :33:18
-    _GEN_0 = bitn == 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21, :36:15
-    _GEN_1 = bitn < 4'h9;	// \\src\\main\\scala\\MidiUart.scala:19:21, :38:21
-    _GEN_2 = _GEN_0 | _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:22:17, :36:{15,24}, :38:{21,29}, :42:15
-    if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:6:7
-      r_REG <= 1'h1;	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26
-      r <= 1'h1;	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:18
-      cnt <= 9'h0;	// \\src\\main\\scala\\MidiUart.scala:18:20
-      bitn <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21
-      busy <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:6:7, :20:21
-      valid <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:6:7, :23:22
+  reg        rxReg_REG;	// \\src\\main\\scala\\MidiUart.scala:26:30
+  reg        rxReg;	// \\src\\main\\scala\\MidiUart.scala:26:22
+  reg        falling_REG;	// \\src\\main\\scala\\MidiUart.scala:27:35
+  reg [7:0]  shiftReg;	// \\src\\main\\scala\\MidiUart.scala:29:25
+  reg [19:0] cntReg;	// \\src\\main\\scala\\MidiUart.scala:30:23
+  reg [3:0]  bitsReg;	// \\src\\main\\scala\\MidiUart.scala:31:24
+  reg        valReg;	// \\src\\main\\scala\\MidiUart.scala:32:23
+  always @(posedge clock) begin	// \\src\\main\\scala\\MidiUart.scala:16:7
+    if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:16:7
+      rxReg_REG <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:16:7, :26:30
+      rxReg <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:16:7, :26:22
+      shiftReg <= 8'h0;	// \\src\\main\\scala\\MidiUart.scala:29:25
+      cntReg <= 20'hD8;	// \\src\\main\\scala\\MidiUart.scala:30:23
+      bitsReg <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:31:24
+      valReg <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:16:7, :32:23
     end
-    else begin	// \\src\\main\\scala\\MidiUart.scala:6:7
-      r_REG <= io_rx;	// \\src\\main\\scala\\MidiUart.scala:16:26
-      r <= r_REG;	// \\src\\main\\scala\\MidiUart.scala:16:{18,26}
-      if (busy) begin	// \\src\\main\\scala\\MidiUart.scala:20:21
-        if (_GEN) begin	// \\src\\main\\scala\\MidiUart.scala:33:18
-          cnt <= 9'h1B1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :34:9
-          bitn <= bitn + 4'h1;	// \\src\\main\\scala\\MidiUart.scala:19:21, :35:18
-          if (_GEN_0)	// \\src\\main\\scala\\MidiUart.scala:36:15
-            busy <= ~r & busy;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :37:{15,22}
-          else	// \\src\\main\\scala\\MidiUart.scala:36:15
-            busy <= _GEN_1 & busy;	// \\src\\main\\scala\\MidiUart.scala:20:21, :38:{21,29}, :41:12
-        end
-        else	// \\src\\main\\scala\\MidiUart.scala:33:18
-          cnt <= cnt - 9'h1;	// \\src\\main\\scala\\MidiUart.scala:18:20, :48:16
+    else begin	// \\src\\main\\scala\\MidiUart.scala:16:7
+      rxReg_REG <= io_rxd;	// \\src\\main\\scala\\MidiUart.scala:26:30
+      rxReg <= rxReg_REG;	// \\src\\main\\scala\\MidiUart.scala:26:{22,30}
+      if ((|cntReg) | ~(|bitsReg)) begin	// \\src\\main\\scala\\MidiUart.scala:29:25, :30:23, :31:24, :34:{15,24}, :36:{22,31}
       end
-      else begin	// \\src\\main\\scala\\MidiUart.scala:20:21
-        if (r) begin	// \\src\\main\\scala\\MidiUart.scala:16:18
-        end
-        else begin	// \\src\\main\\scala\\MidiUart.scala:16:18
-          cnt <= 9'hD9;	// \\src\\main\\scala\\MidiUart.scala:18:20, :30:11
-          bitn <= 4'h0;	// \\src\\main\\scala\\MidiUart.scala:19:21
-        end
-        busy <= ~r | busy;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :28:{10,14}, :29:12
+      else	// \\src\\main\\scala\\MidiUart.scala:29:25, :34:24, :36:31
+        shiftReg <= {rxReg, shiftReg[7:1]};	// \\src\\main\\scala\\MidiUart.scala:26:22, :29:25, :38:{20,37}
+      if (|cntReg)	// \\src\\main\\scala\\MidiUart.scala:30:23, :34:15
+        cntReg <= cntReg - 20'h1;	// \\src\\main\\scala\\MidiUart.scala:30:23, :35:22
+      else if (|bitsReg) begin	// \\src\\main\\scala\\MidiUart.scala:31:24, :36:22
+        cntReg <= 20'hD8;	// \\src\\main\\scala\\MidiUart.scala:30:23
+        bitsReg <= bitsReg - 4'h1;	// \\src\\main\\scala\\MidiUart.scala:31:24, :39:24
       end
-      valid <= busy & _GEN & ~_GEN_2 & r;	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :22:17, :23:22, :25:9, :27:15, :33:{18,27}, :36:24, :38:29, :42:15
+      else if (~rxReg & falling_REG) begin	// \\src\\main\\scala\\MidiUart.scala:26:22, :27:{17,24,35}
+        cntReg <= 20'h144;	// \\src\\main\\scala\\MidiUart.scala:30:23, :45:12
+        bitsReg <= 4'h8;	// \\src\\main\\scala\\MidiUart.scala:31:24, :46:13
+      end
+      valReg <= ~valReg & (~(|cntReg) & (|bitsReg) & bitsReg == 4'h1 | valReg);	// \\src\\main\\scala\\MidiUart.scala:30:23, :31:24, :32:23, :34:{15,24}, :36:{22,31}, :41:18, :49:36, :50:12
     end
-    if (~busy | ~_GEN | _GEN_0 | ~_GEN_1) begin	// \\src\\main\\scala\\MidiUart.scala:20:21, :21:15, :27:15, :33:{18,27}, :36:{15,24}, :38:{21,29}
-    end
-    else	// \\src\\main\\scala\\MidiUart.scala:21:15, :27:15, :33:27
-      sh <= {r, sh[7:1]};	// \\src\\main\\scala\\MidiUart.scala:16:18, :21:15, :39:{16,22}
-    if (~busy | ~_GEN | _GEN_2 | ~r) begin	// \\src\\main\\scala\\MidiUart.scala:16:18, :20:21, :21:15, :22:17, :27:15, :33:{18,27}, :36:24, :37:{15,22}, :38:29, :42:15
-    end
-    else	// \\src\\main\\scala\\MidiUart.scala:22:17, :27:15, :33:27
-      data <= sh;	// \\src\\main\\scala\\MidiUart.scala:21:15, :22:17
+    falling_REG <= rxReg;	// \\src\\main\\scala\\MidiUart.scala:26:22, :27:35
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\MidiUart.scala:6:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:6:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:6:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\MidiUart.scala:16:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:16:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:16:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\MidiUart.scala:6:7
-      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\MidiUart.scala:6:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:6:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:6:7
+    initial begin	// \\src\\main\\scala\\MidiUart.scala:16:7
+      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\MidiUart.scala:16:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:16:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:16:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\MidiUart.scala:6:7
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\MidiUart.scala:16:7
         for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
-          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\MidiUart.scala:6:7
-        end	// \\src\\main\\scala\\MidiUart.scala:6:7
-        r_REG = _RANDOM[1'h0][0];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26
-        r = _RANDOM[1'h0][1];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:{18,26}
-        cnt = _RANDOM[1'h0][10:2];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :18:20
-        bitn = _RANDOM[1'h0][14:11];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :19:21
-        busy = _RANDOM[1'h0][15];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :20:21
-        sh = _RANDOM[1'h0][23:16];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :21:15
-        data = _RANDOM[1'h0][31:24];	// \\src\\main\\scala\\MidiUart.scala:6:7, :16:26, :22:17
-        valid = _RANDOM[1'h1][0];	// \\src\\main\\scala\\MidiUart.scala:6:7, :23:22
+          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\MidiUart.scala:16:7
+        end	// \\src\\main\\scala\\MidiUart.scala:16:7
+        rxReg_REG = _RANDOM[1'h0][0];	// \\src\\main\\scala\\MidiUart.scala:16:7, :26:30
+        rxReg = _RANDOM[1'h0][1];	// \\src\\main\\scala\\MidiUart.scala:16:7, :26:{22,30}
+        falling_REG = _RANDOM[1'h0][2];	// \\src\\main\\scala\\MidiUart.scala:16:7, :26:30, :27:35
+        shiftReg = _RANDOM[1'h0][10:3];	// \\src\\main\\scala\\MidiUart.scala:16:7, :26:30, :29:25
+        cntReg = _RANDOM[1'h0][30:11];	// \\src\\main\\scala\\MidiUart.scala:16:7, :26:30, :30:23
+        bitsReg = {_RANDOM[1'h0][31], _RANDOM[1'h1][2:0]};	// \\src\\main\\scala\\MidiUart.scala:16:7, :26:30, :31:24
+        valReg = _RANDOM[1'h1][3];	// \\src\\main\\scala\\MidiUart.scala:16:7, :31:24, :32:23
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:6:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:6:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:16:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:16:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_out_valid = valid;	// \\src\\main\\scala\\MidiUart.scala:6:7, :23:22
-  assign io_out_bits = data;	// \\src\\main\\scala\\MidiUart.scala:6:7, :22:17
+  assign io_channel_valid = valReg;	// \\src\\main\\scala\\MidiUart.scala:16:7, :32:23
+  assign io_channel_bits = shiftReg;	// \\src\\main\\scala\\MidiUart.scala:16:7, :29:25
 endmodule
 
-module MidiParser(	// \\src\\main\\scala\\MidiUart.scala:65:7
-  input        clock,	// \\src\\main\\scala\\MidiUart.scala:65:7
-               reset,	// \\src\\main\\scala\\MidiUart.scala:65:7
-               io_in_valid,	// \\src\\main\\scala\\MidiUart.scala:66:14
-  input  [7:0] io_in_bits,	// \\src\\main\\scala\\MidiUart.scala:66:14
-  output       io_msg_valid,	// \\src\\main\\scala\\MidiUart.scala:66:14
-  output [7:0] io_msg_bits_status,	// \\src\\main\\scala\\MidiUart.scala:66:14
-  output [6:0] io_msg_bits_data1,	// \\src\\main\\scala\\MidiUart.scala:66:14
-               io_msg_bits_data2	// \\src\\main\\scala\\MidiUart.scala:66:14
+module MidiParser(	// \\src\\main\\scala\\MidiUart.scala:69:7
+  input        clock,	// \\src\\main\\scala\\MidiUart.scala:69:7
+               reset,	// \\src\\main\\scala\\MidiUart.scala:69:7
+               io_in_valid,	// \\src\\main\\scala\\MidiUart.scala:70:14
+  input  [7:0] io_in_bits,	// \\src\\main\\scala\\MidiUart.scala:70:14
+  output       io_msg_valid,	// \\src\\main\\scala\\MidiUart.scala:70:14
+  output [7:0] io_msg_bits_status,	// \\src\\main\\scala\\MidiUart.scala:70:14
+  output [6:0] io_msg_bits_data1,	// \\src\\main\\scala\\MidiUart.scala:70:14
+               io_msg_bits_data2	// \\src\\main\\scala\\MidiUart.scala:70:14
 );
 
-  reg [7:0] status;	// \\src\\main\\scala\\MidiUart.scala:71:23
-  reg [6:0] d1;	// \\src\\main\\scala\\MidiUart.scala:72:15
-  reg       haveD1;	// \\src\\main\\scala\\MidiUart.scala:73:23
-  reg       outValid;	// \\src\\main\\scala\\MidiUart.scala:74:25
-  reg [7:0] outMsg_status;	// \\src\\main\\scala\\MidiUart.scala:75:19
-  reg [6:0] outMsg_data1;	// \\src\\main\\scala\\MidiUart.scala:75:19
-  reg [6:0] outMsg_data2;	// \\src\\main\\scala\\MidiUart.scala:75:19
-  always @(posedge clock) begin	// \\src\\main\\scala\\MidiUart.scala:65:7
-    automatic logic _GEN;	// \\src\\main\\scala\\MidiUart.scala:88:12
-    automatic logic _GEN_0;	// \\src\\main\\scala\\MidiUart.scala:82:18
-    automatic logic _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:72:15, :88:23, :90:22, :95:32
-    _GEN = io_in_bits > 8'hF7;	// \\src\\main\\scala\\MidiUart.scala:88:12
-    _GEN_0 = status[7:4] != 4'hC & status[7:4] != 4'hD;	// \\src\\main\\scala\\MidiUart.scala:71:23, :81:15, :82:{8,18,24}
-    _GEN_1 = _GEN | io_in_bits[7];	// \\src\\main\\scala\\MidiUart.scala:72:15, :88:{12,23}, :90:{17,22}, :95:32
-    if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:65:7
-      status <= 8'h0;	// \\src\\main\\scala\\MidiUart.scala:71:23
-      haveD1 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:65:7, :73:23
-      outValid <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:65:7, :74:25
+  reg [7:0] status;	// \\src\\main\\scala\\MidiUart.scala:76:23
+  reg [6:0] d1;	// \\src\\main\\scala\\MidiUart.scala:77:15
+  reg       haveD1;	// \\src\\main\\scala\\MidiUart.scala:78:23
+  reg       outValid;	// \\src\\main\\scala\\MidiUart.scala:79:25
+  reg [7:0] outMsg_status;	// \\src\\main\\scala\\MidiUart.scala:80:19
+  reg [6:0] outMsg_data1;	// \\src\\main\\scala\\MidiUart.scala:80:19
+  reg [6:0] outMsg_data2;	// \\src\\main\\scala\\MidiUart.scala:80:19
+  always @(posedge clock) begin	// \\src\\main\\scala\\MidiUart.scala:69:7
+    automatic logic _GEN;	// \\src\\main\\scala\\MidiUart.scala:93:12
+    automatic logic _GEN_0;	// \\src\\main\\scala\\MidiUart.scala:87:18
+    automatic logic _GEN_1;	// \\src\\main\\scala\\MidiUart.scala:77:15, :93:23, :95:22, :100:32
+    _GEN = io_in_bits > 8'hF7;	// \\src\\main\\scala\\MidiUart.scala:93:12
+    _GEN_0 = status[7:4] != 4'hC & status[7:4] != 4'hD;	// \\src\\main\\scala\\MidiUart.scala:76:23, :86:15, :87:{8,18,24}
+    _GEN_1 = _GEN | io_in_bits[7];	// \\src\\main\\scala\\MidiUart.scala:77:15, :93:{12,23}, :95:{17,22}, :100:32
+    if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:69:7
+      status <= 8'h0;	// \\src\\main\\scala\\MidiUart.scala:76:23
+      haveD1 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:69:7, :78:23
+      outValid <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:69:7, :79:25
     end
-    else begin	// \\src\\main\\scala\\MidiUart.scala:65:7
-      if (~io_in_valid | _GEN | ~(io_in_bits[7])) begin	// \\src\\main\\scala\\MidiUart.scala:71:23, :87:21, :88:{12,23}, :90:{17,22}
+    else begin	// \\src\\main\\scala\\MidiUart.scala:69:7
+      if (~io_in_valid | _GEN | ~(io_in_bits[7])) begin	// \\src\\main\\scala\\MidiUart.scala:76:23, :92:21, :93:{12,23}, :95:{17,22}
       end
-      else	// \\src\\main\\scala\\MidiUart.scala:71:23, :87:21, :88:23
-        status <= io_in_bits[7:4] != 4'hF ? io_in_bits : 8'h0;	// \\src\\main\\scala\\MidiUart.scala:71:23, :94:{20,23}
-      if (~io_in_valid | _GEN) begin	// \\src\\main\\scala\\MidiUart.scala:71:23, :73:23, :87:21, :88:{12,23}
+      else	// \\src\\main\\scala\\MidiUart.scala:76:23, :92:21, :93:23
+        status <= io_in_bits[7:4] != 4'hF ? io_in_bits : 8'h0;	// \\src\\main\\scala\\MidiUart.scala:76:23, :99:{20,23}
+      if (~io_in_valid | _GEN) begin	// \\src\\main\\scala\\MidiUart.scala:76:23, :78:23, :92:21, :93:{12,23}
       end
-      else	// \\src\\main\\scala\\MidiUart.scala:73:23, :87:21, :88:23
-        haveD1 <= ~(io_in_bits[7]) & ((|status) & _GEN_0 ^ haveD1);	// \\src\\main\\scala\\MidiUart.scala:71:23, :73:23, :82:18, :88:23, :90:{17,22}, :91:14, :95:{23,32}, :96:35
-      outValid <= io_in_valid & ~_GEN_1 & (|status) & (~_GEN_0 | haveD1);	// \\src\\main\\scala\\MidiUart.scala:71:23, :72:15, :73:23, :74:25, :77:12, :82:18, :87:21, :88:23, :90:22, :95:{23,32}, :96:{12,35}, :100:18, :101:27
+      else	// \\src\\main\\scala\\MidiUart.scala:78:23, :92:21, :93:23
+        haveD1 <= ~(io_in_bits[7]) & ((|status) & _GEN_0 ^ haveD1);	// \\src\\main\\scala\\MidiUart.scala:76:23, :78:23, :87:18, :93:23, :95:{17,22}, :96:14, :100:{23,32}, :101:35
+      outValid <= io_in_valid & ~_GEN_1 & (|status) & (~_GEN_0 | haveD1);	// \\src\\main\\scala\\MidiUart.scala:76:23, :77:15, :78:23, :79:25, :82:12, :87:18, :92:21, :93:23, :95:22, :100:{23,32}, :101:{12,35}, :105:18, :106:27
     end
-    if (~io_in_valid | _GEN_1 | ~(|status) | ~_GEN_0 | haveD1) begin	// \\src\\main\\scala\\MidiUart.scala:71:23, :72:15, :73:23, :82:18, :87:21, :88:23, :90:22, :95:{23,32}, :96:35, :101:27
+    if (~io_in_valid | _GEN_1 | ~(|status) | ~_GEN_0 | haveD1) begin	// \\src\\main\\scala\\MidiUart.scala:76:23, :77:15, :78:23, :87:18, :92:21, :93:23, :95:22, :100:{23,32}, :101:35, :106:27
     end
-    else	// \\src\\main\\scala\\MidiUart.scala:72:15, :87:21, :88:23
-      d1 <= io_in_bits[6:0];	// \\src\\main\\scala\\MidiUart.scala:72:15, :102:16
-    if (~io_in_valid | _GEN_1 | ~((|status) & (~_GEN_0 | haveD1))) begin	// \\src\\main\\scala\\MidiUart.scala:71:23, :72:15, :73:23, :75:19, :82:18, :87:21, :88:23, :90:22, :95:{23,32}, :96:35, :97:23, :101:27
+    else	// \\src\\main\\scala\\MidiUart.scala:77:15, :92:21, :93:23
+      d1 <= io_in_bits[6:0];	// \\src\\main\\scala\\MidiUart.scala:77:15, :107:16
+    if (~io_in_valid | _GEN_1 | ~((|status) & (~_GEN_0 | haveD1))) begin	// \\src\\main\\scala\\MidiUart.scala:76:23, :77:15, :78:23, :80:19, :87:18, :92:21, :93:23, :95:22, :100:{23,32}, :101:35, :102:23, :106:27
     end
-    else	// \\src\\main\\scala\\MidiUart.scala:75:19, :87:21, :88:23
-      outMsg_status <= status;	// \\src\\main\\scala\\MidiUart.scala:71:23, :75:19
-    if (~io_in_valid | _GEN_1 | ~(|status)) begin	// \\src\\main\\scala\\MidiUart.scala:71:23, :72:15, :75:19, :87:21, :88:23, :90:22, :95:{23,32}, :96:35
+    else	// \\src\\main\\scala\\MidiUart.scala:80:19, :92:21, :93:23
+      outMsg_status <= status;	// \\src\\main\\scala\\MidiUart.scala:76:23, :80:19
+    if (~io_in_valid | _GEN_1 | ~(|status)) begin	// \\src\\main\\scala\\MidiUart.scala:76:23, :77:15, :80:19, :92:21, :93:23, :95:22, :100:{23,32}, :101:35
     end
-    else if (_GEN_0) begin	// \\src\\main\\scala\\MidiUart.scala:82:18
-      if (haveD1) begin	// \\src\\main\\scala\\MidiUart.scala:73:23
-        outMsg_data1 <= d1;	// \\src\\main\\scala\\MidiUart.scala:72:15, :75:19
-        outMsg_data2 <= io_in_bits[6:0];	// \\src\\main\\scala\\MidiUart.scala:75:19, :107:26
+    else if (_GEN_0) begin	// \\src\\main\\scala\\MidiUart.scala:87:18
+      if (haveD1) begin	// \\src\\main\\scala\\MidiUart.scala:78:23
+        outMsg_data1 <= d1;	// \\src\\main\\scala\\MidiUart.scala:77:15, :80:19
+        outMsg_data2 <= io_in_bits[6:0];	// \\src\\main\\scala\\MidiUart.scala:80:19, :112:26
       end
     end
-    else begin	// \\src\\main\\scala\\MidiUart.scala:82:18
-      outMsg_data1 <= io_in_bits[6:0];	// \\src\\main\\scala\\MidiUart.scala:75:19, :98:26
-      outMsg_data2 <= 7'h0;	// \\src\\main\\scala\\MidiUart.scala:75:19, :99:22
+    else begin	// \\src\\main\\scala\\MidiUart.scala:87:18
+      outMsg_data1 <= io_in_bits[6:0];	// \\src\\main\\scala\\MidiUart.scala:80:19, :103:26
+      outMsg_data2 <= 7'h0;	// \\src\\main\\scala\\MidiUart.scala:80:19, :104:22
     end
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\MidiUart.scala:65:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:65:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:65:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\MidiUart.scala:69:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:69:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:69:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\MidiUart.scala:65:7
-      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\MidiUart.scala:65:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:65:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:65:7
+    initial begin	// \\src\\main\\scala\\MidiUart.scala:69:7
+      automatic logic [31:0] _RANDOM[0:1];	// \\src\\main\\scala\\MidiUart.scala:69:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:69:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:69:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\MidiUart.scala:65:7
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\MidiUart.scala:69:7
         for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
-          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\MidiUart.scala:65:7
-        end	// \\src\\main\\scala\\MidiUart.scala:65:7
-        status = _RANDOM[1'h0][7:0];	// \\src\\main\\scala\\MidiUart.scala:65:7, :71:23
-        d1 = _RANDOM[1'h0][14:8];	// \\src\\main\\scala\\MidiUart.scala:65:7, :71:23, :72:15
-        haveD1 = _RANDOM[1'h0][15];	// \\src\\main\\scala\\MidiUart.scala:65:7, :71:23, :73:23
-        outValid = _RANDOM[1'h0][16];	// \\src\\main\\scala\\MidiUart.scala:65:7, :71:23, :74:25
-        outMsg_status = _RANDOM[1'h0][24:17];	// \\src\\main\\scala\\MidiUart.scala:65:7, :71:23, :75:19
-        outMsg_data1 = _RANDOM[1'h0][31:25];	// \\src\\main\\scala\\MidiUart.scala:65:7, :71:23, :75:19
-        outMsg_data2 = _RANDOM[1'h1][6:0];	// \\src\\main\\scala\\MidiUart.scala:65:7, :75:19
+          _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\MidiUart.scala:69:7
+        end	// \\src\\main\\scala\\MidiUart.scala:69:7
+        status = _RANDOM[1'h0][7:0];	// \\src\\main\\scala\\MidiUart.scala:69:7, :76:23
+        d1 = _RANDOM[1'h0][14:8];	// \\src\\main\\scala\\MidiUart.scala:69:7, :76:23, :77:15
+        haveD1 = _RANDOM[1'h0][15];	// \\src\\main\\scala\\MidiUart.scala:69:7, :76:23, :78:23
+        outValid = _RANDOM[1'h0][16];	// \\src\\main\\scala\\MidiUart.scala:69:7, :76:23, :79:25
+        outMsg_status = _RANDOM[1'h0][24:17];	// \\src\\main\\scala\\MidiUart.scala:69:7, :76:23, :80:19
+        outMsg_data1 = _RANDOM[1'h0][31:25];	// \\src\\main\\scala\\MidiUart.scala:69:7, :76:23, :80:19
+        outMsg_data2 = _RANDOM[1'h1][6:0];	// \\src\\main\\scala\\MidiUart.scala:69:7, :80:19
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:65:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:65:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:69:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:69:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_msg_valid = outValid;	// \\src\\main\\scala\\MidiUart.scala:65:7, :74:25
-  assign io_msg_bits_status = outMsg_status;	// \\src\\main\\scala\\MidiUart.scala:65:7, :75:19
-  assign io_msg_bits_data1 = outMsg_data1;	// \\src\\main\\scala\\MidiUart.scala:65:7, :75:19
-  assign io_msg_bits_data2 = outMsg_data2;	// \\src\\main\\scala\\MidiUart.scala:65:7, :75:19
+  assign io_msg_valid = outValid;	// \\src\\main\\scala\\MidiUart.scala:69:7, :79:25
+  assign io_msg_bits_status = outMsg_status;	// \\src\\main\\scala\\MidiUart.scala:69:7, :80:19
+  assign io_msg_bits_data1 = outMsg_data1;	// \\src\\main\\scala\\MidiUart.scala:69:7, :80:19
+  assign io_msg_bits_data2 = outMsg_data2;	// \\src\\main\\scala\\MidiUart.scala:69:7, :80:19
 endmodule
 
-module MidiTop(	// \\src\\main\\scala\\MidiUart.scala:133:7
-  input          clock,	// \\src\\main\\scala\\MidiUart.scala:133:7
-                 reset,	// \\src\\main\\scala\\MidiUart.scala:133:7
-                 io_rx,	// \\src\\main\\scala\\MidiUart.scala:135:14
-  output [6:0]   io_data1,	// \\src\\main\\scala\\MidiUart.scala:135:14
-  output [127:0] io_held	// \\src\\main\\scala\\MidiUart.scala:135:14
+module MidiTop(	// \\src\\main\\scala\\MidiUart.scala:138:7
+  input          clock,	// \\src\\main\\scala\\MidiUart.scala:138:7
+                 reset,	// \\src\\main\\scala\\MidiUart.scala:138:7
+                 io_rx,	// \\src\\main\\scala\\MidiUart.scala:140:14
+  output [6:0]   io_data1,	// \\src\\main\\scala\\MidiUart.scala:140:14
+  output [127:0] io_held	// \\src\\main\\scala\\MidiUart.scala:140:14
 );
 
-  wire       _parser_io_msg_valid;	// \\src\\main\\scala\\MidiUart.scala:138:22
-  wire [7:0] _parser_io_msg_bits_status;	// \\src\\main\\scala\\MidiUart.scala:138:22
-  wire [6:0] _parser_io_msg_bits_data1;	// \\src\\main\\scala\\MidiUart.scala:138:22
-  wire [6:0] _parser_io_msg_bits_data2;	// \\src\\main\\scala\\MidiUart.scala:138:22
-  wire       _uart_io_out_valid;	// \\src\\main\\scala\\MidiUart.scala:137:20
-  wire [7:0] _uart_io_out_bits;	// \\src\\main\\scala\\MidiUart.scala:137:20
-  reg        held_0;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_1;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_2;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_3;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_4;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_5;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_6;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_7;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_8;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_9;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_10;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_11;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_12;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_13;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_14;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_15;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_16;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_17;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_18;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_19;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_20;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_21;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_22;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_23;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_24;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_25;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_26;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_27;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_28;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_29;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_30;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_31;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_32;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_33;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_34;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_35;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_36;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_37;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_38;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_39;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_40;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_41;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_42;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_43;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_44;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_45;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_46;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_47;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_48;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_49;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_50;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_51;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_52;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_53;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_54;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_55;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_56;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_57;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_58;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_59;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_60;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_61;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_62;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_63;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_64;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_65;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_66;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_67;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_68;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_69;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_70;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_71;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_72;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_73;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_74;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_75;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_76;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_77;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_78;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_79;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_80;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_81;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_82;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_83;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_84;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_85;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_86;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_87;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_88;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_89;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_90;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_91;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_92;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_93;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_94;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_95;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_96;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_97;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_98;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_99;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_100;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_101;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_102;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_103;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_104;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_105;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_106;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_107;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_108;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_109;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_110;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_111;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_112;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_113;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_114;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_115;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_116;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_117;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_118;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_119;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_120;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_121;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_122;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_123;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_124;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_125;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_126;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  reg        held_127;	// \\src\\main\\scala\\MidiUart.scala:159:21
-  always @(posedge clock) begin	// \\src\\main\\scala\\MidiUart.scala:133:7
-    if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:133:7
-      held_0 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_1 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_2 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_3 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_4 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_5 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_6 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_7 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_8 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_9 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_10 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_11 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_12 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_13 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_14 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_15 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_16 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_17 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_18 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_19 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_20 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_21 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_22 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_23 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_24 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_25 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_26 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_27 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_28 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_29 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_30 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_31 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_32 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_33 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_34 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_35 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_36 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_37 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_38 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_39 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_40 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_41 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_42 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_43 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_44 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_45 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_46 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_47 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_48 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_49 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_50 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_51 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_52 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_53 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_54 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_55 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_56 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_57 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_58 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_59 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_60 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_61 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_62 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_63 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_64 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_65 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_66 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_67 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_68 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_69 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_70 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_71 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_72 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_73 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_74 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_75 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_76 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_77 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_78 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_79 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_80 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_81 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_82 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_83 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_84 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_85 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_86 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_87 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_88 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_89 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_90 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_91 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_92 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_93 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_94 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_95 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_96 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_97 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_98 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_99 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_100 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_101 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_102 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_103 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_104 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_105 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_106 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_107 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_108 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_109 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_110 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_111 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_112 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_113 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_114 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_115 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_116 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_117 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_118 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_119 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_120 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_121 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_122 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_123 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_124 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_125 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_126 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
-      held_127 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:147:64, :159:21
+  wire       _parser_io_msg_valid;	// \\src\\main\\scala\\MidiUart.scala:143:22
+  wire [7:0] _parser_io_msg_bits_status;	// \\src\\main\\scala\\MidiUart.scala:143:22
+  wire [6:0] _parser_io_msg_bits_data1;	// \\src\\main\\scala\\MidiUart.scala:143:22
+  wire [6:0] _parser_io_msg_bits_data2;	// \\src\\main\\scala\\MidiUart.scala:143:22
+  wire       _uart_io_channel_valid;	// \\src\\main\\scala\\MidiUart.scala:142:20
+  wire [7:0] _uart_io_channel_bits;	// \\src\\main\\scala\\MidiUart.scala:142:20
+  reg        held_0;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_1;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_2;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_3;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_4;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_5;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_6;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_7;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_8;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_9;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_10;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_11;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_12;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_13;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_14;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_15;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_16;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_17;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_18;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_19;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_20;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_21;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_22;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_23;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_24;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_25;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_26;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_27;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_28;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_29;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_30;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_31;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_32;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_33;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_34;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_35;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_36;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_37;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_38;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_39;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_40;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_41;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_42;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_43;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_44;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_45;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_46;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_47;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_48;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_49;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_50;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_51;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_52;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_53;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_54;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_55;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_56;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_57;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_58;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_59;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_60;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_61;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_62;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_63;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_64;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_65;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_66;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_67;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_68;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_69;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_70;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_71;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_72;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_73;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_74;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_75;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_76;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_77;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_78;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_79;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_80;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_81;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_82;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_83;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_84;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_85;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_86;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_87;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_88;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_89;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_90;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_91;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_92;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_93;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_94;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_95;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_96;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_97;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_98;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_99;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_100;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_101;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_102;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_103;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_104;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_105;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_106;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_107;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_108;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_109;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_110;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_111;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_112;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_113;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_114;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_115;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_116;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_117;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_118;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_119;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_120;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_121;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_122;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_123;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_124;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_125;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_126;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  reg        held_127;	// \\src\\main\\scala\\MidiUart.scala:164:21
+  always @(posedge clock) begin	// \\src\\main\\scala\\MidiUart.scala:138:7
+    if (reset) begin	// \\src\\main\\scala\\MidiUart.scala:138:7
+      held_0 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_1 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_2 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_3 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_4 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_5 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_6 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_7 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_8 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_9 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_10 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_11 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_12 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_13 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_14 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_15 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_16 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_17 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_18 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_19 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_20 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_21 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_22 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_23 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_24 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_25 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_26 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_27 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_28 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_29 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_30 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_31 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_32 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_33 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_34 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_35 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_36 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_37 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_38 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_39 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_40 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_41 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_42 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_43 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_44 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_45 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_46 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_47 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_48 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_49 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_50 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_51 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_52 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_53 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_54 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_55 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_56 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_57 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_58 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_59 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_60 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_61 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_62 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_63 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_64 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_65 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_66 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_67 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_68 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_69 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_70 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_71 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_72 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_73 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_74 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_75 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_76 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_77 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_78 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_79 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_80 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_81 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_82 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_83 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_84 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_85 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_86 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_87 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_88 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_89 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_90 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_91 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_92 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_93 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_94 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_95 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_96 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_97 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_98 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_99 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_100 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_101 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_102 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_103 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_104 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_105 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_106 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_107 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_108 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_109 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_110 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_111 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_112 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_113 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_114 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_115 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_116 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_117 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_118 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_119 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_120 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_121 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_122 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_123 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_124 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_125 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_126 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
+      held_127 <= 1'h0;	// \\src\\main\\scala\\MidiUart.scala:152:64, :164:21
     end
-    else begin	// \\src\\main\\scala\\MidiUart.scala:133:7
-      automatic logic _isOff_T_1 = _parser_io_msg_bits_status[7:4] == 4'h9;	// \\src\\main\\scala\\MidiUart.scala:138:22, :144:27, :147:30
+    else begin	// \\src\\main\\scala\\MidiUart.scala:138:7
+      automatic logic _isOff_T_1 = _parser_io_msg_bits_status[7:4] == 4'h9;	// \\src\\main\\scala\\MidiUart.scala:143:22, :149:27, :152:30
       automatic logic isOn =
-        _parser_io_msg_valid & _isOff_T_1 & (|_parser_io_msg_bits_data2);	// \\src\\main\\scala\\MidiUart.scala:138:22, :147:{30,48,64}
+        _parser_io_msg_valid & _isOff_T_1 & (|_parser_io_msg_bits_data2);	// \\src\\main\\scala\\MidiUart.scala:143:22, :152:{30,48,64}
       automatic logic isOff =
         _parser_io_msg_valid
         & (_parser_io_msg_bits_status[7:4] == 4'h8 | _isOff_T_1
-           & _parser_io_msg_bits_data2 == 7'h0);	// \\src\\main\\scala\\MidiUart.scala:138:22, :144:27, :147:{30,64}, :149:{13,22,41,68,84}
-      automatic logic _GEN = _parser_io_msg_bits_data1 == 7'h0;	// \\src\\main\\scala\\MidiUart.scala:138:22, :147:64, :160:35
-      automatic logic _GEN_0 = _parser_io_msg_bits_data1 == 7'h1;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_1 = _parser_io_msg_bits_data1 == 7'h2;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_2 = _parser_io_msg_bits_data1 == 7'h3;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_3 = _parser_io_msg_bits_data1 == 7'h4;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_4 = _parser_io_msg_bits_data1 == 7'h5;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_5 = _parser_io_msg_bits_data1 == 7'h6;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_6 = _parser_io_msg_bits_data1 == 7'h7;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_7 = _parser_io_msg_bits_data1 == 7'h8;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_8 = _parser_io_msg_bits_data1 == 7'h9;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_9 = _parser_io_msg_bits_data1 == 7'hA;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_10 = _parser_io_msg_bits_data1 == 7'hB;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_11 = _parser_io_msg_bits_data1 == 7'hC;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_12 = _parser_io_msg_bits_data1 == 7'hD;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_13 = _parser_io_msg_bits_data1 == 7'hE;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_14 = _parser_io_msg_bits_data1 == 7'hF;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_15 = _parser_io_msg_bits_data1 == 7'h10;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_16 = _parser_io_msg_bits_data1 == 7'h11;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_17 = _parser_io_msg_bits_data1 == 7'h12;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_18 = _parser_io_msg_bits_data1 == 7'h13;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_19 = _parser_io_msg_bits_data1 == 7'h14;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_20 = _parser_io_msg_bits_data1 == 7'h15;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_21 = _parser_io_msg_bits_data1 == 7'h16;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_22 = _parser_io_msg_bits_data1 == 7'h17;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_23 = _parser_io_msg_bits_data1 == 7'h18;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_24 = _parser_io_msg_bits_data1 == 7'h19;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_25 = _parser_io_msg_bits_data1 == 7'h1A;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_26 = _parser_io_msg_bits_data1 == 7'h1B;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_27 = _parser_io_msg_bits_data1 == 7'h1C;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_28 = _parser_io_msg_bits_data1 == 7'h1D;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_29 = _parser_io_msg_bits_data1 == 7'h1E;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_30 = _parser_io_msg_bits_data1 == 7'h1F;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_31 = _parser_io_msg_bits_data1 == 7'h20;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_32 = _parser_io_msg_bits_data1 == 7'h21;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_33 = _parser_io_msg_bits_data1 == 7'h22;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_34 = _parser_io_msg_bits_data1 == 7'h23;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_35 = _parser_io_msg_bits_data1 == 7'h24;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_36 = _parser_io_msg_bits_data1 == 7'h25;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_37 = _parser_io_msg_bits_data1 == 7'h26;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_38 = _parser_io_msg_bits_data1 == 7'h27;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_39 = _parser_io_msg_bits_data1 == 7'h28;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_40 = _parser_io_msg_bits_data1 == 7'h29;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_41 = _parser_io_msg_bits_data1 == 7'h2A;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_42 = _parser_io_msg_bits_data1 == 7'h2B;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_43 = _parser_io_msg_bits_data1 == 7'h2C;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_44 = _parser_io_msg_bits_data1 == 7'h2D;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_45 = _parser_io_msg_bits_data1 == 7'h2E;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_46 = _parser_io_msg_bits_data1 == 7'h2F;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_47 = _parser_io_msg_bits_data1 == 7'h30;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_48 = _parser_io_msg_bits_data1 == 7'h31;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_49 = _parser_io_msg_bits_data1 == 7'h32;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_50 = _parser_io_msg_bits_data1 == 7'h33;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_51 = _parser_io_msg_bits_data1 == 7'h34;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_52 = _parser_io_msg_bits_data1 == 7'h35;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_53 = _parser_io_msg_bits_data1 == 7'h36;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_54 = _parser_io_msg_bits_data1 == 7'h37;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_55 = _parser_io_msg_bits_data1 == 7'h38;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_56 = _parser_io_msg_bits_data1 == 7'h39;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_57 = _parser_io_msg_bits_data1 == 7'h3A;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_58 = _parser_io_msg_bits_data1 == 7'h3B;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_59 = _parser_io_msg_bits_data1 == 7'h3C;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_60 = _parser_io_msg_bits_data1 == 7'h3D;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_61 = _parser_io_msg_bits_data1 == 7'h3E;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_62 = _parser_io_msg_bits_data1 == 7'h3F;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_63 = _parser_io_msg_bits_data1 == 7'h40;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_64 = _parser_io_msg_bits_data1 == 7'h41;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_65 = _parser_io_msg_bits_data1 == 7'h42;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_66 = _parser_io_msg_bits_data1 == 7'h43;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_67 = _parser_io_msg_bits_data1 == 7'h44;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_68 = _parser_io_msg_bits_data1 == 7'h45;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_69 = _parser_io_msg_bits_data1 == 7'h46;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_70 = _parser_io_msg_bits_data1 == 7'h47;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_71 = _parser_io_msg_bits_data1 == 7'h48;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_72 = _parser_io_msg_bits_data1 == 7'h49;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_73 = _parser_io_msg_bits_data1 == 7'h4A;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_74 = _parser_io_msg_bits_data1 == 7'h4B;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_75 = _parser_io_msg_bits_data1 == 7'h4C;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_76 = _parser_io_msg_bits_data1 == 7'h4D;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_77 = _parser_io_msg_bits_data1 == 7'h4E;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_78 = _parser_io_msg_bits_data1 == 7'h4F;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_79 = _parser_io_msg_bits_data1 == 7'h50;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_80 = _parser_io_msg_bits_data1 == 7'h51;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_81 = _parser_io_msg_bits_data1 == 7'h52;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_82 = _parser_io_msg_bits_data1 == 7'h53;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_83 = _parser_io_msg_bits_data1 == 7'h54;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_84 = _parser_io_msg_bits_data1 == 7'h55;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_85 = _parser_io_msg_bits_data1 == 7'h56;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_86 = _parser_io_msg_bits_data1 == 7'h57;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_87 = _parser_io_msg_bits_data1 == 7'h58;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_88 = _parser_io_msg_bits_data1 == 7'h59;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_89 = _parser_io_msg_bits_data1 == 7'h5A;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_90 = _parser_io_msg_bits_data1 == 7'h5B;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_91 = _parser_io_msg_bits_data1 == 7'h5C;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_92 = _parser_io_msg_bits_data1 == 7'h5D;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_93 = _parser_io_msg_bits_data1 == 7'h5E;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_94 = _parser_io_msg_bits_data1 == 7'h5F;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_95 = _parser_io_msg_bits_data1 == 7'h60;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_96 = _parser_io_msg_bits_data1 == 7'h61;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_97 = _parser_io_msg_bits_data1 == 7'h62;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_98 = _parser_io_msg_bits_data1 == 7'h63;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_99 = _parser_io_msg_bits_data1 == 7'h64;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_100 = _parser_io_msg_bits_data1 == 7'h65;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_101 = _parser_io_msg_bits_data1 == 7'h66;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_102 = _parser_io_msg_bits_data1 == 7'h67;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_103 = _parser_io_msg_bits_data1 == 7'h68;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_104 = _parser_io_msg_bits_data1 == 7'h69;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_105 = _parser_io_msg_bits_data1 == 7'h6A;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_106 = _parser_io_msg_bits_data1 == 7'h6B;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_107 = _parser_io_msg_bits_data1 == 7'h6C;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_108 = _parser_io_msg_bits_data1 == 7'h6D;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_109 = _parser_io_msg_bits_data1 == 7'h6E;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_110 = _parser_io_msg_bits_data1 == 7'h6F;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_111 = _parser_io_msg_bits_data1 == 7'h70;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_112 = _parser_io_msg_bits_data1 == 7'h71;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_113 = _parser_io_msg_bits_data1 == 7'h72;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_114 = _parser_io_msg_bits_data1 == 7'h73;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_115 = _parser_io_msg_bits_data1 == 7'h74;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_116 = _parser_io_msg_bits_data1 == 7'h75;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_117 = _parser_io_msg_bits_data1 == 7'h76;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_118 = _parser_io_msg_bits_data1 == 7'h77;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_119 = _parser_io_msg_bits_data1 == 7'h78;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_120 = _parser_io_msg_bits_data1 == 7'h79;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_121 = _parser_io_msg_bits_data1 == 7'h7A;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_122 = _parser_io_msg_bits_data1 == 7'h7B;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_123 = _parser_io_msg_bits_data1 == 7'h7C;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_124 = _parser_io_msg_bits_data1 == 7'h7D;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      automatic logic _GEN_125 = _parser_io_msg_bits_data1 == 7'h7E;	// \\src\\main\\scala\\MidiUart.scala:138:22, :160:35
-      held_0 <= ~(isOff & _GEN) & (isOn & _GEN | held_0);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_1 <= ~(isOff & _GEN_0) & (isOn & _GEN_0 | held_1);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_2 <= ~(isOff & _GEN_1) & (isOn & _GEN_1 | held_2);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_3 <= ~(isOff & _GEN_2) & (isOn & _GEN_2 | held_3);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_4 <= ~(isOff & _GEN_3) & (isOn & _GEN_3 | held_4);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_5 <= ~(isOff & _GEN_4) & (isOn & _GEN_4 | held_5);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_6 <= ~(isOff & _GEN_5) & (isOn & _GEN_5 | held_6);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_7 <= ~(isOff & _GEN_6) & (isOn & _GEN_6 | held_7);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_8 <= ~(isOff & _GEN_7) & (isOn & _GEN_7 | held_8);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_9 <= ~(isOff & _GEN_8) & (isOn & _GEN_8 | held_9);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_10 <= ~(isOff & _GEN_9) & (isOn & _GEN_9 | held_10);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_11 <= ~(isOff & _GEN_10) & (isOn & _GEN_10 | held_11);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_12 <= ~(isOff & _GEN_11) & (isOn & _GEN_11 | held_12);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_13 <= ~(isOff & _GEN_12) & (isOn & _GEN_12 | held_13);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_14 <= ~(isOff & _GEN_13) & (isOn & _GEN_13 | held_14);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_15 <= ~(isOff & _GEN_14) & (isOn & _GEN_14 | held_15);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_16 <= ~(isOff & _GEN_15) & (isOn & _GEN_15 | held_16);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_17 <= ~(isOff & _GEN_16) & (isOn & _GEN_16 | held_17);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_18 <= ~(isOff & _GEN_17) & (isOn & _GEN_17 | held_18);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_19 <= ~(isOff & _GEN_18) & (isOn & _GEN_18 | held_19);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_20 <= ~(isOff & _GEN_19) & (isOn & _GEN_19 | held_20);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_21 <= ~(isOff & _GEN_20) & (isOn & _GEN_20 | held_21);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_22 <= ~(isOff & _GEN_21) & (isOn & _GEN_21 | held_22);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_23 <= ~(isOff & _GEN_22) & (isOn & _GEN_22 | held_23);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_24 <= ~(isOff & _GEN_23) & (isOn & _GEN_23 | held_24);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_25 <= ~(isOff & _GEN_24) & (isOn & _GEN_24 | held_25);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_26 <= ~(isOff & _GEN_25) & (isOn & _GEN_25 | held_26);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_27 <= ~(isOff & _GEN_26) & (isOn & _GEN_26 | held_27);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_28 <= ~(isOff & _GEN_27) & (isOn & _GEN_27 | held_28);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_29 <= ~(isOff & _GEN_28) & (isOn & _GEN_28 | held_29);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_30 <= ~(isOff & _GEN_29) & (isOn & _GEN_29 | held_30);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_31 <= ~(isOff & _GEN_30) & (isOn & _GEN_30 | held_31);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_32 <= ~(isOff & _GEN_31) & (isOn & _GEN_31 | held_32);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_33 <= ~(isOff & _GEN_32) & (isOn & _GEN_32 | held_33);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_34 <= ~(isOff & _GEN_33) & (isOn & _GEN_33 | held_34);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_35 <= ~(isOff & _GEN_34) & (isOn & _GEN_34 | held_35);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_36 <= ~(isOff & _GEN_35) & (isOn & _GEN_35 | held_36);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_37 <= ~(isOff & _GEN_36) & (isOn & _GEN_36 | held_37);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_38 <= ~(isOff & _GEN_37) & (isOn & _GEN_37 | held_38);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_39 <= ~(isOff & _GEN_38) & (isOn & _GEN_38 | held_39);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_40 <= ~(isOff & _GEN_39) & (isOn & _GEN_39 | held_40);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_41 <= ~(isOff & _GEN_40) & (isOn & _GEN_40 | held_41);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_42 <= ~(isOff & _GEN_41) & (isOn & _GEN_41 | held_42);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_43 <= ~(isOff & _GEN_42) & (isOn & _GEN_42 | held_43);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_44 <= ~(isOff & _GEN_43) & (isOn & _GEN_43 | held_44);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_45 <= ~(isOff & _GEN_44) & (isOn & _GEN_44 | held_45);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_46 <= ~(isOff & _GEN_45) & (isOn & _GEN_45 | held_46);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_47 <= ~(isOff & _GEN_46) & (isOn & _GEN_46 | held_47);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_48 <= ~(isOff & _GEN_47) & (isOn & _GEN_47 | held_48);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_49 <= ~(isOff & _GEN_48) & (isOn & _GEN_48 | held_49);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_50 <= ~(isOff & _GEN_49) & (isOn & _GEN_49 | held_50);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_51 <= ~(isOff & _GEN_50) & (isOn & _GEN_50 | held_51);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_52 <= ~(isOff & _GEN_51) & (isOn & _GEN_51 | held_52);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_53 <= ~(isOff & _GEN_52) & (isOn & _GEN_52 | held_53);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_54 <= ~(isOff & _GEN_53) & (isOn & _GEN_53 | held_54);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_55 <= ~(isOff & _GEN_54) & (isOn & _GEN_54 | held_55);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_56 <= ~(isOff & _GEN_55) & (isOn & _GEN_55 | held_56);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_57 <= ~(isOff & _GEN_56) & (isOn & _GEN_56 | held_57);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_58 <= ~(isOff & _GEN_57) & (isOn & _GEN_57 | held_58);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_59 <= ~(isOff & _GEN_58) & (isOn & _GEN_58 | held_59);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_60 <= ~(isOff & _GEN_59) & (isOn & _GEN_59 | held_60);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_61 <= ~(isOff & _GEN_60) & (isOn & _GEN_60 | held_61);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_62 <= ~(isOff & _GEN_61) & (isOn & _GEN_61 | held_62);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_63 <= ~(isOff & _GEN_62) & (isOn & _GEN_62 | held_63);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_64 <= ~(isOff & _GEN_63) & (isOn & _GEN_63 | held_64);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_65 <= ~(isOff & _GEN_64) & (isOn & _GEN_64 | held_65);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_66 <= ~(isOff & _GEN_65) & (isOn & _GEN_65 | held_66);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_67 <= ~(isOff & _GEN_66) & (isOn & _GEN_66 | held_67);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_68 <= ~(isOff & _GEN_67) & (isOn & _GEN_67 | held_68);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_69 <= ~(isOff & _GEN_68) & (isOn & _GEN_68 | held_69);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_70 <= ~(isOff & _GEN_69) & (isOn & _GEN_69 | held_70);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_71 <= ~(isOff & _GEN_70) & (isOn & _GEN_70 | held_71);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_72 <= ~(isOff & _GEN_71) & (isOn & _GEN_71 | held_72);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_73 <= ~(isOff & _GEN_72) & (isOn & _GEN_72 | held_73);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_74 <= ~(isOff & _GEN_73) & (isOn & _GEN_73 | held_74);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_75 <= ~(isOff & _GEN_74) & (isOn & _GEN_74 | held_75);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_76 <= ~(isOff & _GEN_75) & (isOn & _GEN_75 | held_76);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_77 <= ~(isOff & _GEN_76) & (isOn & _GEN_76 | held_77);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_78 <= ~(isOff & _GEN_77) & (isOn & _GEN_77 | held_78);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_79 <= ~(isOff & _GEN_78) & (isOn & _GEN_78 | held_79);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_80 <= ~(isOff & _GEN_79) & (isOn & _GEN_79 | held_80);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_81 <= ~(isOff & _GEN_80) & (isOn & _GEN_80 | held_81);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_82 <= ~(isOff & _GEN_81) & (isOn & _GEN_81 | held_82);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_83 <= ~(isOff & _GEN_82) & (isOn & _GEN_82 | held_83);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_84 <= ~(isOff & _GEN_83) & (isOn & _GEN_83 | held_84);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_85 <= ~(isOff & _GEN_84) & (isOn & _GEN_84 | held_85);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_86 <= ~(isOff & _GEN_85) & (isOn & _GEN_85 | held_86);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_87 <= ~(isOff & _GEN_86) & (isOn & _GEN_86 | held_87);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_88 <= ~(isOff & _GEN_87) & (isOn & _GEN_87 | held_88);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_89 <= ~(isOff & _GEN_88) & (isOn & _GEN_88 | held_89);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_90 <= ~(isOff & _GEN_89) & (isOn & _GEN_89 | held_90);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_91 <= ~(isOff & _GEN_90) & (isOn & _GEN_90 | held_91);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_92 <= ~(isOff & _GEN_91) & (isOn & _GEN_91 | held_92);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_93 <= ~(isOff & _GEN_92) & (isOn & _GEN_92 | held_93);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_94 <= ~(isOff & _GEN_93) & (isOn & _GEN_93 | held_94);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_95 <= ~(isOff & _GEN_94) & (isOn & _GEN_94 | held_95);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_96 <= ~(isOff & _GEN_95) & (isOn & _GEN_95 | held_96);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_97 <= ~(isOff & _GEN_96) & (isOn & _GEN_96 | held_97);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_98 <= ~(isOff & _GEN_97) & (isOn & _GEN_97 | held_98);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_99 <= ~(isOff & _GEN_98) & (isOn & _GEN_98 | held_99);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_100 <= ~(isOff & _GEN_99) & (isOn & _GEN_99 | held_100);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_101 <= ~(isOff & _GEN_100) & (isOn & _GEN_100 | held_101);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_102 <= ~(isOff & _GEN_101) & (isOn & _GEN_101 | held_102);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_103 <= ~(isOff & _GEN_102) & (isOn & _GEN_102 | held_103);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_104 <= ~(isOff & _GEN_103) & (isOn & _GEN_103 | held_104);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_105 <= ~(isOff & _GEN_104) & (isOn & _GEN_104 | held_105);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_106 <= ~(isOff & _GEN_105) & (isOn & _GEN_105 | held_106);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_107 <= ~(isOff & _GEN_106) & (isOn & _GEN_106 | held_107);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_108 <= ~(isOff & _GEN_107) & (isOn & _GEN_107 | held_108);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_109 <= ~(isOff & _GEN_108) & (isOn & _GEN_108 | held_109);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_110 <= ~(isOff & _GEN_109) & (isOn & _GEN_109 | held_110);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_111 <= ~(isOff & _GEN_110) & (isOn & _GEN_110 | held_111);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_112 <= ~(isOff & _GEN_111) & (isOn & _GEN_111 | held_112);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_113 <= ~(isOff & _GEN_112) & (isOn & _GEN_112 | held_113);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_114 <= ~(isOff & _GEN_113) & (isOn & _GEN_113 | held_114);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_115 <= ~(isOff & _GEN_114) & (isOn & _GEN_114 | held_115);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_116 <= ~(isOff & _GEN_115) & (isOn & _GEN_115 | held_116);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_117 <= ~(isOff & _GEN_116) & (isOn & _GEN_116 | held_117);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_118 <= ~(isOff & _GEN_117) & (isOn & _GEN_117 | held_118);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_119 <= ~(isOff & _GEN_118) & (isOn & _GEN_118 | held_119);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_120 <= ~(isOff & _GEN_119) & (isOn & _GEN_119 | held_120);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_121 <= ~(isOff & _GEN_120) & (isOn & _GEN_120 | held_121);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_122 <= ~(isOff & _GEN_121) & (isOn & _GEN_121 | held_122);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_123 <= ~(isOff & _GEN_122) & (isOn & _GEN_122 | held_123);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_124 <= ~(isOff & _GEN_123) & (isOn & _GEN_123 | held_124);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_125 <= ~(isOff & _GEN_124) & (isOn & _GEN_124 | held_125);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
-      held_126 <= ~(isOff & _GEN_125) & (isOn & _GEN_125 | held_126);	// \\src\\main\\scala\\MidiUart.scala:147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
+           & _parser_io_msg_bits_data2 == 7'h0);	// \\src\\main\\scala\\MidiUart.scala:143:22, :149:27, :152:{30,64}, :154:{13,22,41,68,84}
+      automatic logic _GEN = _parser_io_msg_bits_data1 == 7'h0;	// \\src\\main\\scala\\MidiUart.scala:143:22, :152:64, :165:35
+      automatic logic _GEN_0 = _parser_io_msg_bits_data1 == 7'h1;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_1 = _parser_io_msg_bits_data1 == 7'h2;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_2 = _parser_io_msg_bits_data1 == 7'h3;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_3 = _parser_io_msg_bits_data1 == 7'h4;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_4 = _parser_io_msg_bits_data1 == 7'h5;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_5 = _parser_io_msg_bits_data1 == 7'h6;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_6 = _parser_io_msg_bits_data1 == 7'h7;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_7 = _parser_io_msg_bits_data1 == 7'h8;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_8 = _parser_io_msg_bits_data1 == 7'h9;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_9 = _parser_io_msg_bits_data1 == 7'hA;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_10 = _parser_io_msg_bits_data1 == 7'hB;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_11 = _parser_io_msg_bits_data1 == 7'hC;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_12 = _parser_io_msg_bits_data1 == 7'hD;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_13 = _parser_io_msg_bits_data1 == 7'hE;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_14 = _parser_io_msg_bits_data1 == 7'hF;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_15 = _parser_io_msg_bits_data1 == 7'h10;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_16 = _parser_io_msg_bits_data1 == 7'h11;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_17 = _parser_io_msg_bits_data1 == 7'h12;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_18 = _parser_io_msg_bits_data1 == 7'h13;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_19 = _parser_io_msg_bits_data1 == 7'h14;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_20 = _parser_io_msg_bits_data1 == 7'h15;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_21 = _parser_io_msg_bits_data1 == 7'h16;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_22 = _parser_io_msg_bits_data1 == 7'h17;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_23 = _parser_io_msg_bits_data1 == 7'h18;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_24 = _parser_io_msg_bits_data1 == 7'h19;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_25 = _parser_io_msg_bits_data1 == 7'h1A;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_26 = _parser_io_msg_bits_data1 == 7'h1B;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_27 = _parser_io_msg_bits_data1 == 7'h1C;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_28 = _parser_io_msg_bits_data1 == 7'h1D;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_29 = _parser_io_msg_bits_data1 == 7'h1E;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_30 = _parser_io_msg_bits_data1 == 7'h1F;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_31 = _parser_io_msg_bits_data1 == 7'h20;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_32 = _parser_io_msg_bits_data1 == 7'h21;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_33 = _parser_io_msg_bits_data1 == 7'h22;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_34 = _parser_io_msg_bits_data1 == 7'h23;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_35 = _parser_io_msg_bits_data1 == 7'h24;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_36 = _parser_io_msg_bits_data1 == 7'h25;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_37 = _parser_io_msg_bits_data1 == 7'h26;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_38 = _parser_io_msg_bits_data1 == 7'h27;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_39 = _parser_io_msg_bits_data1 == 7'h28;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_40 = _parser_io_msg_bits_data1 == 7'h29;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_41 = _parser_io_msg_bits_data1 == 7'h2A;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_42 = _parser_io_msg_bits_data1 == 7'h2B;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_43 = _parser_io_msg_bits_data1 == 7'h2C;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_44 = _parser_io_msg_bits_data1 == 7'h2D;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_45 = _parser_io_msg_bits_data1 == 7'h2E;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_46 = _parser_io_msg_bits_data1 == 7'h2F;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_47 = _parser_io_msg_bits_data1 == 7'h30;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_48 = _parser_io_msg_bits_data1 == 7'h31;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_49 = _parser_io_msg_bits_data1 == 7'h32;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_50 = _parser_io_msg_bits_data1 == 7'h33;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_51 = _parser_io_msg_bits_data1 == 7'h34;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_52 = _parser_io_msg_bits_data1 == 7'h35;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_53 = _parser_io_msg_bits_data1 == 7'h36;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_54 = _parser_io_msg_bits_data1 == 7'h37;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_55 = _parser_io_msg_bits_data1 == 7'h38;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_56 = _parser_io_msg_bits_data1 == 7'h39;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_57 = _parser_io_msg_bits_data1 == 7'h3A;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_58 = _parser_io_msg_bits_data1 == 7'h3B;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_59 = _parser_io_msg_bits_data1 == 7'h3C;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_60 = _parser_io_msg_bits_data1 == 7'h3D;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_61 = _parser_io_msg_bits_data1 == 7'h3E;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_62 = _parser_io_msg_bits_data1 == 7'h3F;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_63 = _parser_io_msg_bits_data1 == 7'h40;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_64 = _parser_io_msg_bits_data1 == 7'h41;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_65 = _parser_io_msg_bits_data1 == 7'h42;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_66 = _parser_io_msg_bits_data1 == 7'h43;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_67 = _parser_io_msg_bits_data1 == 7'h44;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_68 = _parser_io_msg_bits_data1 == 7'h45;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_69 = _parser_io_msg_bits_data1 == 7'h46;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_70 = _parser_io_msg_bits_data1 == 7'h47;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_71 = _parser_io_msg_bits_data1 == 7'h48;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_72 = _parser_io_msg_bits_data1 == 7'h49;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_73 = _parser_io_msg_bits_data1 == 7'h4A;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_74 = _parser_io_msg_bits_data1 == 7'h4B;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_75 = _parser_io_msg_bits_data1 == 7'h4C;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_76 = _parser_io_msg_bits_data1 == 7'h4D;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_77 = _parser_io_msg_bits_data1 == 7'h4E;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_78 = _parser_io_msg_bits_data1 == 7'h4F;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_79 = _parser_io_msg_bits_data1 == 7'h50;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_80 = _parser_io_msg_bits_data1 == 7'h51;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_81 = _parser_io_msg_bits_data1 == 7'h52;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_82 = _parser_io_msg_bits_data1 == 7'h53;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_83 = _parser_io_msg_bits_data1 == 7'h54;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_84 = _parser_io_msg_bits_data1 == 7'h55;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_85 = _parser_io_msg_bits_data1 == 7'h56;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_86 = _parser_io_msg_bits_data1 == 7'h57;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_87 = _parser_io_msg_bits_data1 == 7'h58;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_88 = _parser_io_msg_bits_data1 == 7'h59;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_89 = _parser_io_msg_bits_data1 == 7'h5A;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_90 = _parser_io_msg_bits_data1 == 7'h5B;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_91 = _parser_io_msg_bits_data1 == 7'h5C;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_92 = _parser_io_msg_bits_data1 == 7'h5D;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_93 = _parser_io_msg_bits_data1 == 7'h5E;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_94 = _parser_io_msg_bits_data1 == 7'h5F;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_95 = _parser_io_msg_bits_data1 == 7'h60;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_96 = _parser_io_msg_bits_data1 == 7'h61;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_97 = _parser_io_msg_bits_data1 == 7'h62;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_98 = _parser_io_msg_bits_data1 == 7'h63;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_99 = _parser_io_msg_bits_data1 == 7'h64;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_100 = _parser_io_msg_bits_data1 == 7'h65;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_101 = _parser_io_msg_bits_data1 == 7'h66;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_102 = _parser_io_msg_bits_data1 == 7'h67;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_103 = _parser_io_msg_bits_data1 == 7'h68;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_104 = _parser_io_msg_bits_data1 == 7'h69;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_105 = _parser_io_msg_bits_data1 == 7'h6A;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_106 = _parser_io_msg_bits_data1 == 7'h6B;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_107 = _parser_io_msg_bits_data1 == 7'h6C;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_108 = _parser_io_msg_bits_data1 == 7'h6D;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_109 = _parser_io_msg_bits_data1 == 7'h6E;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_110 = _parser_io_msg_bits_data1 == 7'h6F;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_111 = _parser_io_msg_bits_data1 == 7'h70;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_112 = _parser_io_msg_bits_data1 == 7'h71;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_113 = _parser_io_msg_bits_data1 == 7'h72;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_114 = _parser_io_msg_bits_data1 == 7'h73;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_115 = _parser_io_msg_bits_data1 == 7'h74;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_116 = _parser_io_msg_bits_data1 == 7'h75;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_117 = _parser_io_msg_bits_data1 == 7'h76;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_118 = _parser_io_msg_bits_data1 == 7'h77;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_119 = _parser_io_msg_bits_data1 == 7'h78;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_120 = _parser_io_msg_bits_data1 == 7'h79;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_121 = _parser_io_msg_bits_data1 == 7'h7A;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_122 = _parser_io_msg_bits_data1 == 7'h7B;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_123 = _parser_io_msg_bits_data1 == 7'h7C;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_124 = _parser_io_msg_bits_data1 == 7'h7D;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      automatic logic _GEN_125 = _parser_io_msg_bits_data1 == 7'h7E;	// \\src\\main\\scala\\MidiUart.scala:143:22, :165:35
+      held_0 <= ~(isOff & _GEN) & (isOn & _GEN | held_0);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_1 <= ~(isOff & _GEN_0) & (isOn & _GEN_0 | held_1);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_2 <= ~(isOff & _GEN_1) & (isOn & _GEN_1 | held_2);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_3 <= ~(isOff & _GEN_2) & (isOn & _GEN_2 | held_3);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_4 <= ~(isOff & _GEN_3) & (isOn & _GEN_3 | held_4);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_5 <= ~(isOff & _GEN_4) & (isOn & _GEN_4 | held_5);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_6 <= ~(isOff & _GEN_5) & (isOn & _GEN_5 | held_6);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_7 <= ~(isOff & _GEN_6) & (isOn & _GEN_6 | held_7);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_8 <= ~(isOff & _GEN_7) & (isOn & _GEN_7 | held_8);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_9 <= ~(isOff & _GEN_8) & (isOn & _GEN_8 | held_9);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_10 <= ~(isOff & _GEN_9) & (isOn & _GEN_9 | held_10);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_11 <= ~(isOff & _GEN_10) & (isOn & _GEN_10 | held_11);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_12 <= ~(isOff & _GEN_11) & (isOn & _GEN_11 | held_12);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_13 <= ~(isOff & _GEN_12) & (isOn & _GEN_12 | held_13);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_14 <= ~(isOff & _GEN_13) & (isOn & _GEN_13 | held_14);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_15 <= ~(isOff & _GEN_14) & (isOn & _GEN_14 | held_15);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_16 <= ~(isOff & _GEN_15) & (isOn & _GEN_15 | held_16);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_17 <= ~(isOff & _GEN_16) & (isOn & _GEN_16 | held_17);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_18 <= ~(isOff & _GEN_17) & (isOn & _GEN_17 | held_18);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_19 <= ~(isOff & _GEN_18) & (isOn & _GEN_18 | held_19);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_20 <= ~(isOff & _GEN_19) & (isOn & _GEN_19 | held_20);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_21 <= ~(isOff & _GEN_20) & (isOn & _GEN_20 | held_21);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_22 <= ~(isOff & _GEN_21) & (isOn & _GEN_21 | held_22);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_23 <= ~(isOff & _GEN_22) & (isOn & _GEN_22 | held_23);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_24 <= ~(isOff & _GEN_23) & (isOn & _GEN_23 | held_24);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_25 <= ~(isOff & _GEN_24) & (isOn & _GEN_24 | held_25);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_26 <= ~(isOff & _GEN_25) & (isOn & _GEN_25 | held_26);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_27 <= ~(isOff & _GEN_26) & (isOn & _GEN_26 | held_27);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_28 <= ~(isOff & _GEN_27) & (isOn & _GEN_27 | held_28);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_29 <= ~(isOff & _GEN_28) & (isOn & _GEN_28 | held_29);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_30 <= ~(isOff & _GEN_29) & (isOn & _GEN_29 | held_30);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_31 <= ~(isOff & _GEN_30) & (isOn & _GEN_30 | held_31);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_32 <= ~(isOff & _GEN_31) & (isOn & _GEN_31 | held_32);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_33 <= ~(isOff & _GEN_32) & (isOn & _GEN_32 | held_33);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_34 <= ~(isOff & _GEN_33) & (isOn & _GEN_33 | held_34);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_35 <= ~(isOff & _GEN_34) & (isOn & _GEN_34 | held_35);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_36 <= ~(isOff & _GEN_35) & (isOn & _GEN_35 | held_36);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_37 <= ~(isOff & _GEN_36) & (isOn & _GEN_36 | held_37);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_38 <= ~(isOff & _GEN_37) & (isOn & _GEN_37 | held_38);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_39 <= ~(isOff & _GEN_38) & (isOn & _GEN_38 | held_39);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_40 <= ~(isOff & _GEN_39) & (isOn & _GEN_39 | held_40);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_41 <= ~(isOff & _GEN_40) & (isOn & _GEN_40 | held_41);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_42 <= ~(isOff & _GEN_41) & (isOn & _GEN_41 | held_42);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_43 <= ~(isOff & _GEN_42) & (isOn & _GEN_42 | held_43);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_44 <= ~(isOff & _GEN_43) & (isOn & _GEN_43 | held_44);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_45 <= ~(isOff & _GEN_44) & (isOn & _GEN_44 | held_45);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_46 <= ~(isOff & _GEN_45) & (isOn & _GEN_45 | held_46);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_47 <= ~(isOff & _GEN_46) & (isOn & _GEN_46 | held_47);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_48 <= ~(isOff & _GEN_47) & (isOn & _GEN_47 | held_48);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_49 <= ~(isOff & _GEN_48) & (isOn & _GEN_48 | held_49);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_50 <= ~(isOff & _GEN_49) & (isOn & _GEN_49 | held_50);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_51 <= ~(isOff & _GEN_50) & (isOn & _GEN_50 | held_51);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_52 <= ~(isOff & _GEN_51) & (isOn & _GEN_51 | held_52);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_53 <= ~(isOff & _GEN_52) & (isOn & _GEN_52 | held_53);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_54 <= ~(isOff & _GEN_53) & (isOn & _GEN_53 | held_54);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_55 <= ~(isOff & _GEN_54) & (isOn & _GEN_54 | held_55);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_56 <= ~(isOff & _GEN_55) & (isOn & _GEN_55 | held_56);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_57 <= ~(isOff & _GEN_56) & (isOn & _GEN_56 | held_57);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_58 <= ~(isOff & _GEN_57) & (isOn & _GEN_57 | held_58);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_59 <= ~(isOff & _GEN_58) & (isOn & _GEN_58 | held_59);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_60 <= ~(isOff & _GEN_59) & (isOn & _GEN_59 | held_60);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_61 <= ~(isOff & _GEN_60) & (isOn & _GEN_60 | held_61);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_62 <= ~(isOff & _GEN_61) & (isOn & _GEN_61 | held_62);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_63 <= ~(isOff & _GEN_62) & (isOn & _GEN_62 | held_63);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_64 <= ~(isOff & _GEN_63) & (isOn & _GEN_63 | held_64);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_65 <= ~(isOff & _GEN_64) & (isOn & _GEN_64 | held_65);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_66 <= ~(isOff & _GEN_65) & (isOn & _GEN_65 | held_66);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_67 <= ~(isOff & _GEN_66) & (isOn & _GEN_66 | held_67);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_68 <= ~(isOff & _GEN_67) & (isOn & _GEN_67 | held_68);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_69 <= ~(isOff & _GEN_68) & (isOn & _GEN_68 | held_69);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_70 <= ~(isOff & _GEN_69) & (isOn & _GEN_69 | held_70);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_71 <= ~(isOff & _GEN_70) & (isOn & _GEN_70 | held_71);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_72 <= ~(isOff & _GEN_71) & (isOn & _GEN_71 | held_72);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_73 <= ~(isOff & _GEN_72) & (isOn & _GEN_72 | held_73);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_74 <= ~(isOff & _GEN_73) & (isOn & _GEN_73 | held_74);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_75 <= ~(isOff & _GEN_74) & (isOn & _GEN_74 | held_75);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_76 <= ~(isOff & _GEN_75) & (isOn & _GEN_75 | held_76);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_77 <= ~(isOff & _GEN_76) & (isOn & _GEN_76 | held_77);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_78 <= ~(isOff & _GEN_77) & (isOn & _GEN_77 | held_78);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_79 <= ~(isOff & _GEN_78) & (isOn & _GEN_78 | held_79);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_80 <= ~(isOff & _GEN_79) & (isOn & _GEN_79 | held_80);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_81 <= ~(isOff & _GEN_80) & (isOn & _GEN_80 | held_81);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_82 <= ~(isOff & _GEN_81) & (isOn & _GEN_81 | held_82);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_83 <= ~(isOff & _GEN_82) & (isOn & _GEN_82 | held_83);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_84 <= ~(isOff & _GEN_83) & (isOn & _GEN_83 | held_84);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_85 <= ~(isOff & _GEN_84) & (isOn & _GEN_84 | held_85);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_86 <= ~(isOff & _GEN_85) & (isOn & _GEN_85 | held_86);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_87 <= ~(isOff & _GEN_86) & (isOn & _GEN_86 | held_87);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_88 <= ~(isOff & _GEN_87) & (isOn & _GEN_87 | held_88);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_89 <= ~(isOff & _GEN_88) & (isOn & _GEN_88 | held_89);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_90 <= ~(isOff & _GEN_89) & (isOn & _GEN_89 | held_90);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_91 <= ~(isOff & _GEN_90) & (isOn & _GEN_90 | held_91);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_92 <= ~(isOff & _GEN_91) & (isOn & _GEN_91 | held_92);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_93 <= ~(isOff & _GEN_92) & (isOn & _GEN_92 | held_93);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_94 <= ~(isOff & _GEN_93) & (isOn & _GEN_93 | held_94);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_95 <= ~(isOff & _GEN_94) & (isOn & _GEN_94 | held_95);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_96 <= ~(isOff & _GEN_95) & (isOn & _GEN_95 | held_96);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_97 <= ~(isOff & _GEN_96) & (isOn & _GEN_96 | held_97);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_98 <= ~(isOff & _GEN_97) & (isOn & _GEN_97 | held_98);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_99 <= ~(isOff & _GEN_98) & (isOn & _GEN_98 | held_99);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_100 <= ~(isOff & _GEN_99) & (isOn & _GEN_99 | held_100);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_101 <= ~(isOff & _GEN_100) & (isOn & _GEN_100 | held_101);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_102 <= ~(isOff & _GEN_101) & (isOn & _GEN_101 | held_102);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_103 <= ~(isOff & _GEN_102) & (isOn & _GEN_102 | held_103);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_104 <= ~(isOff & _GEN_103) & (isOn & _GEN_103 | held_104);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_105 <= ~(isOff & _GEN_104) & (isOn & _GEN_104 | held_105);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_106 <= ~(isOff & _GEN_105) & (isOn & _GEN_105 | held_106);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_107 <= ~(isOff & _GEN_106) & (isOn & _GEN_106 | held_107);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_108 <= ~(isOff & _GEN_107) & (isOn & _GEN_107 | held_108);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_109 <= ~(isOff & _GEN_108) & (isOn & _GEN_108 | held_109);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_110 <= ~(isOff & _GEN_109) & (isOn & _GEN_109 | held_110);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_111 <= ~(isOff & _GEN_110) & (isOn & _GEN_110 | held_111);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_112 <= ~(isOff & _GEN_111) & (isOn & _GEN_111 | held_112);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_113 <= ~(isOff & _GEN_112) & (isOn & _GEN_112 | held_113);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_114 <= ~(isOff & _GEN_113) & (isOn & _GEN_113 | held_114);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_115 <= ~(isOff & _GEN_114) & (isOn & _GEN_114 | held_115);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_116 <= ~(isOff & _GEN_115) & (isOn & _GEN_115 | held_116);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_117 <= ~(isOff & _GEN_116) & (isOn & _GEN_116 | held_117);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_118 <= ~(isOff & _GEN_117) & (isOn & _GEN_117 | held_118);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_119 <= ~(isOff & _GEN_118) & (isOn & _GEN_118 | held_119);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_120 <= ~(isOff & _GEN_119) & (isOn & _GEN_119 | held_120);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_121 <= ~(isOff & _GEN_120) & (isOn & _GEN_120 | held_121);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_122 <= ~(isOff & _GEN_121) & (isOn & _GEN_121 | held_122);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_123 <= ~(isOff & _GEN_122) & (isOn & _GEN_122 | held_123);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_124 <= ~(isOff & _GEN_123) & (isOn & _GEN_123 | held_124);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_125 <= ~(isOff & _GEN_124) & (isOn & _GEN_124 | held_125);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
+      held_126 <= ~(isOff & _GEN_125) & (isOn & _GEN_125 | held_126);	// \\src\\main\\scala\\MidiUart.scala:152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
       held_127 <=
         ~(isOff & (&_parser_io_msg_bits_data1))
-        & (isOn & (&_parser_io_msg_bits_data1) | held_127);	// \\src\\main\\scala\\MidiUart.scala:138:22, :147:48, :149:13, :159:21, :160:{14,35}, :161:{15,36}
+        & (isOn & (&_parser_io_msg_bits_data1) | held_127);	// \\src\\main\\scala\\MidiUart.scala:143:22, :152:48, :154:13, :164:21, :165:{14,35}, :166:{15,36}
     end
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\MidiUart.scala:133:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:133:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:133:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\MidiUart.scala:138:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:138:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\MidiUart.scala:138:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\MidiUart.scala:133:7
-      automatic logic [31:0] _RANDOM[0:3];	// \\src\\main\\scala\\MidiUart.scala:133:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:133:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:133:7
+    initial begin	// \\src\\main\\scala\\MidiUart.scala:138:7
+      automatic logic [31:0] _RANDOM[0:3];	// \\src\\main\\scala\\MidiUart.scala:138:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:138:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\MidiUart.scala:138:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\MidiUart.scala:133:7
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\MidiUart.scala:138:7
         for (logic [2:0] i = 3'h0; i < 3'h4; i += 3'h1) begin
-          _RANDOM[i[1:0]] = `RANDOM;	// \\src\\main\\scala\\MidiUart.scala:133:7
-        end	// \\src\\main\\scala\\MidiUart.scala:133:7
-        held_0 = _RANDOM[2'h0][0];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_1 = _RANDOM[2'h0][1];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_2 = _RANDOM[2'h0][2];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_3 = _RANDOM[2'h0][3];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_4 = _RANDOM[2'h0][4];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_5 = _RANDOM[2'h0][5];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_6 = _RANDOM[2'h0][6];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_7 = _RANDOM[2'h0][7];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_8 = _RANDOM[2'h0][8];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_9 = _RANDOM[2'h0][9];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_10 = _RANDOM[2'h0][10];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_11 = _RANDOM[2'h0][11];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_12 = _RANDOM[2'h0][12];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_13 = _RANDOM[2'h0][13];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_14 = _RANDOM[2'h0][14];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_15 = _RANDOM[2'h0][15];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_16 = _RANDOM[2'h0][16];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_17 = _RANDOM[2'h0][17];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_18 = _RANDOM[2'h0][18];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_19 = _RANDOM[2'h0][19];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_20 = _RANDOM[2'h0][20];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_21 = _RANDOM[2'h0][21];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_22 = _RANDOM[2'h0][22];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_23 = _RANDOM[2'h0][23];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_24 = _RANDOM[2'h0][24];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_25 = _RANDOM[2'h0][25];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_26 = _RANDOM[2'h0][26];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_27 = _RANDOM[2'h0][27];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_28 = _RANDOM[2'h0][28];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_29 = _RANDOM[2'h0][29];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_30 = _RANDOM[2'h0][30];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_31 = _RANDOM[2'h0][31];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_32 = _RANDOM[2'h1][0];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_33 = _RANDOM[2'h1][1];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_34 = _RANDOM[2'h1][2];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_35 = _RANDOM[2'h1][3];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_36 = _RANDOM[2'h1][4];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_37 = _RANDOM[2'h1][5];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_38 = _RANDOM[2'h1][6];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_39 = _RANDOM[2'h1][7];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_40 = _RANDOM[2'h1][8];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_41 = _RANDOM[2'h1][9];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_42 = _RANDOM[2'h1][10];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_43 = _RANDOM[2'h1][11];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_44 = _RANDOM[2'h1][12];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_45 = _RANDOM[2'h1][13];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_46 = _RANDOM[2'h1][14];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_47 = _RANDOM[2'h1][15];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_48 = _RANDOM[2'h1][16];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_49 = _RANDOM[2'h1][17];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_50 = _RANDOM[2'h1][18];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_51 = _RANDOM[2'h1][19];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_52 = _RANDOM[2'h1][20];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_53 = _RANDOM[2'h1][21];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_54 = _RANDOM[2'h1][22];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_55 = _RANDOM[2'h1][23];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_56 = _RANDOM[2'h1][24];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_57 = _RANDOM[2'h1][25];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_58 = _RANDOM[2'h1][26];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_59 = _RANDOM[2'h1][27];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_60 = _RANDOM[2'h1][28];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_61 = _RANDOM[2'h1][29];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_62 = _RANDOM[2'h1][30];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_63 = _RANDOM[2'h1][31];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_64 = _RANDOM[2'h2][0];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_65 = _RANDOM[2'h2][1];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_66 = _RANDOM[2'h2][2];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_67 = _RANDOM[2'h2][3];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_68 = _RANDOM[2'h2][4];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_69 = _RANDOM[2'h2][5];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_70 = _RANDOM[2'h2][6];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_71 = _RANDOM[2'h2][7];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_72 = _RANDOM[2'h2][8];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_73 = _RANDOM[2'h2][9];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_74 = _RANDOM[2'h2][10];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_75 = _RANDOM[2'h2][11];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_76 = _RANDOM[2'h2][12];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_77 = _RANDOM[2'h2][13];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_78 = _RANDOM[2'h2][14];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_79 = _RANDOM[2'h2][15];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_80 = _RANDOM[2'h2][16];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_81 = _RANDOM[2'h2][17];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_82 = _RANDOM[2'h2][18];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_83 = _RANDOM[2'h2][19];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_84 = _RANDOM[2'h2][20];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_85 = _RANDOM[2'h2][21];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_86 = _RANDOM[2'h2][22];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_87 = _RANDOM[2'h2][23];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_88 = _RANDOM[2'h2][24];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_89 = _RANDOM[2'h2][25];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_90 = _RANDOM[2'h2][26];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_91 = _RANDOM[2'h2][27];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_92 = _RANDOM[2'h2][28];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_93 = _RANDOM[2'h2][29];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_94 = _RANDOM[2'h2][30];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_95 = _RANDOM[2'h2][31];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_96 = _RANDOM[2'h3][0];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_97 = _RANDOM[2'h3][1];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_98 = _RANDOM[2'h3][2];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_99 = _RANDOM[2'h3][3];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_100 = _RANDOM[2'h3][4];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_101 = _RANDOM[2'h3][5];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_102 = _RANDOM[2'h3][6];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_103 = _RANDOM[2'h3][7];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_104 = _RANDOM[2'h3][8];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_105 = _RANDOM[2'h3][9];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_106 = _RANDOM[2'h3][10];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_107 = _RANDOM[2'h3][11];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_108 = _RANDOM[2'h3][12];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_109 = _RANDOM[2'h3][13];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_110 = _RANDOM[2'h3][14];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_111 = _RANDOM[2'h3][15];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_112 = _RANDOM[2'h3][16];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_113 = _RANDOM[2'h3][17];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_114 = _RANDOM[2'h3][18];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_115 = _RANDOM[2'h3][19];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_116 = _RANDOM[2'h3][20];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_117 = _RANDOM[2'h3][21];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_118 = _RANDOM[2'h3][22];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_119 = _RANDOM[2'h3][23];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_120 = _RANDOM[2'h3][24];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_121 = _RANDOM[2'h3][25];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_122 = _RANDOM[2'h3][26];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_123 = _RANDOM[2'h3][27];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_124 = _RANDOM[2'h3][28];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_125 = _RANDOM[2'h3][29];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_126 = _RANDOM[2'h3][30];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
-        held_127 = _RANDOM[2'h3][31];	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21
+          _RANDOM[i[1:0]] = `RANDOM;	// \\src\\main\\scala\\MidiUart.scala:138:7
+        end	// \\src\\main\\scala\\MidiUart.scala:138:7
+        held_0 = _RANDOM[2'h0][0];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_1 = _RANDOM[2'h0][1];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_2 = _RANDOM[2'h0][2];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_3 = _RANDOM[2'h0][3];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_4 = _RANDOM[2'h0][4];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_5 = _RANDOM[2'h0][5];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_6 = _RANDOM[2'h0][6];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_7 = _RANDOM[2'h0][7];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_8 = _RANDOM[2'h0][8];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_9 = _RANDOM[2'h0][9];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_10 = _RANDOM[2'h0][10];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_11 = _RANDOM[2'h0][11];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_12 = _RANDOM[2'h0][12];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_13 = _RANDOM[2'h0][13];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_14 = _RANDOM[2'h0][14];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_15 = _RANDOM[2'h0][15];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_16 = _RANDOM[2'h0][16];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_17 = _RANDOM[2'h0][17];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_18 = _RANDOM[2'h0][18];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_19 = _RANDOM[2'h0][19];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_20 = _RANDOM[2'h0][20];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_21 = _RANDOM[2'h0][21];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_22 = _RANDOM[2'h0][22];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_23 = _RANDOM[2'h0][23];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_24 = _RANDOM[2'h0][24];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_25 = _RANDOM[2'h0][25];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_26 = _RANDOM[2'h0][26];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_27 = _RANDOM[2'h0][27];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_28 = _RANDOM[2'h0][28];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_29 = _RANDOM[2'h0][29];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_30 = _RANDOM[2'h0][30];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_31 = _RANDOM[2'h0][31];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_32 = _RANDOM[2'h1][0];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_33 = _RANDOM[2'h1][1];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_34 = _RANDOM[2'h1][2];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_35 = _RANDOM[2'h1][3];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_36 = _RANDOM[2'h1][4];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_37 = _RANDOM[2'h1][5];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_38 = _RANDOM[2'h1][6];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_39 = _RANDOM[2'h1][7];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_40 = _RANDOM[2'h1][8];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_41 = _RANDOM[2'h1][9];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_42 = _RANDOM[2'h1][10];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_43 = _RANDOM[2'h1][11];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_44 = _RANDOM[2'h1][12];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_45 = _RANDOM[2'h1][13];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_46 = _RANDOM[2'h1][14];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_47 = _RANDOM[2'h1][15];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_48 = _RANDOM[2'h1][16];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_49 = _RANDOM[2'h1][17];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_50 = _RANDOM[2'h1][18];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_51 = _RANDOM[2'h1][19];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_52 = _RANDOM[2'h1][20];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_53 = _RANDOM[2'h1][21];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_54 = _RANDOM[2'h1][22];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_55 = _RANDOM[2'h1][23];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_56 = _RANDOM[2'h1][24];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_57 = _RANDOM[2'h1][25];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_58 = _RANDOM[2'h1][26];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_59 = _RANDOM[2'h1][27];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_60 = _RANDOM[2'h1][28];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_61 = _RANDOM[2'h1][29];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_62 = _RANDOM[2'h1][30];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_63 = _RANDOM[2'h1][31];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_64 = _RANDOM[2'h2][0];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_65 = _RANDOM[2'h2][1];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_66 = _RANDOM[2'h2][2];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_67 = _RANDOM[2'h2][3];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_68 = _RANDOM[2'h2][4];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_69 = _RANDOM[2'h2][5];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_70 = _RANDOM[2'h2][6];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_71 = _RANDOM[2'h2][7];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_72 = _RANDOM[2'h2][8];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_73 = _RANDOM[2'h2][9];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_74 = _RANDOM[2'h2][10];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_75 = _RANDOM[2'h2][11];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_76 = _RANDOM[2'h2][12];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_77 = _RANDOM[2'h2][13];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_78 = _RANDOM[2'h2][14];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_79 = _RANDOM[2'h2][15];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_80 = _RANDOM[2'h2][16];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_81 = _RANDOM[2'h2][17];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_82 = _RANDOM[2'h2][18];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_83 = _RANDOM[2'h2][19];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_84 = _RANDOM[2'h2][20];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_85 = _RANDOM[2'h2][21];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_86 = _RANDOM[2'h2][22];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_87 = _RANDOM[2'h2][23];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_88 = _RANDOM[2'h2][24];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_89 = _RANDOM[2'h2][25];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_90 = _RANDOM[2'h2][26];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_91 = _RANDOM[2'h2][27];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_92 = _RANDOM[2'h2][28];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_93 = _RANDOM[2'h2][29];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_94 = _RANDOM[2'h2][30];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_95 = _RANDOM[2'h2][31];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_96 = _RANDOM[2'h3][0];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_97 = _RANDOM[2'h3][1];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_98 = _RANDOM[2'h3][2];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_99 = _RANDOM[2'h3][3];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_100 = _RANDOM[2'h3][4];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_101 = _RANDOM[2'h3][5];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_102 = _RANDOM[2'h3][6];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_103 = _RANDOM[2'h3][7];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_104 = _RANDOM[2'h3][8];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_105 = _RANDOM[2'h3][9];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_106 = _RANDOM[2'h3][10];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_107 = _RANDOM[2'h3][11];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_108 = _RANDOM[2'h3][12];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_109 = _RANDOM[2'h3][13];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_110 = _RANDOM[2'h3][14];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_111 = _RANDOM[2'h3][15];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_112 = _RANDOM[2'h3][16];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_113 = _RANDOM[2'h3][17];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_114 = _RANDOM[2'h3][18];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_115 = _RANDOM[2'h3][19];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_116 = _RANDOM[2'h3][20];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_117 = _RANDOM[2'h3][21];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_118 = _RANDOM[2'h3][22];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_119 = _RANDOM[2'h3][23];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_120 = _RANDOM[2'h3][24];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_121 = _RANDOM[2'h3][25];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_122 = _RANDOM[2'h3][26];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_123 = _RANDOM[2'h3][27];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_124 = _RANDOM[2'h3][28];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_125 = _RANDOM[2'h3][29];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_126 = _RANDOM[2'h3][30];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
+        held_127 = _RANDOM[2'h3][31];	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:133:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:133:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:138:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\MidiUart.scala:138:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  UartRx uart (	// \\src\\main\\scala\\MidiUart.scala:137:20
-    .clock        (clock),
-    .reset        (reset),
-    .io_rx        (io_rx),
-    .io_out_valid (_uart_io_out_valid),
-    .io_out_bits  (_uart_io_out_bits)
+  UartRx uart (	// \\src\\main\\scala\\MidiUart.scala:142:20
+    .clock            (clock),
+    .reset            (reset),
+    .io_rxd           (io_rx),
+    .io_channel_valid (_uart_io_channel_valid),
+    .io_channel_bits  (_uart_io_channel_bits)
   );
-  MidiParser parser (	// \\src\\main\\scala\\MidiUart.scala:138:22
+  MidiParser parser (	// \\src\\main\\scala\\MidiUart.scala:143:22
     .clock              (clock),
     .reset              (reset),
-    .io_in_valid        (_uart_io_out_valid),	// \\src\\main\\scala\\MidiUart.scala:137:20
-    .io_in_bits         (_uart_io_out_bits),	// \\src\\main\\scala\\MidiUart.scala:137:20
+    .io_in_valid        (_uart_io_channel_valid),	// \\src\\main\\scala\\MidiUart.scala:142:20
+    .io_in_bits         (_uart_io_channel_bits),	// \\src\\main\\scala\\MidiUart.scala:142:20
     .io_msg_valid       (_parser_io_msg_valid),
     .io_msg_bits_status (_parser_io_msg_bits_status),
     .io_msg_bits_data1  (_parser_io_msg_bits_data1),
     .io_msg_bits_data2  (_parser_io_msg_bits_data2)
   );
-  assign io_data1 = _parser_io_msg_bits_data1;	// \\src\\main\\scala\\MidiUart.scala:133:7, :138:22
+  assign io_data1 = _parser_io_msg_bits_data1;	// \\src\\main\\scala\\MidiUart.scala:138:7, :143:22
   assign io_held =
     {held_127,
      held_126,
@@ -1076,7 +1052,7 @@ module MidiTop(	// \\src\\main\\scala\\MidiUart.scala:133:7
      held_3,
      held_2,
      held_1,
-     held_0};	// \\src\\main\\scala\\MidiUart.scala:133:7, :159:21, :162:19
+     held_0};	// \\src\\main\\scala\\MidiUart.scala:138:7, :164:21, :167:19
 endmodule
 
 module PWMGenerator(	// \\src\\main\\scala\\Oscillator.scala:267:7
@@ -1244,14 +1220,14 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
   output        io_active	// \\src\\main\\scala\\ADSREnvelope.scala:17:14
 );
 
-  reg [15:0] tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
+  reg [14:0] tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
   reg [2:0]  state;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22
   reg [15:0] level;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22
   always @(posedge clock) begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
     if (reset) begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+      tick_c_value <= 15'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       state <= 3'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :73:17
-      level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, src/main/scala/chisel3/util/Counter.scala:61:40
+      level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22
     end
     else begin	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
       automatic logic tick;	// src/main/scala/chisel3/util/Counter.scala:73:24
@@ -1264,7 +1240,7 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
       automatic logic _GEN_5;	// \\src\\main\\scala\\ADSREnvelope.scala:52:29
       automatic logic _GEN_6;	// \\src\\main\\scala\\ADSREnvelope.scala:60:20
       automatic logic _GEN_7;	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
-      tick = tick_c_value == 16'hC34F;	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
+      tick = tick_c_value == 15'h61A7;	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
       _GEN = state == 3'h4;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :45:44
       _GEN_0 = io_gate & (state == 3'h0 | _GEN);	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :45:{16,26,35,44}, :73:17
       _GEN_1 = state == 3'h1;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :46:11, :47:33
@@ -1275,9 +1251,9 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
       _GEN_6 = {1'h0, level} < 17'hB5C3;	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22, :52:21, :60:20
       _GEN_7 = level < 16'h149;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :71:20
       if (tick)	// src/main/scala/chisel3/util/Counter.scala:73:24
-        tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+        tick_c_value <= 15'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       else	// src/main/scala/chisel3/util/Counter.scala:73:24
-        tick_c_value <= tick_c_value + 16'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
+        tick_c_value <= tick_c_value + 15'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
       if (_GEN_0)	// \\src\\main\\scala\\ADSREnvelope.scala:45:16
         state <= 3'h1;	// \\src\\main\\scala\\ADSREnvelope.scala:42:22, :46:11
       else if (_GEN_4)	// \\src\\main\\scala\\ADSREnvelope.scala:47:23
@@ -1314,7 +1290,7 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
         level <= 16'hB333;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :60:34
       else if (_GEN) begin	// \\src\\main\\scala\\ADSREnvelope.scala:45:44
         if (_GEN_7)	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
-          level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, src/main/scala/chisel3/util/Counter.scala:61:40
+          level <= 16'h0;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22
         else	// \\src\\main\\scala\\ADSREnvelope.scala:71:20
           level <= level - 16'h148;	// \\src\\main\\scala\\ADSREnvelope.scala:43:22, :75:26
       end
@@ -1333,9 +1309,9 @@ module ADSREnvelope(	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
         for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
           _RANDOM[i[0]] = `RANDOM;	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
         end	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
-        tick_c_value = _RANDOM[1'h0][15:0];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, src/main/scala/chisel3/util/Counter.scala:61:40
-        state = _RANDOM[1'h0][18:16];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :42:22, src/main/scala/chisel3/util/Counter.scala:61:40
-        level = {_RANDOM[1'h0][31:19], _RANDOM[1'h1][2:0]};	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22, src/main/scala/chisel3/util/Counter.scala:61:40
+        tick_c_value = _RANDOM[1'h0][14:0];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        state = _RANDOM[1'h0][17:15];	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :42:22, src/main/scala/chisel3/util/Counter.scala:61:40
+        level = {_RANDOM[1'h0][31:18], _RANDOM[1'h1][1:0]};	// \\src\\main\\scala\\ADSREnvelope.scala:4:7, :43:22, src/main/scala/chisel3/util/Counter.scala:61:40
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\ADSREnvelope.scala:4:7
@@ -1379,53 +1355,53 @@ module Synth(	// \\src\\main\\scala\\Synth.scala:11:7
   assign io_active = _active_adsr_io_active;	// \\src\\main\\scala\\Synth.scala:11:7, :31:22
 endmodule
 
-module FirstNSetBits(	// \\src\\main\\scala\\Utils.scala:64:7
-  input          clock,	// \\src\\main\\scala\\Utils.scala:64:7
-                 reset,	// \\src\\main\\scala\\Utils.scala:64:7
-  input  [127:0] io_in_bits,	// \\src\\main\\scala\\Utils.scala:70:14
-  output         io_out_valid,	// \\src\\main\\scala\\Utils.scala:70:14
-  output [6:0]   io_out_bits_idx_0,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_idx_1,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_idx_2,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_idx_3,	// \\src\\main\\scala\\Utils.scala:70:14
-  output         io_out_bits_valid_0,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_valid_1,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_valid_2,	// \\src\\main\\scala\\Utils.scala:70:14
-                 io_out_bits_valid_3	// \\src\\main\\scala\\Utils.scala:70:14
+module FirstNSetBits(	// \\src\\main\\scala\\Utils.scala:77:7
+  input          clock,	// \\src\\main\\scala\\Utils.scala:77:7
+                 reset,	// \\src\\main\\scala\\Utils.scala:77:7
+  input  [127:0] io_in_bits,	// \\src\\main\\scala\\Utils.scala:83:14
+  output         io_out_valid,	// \\src\\main\\scala\\Utils.scala:83:14
+  output [6:0]   io_out_bits_idx_0,	// \\src\\main\\scala\\Utils.scala:83:14
+                 io_out_bits_idx_1,	// \\src\\main\\scala\\Utils.scala:83:14
+                 io_out_bits_idx_2,	// \\src\\main\\scala\\Utils.scala:83:14
+                 io_out_bits_idx_3,	// \\src\\main\\scala\\Utils.scala:83:14
+  output         io_out_bits_valid_0,	// \\src\\main\\scala\\Utils.scala:83:14
+                 io_out_bits_valid_1,	// \\src\\main\\scala\\Utils.scala:83:14
+                 io_out_bits_valid_2,	// \\src\\main\\scala\\Utils.scala:83:14
+                 io_out_bits_valid_3	// \\src\\main\\scala\\Utils.scala:83:14
 );
 
-  reg  [1:0]   state;	// \\src\\main\\scala\\Utils.scala:76:22
-  reg  [127:0] bits;	// \\src\\main\\scala\\Utils.scala:78:17
-  reg  [1:0]   cnt;	// \\src\\main\\scala\\Utils.scala:79:16
-  reg  [6:0]   idx_0;	// \\src\\main\\scala\\Utils.scala:80:16
-  reg  [6:0]   idx_1;	// \\src\\main\\scala\\Utils.scala:80:16
-  reg  [6:0]   idx_2;	// \\src\\main\\scala\\Utils.scala:80:16
-  reg  [6:0]   idx_3;	// \\src\\main\\scala\\Utils.scala:80:16
-  reg          vld_0;	// \\src\\main\\scala\\Utils.scala:81:20
-  reg          vld_1;	// \\src\\main\\scala\\Utils.scala:81:20
-  reg          vld_2;	// \\src\\main\\scala\\Utils.scala:81:20
-  reg          vld_3;	// \\src\\main\\scala\\Utils.scala:81:20
-  wire         io_out_valid_0 = state == 2'h2;	// \\src\\main\\scala\\Utils.scala:76:22, :101:25
-  always @(posedge clock) begin	// \\src\\main\\scala\\Utils.scala:64:7
-    automatic logic [127:0] _oh_T_1;	// \\src\\main\\scala\\Utils.scala:84:26
-    automatic logic [127:0] oh;	// \\src\\main\\scala\\Utils.scala:84:17
-    automatic logic         _GEN;	// \\src\\main\\scala\\Utils.scala:105:17
-    automatic logic [63:0]  idx_hi;	// \\src\\main\\scala\\Utils.scala:84:17, src/main/scala/chisel3/util/OneHot.scala:30:18
+  reg  [1:0]   state;	// \\src\\main\\scala\\Utils.scala:89:22
+  reg  [127:0] bits;	// \\src\\main\\scala\\Utils.scala:91:17
+  reg  [1:0]   cnt;	// \\src\\main\\scala\\Utils.scala:92:16
+  reg  [6:0]   idx_0;	// \\src\\main\\scala\\Utils.scala:93:16
+  reg  [6:0]   idx_1;	// \\src\\main\\scala\\Utils.scala:93:16
+  reg  [6:0]   idx_2;	// \\src\\main\\scala\\Utils.scala:93:16
+  reg  [6:0]   idx_3;	// \\src\\main\\scala\\Utils.scala:93:16
+  reg          vld_0;	// \\src\\main\\scala\\Utils.scala:94:20
+  reg          vld_1;	// \\src\\main\\scala\\Utils.scala:94:20
+  reg          vld_2;	// \\src\\main\\scala\\Utils.scala:94:20
+  reg          vld_3;	// \\src\\main\\scala\\Utils.scala:94:20
+  wire         io_out_valid_0 = state == 2'h2;	// \\src\\main\\scala\\Utils.scala:89:22, :114:25
+  always @(posedge clock) begin	// \\src\\main\\scala\\Utils.scala:77:7
+    automatic logic [127:0] _oh_T_1;	// \\src\\main\\scala\\Utils.scala:97:26
+    automatic logic [127:0] oh;	// \\src\\main\\scala\\Utils.scala:97:17
+    automatic logic         _GEN;	// \\src\\main\\scala\\Utils.scala:118:17
+    automatic logic [63:0]  idx_hi;	// \\src\\main\\scala\\Utils.scala:97:17, src/main/scala/chisel3/util/OneHot.scala:30:18
     automatic logic [62:0]  _idx_T_1;	// src/main/scala/chisel3/util/OneHot.scala:32:28
     automatic logic [30:0]  _idx_T_3;	// src/main/scala/chisel3/util/OneHot.scala:32:28
     automatic logic [14:0]  _idx_T_5;	// src/main/scala/chisel3/util/OneHot.scala:32:28
     automatic logic [6:0]   _idx_T_7;	// src/main/scala/chisel3/util/OneHot.scala:32:28
     automatic logic [2:0]   _idx_T_9;	// src/main/scala/chisel3/util/OneHot.scala:32:28
     automatic logic [6:0]   _idx_T_18;	// src/main/scala/chisel3/util/OneHot.scala:32:10
-    automatic logic         _GEN_0;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
-    automatic logic         _GEN_1;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
-    automatic logic         _GEN_2;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
-    automatic logic         _GEN_3;	// \\src\\main\\scala\\Utils.scala:80:16, :105:17, :115:22, :116:18
-    _oh_T_1 = ~bits + 128'h1;	// \\src\\main\\scala\\Utils.scala:78:17, :84:{20,26}
-    oh = bits & _oh_T_1;	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}
-    _GEN = state == 2'h1;	// \\src\\main\\scala\\Utils.scala:76:22, :105:17, :116:18
-    idx_hi = bits[127:64] & _oh_T_1[127:64];	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18
-    _idx_T_1 = idx_hi[63:1] | bits[63:1] & _oh_T_1[63:1];	// \\src\\main\\scala\\Utils.scala:78:17, :84:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
+    automatic logic         _GEN_0;	// \\src\\main\\scala\\Utils.scala:93:16, :118:17, :128:22, :129:18
+    automatic logic         _GEN_1;	// \\src\\main\\scala\\Utils.scala:93:16, :118:17, :128:22, :129:18
+    automatic logic         _GEN_2;	// \\src\\main\\scala\\Utils.scala:93:16, :118:17, :128:22, :129:18
+    automatic logic         _GEN_3;	// \\src\\main\\scala\\Utils.scala:93:16, :118:17, :128:22, :129:18
+    _oh_T_1 = ~bits + 128'h1;	// \\src\\main\\scala\\Utils.scala:91:17, :97:{20,26}
+    oh = bits & _oh_T_1;	// \\src\\main\\scala\\Utils.scala:91:17, :97:{17,26}
+    _GEN = state == 2'h1;	// \\src\\main\\scala\\Utils.scala:89:22, :118:17, :129:18
+    idx_hi = bits[127:64] & _oh_T_1[127:64];	// \\src\\main\\scala\\Utils.scala:91:17, :97:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18
+    _idx_T_1 = idx_hi[63:1] | bits[63:1] & _oh_T_1[63:1];	// \\src\\main\\scala\\Utils.scala:91:17, :97:{17,26}, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
     _idx_T_3 = _idx_T_1[62:32] | _idx_T_1[30:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
     _idx_T_5 = _idx_T_3[30:16] | _idx_T_3[14:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
     _idx_T_7 = _idx_T_5[14:8] | _idx_T_5[6:0];	// src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:28
@@ -1437,129 +1413,141 @@ module FirstNSetBits(	// \\src\\main\\scala\\Utils.scala:64:7
        |(_idx_T_5[14:7]),
        |(_idx_T_7[6:3]),
        |(_idx_T_9[2:1]),
-       _idx_T_9[2] | _idx_T_9[0]};	// \\src\\main\\scala\\Utils.scala:84:17, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:{10,14,28}
-    _GEN_0 = _GEN & (|bits) & cnt == 2'h0;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
-    _GEN_1 = _GEN & (|bits) & cnt == 2'h1;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
-    _GEN_2 = _GEN & (|bits) & cnt == 2'h2;	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :101:25, :105:17, :115:{17,22}, :116:18
-    _GEN_3 = _GEN & (|bits) & (&cnt);	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :80:16, :105:17, :115:{17,22}, :116:18
-    if (reset) begin	// \\src\\main\\scala\\Utils.scala:64:7
-      state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
-      vld_0 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
-      vld_1 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
-      vld_2 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
-      vld_3 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20
+       _idx_T_9[2] | _idx_T_9[0]};	// \\src\\main\\scala\\Utils.scala:97:17, src/main/scala/chisel3/util/OneHot.scala:30:18, :31:18, :32:{10,14,28}
+    _GEN_0 = _GEN & (|bits) & cnt == 2'h0;	// \\src\\main\\scala\\Utils.scala:91:17, :92:16, :93:16, :118:17, :128:{17,22}, :129:18
+    _GEN_1 = _GEN & (|bits) & cnt == 2'h1;	// \\src\\main\\scala\\Utils.scala:91:17, :92:16, :93:16, :118:17, :128:{17,22}, :129:18
+    _GEN_2 = _GEN & (|bits) & cnt == 2'h2;	// \\src\\main\\scala\\Utils.scala:91:17, :92:16, :93:16, :114:25, :118:17, :128:{17,22}, :129:18
+    _GEN_3 = _GEN & (|bits) & (&cnt);	// \\src\\main\\scala\\Utils.scala:91:17, :92:16, :93:16, :118:17, :128:{17,22}, :129:18
+    if (reset) begin	// \\src\\main\\scala\\Utils.scala:77:7
+      state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:89:22, :129:18
+      vld_0 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:89:22, :94:20
+      vld_1 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:89:22, :94:20
+      vld_2 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:89:22, :94:20
+      vld_3 <= 1'h0;	// \\src\\main\\scala\\Utils.scala:89:22, :94:20
     end
-    else if (|state) begin	// \\src\\main\\scala\\Utils.scala:76:22, :100:24
-      if (_GEN) begin	// \\src\\main\\scala\\Utils.scala:105:17
-        if ((bits & ~oh) == 128'h0 | (&cnt))	// \\src\\main\\scala\\Utils.scala:78:17, :79:16, :84:{17,26}, :85:{19,21}, :116:18, :122:{18,22}
-          state <= 2'h2;	// \\src\\main\\scala\\Utils.scala:76:22, :101:25
+    else if (|state) begin	// \\src\\main\\scala\\Utils.scala:89:22, :113:24
+      if (_GEN) begin	// \\src\\main\\scala\\Utils.scala:118:17
+        if ((bits & ~oh) == 128'h0 | (&cnt))	// \\src\\main\\scala\\Utils.scala:91:17, :92:16, :97:{17,26}, :98:{19,21}, :129:18, :135:{18,22}
+          state <= 2'h2;	// \\src\\main\\scala\\Utils.scala:89:22, :114:25
       end
-      else if (state == 2'h2 & io_out_valid_0)	// \\src\\main\\scala\\Utils.scala:76:22, :101:25, :105:17, :125:{25,33}
-        state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
-      vld_0 <= _GEN_0 | vld_0;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
-      vld_1 <= _GEN_1 | vld_1;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
-      vld_2 <= _GEN_2 | vld_2;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
-      vld_3 <= _GEN_3 | vld_3;	// \\src\\main\\scala\\Utils.scala:80:16, :81:20, :105:17, :115:22, :116:18, :117:18
+      else if (state == 2'h2 & io_out_valid_0)	// \\src\\main\\scala\\Utils.scala:89:22, :114:25, :118:17, :138:{25,33}
+        state <= 2'h0;	// \\src\\main\\scala\\Utils.scala:89:22, :129:18
+      vld_0 <= _GEN_0 | vld_0;	// \\src\\main\\scala\\Utils.scala:93:16, :94:20, :118:17, :128:22, :129:18, :130:18
+      vld_1 <= _GEN_1 | vld_1;	// \\src\\main\\scala\\Utils.scala:93:16, :94:20, :118:17, :128:22, :129:18, :130:18
+      vld_2 <= _GEN_2 | vld_2;	// \\src\\main\\scala\\Utils.scala:93:16, :94:20, :118:17, :128:22, :129:18, :130:18
+      vld_3 <= _GEN_3 | vld_3;	// \\src\\main\\scala\\Utils.scala:93:16, :94:20, :118:17, :128:22, :129:18, :130:18
     end
-    else begin	// \\src\\main\\scala\\Utils.scala:100:24
-      state <= 2'h1;	// \\src\\main\\scala\\Utils.scala:76:22, :116:18
-      vld_0 <= (|state) & vld_0;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
-      vld_1 <= (|state) & vld_1;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
-      vld_2 <= (|state) & vld_2;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
-      vld_3 <= (|state) & vld_3;	// \\src\\main\\scala\\Utils.scala:76:22, :81:20, :100:24, :107:24, :110:23
+    else begin	// \\src\\main\\scala\\Utils.scala:113:24
+      state <= 2'h1;	// \\src\\main\\scala\\Utils.scala:89:22, :129:18
+      vld_0 <= (|state) & vld_0;	// \\src\\main\\scala\\Utils.scala:89:22, :94:20, :113:24, :120:24, :123:23
+      vld_1 <= (|state) & vld_1;	// \\src\\main\\scala\\Utils.scala:89:22, :94:20, :113:24, :120:24, :123:23
+      vld_2 <= (|state) & vld_2;	// \\src\\main\\scala\\Utils.scala:89:22, :94:20, :113:24, :120:24, :123:23
+      vld_3 <= (|state) & vld_3;	// \\src\\main\\scala\\Utils.scala:89:22, :94:20, :113:24, :120:24, :123:23
     end
-    if (|state) begin	// \\src\\main\\scala\\Utils.scala:76:22, :100:24
-      automatic logic _GEN_4;	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:22, :118:14
-      _GEN_4 = _GEN & (|bits);	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:{17,22}, :118:14
-      bits <= ({128{~_GEN_4}} | ~oh) & bits;	// \\src\\main\\scala\\Utils.scala:78:17, :84:17, :85:21, :105:17, :115:22, :118:14
-      if (_GEN_4)	// \\src\\main\\scala\\Utils.scala:78:17, :105:17, :115:22, :118:14
-        cnt <= cnt + 2'h1;	// \\src\\main\\scala\\Utils.scala:79:16, :116:18, :119:20
+    if (|state) begin	// \\src\\main\\scala\\Utils.scala:89:22, :113:24
+      automatic logic _GEN_4;	// \\src\\main\\scala\\Utils.scala:91:17, :118:17, :128:22, :131:14
+      _GEN_4 = _GEN & (|bits);	// \\src\\main\\scala\\Utils.scala:91:17, :118:17, :128:{17,22}, :131:14
+      bits <= ({128{~_GEN_4}} | ~oh) & bits;	// \\src\\main\\scala\\Utils.scala:91:17, :97:17, :98:21, :118:17, :128:22, :131:14
+      if (_GEN_4)	// \\src\\main\\scala\\Utils.scala:91:17, :118:17, :128:22, :131:14
+        cnt <= cnt + 2'h1;	// \\src\\main\\scala\\Utils.scala:92:16, :129:18, :132:20
     end
-    else begin	// \\src\\main\\scala\\Utils.scala:100:24
-      bits <= io_in_bits;	// \\src\\main\\scala\\Utils.scala:78:17
-      cnt <= 2'h0;	// \\src\\main\\scala\\Utils.scala:79:16, :116:18
+    else begin	// \\src\\main\\scala\\Utils.scala:113:24
+      bits <= io_in_bits;	// \\src\\main\\scala\\Utils.scala:91:17
+      cnt <= 2'h0;	// \\src\\main\\scala\\Utils.scala:92:16, :129:18
     end
-    if ((|state) & _GEN_0)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
-      idx_0 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
-    if ((|state) & _GEN_1)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
-      idx_1 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
-    if ((|state) & _GEN_2)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
-      idx_2 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
-    if ((|state) & _GEN_3)	// \\src\\main\\scala\\Utils.scala:76:22, :80:16, :100:24, :105:17, :115:22, :116:18
-      idx_3 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:80:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_0)	// \\src\\main\\scala\\Utils.scala:89:22, :93:16, :113:24, :118:17, :128:22, :129:18
+      idx_0 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:93:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_1)	// \\src\\main\\scala\\Utils.scala:89:22, :93:16, :113:24, :118:17, :128:22, :129:18
+      idx_1 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:93:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_2)	// \\src\\main\\scala\\Utils.scala:89:22, :93:16, :113:24, :118:17, :128:22, :129:18
+      idx_2 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:93:16, src/main/scala/chisel3/util/OneHot.scala:32:10
+    if ((|state) & _GEN_3)	// \\src\\main\\scala\\Utils.scala:89:22, :93:16, :113:24, :118:17, :128:22, :129:18
+      idx_3 <= _idx_T_18;	// \\src\\main\\scala\\Utils.scala:93:16, src/main/scala/chisel3/util/OneHot.scala:32:10
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Utils.scala:64:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\Utils.scala:77:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:77:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\Utils.scala:77:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\Utils.scala:64:7
-      automatic logic [31:0] _RANDOM[0:5];	// \\src\\main\\scala\\Utils.scala:64:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:64:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:64:7
+    initial begin	// \\src\\main\\scala\\Utils.scala:77:7
+      automatic logic [31:0] _RANDOM[0:5];	// \\src\\main\\scala\\Utils.scala:77:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:77:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\Utils.scala:77:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Utils.scala:64:7
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\Utils.scala:77:7
         for (logic [2:0] i = 3'h0; i < 3'h6; i += 3'h1) begin
-          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\Utils.scala:64:7
-        end	// \\src\\main\\scala\\Utils.scala:64:7
-        state = _RANDOM[3'h0][1:0];	// \\src\\main\\scala\\Utils.scala:64:7, :76:22
+          _RANDOM[i] = `RANDOM;	// \\src\\main\\scala\\Utils.scala:77:7
+        end	// \\src\\main\\scala\\Utils.scala:77:7
+        state = _RANDOM[3'h0][1:0];	// \\src\\main\\scala\\Utils.scala:77:7, :89:22
         bits =
           {_RANDOM[3'h0][31:2],
            _RANDOM[3'h1],
            _RANDOM[3'h2],
            _RANDOM[3'h3],
-           _RANDOM[3'h4][1:0]};	// \\src\\main\\scala\\Utils.scala:64:7, :76:22, :78:17
-        cnt = _RANDOM[3'h4][3:2];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :79:16
-        idx_0 = _RANDOM[3'h4][10:4];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
-        idx_1 = _RANDOM[3'h4][17:11];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
-        idx_2 = _RANDOM[3'h4][24:18];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
-        idx_3 = _RANDOM[3'h4][31:25];	// \\src\\main\\scala\\Utils.scala:64:7, :78:17, :80:16
-        vld_0 = _RANDOM[3'h5][0];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-        vld_1 = _RANDOM[3'h5][1];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-        vld_2 = _RANDOM[3'h5][2];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-        vld_3 = _RANDOM[3'h5][3];	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+           _RANDOM[3'h4][1:0]};	// \\src\\main\\scala\\Utils.scala:77:7, :89:22, :91:17
+        cnt = _RANDOM[3'h4][3:2];	// \\src\\main\\scala\\Utils.scala:77:7, :91:17, :92:16
+        idx_0 = _RANDOM[3'h4][10:4];	// \\src\\main\\scala\\Utils.scala:77:7, :91:17, :93:16
+        idx_1 = _RANDOM[3'h4][17:11];	// \\src\\main\\scala\\Utils.scala:77:7, :91:17, :93:16
+        idx_2 = _RANDOM[3'h4][24:18];	// \\src\\main\\scala\\Utils.scala:77:7, :91:17, :93:16
+        idx_3 = _RANDOM[3'h4][31:25];	// \\src\\main\\scala\\Utils.scala:77:7, :91:17, :93:16
+        vld_0 = _RANDOM[3'h5][0];	// \\src\\main\\scala\\Utils.scala:77:7, :94:20
+        vld_1 = _RANDOM[3'h5][1];	// \\src\\main\\scala\\Utils.scala:77:7, :94:20
+        vld_2 = _RANDOM[3'h5][2];	// \\src\\main\\scala\\Utils.scala:77:7, :94:20
+        vld_3 = _RANDOM[3'h5][3];	// \\src\\main\\scala\\Utils.scala:77:7, :94:20
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:64:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:77:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\Utils.scala:77:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_out_valid = io_out_valid_0;	// \\src\\main\\scala\\Utils.scala:64:7, :101:25
-  assign io_out_bits_idx_0 = idx_0;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
-  assign io_out_bits_idx_1 = idx_1;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
-  assign io_out_bits_idx_2 = idx_2;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
-  assign io_out_bits_idx_3 = idx_3;	// \\src\\main\\scala\\Utils.scala:64:7, :80:16
-  assign io_out_bits_valid_0 = vld_0;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-  assign io_out_bits_valid_1 = vld_1;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-  assign io_out_bits_valid_2 = vld_2;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
-  assign io_out_bits_valid_3 = vld_3;	// \\src\\main\\scala\\Utils.scala:64:7, :81:20
+  assign io_out_valid = io_out_valid_0;	// \\src\\main\\scala\\Utils.scala:77:7, :114:25
+  assign io_out_bits_idx_0 = idx_0;	// \\src\\main\\scala\\Utils.scala:77:7, :93:16
+  assign io_out_bits_idx_1 = idx_1;	// \\src\\main\\scala\\Utils.scala:77:7, :93:16
+  assign io_out_bits_idx_2 = idx_2;	// \\src\\main\\scala\\Utils.scala:77:7, :93:16
+  assign io_out_bits_idx_3 = idx_3;	// \\src\\main\\scala\\Utils.scala:77:7, :93:16
+  assign io_out_bits_valid_0 = vld_0;	// \\src\\main\\scala\\Utils.scala:77:7, :94:20
+  assign io_out_bits_valid_1 = vld_1;	// \\src\\main\\scala\\Utils.scala:77:7, :94:20
+  assign io_out_bits_valid_2 = vld_2;	// \\src\\main\\scala\\Utils.scala:77:7, :94:20
+  assign io_out_bits_valid_3 = vld_3;	// \\src\\main\\scala\\Utils.scala:77:7, :94:20
 endmodule
 
-module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
-  input          clock,	// \\src\\main\\scala\\SynthTop.scala:24:7
-                 reset,	// \\src\\main\\scala\\SynthTop.scala:24:7
-  input  [127:0] io_held,	// \\src\\main\\scala\\SynthTop.scala:33:14
-  output         io_out	// \\src\\main\\scala\\SynthTop.scala:33:14
+module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:26:7
+  input          clock,	// \\src\\main\\scala\\SynthTop.scala:26:7
+                 reset,	// \\src\\main\\scala\\SynthTop.scala:26:7
+  input  [127:0] io_held,	// \\src\\main\\scala\\SynthTop.scala:39:14
+  output         io_out	// \\src\\main\\scala\\SynthTop.scala:39:14
 );
 
-  wire               _selector_io_out_valid;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [6:0]         _selector_io_out_bits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [6:0]         _selector_io_out_bits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [6:0]         _selector_io_out_bits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [6:0]         _selector_io_out_bits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire               _selector_io_out_bits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire               _selector_io_out_bits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire               _selector_io_out_bits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire               _selector_io_out_bits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:67:26
-  wire [7:0]         _synth_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire               _synth_3_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire [7:0]         _synth_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire               _synth_2_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire [7:0]         _synth_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire               _synth_1_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire [7:0]         _synth_io_sample;	// \\src\\main\\scala\\SynthTop.scala:52:23
-  wire               _synth_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23
+  wire               _selector_io_out_valid;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire [6:0]         _selector_io_out_bits_idx_0;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire [6:0]         _selector_io_out_bits_idx_1;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire [6:0]         _selector_io_out_bits_idx_2;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire [6:0]         _selector_io_out_bits_idx_3;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire               _selector_io_out_bits_valid_0;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire               _selector_io_out_bits_valid_1;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire               _selector_io_out_bits_valid_2;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire               _selector_io_out_bits_valid_3;	// \\src\\main\\scala\\SynthTop.scala:73:26
+  wire [7:0]         _synth_3_io_sample;	// \\src\\main\\scala\\SynthTop.scala:58:23
+  wire               _synth_3_io_active;	// \\src\\main\\scala\\SynthTop.scala:58:23
+  wire [7:0]         _synth_2_io_sample;	// \\src\\main\\scala\\SynthTop.scala:58:23
+  wire               _synth_2_io_active;	// \\src\\main\\scala\\SynthTop.scala:58:23
+  wire [7:0]         _synth_1_io_sample;	// \\src\\main\\scala\\SynthTop.scala:58:23
+  wire               _synth_1_io_active;	// \\src\\main\\scala\\SynthTop.scala:58:23
+  wire [7:0]         _synth_io_sample;	// \\src\\main\\scala\\SynthTop.scala:58:23
+  wire               _synth_io_active;	// \\src\\main\\scala\\SynthTop.scala:58:23
   wire [127:0][31:0] _GEN =
-    '{32'h107105,
+    '{32'h20E20A,
+      32'h1F0992,
+      32'h1D4B9F,
+      32'h1BA6B3,
+      32'h1A1967,
+      32'h18A267,
+      32'h174074,
+      32'h15F25E,
+      32'h14B708,
+      32'h138D65,
+      32'h127477,
+      32'h116B4D,
+      32'h107105,
       32'hF84C9,
       32'hEA5CF,
       32'hDD359,
@@ -1674,204 +1662,192 @@ module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
       32'h686,
       32'h629,
       32'h5D0,
-      32'h57D,
-      32'h52E,
-      32'h4E3,
-      32'h49D,
-      32'h45B,
-      32'h41C,
-      32'h3E1,
-      32'h3A9,
-      32'h375,
-      32'h343,
-      32'h314,
-      32'h2E8,
-      32'h2BE};	// \\src\\main\\scala\\SynthTop.scala:55:24
-  reg  [6:0]         notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22
-  reg  [6:0]         notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22
-  reg  [6:0]         notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22
-  reg  [6:0]         notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22
-  reg                assigned_0;	// \\src\\main\\scala\\SynthTop.scala:39:25
-  reg                assigned_1;	// \\src\\main\\scala\\SynthTop.scala:39:25
-  reg                assigned_2;	// \\src\\main\\scala\\SynthTop.scala:39:25
-  reg                assigned_3;	// \\src\\main\\scala\\SynthTop.scala:39:25
-  wire [127:0]       _gate_T = io_held >> notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
-  wire               gate = assigned_0 & _gate_T[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
-  wire               busy_0 = gate | _synth_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
-  wire [127:0]       _gate_T_2 = io_held >> notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
-  wire               gate_1 = assigned_1 & _gate_T_2[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
-  wire               busy_1 = gate_1 | _synth_1_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
-  wire [127:0]       _gate_T_4 = io_held >> notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
-  wire               gate_2 = assigned_2 & _gate_T_4[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
-  wire               busy_2 = gate_2 | _synth_2_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
-  wire [127:0]       _gate_T_6 = io_held >> notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22, :53:42
-  wire               gate_3 = assigned_3 & _gate_T_6[0];	// \\src\\main\\scala\\SynthTop.scala:39:25, :53:{32,42}
-  wire               busy_3 = gate_3 | _synth_3_io_active;	// \\src\\main\\scala\\SynthTop.scala:52:23, :53:32, :56:25
-  wire [254:0]       _reserved_T = 255'h1 << notes_0;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
-  wire [254:0]       _reserved_T_3 = 255'h1 << notes_1;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
-  wire [254:0]       _reserved_T_6 = 255'h1 << notes_2;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
-  wire [254:0]       _reserved_T_9 = 255'h1 << notes_3;	// \\src\\main\\scala\\SynthTop.scala:38:22, :65:31
+      32'h57D};	// \\src\\main\\scala\\SynthTop.scala:61:24
+  reg  [6:0]         notes_0;	// \\src\\main\\scala\\SynthTop.scala:44:22
+  reg  [6:0]         notes_1;	// \\src\\main\\scala\\SynthTop.scala:44:22
+  reg  [6:0]         notes_2;	// \\src\\main\\scala\\SynthTop.scala:44:22
+  reg  [6:0]         notes_3;	// \\src\\main\\scala\\SynthTop.scala:44:22
+  reg                assigned_0;	// \\src\\main\\scala\\SynthTop.scala:45:25
+  reg                assigned_1;	// \\src\\main\\scala\\SynthTop.scala:45:25
+  reg                assigned_2;	// \\src\\main\\scala\\SynthTop.scala:45:25
+  reg                assigned_3;	// \\src\\main\\scala\\SynthTop.scala:45:25
+  wire [127:0]       _gate_T = io_held >> notes_0;	// \\src\\main\\scala\\SynthTop.scala:44:22, :59:42
+  wire               gate = assigned_0 & _gate_T[0];	// \\src\\main\\scala\\SynthTop.scala:45:25, :59:{32,42}
+  wire               busy_0 = gate | _synth_io_active;	// \\src\\main\\scala\\SynthTop.scala:58:23, :59:32, :62:25
+  wire [127:0]       _gate_T_2 = io_held >> notes_1;	// \\src\\main\\scala\\SynthTop.scala:44:22, :59:42
+  wire               gate_1 = assigned_1 & _gate_T_2[0];	// \\src\\main\\scala\\SynthTop.scala:45:25, :59:{32,42}
+  wire               busy_1 = gate_1 | _synth_1_io_active;	// \\src\\main\\scala\\SynthTop.scala:58:23, :59:32, :62:25
+  wire [127:0]       _gate_T_4 = io_held >> notes_2;	// \\src\\main\\scala\\SynthTop.scala:44:22, :59:42
+  wire               gate_2 = assigned_2 & _gate_T_4[0];	// \\src\\main\\scala\\SynthTop.scala:45:25, :59:{32,42}
+  wire               busy_2 = gate_2 | _synth_2_io_active;	// \\src\\main\\scala\\SynthTop.scala:58:23, :59:32, :62:25
+  wire [127:0]       _gate_T_6 = io_held >> notes_3;	// \\src\\main\\scala\\SynthTop.scala:44:22, :59:42
+  wire               gate_3 = assigned_3 & _gate_T_6[0];	// \\src\\main\\scala\\SynthTop.scala:45:25, :59:{32,42}
+  wire               busy_3 = gate_3 | _synth_3_io_active;	// \\src\\main\\scala\\SynthTop.scala:58:23, :59:32, :62:25
+  wire [254:0]       _reserved_T = 255'h1 << notes_0;	// \\src\\main\\scala\\SynthTop.scala:44:22, :71:31
+  wire [254:0]       _reserved_T_3 = 255'h1 << notes_1;	// \\src\\main\\scala\\SynthTop.scala:44:22, :71:31
+  wire [254:0]       _reserved_T_6 = 255'h1 << notes_2;	// \\src\\main\\scala\\SynthTop.scala:44:22, :71:31
+  wire [254:0]       _reserved_T_9 = 255'h1 << notes_3;	// \\src\\main\\scala\\SynthTop.scala:44:22, :71:31
   wire [127:0]       reserved =
     (busy_0 ? _reserved_T[127:0] : 128'h0) | (busy_1 ? _reserved_T_3[127:0] : 128'h0)
-    | (busy_2 ? _reserved_T_6[127:0] : 128'h0) | (busy_3 ? _reserved_T_9[127:0] : 128'h0);	// \\src\\main\\scala\\SynthTop.scala:56:25, :65:{10,31}, :66:16
-  always @(posedge clock) begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-    if (reset) begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-      notes_0 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
-      notes_1 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
-      notes_2 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
-      notes_3 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:38:{22,30}
-      assigned_0 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
-      assigned_1 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
-      assigned_2 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
-      assigned_3 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:24:7, :39:25
+    | (busy_2 ? _reserved_T_6[127:0] : 128'h0) | (busy_3 ? _reserved_T_9[127:0] : 128'h0);	// \\src\\main\\scala\\SynthTop.scala:62:25, :71:{10,31}, :72:16
+  always @(posedge clock) begin	// \\src\\main\\scala\\SynthTop.scala:26:7
+    if (reset) begin	// \\src\\main\\scala\\SynthTop.scala:26:7
+      notes_0 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:44:{22,30}
+      notes_1 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:44:{22,30}
+      notes_2 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:44:{22,30}
+      notes_3 <= 7'h0;	// \\src\\main\\scala\\SynthTop.scala:44:{22,30}
+      assigned_0 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:26:7, :45:25
+      assigned_1 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:26:7, :45:25
+      assigned_2 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:26:7, :45:25
+      assigned_3 <= 1'h0;	// \\src\\main\\scala\\SynthTop.scala:26:7, :45:25
     end
-    else begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-      automatic logic [127:0]    _GEN_0 = {121'h0, _selector_io_out_bits_idx_0};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
-      automatic logic [127:0]    _candidates_0_T_3 = reserved >> _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
-      automatic logic [127:0]    _candidates_0_T = io_held >> _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:78:16
-      automatic logic            candidates_0;	// \\src\\main\\scala\\SynthTop.scala:78:23
-      automatic logic [127:0]    _GEN_1 = {121'h0, _selector_io_out_bits_idx_1};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
-      automatic logic [127:0]    _candidates_1_T_3 = reserved >> _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
-      automatic logic [127:0]    _candidates_1_T = io_held >> _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:78:16
-      automatic logic            candidates_1;	// \\src\\main\\scala\\SynthTop.scala:78:23
-      automatic logic [127:0]    _GEN_2 = {121'h0, _selector_io_out_bits_idx_2};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
-      automatic logic [127:0]    _candidates_2_T_3 = reserved >> _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
-      automatic logic [127:0]    _candidates_2_T = io_held >> _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:78:16
-      automatic logic            candidates_2;	// \\src\\main\\scala\\SynthTop.scala:78:23
-      automatic logic [127:0]    _GEN_3 = {121'h0, _selector_io_out_bits_idx_3};	// \\src\\main\\scala\\SynthTop.scala:53:42, :67:26, :78:16
-      automatic logic [127:0]    _candidates_3_T_3 = reserved >> _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:66:16, :78:{16,35}
-      automatic logic [127:0]    _candidates_3_T = io_held >> _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:78:16
+    else begin	// \\src\\main\\scala\\SynthTop.scala:26:7
+      automatic logic [127:0]    _GEN_0 = {121'h0, _selector_io_out_bits_idx_0};	// \\src\\main\\scala\\SynthTop.scala:59:42, :73:26, :84:16
+      automatic logic [127:0]    _candidates_0_T_3 = reserved >> _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:72:16, :84:{16,35}
+      automatic logic [127:0]    _candidates_0_T = io_held >> _GEN_0;	// \\src\\main\\scala\\SynthTop.scala:84:16
+      automatic logic            candidates_0;	// \\src\\main\\scala\\SynthTop.scala:84:23
+      automatic logic [127:0]    _GEN_1 = {121'h0, _selector_io_out_bits_idx_1};	// \\src\\main\\scala\\SynthTop.scala:59:42, :73:26, :84:16
+      automatic logic [127:0]    _candidates_1_T_3 = reserved >> _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:72:16, :84:{16,35}
+      automatic logic [127:0]    _candidates_1_T = io_held >> _GEN_1;	// \\src\\main\\scala\\SynthTop.scala:84:16
+      automatic logic            candidates_1;	// \\src\\main\\scala\\SynthTop.scala:84:23
+      automatic logic [127:0]    _GEN_2 = {121'h0, _selector_io_out_bits_idx_2};	// \\src\\main\\scala\\SynthTop.scala:59:42, :73:26, :84:16
+      automatic logic [127:0]    _candidates_2_T_3 = reserved >> _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:72:16, :84:{16,35}
+      automatic logic [127:0]    _candidates_2_T = io_held >> _GEN_2;	// \\src\\main\\scala\\SynthTop.scala:84:16
+      automatic logic            candidates_2;	// \\src\\main\\scala\\SynthTop.scala:84:23
+      automatic logic [127:0]    _GEN_3 = {121'h0, _selector_io_out_bits_idx_3};	// \\src\\main\\scala\\SynthTop.scala:59:42, :73:26, :84:16
+      automatic logic [127:0]    _candidates_3_T_3 = reserved >> _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:72:16, :84:{16,35}
+      automatic logic [127:0]    _candidates_3_T = io_held >> _GEN_3;	// \\src\\main\\scala\\SynthTop.scala:84:16
       automatic logic            candidates_3 =
-        _selector_io_out_bits_valid_3 & _candidates_3_T[0] & ~(_candidates_3_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
-      automatic logic [3:0]      remaining_0;	// \\src\\main\\scala\\SynthTop.scala:81:32
-      automatic logic            allocate;	// \\src\\main\\scala\\SynthTop.scala:83:59
-      automatic logic [3:0]      remaining_1;	// \\src\\main\\scala\\SynthTop.scala:85:33
-      automatic logic [3:0][6:0] _GEN_4;	// \\src\\main\\scala\\SynthTop.scala:89:39
-      automatic logic            allocate_1;	// \\src\\main\\scala\\SynthTop.scala:83:59
-      automatic logic [3:0]      remaining_2;	// \\src\\main\\scala\\SynthTop.scala:85:33
-      automatic logic            allocate_2;	// \\src\\main\\scala\\SynthTop.scala:83:59
-      automatic logic [3:0]      remaining_3;	// \\src\\main\\scala\\SynthTop.scala:85:33
-      automatic logic            allocate_3;	// \\src\\main\\scala\\SynthTop.scala:83:59
+        _selector_io_out_bits_valid_3 & _candidates_3_T[0] & ~(_candidates_3_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:73:26, :84:{16,23,26,35}
+      automatic logic [3:0]      remaining_0;	// \\src\\main\\scala\\SynthTop.scala:87:32
+      automatic logic            allocate;	// \\src\\main\\scala\\SynthTop.scala:89:59
+      automatic logic [3:0]      remaining_1;	// \\src\\main\\scala\\SynthTop.scala:91:33
+      automatic logic [3:0][6:0] _GEN_4;	// \\src\\main\\scala\\SynthTop.scala:95:39
+      automatic logic            allocate_1;	// \\src\\main\\scala\\SynthTop.scala:89:59
+      automatic logic [3:0]      remaining_2;	// \\src\\main\\scala\\SynthTop.scala:91:33
+      automatic logic            allocate_2;	// \\src\\main\\scala\\SynthTop.scala:89:59
+      automatic logic [3:0]      remaining_3;	// \\src\\main\\scala\\SynthTop.scala:91:33
+      automatic logic            allocate_3;	// \\src\\main\\scala\\SynthTop.scala:89:59
       candidates_0 =
-        _selector_io_out_bits_valid_0 & _candidates_0_T[0] & ~(_candidates_0_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
+        _selector_io_out_bits_valid_0 & _candidates_0_T[0] & ~(_candidates_0_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:73:26, :84:{16,23,26,35}
       candidates_1 =
-        _selector_io_out_bits_valid_1 & _candidates_1_T[0] & ~(_candidates_1_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
+        _selector_io_out_bits_valid_1 & _candidates_1_T[0] & ~(_candidates_1_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:73:26, :84:{16,23,26,35}
       candidates_2 =
-        _selector_io_out_bits_valid_2 & _candidates_2_T[0] & ~(_candidates_2_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:67:26, :78:{16,23,26,35}
-      remaining_0 = {candidates_3, candidates_2, candidates_1, candidates_0};	// \\src\\main\\scala\\SynthTop.scala:78:23, :81:32
-      allocate = _selector_io_out_valid & ~busy_0 & (|remaining_0);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :81:32, :83:{46,59,78}
+        _selector_io_out_bits_valid_2 & _candidates_2_T[0] & ~(_candidates_2_T_3[0]);	// \\src\\main\\scala\\SynthTop.scala:73:26, :84:{16,23,26,35}
+      remaining_0 = {candidates_3, candidates_2, candidates_1, candidates_0};	// \\src\\main\\scala\\SynthTop.scala:84:23, :87:32
+      allocate = _selector_io_out_valid & ~busy_0 & (|remaining_0);	// \\src\\main\\scala\\SynthTop.scala:62:25, :73:26, :87:32, :89:{46,59,78}
       remaining_1 =
         ({4{~allocate}} | {candidates_3, candidates_2, candidates_1, candidates_0} - 4'h1)
-        & remaining_0;	// \\src\\main\\scala\\SynthTop.scala:78:23, :81:32, :83:59, :85:33, :86:44
+        & remaining_0;	// \\src\\main\\scala\\SynthTop.scala:84:23, :87:32, :89:59, :91:33, :92:44
       _GEN_4 =
         {{_selector_io_out_bits_idx_3},
          {_selector_io_out_bits_idx_2},
          {_selector_io_out_bits_idx_1},
-         {_selector_io_out_bits_idx_0}};	// \\src\\main\\scala\\SynthTop.scala:67:26, :89:39
-      allocate_1 = _selector_io_out_valid & ~busy_1 & (|remaining_1);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
-      remaining_2 = ({4{~allocate_1}} | remaining_1 - 4'h1) & remaining_1;	// \\src\\main\\scala\\SynthTop.scala:83:59, :85:33, :86:44
-      allocate_2 = _selector_io_out_valid & ~busy_2 & (|remaining_2);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
-      remaining_3 = ({4{~allocate_2}} | remaining_2 - 4'h1) & remaining_2;	// \\src\\main\\scala\\SynthTop.scala:83:59, :85:33, :86:44
-      allocate_3 = _selector_io_out_valid & ~busy_3 & (|remaining_3);	// \\src\\main\\scala\\SynthTop.scala:56:25, :67:26, :83:{46,59,78}, :85:33
-      if (~busy_0 & allocate)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
+         {_selector_io_out_bits_idx_0}};	// \\src\\main\\scala\\SynthTop.scala:73:26, :95:39
+      allocate_1 = _selector_io_out_valid & ~busy_1 & (|remaining_1);	// \\src\\main\\scala\\SynthTop.scala:62:25, :73:26, :89:{46,59,78}, :91:33
+      remaining_2 = ({4{~allocate_1}} | remaining_1 - 4'h1) & remaining_1;	// \\src\\main\\scala\\SynthTop.scala:89:59, :91:33, :92:44
+      allocate_2 = _selector_io_out_valid & ~busy_2 & (|remaining_2);	// \\src\\main\\scala\\SynthTop.scala:62:25, :73:26, :89:{46,59,78}, :91:33
+      remaining_3 = ({4{~allocate_2}} | remaining_2 - 4'h1) & remaining_2;	// \\src\\main\\scala\\SynthTop.scala:89:59, :91:33, :92:44
+      allocate_3 = _selector_io_out_valid & ~busy_3 & (|remaining_3);	// \\src\\main\\scala\\SynthTop.scala:62:25, :73:26, :89:{46,59,78}, :91:33
+      if (~busy_0 & allocate)	// \\src\\main\\scala\\SynthTop.scala:44:22, :62:25, :89:{46,59}, :93:26, :95:{24,39}
         notes_0 <=
-          _GEN_4[candidates_0 ? 2'h0 : candidates_1 ? 2'h1 : {1'h1, ~candidates_2}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :78:23, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70
-      if (~busy_1 & allocate_1)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
+          _GEN_4[candidates_0 ? 2'h0 : candidates_1 ? 2'h1 : {1'h1, ~candidates_2}];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22, :84:23, :95:39, src/main/scala/chisel3/util/Mux.scala:50:70
+      if (~busy_1 & allocate_1)	// \\src\\main\\scala\\SynthTop.scala:44:22, :62:25, :89:{46,59}, :93:26, :95:{24,39}
         notes_1 <=
           _GEN_4[remaining_1[0]
                    ? 2'h0
-                   : remaining_1[1] ? 2'h1 : {1'h1, ~(remaining_1[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
-      if (~busy_2 & allocate_2)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
+                   : remaining_1[1] ? 2'h1 : {1'h1, ~(remaining_1[2])}];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22, :91:33, :95:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
+      if (~busy_2 & allocate_2)	// \\src\\main\\scala\\SynthTop.scala:44:22, :62:25, :89:{46,59}, :93:26, :95:{24,39}
         notes_2 <=
           _GEN_4[remaining_2[0]
                    ? 2'h0
-                   : remaining_2[1] ? 2'h1 : {1'h1, ~(remaining_2[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
-      if (~busy_3 & allocate_3)	// \\src\\main\\scala\\SynthTop.scala:38:22, :56:25, :83:{46,59}, :87:26, :89:{24,39}
+                   : remaining_2[1] ? 2'h1 : {1'h1, ~(remaining_2[2])}];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22, :91:33, :95:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
+      if (~busy_3 & allocate_3)	// \\src\\main\\scala\\SynthTop.scala:44:22, :62:25, :89:{46,59}, :93:26, :95:{24,39}
         notes_3 <=
           _GEN_4[remaining_3[0]
                    ? 2'h0
-                   : remaining_3[1] ? 2'h1 : {1'h1, ~(remaining_3[2])}];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :85:33, :89:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
-      if (~busy_0)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_0 <= allocate;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
-      if (~busy_1)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_1 <= allocate_1;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
-      if (~busy_2)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_2 <= allocate_2;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
-      if (~busy_3)	// \\src\\main\\scala\\SynthTop.scala:56:25
-        assigned_3 <= allocate_3;	// \\src\\main\\scala\\SynthTop.scala:39:25, :83:59
+                   : remaining_3[1] ? 2'h1 : {1'h1, ~(remaining_3[2])}];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22, :91:33, :95:39, src/main/scala/chisel3/util/Mux.scala:50:70, src/main/scala/chisel3/util/OneHot.scala:48:45
+      if (~busy_0)	// \\src\\main\\scala\\SynthTop.scala:62:25
+        assigned_0 <= allocate;	// \\src\\main\\scala\\SynthTop.scala:45:25, :89:59
+      if (~busy_1)	// \\src\\main\\scala\\SynthTop.scala:62:25
+        assigned_1 <= allocate_1;	// \\src\\main\\scala\\SynthTop.scala:45:25, :89:59
+      if (~busy_2)	// \\src\\main\\scala\\SynthTop.scala:62:25
+        assigned_2 <= allocate_2;	// \\src\\main\\scala\\SynthTop.scala:45:25, :89:59
+      if (~busy_3)	// \\src\\main\\scala\\SynthTop.scala:62:25
+        assigned_3 <= allocate_3;	// \\src\\main\\scala\\SynthTop.scala:45:25, :89:59
     end
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SynthTop.scala:24:7
-    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:24:7
-      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:24:7
+  `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SynthTop.scala:26:7
+    `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:26:7
+      `FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SynthTop.scala:26:7
     `endif // FIRRTL_BEFORE_INITIAL
-    initial begin	// \\src\\main\\scala\\SynthTop.scala:24:7
-      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\SynthTop.scala:24:7
-      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:24:7
-        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:24:7
+    initial begin	// \\src\\main\\scala\\SynthTop.scala:26:7
+      automatic logic [31:0] _RANDOM[0:0];	// \\src\\main\\scala\\SynthTop.scala:26:7
+      `ifdef INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:26:7
+        `INIT_RANDOM_PROLOG_	// \\src\\main\\scala\\SynthTop.scala:26:7
       `endif // INIT_RANDOM_PROLOG_
-      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SynthTop.scala:24:7
-        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\SynthTop.scala:24:7
-        notes_0 = _RANDOM[/*Zero width*/ 1'b0][6:0];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22
-        notes_1 = _RANDOM[/*Zero width*/ 1'b0][13:7];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22
-        notes_2 = _RANDOM[/*Zero width*/ 1'b0][20:14];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22
-        notes_3 = _RANDOM[/*Zero width*/ 1'b0][27:21];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22
-        assigned_0 = _RANDOM[/*Zero width*/ 1'b0][28];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :39:25
-        assigned_1 = _RANDOM[/*Zero width*/ 1'b0][29];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :39:25
-        assigned_2 = _RANDOM[/*Zero width*/ 1'b0][30];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :39:25
-        assigned_3 = _RANDOM[/*Zero width*/ 1'b0][31];	// \\src\\main\\scala\\SynthTop.scala:24:7, :38:22, :39:25
+      `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SynthTop.scala:26:7
+        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\SynthTop.scala:26:7
+        notes_0 = _RANDOM[/*Zero width*/ 1'b0][6:0];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22
+        notes_1 = _RANDOM[/*Zero width*/ 1'b0][13:7];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22
+        notes_2 = _RANDOM[/*Zero width*/ 1'b0][20:14];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22
+        notes_3 = _RANDOM[/*Zero width*/ 1'b0][27:21];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22
+        assigned_0 = _RANDOM[/*Zero width*/ 1'b0][28];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22, :45:25
+        assigned_1 = _RANDOM[/*Zero width*/ 1'b0][29];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22, :45:25
+        assigned_2 = _RANDOM[/*Zero width*/ 1'b0][30];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22, :45:25
+        assigned_3 = _RANDOM[/*Zero width*/ 1'b0][31];	// \\src\\main\\scala\\SynthTop.scala:26:7, :44:22, :45:25
       `endif // RANDOMIZE_REG_INIT
     end // initial
-    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:24:7
-      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:24:7
+    `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:26:7
+      `FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SynthTop.scala:26:7
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  PWMGenerator pwm (	// \\src\\main\\scala\\SynthTop.scala:42:19
+  PWMGenerator pwm (	// \\src\\main\\scala\\SynthTop.scala:48:19
     .clock        (clock),
     .reset        (reset),
-    .io_samples_0 (_synth_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_samples_1 (_synth_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_samples_2 (_synth_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_samples_3 (_synth_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:52:23
-    .io_PWM_en    (|{busy_3, busy_2, busy_1, busy_0}),	// \\src\\main\\scala\\SynthTop.scala:56:25, :94:{25,32}
+    .io_samples_0 (_synth_io_sample),	// \\src\\main\\scala\\SynthTop.scala:58:23
+    .io_samples_1 (_synth_1_io_sample),	// \\src\\main\\scala\\SynthTop.scala:58:23
+    .io_samples_2 (_synth_2_io_sample),	// \\src\\main\\scala\\SynthTop.scala:58:23
+    .io_samples_3 (_synth_3_io_sample),	// \\src\\main\\scala\\SynthTop.scala:58:23
+    .io_PWM_en    (|{busy_3, busy_2, busy_1, busy_0}),	// \\src\\main\\scala\\SynthTop.scala:62:25, :100:{25,32}
     .io_PWM_out   (io_out)
   );
-  Synth synth (	// \\src\\main\\scala\\SynthTop.scala:52:23
+  Synth synth (	// \\src\\main\\scala\\SynthTop.scala:58:23
     .clock        (clock),
     .reset        (reset),
-    .io_increment (_GEN[notes_0]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
-    .io_gate      (gate),	// \\src\\main\\scala\\SynthTop.scala:53:32
+    .io_increment (_GEN[notes_0]),	// \\src\\main\\scala\\SynthTop.scala:44:22, :61:24
+    .io_gate      (gate),	// \\src\\main\\scala\\SynthTop.scala:59:32
     .io_sample    (_synth_io_sample),
     .io_active    (_synth_io_active)
   );
-  Synth synth_1 (	// \\src\\main\\scala\\SynthTop.scala:52:23
+  Synth synth_1 (	// \\src\\main\\scala\\SynthTop.scala:58:23
     .clock        (clock),
     .reset        (reset),
-    .io_increment (_GEN[notes_1]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
-    .io_gate      (gate_1),	// \\src\\main\\scala\\SynthTop.scala:53:32
+    .io_increment (_GEN[notes_1]),	// \\src\\main\\scala\\SynthTop.scala:44:22, :61:24
+    .io_gate      (gate_1),	// \\src\\main\\scala\\SynthTop.scala:59:32
     .io_sample    (_synth_1_io_sample),
     .io_active    (_synth_1_io_active)
   );
-  Synth synth_2 (	// \\src\\main\\scala\\SynthTop.scala:52:23
+  Synth synth_2 (	// \\src\\main\\scala\\SynthTop.scala:58:23
     .clock        (clock),
     .reset        (reset),
-    .io_increment (_GEN[notes_2]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
-    .io_gate      (gate_2),	// \\src\\main\\scala\\SynthTop.scala:53:32
+    .io_increment (_GEN[notes_2]),	// \\src\\main\\scala\\SynthTop.scala:44:22, :61:24
+    .io_gate      (gate_2),	// \\src\\main\\scala\\SynthTop.scala:59:32
     .io_sample    (_synth_2_io_sample),
     .io_active    (_synth_2_io_active)
   );
-  Synth synth_3 (	// \\src\\main\\scala\\SynthTop.scala:52:23
+  Synth synth_3 (	// \\src\\main\\scala\\SynthTop.scala:58:23
     .clock        (clock),
     .reset        (reset),
-    .io_increment (_GEN[notes_3]),	// \\src\\main\\scala\\SynthTop.scala:38:22, :55:24
-    .io_gate      (gate_3),	// \\src\\main\\scala\\SynthTop.scala:53:32
+    .io_increment (_GEN[notes_3]),	// \\src\\main\\scala\\SynthTop.scala:44:22, :61:24
+    .io_gate      (gate_3),	// \\src\\main\\scala\\SynthTop.scala:59:32
     .io_sample    (_synth_3_io_sample),
     .io_active    (_synth_3_io_active)
   );
-  FirstNSetBits selector (	// \\src\\main\\scala\\SynthTop.scala:67:26
+  FirstNSetBits selector (	// \\src\\main\\scala\\SynthTop.scala:73:26
     .clock               (clock),
     .reset               (reset),
-    .io_in_bits          (io_held & ~reserved),	// \\src\\main\\scala\\SynthTop.scala:66:16, :69:{36,38}
+    .io_in_bits          (io_held & ~reserved),	// \\src\\main\\scala\\SynthTop.scala:72:16, :75:{36,38}
     .io_out_valid        (_selector_io_out_valid),
     .io_out_bits_idx_0   (_selector_io_out_bits_idx_0),
     .io_out_bits_idx_1   (_selector_io_out_bits_idx_1),
@@ -1884,26 +1860,26 @@ module SynthAudio(	// \\src\\main\\scala\\SynthTop.scala:24:7
   );
 endmodule
 
-module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:10:7
-  input        clock,	// \\src\\main\\scala\\SynthTop.scala:10:7
-               reset,	// \\src\\main\\scala\\SynthTop.scala:10:7
-  output       io_out,	// \\src\\main\\scala\\SynthTop.scala:11:14
-  input        io_rx,	// \\src\\main\\scala\\SynthTop.scala:11:14
-  output [6:0] io_heldBin	// \\src\\main\\scala\\SynthTop.scala:11:14
+module SynthTop(	// \\src\\main\\scala\\SynthTop.scala:12:7
+  input        clock,	// \\src\\main\\scala\\SynthTop.scala:12:7
+               reset,	// \\src\\main\\scala\\SynthTop.scala:12:7
+  output       io_out,	// \\src\\main\\scala\\SynthTop.scala:13:14
+  input        io_rx,	// \\src\\main\\scala\\SynthTop.scala:13:14
+  output [6:0] io_heldBin	// \\src\\main\\scala\\SynthTop.scala:13:14
 );
 
-  wire [127:0] _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:12:20
-  MidiTop midi (	// \\src\\main\\scala\\SynthTop.scala:12:20
+  wire [127:0] _midi_io_held;	// \\src\\main\\scala\\SynthTop.scala:14:20
+  MidiTop midi (	// \\src\\main\\scala\\SynthTop.scala:14:20
     .clock    (clock),
     .reset    (reset),
     .io_rx    (io_rx),
     .io_data1 (io_heldBin),
     .io_held  (_midi_io_held)
   );
-  SynthAudio audio (	// \\src\\main\\scala\\SynthTop.scala:13:21
+  SynthAudio audio (	// \\src\\main\\scala\\SynthTop.scala:15:21
     .clock   (clock),
     .reset   (reset),
-    .io_held (_midi_io_held),	// \\src\\main\\scala\\SynthTop.scala:12:20
+    .io_held (_midi_io_held),	// \\src\\main\\scala\\SynthTop.scala:14:20
     .io_out  (io_out)
   );
 endmodule
@@ -2063,7 +2039,7 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
       12'h2,
       12'h1,
       12'h0};	// \\src\\main\\scala\\SevenSegDisplay.scala:31:27
-  reg  [15:0]        tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
+  reg  [14:0]        tick_c_value;	// src/main/scala/chisel3/util/Counter.scala:61:40
   reg  [1:0]         sel;	// src/main/scala/chisel3/util/Counter.scala:61:40
   wire [3:0][3:0]    _GEN_2 =
     {{_GEN_1[io_value][3:0]},
@@ -2073,18 +2049,18 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
   wire [3:0]         _GEN_3 = {_GEN, {{io_value > 7'h63}, {io_value > 7'h9}, {1'h1}}};	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, :34:{42,60}, :42:17
   always @(posedge clock) begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
     if (reset) begin	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
-      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+      tick_c_value <= 15'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       sel <= 2'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
     end
-    else if (tick_c_value == 16'hC34F) begin	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
-      tick_c_value <= 16'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
+    else if (tick_c_value == 15'h61A7) begin	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
+      tick_c_value <= 15'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       if (sel == 2'h2)	// src/main/scala/chisel3/util/Counter.scala:61:40, :73:24
         sel <= 2'h0;	// src/main/scala/chisel3/util/Counter.scala:61:40
       else	// src/main/scala/chisel3/util/Counter.scala:73:24
         sel <= sel + 2'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
     end
     else	// src/main/scala/chisel3/util/Counter.scala:73:24
-      tick_c_value <= tick_c_value + 16'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
+      tick_c_value <= tick_c_value + 15'h1;	// src/main/scala/chisel3/util/Counter.scala:61:40, :77:24
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
     `ifdef FIRRTL_BEFORE_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
@@ -2097,8 +2073,8 @@ module SevenSegDisplay(	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7
-        tick_c_value = _RANDOM[/*Zero width*/ 1'b0][15:0];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
-        sel = _RANDOM[/*Zero width*/ 1'b0][17:16];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        tick_c_value = _RANDOM[/*Zero width*/ 1'b0][14:0];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
+        sel = _RANDOM[/*Zero width*/ 1'b0][16:15];	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7, src/main/scala/chisel3/util/Counter.scala:61:40
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// \\src\\main\\scala\\SevenSegDisplay.scala:14:7

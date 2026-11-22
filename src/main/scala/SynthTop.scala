@@ -1,5 +1,7 @@
 import chisel3._
 import chisel3.util.PriorityEncoder
+import chisel3.util.log2Ceil
+import MidiUtils.maxIncrement
 
 class SynthTopIO extends Bundle {
   val out = Output(Bool())
@@ -7,9 +9,9 @@ class SynthTopIO extends Bundle {
   val heldBin = Output(UInt(7.W))
 }
 
-class SynthTop(clockFrequency: Int = Nexys4.clockFrequency) extends Module {
+class SynthTop(clockFrequency: Int = Nexys4.clockFrequency, midiBaudRate: Int=Midi.midiBaudRate) extends Module {
   val io = IO(new SynthTopIO())
-  val midi = Module(new MidiTop(clkHz = clockFrequency, baud = Midi.midiBaudRate))
+  val midi = Module(new MidiTop(clkHz = clockFrequency, baud = midiBaudRate))
   val audio = Module(new SynthAudio(Env.voices, Env.polyphonyCount, clockFrequency))
   midi.io.rx := io.rx
   audio.io.held := midi.io.held
@@ -25,10 +27,14 @@ class SynthAudio(
     voices: Seq[VoiceConfig],
     slotsPerVoice: Int,
     clockFrequency: Int,
-    sampleWid: Int = 8
+    sampleWid: Int = 8,
+    phaseWid: Int = 32
 ) extends Module {
   private val count = voices.size * slotsPerVoice
   require(count >= 1 && count <= 128)
+  /* If clock frequency is too low it will create huge incrementers. This approximates largest incrementer val. */
+  private val maxInc = maxIncrement(phaseWid,clockFrequency)
+  require(maxInc.bitLength < phaseWid, s"Increase clock Frequency or phaseWid. maxIncrement=${maxInc}=${maxInc.bitLength}.W, phaseWid=$phaseWid")
 
   val io = IO(new Bundle {
     val held = Input(UInt(128.W))
@@ -38,7 +44,7 @@ class SynthAudio(
   val notes = RegInit(VecInit(Seq.fill(count)(0.U(7.W))))
   val assigned = RegInit(VecInit(Seq.fill(count)(false.B)))
   val busy = Wire(Vec(count, Bool()))
-  val midiIncrements = MidiUtils.midiLookupTable(phaseWid = 32, clkHz = clockFrequency)
+  val midiIncrements = MidiUtils.midiLookupTable(phaseWid = phaseWid, clkHz = clockFrequency)
   val pwm = Module(new PWMGenerator(sampleWid, count))
 
   for ((config, bank) <- voices.zipWithIndex; slot <- 0 until slotsPerVoice) {

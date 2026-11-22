@@ -317,6 +317,14 @@ MVP(
 
 ![image](docs/interfaces.drawio.svg)
 
+## Acknowledgements
+
+### UartRx
+
+We needed a Uart module. [chisel-book](https://github.com/schoeberl/chisel-book) defines one. 
+We have copied the Rx module from https://github.com/schoeberl/chisel-book/blob/master/src/main/scala/uart/uart.scala
+
+
 ## Sources
 
 [^1]: https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual
