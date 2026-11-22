@@ -69,7 +69,7 @@ class MidiMsg extends Bundle {
 class MidiParser extends Module {
   val io = IO(new Bundle {
     val in = Flipped(new UartIO())
-    val msg = Valid(new MidiMsg)
+    val msg = DecoupledIO(new MidiMsg)
   })
   io.in.ready := true.B
 
@@ -146,23 +146,35 @@ class MidiTop(clkHz: Int = Nexys4.clockFrequency, baud: Int = Midi.midiBaudRate)
   parser.io.in <> uart.io.channel
 
   val m = parser.io.msg
-  val kind = m.bits.status(7, 4)
+
+  val msg = Reg(chiselTypeOf(m.bits))
+  val readyReg = RegInit(true.B)
+
+  val kind = msg.status(7, 4)
 
   // Note-on with velocity 0 means note-off
-  val isOn = m.valid && kind === Midi.noteOn.U && m.bits.data2 =/= 0.U
-  val isOff =
-    m.valid && (kind === Midi.noteOff.U || (kind === Midi.noteOn.U && m.bits.data2 === 0.U))
+  val isOn = kind === Midi.noteOn.U && msg.data2 =/= 0.U
+  val isOff = (kind === Midi.noteOff.U || (kind === Midi.noteOn.U && msg.data2 === 0.U))
 
   io.noteOn := isOn
   io.noteOff := isOff
-  io.cc := m.valid && kind === 0xb.U
-  io.bend := m.valid && kind === 0xe.U
-  io.channel := m.bits.status(3, 0)
-  io.data1 := m.bits.data1
-  io.data2 := m.bits.data2
+  io.cc := kind === 0xb.U
+  io.bend := kind === 0xe.U
+  io.channel := msg.status(3, 0)
+  io.data1 := msg.data1
+  io.data2 := msg.data2
 
   val held = RegInit(VecInit(Seq.fill(128)(false.B)))
   when(isOn) { held(m.bits.data1) := true.B }
   when(isOff) { held(m.bits.data1) := false.B }
+
+  when(m.fire) {
+    msg := m.bits
+    readyReg := false.B
+  }.otherwise {
+    readyReg := true.B
+  }
+
   io.held := held.asUInt
+  m.ready := readyReg
 }
