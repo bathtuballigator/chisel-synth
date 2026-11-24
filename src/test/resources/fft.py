@@ -36,13 +36,14 @@ def do_analysis(data, filename):
     peaks, _ = signal.find_peaks(fourier, height=1000)
     print(peaks)
 
-    plt.figure(figsize=(13, 8))
-    plt.plot(freq, fourier)
-    plt.plot(freq[peaks], fourier[peaks], "x")
-    plt.xlabel("Frequency (Hz)")
-    plt.ylabel("Amplitude")
-    plt.savefig(filename)
-    plt.close()
+    if args.graphics:
+        plt.figure(figsize=(13, 8))
+        plt.plot(freq, fourier)
+        plt.plot(freq[peaks], fourier[peaks], "x")
+        plt.xlabel("Frequency (Hz)")
+        plt.ylabel("Amplitude")
+        plt.savefig(filename)
+        plt.close()
     return peaks
 
 
@@ -69,6 +70,7 @@ parser.add_argument(
 )  # clock frequency / sample rate
 parser.add_argument("-f", "--frequency", default=261)  # note frequency for generation
 parser.add_argument("-s", "--shape", default="square")  # waveform selector
+parser.add_argument("-g", "--graphics", default=False, action="store_true")
 
 
 args = parser.parse_args()
