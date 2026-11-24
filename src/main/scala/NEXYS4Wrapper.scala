@@ -156,7 +156,4 @@ class Nexys4Wrapper extends RawModule {
 
 object Nexys4Gen extends App {
   val rtl = VerilogGen(new Nexys4Wrapper, "polyphonyWithEnvelope.sv")
-  // Keep both existing Vivado source paths on the same generated design.
-  java.nio.file.Files.copy(rtl, rtl.resolveSibling("polyphony.sv"),
-    java.nio.file.StandardCopyOption.REPLACE_EXISTING)
 }
