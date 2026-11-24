@@ -6,9 +6,11 @@ import org.scalatest.flatspec.AnyFlatSpec
 class SynthTopSpec extends AnyFlatSpec with ChiselScalatestTester {
   // Skipped by default: this test takes a really long time (~52k cycles of
   // all 48 oscillators at the real 100 MHz clock). Set to false to run it.
-  val skip = true
+  val skip = false
 
-  val div = Nexys4.clockFrequency / Midi.midiBaudRate
+  val clockFreq = 100_000
+  val baudRate = 50_000
+  val div = clockFreq / baudRate
 
   def sendByte(dut: SynthTop, b: Int): Unit = {
     val bits = Seq(0) ++ (0 until 8).map(i => (b >> i) & 1) ++ Seq(1) // 8N1
@@ -20,19 +22,37 @@ class SynthTopSpec extends AnyFlatSpec with ChiselScalatestTester {
 
   "SynthTop" should "show the held note on heldBin" in {
     assume(!skip, "skipped: takes a really long time, set skip = false to run")
-    test(new SynthTop()) { dut =>
-      dut.clock.setTimeout(0)
-      dut.io.rx.poke(true.B)
-      dut.clock.step(10)
-      dut.io.heldBin.expect(0.U)
+    test(new SynthTop(clockFrequency = clockFreq, midiBaudRate = baudRate)) {
+      dut =>
+        dut.clock.setTimeout(0)
+        dut.io.rx.poke(true.B)
+        dut.clock.step(10)
+        dut.io.heldBin.expect(0.U)
 
-      Seq(0x90, 60, 100).foreach(sendByte(dut, _)) // note on C4
-      dut.clock.step(10)
-      dut.io.heldBin.expect(60.U)
+        Seq(0x90, 60, 100).foreach(sendByte(dut, _)) // note on C4
+        dut.clock.step(10)
+        dut.io.heldBin.expect(60.U)
 
-      Seq(0x80, 0, 0).foreach(sendByte(dut, _)) // note off
-      dut.clock.step(10)
-      dut.io.heldBin.expect(0.U)
+        Seq(0x80, 0, 0).foreach(sendByte(dut, _)) // note off
+        dut.clock.step(10)
+        dut.io.heldBin.expect(0.U)
     }
+  }
+  "SynthTop" should "produce waveform for C4" in {
+    assume(!skip, "skipped: takes a really long time, set skip = false to run")
+    test(new SynthTop(clockFrequency = clockFreq, midiBaudRate = baudRate))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
+        val waitCycles = 2
+        dut.clock.setTimeout(0)
+        dut.io.rx.poke(true.B)
+        dut.clock.step(waitCycles * div)
+        dut.io.heldBin.expect(0.U)
+
+        Seq(0x90, 60, 100).foreach(sendByte(dut, _)) // note on C4
+        dut.clock.step(waitCycles * div)
+
+        Seq(0x80, 0, 0).foreach(sendByte(dut, _)) // note off
+        dut.clock.step(waitCycles * div)
+      }
   }
 }

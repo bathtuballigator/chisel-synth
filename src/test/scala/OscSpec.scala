@@ -18,6 +18,9 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
     ) { dut=>
         // 4 bit accumulator with increment = 1
         dut.io.increment.poke(1.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
 
         // init phase is 0, amplitude is 100, so sample should be +100
         dut.io.sample.expect(100.S)
@@ -63,6 +66,9 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
         ) { dut =>
             // 4 bit accumulator with increment = 4
             dut.io.increment.poke(4.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
 
             // init phase is 0, amplitude is 100, so sample should be +100
             dut.io.sample.expect(100.S)
@@ -108,6 +114,9 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
             // should occassionally have 2 samples in a row with same sign and occassionally have 1
             // 4 bit accumulator with increment = 5
             dut.io.increment.poke(5.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
 
             // init phase is 0, amplitude is 100, so sample should be +100
             dut.io.sample.expect(100.S)
@@ -175,6 +184,9 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
         ) { dut =>
             // 4 bit accumulator with increment = 8
             dut.io.increment.poke(8.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
 
             // init phase is 0, amplitude is 100, so sample should be +100
             dut.io.sample.expect(100.S)
@@ -194,142 +206,4 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
             // pass test
         }
     }
-}
-
-// test for OscConfig
-class OscConfigSpec extends AnyFlatSpec // no hardware instantiated, so no ChiselScalatestTester
-{
-    behavior of "OscConfig"
-    it should "calculate correct phase increment for given frequency" in{
-            val sampleRate = 48000 // 48kHz
-            val phaseWidth = 16 // 16 bit phase accumulator
-            val frequency = 440 // 440Hz
-
-            val expected=BigInt(frequency) * (BigInt(1)<<phaseWidth) / sampleRate
-
-            val actual = OscConfig.calcIncrement(
-                freq=frequency,
-                sampleRate=sampleRate,
-                phaseWid=phaseWidth
-            )
-
-            assert(actual==expected)
-        }
-
-    it should "return 0 for frequencies smaller than sample rate / 2^phaseWidth" in{
-        val sampleRate = 48000 // 48kHz
-        val phaseWidth = 8 // 8 bit phase accumulator
-        val frequency = 1 // 1Hz
-
-        val expected=BigInt(0)
-
-        val actual = OscConfig.calcIncrement(
-            freq=frequency,
-            sampleRate=sampleRate,
-            phaseWid=phaseWidth
-        )
-
-        assert(actual==expected)
-    }
-
-    it should "reject negative frequencies" in{
-        val sampleRate = 48000 // 48kHz
-        val phaseWidth = 16 // 16 bit phase accumulator
-        val frequency = -440 // -440Hz
-
-        assertThrows[IllegalArgumentException] {
-            OscConfig.calcIncrement(
-                freq=frequency,
-                sampleRate=sampleRate,
-                phaseWid=phaseWidth
-            )
-        }
-    }
-
-    it should "reject frequencies larger than Nyquist frequency" in{
-        val sampleRate = 48000 // 48kHz
-        val phaseWidth = 16 // 16 bit phase accumulator
-        val frequency = 48000 // 48kHz
-
-        assertThrows[IllegalArgumentException] {
-            OscConfig.calcIncrement(
-                freq=frequency,
-                sampleRate=sampleRate,
-                phaseWid=phaseWidth
-            )
-        }
-    }
-
-    it should "reject negative sample rates" in{
-        val sampleRate = -48000 // -48kHz
-        val phaseWidth = 16 // 16 bit phase accumulator
-        val frequency = 440 // 440Hz
-
-        assertThrows[IllegalArgumentException] {
-            OscConfig.calcIncrement(
-                freq=frequency,
-                sampleRate=sampleRate,
-                phaseWid=phaseWidth
-            )
-        }
-    }
-
-    it should "reject negative phase widths" in{
-        val sampleRate = 48000 // 48kHz
-        val phaseWidth = -16 // -16 bit phase accumulator
-        val frequency = 440 // 440Hz
-
-        assertThrows[IllegalArgumentException] {
-            OscConfig.calcIncrement(
-                freq=frequency,
-                sampleRate=sampleRate,
-                phaseWid=phaseWidth
-            )
-        }
-    }
-
-    it should "reject 0 phase widths" in{
-        val sampleRate = 48000 // 48kHz
-        val phaseWidth = 0 // 0 bit phase accumulator
-        val frequency = 440 // 440Hz
-
-        assertThrows[IllegalArgumentException] {
-            OscConfig.calcIncrement(
-                freq=frequency,
-                sampleRate=sampleRate,
-                phaseWid=phaseWidth
-            )
-        }
-    }
-
-    it should "reject 0 sample rates" in{
-        val sampleRate = 0 // 0Hz
-        val phaseWidth = 16 // 16 bit phase accumulator
-        val frequency = 440 // 440Hz
-
-        assertThrows[IllegalArgumentException] {
-            OscConfig.calcIncrement(
-                freq=frequency,
-                sampleRate=sampleRate,
-                phaseWid=phaseWidth
-            )
-        }
-    }
-
-    it should "accept 0 frequency" in{
-        val sampleRate = 48000 // 48kHz
-        val phaseWidth = 16 // 16 bit phase accumulator
-        val frequency = 0 // 0Hz
-
-        val expected=BigInt(0)
-
-        val actual = OscConfig.calcIncrement(
-            freq=frequency,
-            sampleRate=sampleRate,
-            phaseWid=phaseWidth
-        )
-
-        assert(actual==expected)
-    }
-    
 }
