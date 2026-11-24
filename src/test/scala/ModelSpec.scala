@@ -42,7 +42,7 @@ class ModelSpec extends AnyFlatSpec with ChiselScalatestTester {
   //       }
   //   }
   // }
-  it should "generate a wav file for use with python" in {
+  it should "pass fft testing in default settings" in {
     val sampleWid = 8
     val freq = MidiUtils.midiToFreq(Env.rootMidiNote)
     val phaseWid = OscConfig.calcPhaseWid(
@@ -53,7 +53,8 @@ class ModelSpec extends AnyFlatSpec with ChiselScalatestTester {
       OscConfig.calcIncrement(freq, Nexys4.clockFrequency, phaseWid)
     test(new Oscillator(OscillatorType.Square, 127, sampleWid, phaseWid)) {
       dut =>
-        val simSteps = 10_000_000
+        val simSteps =
+          (((Nexys4.clockFrequency / freq).toFloat).floor * 30).toInt
         dut.io.increment.poke(increment)
         dut.clock.setTimeout(0)
         val output: IndexedSeq[Int] = (0 until simSteps).map(_ => {
@@ -63,7 +64,9 @@ class ModelSpec extends AnyFlatSpec with ChiselScalatestTester {
         val path: os.Path = os.pwd / "src" / "test" / "resources" / "data.log"
 
         os.write.over(path, output.mkString(","))
-        s"./.venv/bin/python src/test/resources/fft.py -c ${Nexys4.clockFrequency} -f ${freq} -s square".!
+        val exit_code =
+          s"./.venv/bin/python src/test/resources/fft.py -c ${Nexys4.clockFrequency} -f ${freq} -s square".!
+        assert(exit_code == 0)
     }
   }
 }
