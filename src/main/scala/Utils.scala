@@ -52,14 +52,14 @@ object DivideByConstant {
 
       if (denom == 1) // denom was a power of 2
       {
-        num
-      } else {
-        // for non-powerof2, use constant multiplier to avoid division
+        num 
+      } else 
+      {
+        // for non-power of2, use constant multiplier to avoid division
         val shiftAmt = num.getWidth + denom.bitLength
         val powerTwo = (BigInt(1) << shiftAmt) // 2^shiftAmt
-        val multDenom =
-          powerTwo + denom - 1 // round up to nearest multiple of denominator
-        val constMult = multDenom / denom // determin constant multiplier
+        val multDenom = powerTwo + denom - 1 // round up to nearest multiple of denominator
+        val constMult = multDenom / denom // determine constant multiplier
 
         val res = constMult.U * num // multiply numerator by constant multiplier
         res >> shiftAmt // divide by 2^shiftAmt
