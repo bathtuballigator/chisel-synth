@@ -1,4 +1,4 @@
-# Group 13 - Parameterizable Live Controlled Synthesizer
+# Group 12 - Parameterizable Live Controlled Synthesizer
 =======================
 ## Dependencies
 
