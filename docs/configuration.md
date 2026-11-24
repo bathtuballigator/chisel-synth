@@ -17,12 +17,15 @@ switch MVP (`MVP_Top`) still has its own configuration restrictions.
 
 The MIDI synth now uses main's registered phase-increment oscillator interface,
 sequential decoupled note selector, and pipelined PWM mixer. Pitch increments
-are calculated in the Scala MIDI lookup table for a 50 MHz clock. The polyphony
-XDC also specifies a 20 ns / 50 MHz clock. The actual clock supplied to the FPGA
-design must match; a timing constraint alone does not divide a 100 MHz source.
+are calculated in the Scala MIDI lookup table for a 25 MHz clock. The wrapper
+uses a 7-series MMCM and global clock buffers to divide the board's 100 MHz
+oscillator to 25 MHz. The XDC constrains the physical input to 10 ns; Vivado
+derives the internal 40 ns clock from the MMCM. Core reset stays asserted until
+the MMCM locks and then releases synchronously to the 25 MHz clock.
 
-Note selection runs separately for each configured waveform bank, so the same
-held keys play all configured waveforms. Notes released while selection is in
+One note selector serves the waveform banks in round-robin order, excluding
+each bank's reserved notes so held keys play all configured waveforms without
+stealing release slots. Notes released while selection is in
 progress are rechecked before assignment. Release tails retain their pitch and
 continue through PWM after the last key is released.
 

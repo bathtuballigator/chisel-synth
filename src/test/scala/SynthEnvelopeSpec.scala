@@ -95,13 +95,54 @@ class SynthEnvelopeSpec extends AnyFlatSpec with ChiselScalatestTester {
   it should "layer the same held notes across configured waveform banks" in {
     test(new AudioProbe(Seq(
       VoiceConfig(Waveform.Square, envelope),
-      VoiceConfig(Waveform.Triangle, envelope)
+      VoiceConfig(Waveform.Triangle, envelope),
+      VoiceConfig(Waveform.Sawtooth, envelope)
     ))) { dut =>
       dut.io.held.poke((BigInt(0).setBit(60).setBit(69)).U)
       dut.clock.step(64)
-      for (index <- 0 until 4) {
+      for (index <- 0 until 6) {
         dut.slotAssigned(index).expect(true.B)
         dut.slotNotes(index).expect((if (index % 2 == 0) 60 else 69).U)
+      }
+    }
+  }
+
+  it should "share selection fairly between banks with different release times" in {
+    test(new AudioProbe(Seq(
+      VoiceConfig(Waveform.Square, envelope),
+      VoiceConfig(Waveform.Triangle, envelope.copy(releaseMs = 4))
+    ), slots = 1)) { dut =>
+      def hold(notes: Int*): Unit =
+        dut.io.held.poke(notes.foldLeft(BigInt(0))((mask, note) => mask.setBit(note)).U)
+
+      hold(60)
+      dut.clock.step(512)
+      for (i <- 0 until 2) dut.slotNotes(i).expect(60.U)
+      hold(69)
+      dut.clock.step(160)
+      dut.slotNotes(0).expect(60.U) // Long release retains its slot.
+      dut.slotNotes(1).expect(69.U) // Short release already accepts the waiting note.
+      dut.clock.step(640)
+      for (i <- 0 until 2) {
+        dut.slotAssigned(i).expect(true.B)
+        dut.slotNotes(i).expect(69.U)
+      }
+    }
+  }
+
+  it should "fill free slots with higher notes while lower notes remain reserved" in {
+    test(new AudioProbe(Seq(
+      VoiceConfig(Waveform.Square, envelope),
+      VoiceConfig(Waveform.Triangle, envelope)
+    ))) { dut =>
+      dut.io.held.poke((BigInt(1) << 60).U)
+      dut.clock.step(128)
+      dut.io.held.poke((BigInt(0).setBit(60).setBit(69)).U)
+      dut.clock.step(128)
+      for (bank <- 0 until 2) {
+        dut.slotNotes(bank * 2).expect(60.U)
+        dut.slotNotes(bank * 2 + 1).expect(69.U)
+        dut.slotAssigned(bank * 2 + 1).expect(true.B)
       }
     }
   }

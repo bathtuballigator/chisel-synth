@@ -58,6 +58,46 @@ class MVPBlackBox extends BlackBox with HasBlackBoxInline {
   )
 }
 
+// Dedicated clock hardware: 100 MHz * 10 / 40 = 25 MHz, with a 1 GHz VCO.
+class Nexys4Clock extends BlackBox with HasBlackBoxInline {
+  val io = IO(new Bundle {
+    val clk100 = Input(Clock())
+    val reset = Input(Bool())
+    val clk25 = Output(Clock())
+    val locked = Output(Bool())
+  })
+  setInline("Nexys4Clock.sv", """
+module Nexys4Clock(input clk100, input reset, output clk25, output locked);
+  wire feedback, feedbackBuffered, outputClock;
+  MMCME2_BASE #(
+    .CLKIN1_PERIOD(10.0), .DIVCLK_DIVIDE(1),
+    .CLKFBOUT_MULT_F(10.0), .CLKOUT0_DIVIDE_F(40.0),
+    .STARTUP_WAIT("FALSE")
+  ) mmcm (
+    .CLKIN1(clk100), .RST(reset), .PWRDWN(1'b0),
+    .CLKFBIN(feedbackBuffered), .CLKFBOUT(feedback),
+    .CLKOUT0(outputClock), .LOCKED(locked)
+  );
+  BUFG feedbackBuffer (.I(feedback), .O(feedbackBuffered));
+  BUFG outputBuffer (.I(outputClock), .O(clk25));
+endmodule
+""")
+}
+
+// Assert immediately on reset/clock loss; release after two core clocks.
+class ClockResetSynchronizer extends RawModule {
+  val clock = IO(Input(Clock()))
+  val request = IO(Input(Bool()))
+  val coreReset = IO(Output(AsyncReset()))
+  withClockAndReset(clock, request.asAsyncReset) {
+    val first = RegInit(true.B)
+    val second = RegInit(true.B)
+    first := false.B
+    second := first
+    coreReset := second.asAsyncReset
+  }
+}
+
 class MVPIONexys4 extends Bundle {
   val AUD_SD = Output(Bool())
   val AUD_PWM = Analog(1.W) // Linked to AUD_PWM: 0 when low, high-Z when high
@@ -79,8 +119,17 @@ class Nexys4Wrapper extends RawModule {
   val clock = IO(Input(Clock()))
   val reset = IO(Input(Bool()))
 
-  // The nexys4 is reset active low, so we have to invert the reset
-  withClockAndReset(clock, if (Nexys4.resetActiveLow) !reset else reset) {
+  val clockGenerator = Module(new Nexys4Clock)
+  val boardReset = if (Nexys4.resetActiveLow) !reset else reset
+  clockGenerator.io.clk100 := clock
+  clockGenerator.io.reset := boardReset
+  val resetSynchronizer = Module(new ClockResetSynchronizer)
+  resetSynchronizer.clock := clockGenerator.io.clk25
+  resetSynchronizer.request := boardReset || !clockGenerator.io.locked
+
+  // Keep the synth's registers synchronously reset, including BRAM controls.
+  // The synchronizer still asserts the reset request immediately on clock loss.
+  withClockAndReset(clockGenerator.io.clk25, resetSynchronizer.coreReset.asBool) {
     val synth = Module(
       new SynthTop(
         clockFrequency = Nexys4.clockFrequency

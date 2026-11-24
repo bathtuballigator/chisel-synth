@@ -1,5 +1,5 @@
 import chisel3._
-import chisel3.util.PriorityEncoder
+import chisel3.util.{PriorityEncoder, log2Ceil}
 
 class SynthTopIO extends Bundle {
   val out = Output(Bool())
@@ -57,17 +57,28 @@ class SynthAudio(
     pwm.io.samples(index) := synth.io.sample
   }
 
-  // Use main's decoupled, sequential note selector. Each waveform bank selects
-  // the same held notes independently, so all configured voices layer together.
+  // One selector services all banks; hold its bank until the response arrives.
+  val bankReservations = Wire(Vec(voices.size, UInt(128.W)))
   for (bank <- voices.indices) {
     val indices = (0 until slotsPerVoice).map(slot => bank * slotsPerVoice + slot)
-    val reserved = indices.map { i =>
+    bankReservations(bank) := indices.map { i =>
       Mux(busy(i), 1.U(128.W) << notes(i), 0.U)(127, 0)
     }.reduce(_ | _)
-    val selector = Module(new FirstNSetBits(n = slotsPerVoice, w = 128))
-    selector.io.in.valid := true.B
-    selector.io.in.bits := io.held & ~reserved
-    selector.io.out.ready := true.B
+  }
+  val selectedBank = RegInit(0.U(math.max(1, log2Ceil(voices.size)).W))
+  val selector = Module(new FirstNSetBits(n = slotsPerVoice, w = 128))
+  selector.io.in.valid := true.B
+  val selectedReservations = if (voices.size == 1) bankReservations(0)
+    else bankReservations(selectedBank)
+  selector.io.in.bits := io.held & ~selectedReservations
+  selector.io.out.ready := true.B
+  when(selector.io.out.fire) {
+    selectedBank := Mux(selectedBank === (voices.size - 1).U, 0.U, selectedBank + 1.U)
+  }
+
+  for (bank <- voices.indices) {
+    val indices = (0 until slotsPerVoice).map(slot => bank * slotsPerVoice + slot)
+    val reserved = bankReservations(bank)
 
     // Selection takes multiple clocks. Recheck live gates/reservations when
     // consuming a response so a note released during selection cannot start.
@@ -80,7 +91,7 @@ class SynthAudio(
     val remaining = Wire(Vec(slotsPerVoice + 1, UInt(slotsPerVoice.W)))
     remaining(0) := candidates.asUInt
     for ((index, slot) <- indices.zipWithIndex) {
-      val allocate = selector.io.out.fire && !busy(index) && remaining(slot).orR
+      val allocate = selector.io.out.fire && selectedBank === bank.U && !busy(index) && remaining(slot).orR
       val chosen = PriorityEncoder(remaining(slot))
       remaining(slot + 1) := Mux(allocate,
         remaining(slot) & (remaining(slot) - 1.U), remaining(slot))
