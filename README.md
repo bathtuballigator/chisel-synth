@@ -36,10 +36,10 @@ Open a terminal in the repository root, the folder containing `build.sbt` and
 AMOUNT_FREQ=4
 ROOT_MIDI_NOTE=60
 
-# One square-wave voice; envelope bypassed for the current MVP.
+# One square-wave voice with ADSR enabled in the MIDI synth.
 VOICE_COUNT=1
 VOICE_0_TYPE=square
-VOICE_0_ENVELOPE_ENABLED=false
+VOICE_0_ENVELOPE_ENABLED=true
 VOICE_0_ATTACK_MS=10
 VOICE_0_DECAY_MS=100
 VOICE_0_SUSTAIN=0.7
@@ -88,11 +88,9 @@ the same ADSR values under their respective prefixes. Disabled envelopes retain
 their settings as configuration data. A complete example is in
 [`config/examples/three-voices.env`](config/examples/three-voices.env).
 
-The current MVP hardware consumes the note-bank settings and supports one square
-voice without an envelope. The loader accepts the complete voice format, but
-hardware generation rejects unsupported voice selections until the oscillator
-and ADSR teams integrate their modules. You can inspect multi-voice configurations
-now, but cannot generate working multi-voice/ADSR hardware from this MVP yet.
+The MIDI synth uses the configured waveform and ADSR for each voice bank. The
+older switch-based MVP uses the note-bank settings and supports one square voice
+with ADSR disabled.
 
 ### 3. Check the loaded values
 
@@ -110,7 +108,7 @@ ROOT_MIDI_NOTE=60
 MIDI note range: 60 to 63
 VOICE_COUNT=1
 VOICE_0_TYPE=square
-VOICE_0_ENVELOPE_ENABLED=false
+VOICE_0_ENVELOPE_ENABLED=true
 ```
 
 It also prints all four ADSR parameters. This command only reads and displays the
@@ -142,23 +140,20 @@ sbt "testOnly SynthConfigSpec SynthConfigHardwareSpec"
 ```
 
 These tests check parsing, valid/invalid settings, per-voice data, and the current
-MVP's note-bank behavior. Run the hardware test with an MVP-compatible config:
-one square voice and `ENVELOPE_ENABLED=false`. Parser tests alone can be run with
+MVP's note-bank behavior. The hardware test uses a separate config with ADSR
+disabled. Parser tests alone can be run with
 `sbt "testOnly SynthConfigSpec"`. These do not test ADSR envelope hardware.
 
 ### 6. Generate hardware
 
-With an MVP-compatible config selected, run:
+To generate the MIDI synth with the selected config, run:
 
 ```powershell
 sbt "runMain Nexys4Gen"
 ```
 
-This writes `generated/MVP_Octave.sv`; the board top module is `Nexys4Wrapper`.
-Rebuild the Vivado design and program the FPGA to apply the new settings.
-The supplied `xdc_files/Nexys4DDR_octave.xdc` describes 16 switches. If fewer
-notes are generated, use matching constraints for only the generated input ports.
-The config loader does not generate pin constraints.
+This writes `generated/polyphonyWithEnvelope.sv`; the board top module is `Nexys4Wrapper`.
+Rebuild the MIDI Vivado design and program the FPGA to apply the new settings.
 
 If using an interactive sbt session, exit it and start a fresh session after
 editing the file: `Env` is initialized once per JVM. Each standalone `sbt ...`
@@ -173,9 +168,8 @@ command above starts a fresh session.
 - **Inactive voice:** increase `VOICE_COUNT` or remove settings for unused indices.
 - **Invalid value:** use whole milliseconds, sustain from 0 to 1, valid MIDI
   notes, and one of the four supported waveform names.
-- **MVP integration error:** use one square voice with its envelope disabled for
-  hardware generation. Other selections can be parsed and inspected while the
-  group completes the oscillator and envelope integration.
+- **Switch-based MVP config error:** use a separate config with one square voice
+  and its envelope disabled when elaborating `MVP_Top`.
 
 See [the complete configuration format](docs/configuration.md) for all fields,
 defaults, and the Scala interface for the oscillator and envelope teams.
@@ -349,6 +343,14 @@ MVP(
 ### Connection graph
 
 ![image](docs/interfaces.drawio.svg)
+
+## Acknowledgements
+
+### UartRx
+
+We needed a Uart module. [chisel-book](https://github.com/schoeberl/chisel-book) defines one. 
+We have copied the Rx module from https://github.com/schoeberl/chisel-book/blob/master/src/main/scala/uart/uart.scala
+
 
 ## Sources
 

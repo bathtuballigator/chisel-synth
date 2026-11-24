@@ -18,6 +18,9 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
     ) { dut=>
         // 4 bit accumulator with increment = 1
         dut.io.increment.poke(1.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
 
         // init phase is 0, amplitude is 100, so sample should be +100
         dut.io.sample.expect(100.S)
@@ -63,6 +66,9 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
         ) { dut =>
             // 4 bit accumulator with increment = 4
             dut.io.increment.poke(4.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
 
             // init phase is 0, amplitude is 100, so sample should be +100
             dut.io.sample.expect(100.S)
@@ -108,6 +114,9 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
             // should occassionally have 2 samples in a row with same sign and occassionally have 1
             // 4 bit accumulator with increment = 5
             dut.io.increment.poke(5.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
 
             // init phase is 0, amplitude is 100, so sample should be +100
             dut.io.sample.expect(100.S)
@@ -175,6 +184,9 @@ class SquareOscSpec extends AnyFlatSpec with ChiselScalatestTester
         ) { dut =>
             // 4 bit accumulator with increment = 8
             dut.io.increment.poke(8.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
 
             // init phase is 0, amplitude is 100, so sample should be +100
             dut.io.sample.expect(100.S)

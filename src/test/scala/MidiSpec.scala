@@ -1,19 +1,11 @@
 import chisel3._
-import chisel3.simulator.EphemeralSimulator._
+import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import scala.collection.mutable.ArrayBuffer
-import scala.sys.process._
-import scala.util.Try
-
-/** EphemeralSimulator needs Verilator; tests are cancelled (skipped) without it. */
-object Verilator {
-  lazy val available: Boolean =
-    Try(Seq("verilator", "--version").!(ProcessLogger(_ => ())) == 0).getOrElse(false)
-}
 
 /** End-to-end tests: serialized bits on the rx pin -> decoded events. */
-class MidiTopSpec extends AnyFlatSpec with Matchers {
+class MidiTopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
   // Real MIDI baud, but a low clock so each bit is only 16 cycles (fast sim)
   val ClkHz = 500000
   val Baud  = 31250
@@ -55,8 +47,7 @@ class MidiTopSpec extends AnyFlatSpec with Matchers {
   }
 
   def run(body: Driver => Unit): Unit = {
-    assume(Verilator.available, "verilator not found on PATH")
-    simulate(new MidiTop(ClkHz, Baud)) { dut =>
+    test(new MidiTop(ClkHz, Baud)) { dut =>
       dut.io.rx.poke(true.B)
       dut.reset.poke(true.B)
       dut.clock.step(2)
@@ -119,11 +110,10 @@ class MidiTopSpec extends AnyFlatSpec with Matchers {
 }
 
 /** Parser-level tests, driving bytes directly (no UART). */
-class MidiParserSpec extends AnyFlatSpec with Matchers {
+class MidiParserSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
   def feed(bytes: Int*): Seq[(Int, Int, Int)] = {
-    assume(Verilator.available, "verilator not found on PATH")
     val out = ArrayBuffer[(Int, Int, Int)]()
-    simulate(new MidiParser) { dut =>
+    test(new MidiParser) { dut =>
       dut.io.in.valid.poke(false.B)
       dut.io.in.bits.poke(0.U)
       dut.reset.poke(true.B)
