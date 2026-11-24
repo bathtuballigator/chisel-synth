@@ -155,5 +155,5 @@ class Nexys4Wrapper extends RawModule {
 }
 
 object Nexys4Gen extends App {
-  val rtl = VerilogGen(new Nexys4Wrapper, "polyphonyWithEnvelope.sv")
+  val rtl = VerilogGen(new Nexys4Wrapper, "threeVoices.sv")
 }

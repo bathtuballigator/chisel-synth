@@ -68,6 +68,8 @@ It can be played live with a MIDI controller by connecting the FPGA to a compute
   - [Testing](#testing)
 - [Discussion](#discussion)
   - [Future prospects](#future-prospects)
+    - [Desired Fixes](#desired-fixes)
+    - [Desired Features](#desired-features)
   - [AI Acknowledgements](#ai-acknowledgements)
 - [Sources](#sources)
 
@@ -235,6 +237,29 @@ endmodule
 # Discussion
 
 ## Future prospects
+
+### Desired Fixes
+
+- Some keys makes the speaker pop
+  - ![alt text](docs/speakerPop.png)
+  - Start and stop peaks can be seen
+- Constant hum when connected
+  - Probably because it is a closed circuit
+    - pc->usb->fpga->aux->pc
+
+### Desired Features
+
+- Multi channel support
+  - E.g.
+    - different config values for different channels
+    - Knobs working
+- Velocity support
+- Use without PC
+  - Flash implementation onto FPGA
+  - Have a battery
+  - Connect MIDI Usb to PMOD
+  - Built into its own little synth maybe?
+
 
 ## AI Acknowledgements
 Copilot in VSCode was used intermittently to auto-complete code.
