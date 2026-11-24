@@ -63,7 +63,7 @@ It can be played live with a MIDI controller by connecting the FPGA to a compute
 - [Using the Synthesizer](#using-the-synthesizer)
   - [Configuration](#configuration)
 - [Implementation](#implementation)
-  - [Hierarchy](#hierarchy)
+  - [Schematic](#schematic)
   - [Nexys DDR4 Audio Output Specs](#nexys-ddr4-audio-output-specs)
   - [Testing](#testing)
 - [Discussion](#discussion)
@@ -176,9 +176,9 @@ The rest is typical chisel file structure
 
 # Implementation
 
-## Hierarchy
+## Schematic
 
-
+![image](docs/hierarchy.drawio.svg)
 
 ## Nexys DDR4 Audio Output Specs
 
