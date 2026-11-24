@@ -22,6 +22,8 @@ uses a 7-series MMCM and global clock buffers to divide the board's 100 MHz
 oscillator to 25 MHz. The XDC constrains the physical input to 10 ns; Vivado
 derives the internal 40 ns clock from the MMCM. Core reset stays asserted until
 the MMCM locks and then releases synchronously to the 25 MHz clock.
+The generator writes the same design to both `polyphonyWithEnvelope.sv` and
+`polyphony.sv` in `generated/`, preserving both existing Vivado source paths.
 
 One note selector serves the waveform banks in round-robin order, excluding
 each bank's reserved notes so held keys play all configured waveforms without

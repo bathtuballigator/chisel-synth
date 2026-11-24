@@ -1,4 +1,5 @@
 object Nexys4 {
+  val actualClockFrequency = 100_000_000 // Hz
   val clockFrequency = 25_000_000 // Hz, generated from the 100 MHz board oscillator
   val resetActiveLow = true // true means reset is active when not asserting it
   val numAnodes = 8
@@ -36,8 +37,6 @@ object Env {
   )
   val amntVoices = voiceList.length
   val amntSynths = polyphonyCount * amntVoices
-
-
 
   // -- FUTURE --
   // -- FUTURE --

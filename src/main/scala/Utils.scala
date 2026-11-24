@@ -6,18 +6,31 @@ object MidiUtils {
   Double = (440.0 * math.pow(2, (note - 69) / 12.0))
   def midiToFreq(note: Int): // 440 Hz is midi note 69
   Int = (440.0 * math.pow(2, (note - 69) / 12.0)).toInt
-  
-  /**
-    * Return the increment for the oscillator.
+  def midiIncrement(
+      hz: Double,
+      phaseWid: Int,
+      clkHz: Int
+  ): // 440 Hz is midi note 69
+  BigInt = BigInt(math.round(hz * math.pow(2, phaseWid) / clkHz))
+
+  def maxIncrement(
+      phaseWid: Int,
+      clkHz: Int
+  ): BigInt = midiIncrement(midiToFreqDouble(128), phaseWid, clkHz)
+
+  /** Return the increment for the oscillator.
     *
     * @param phaseWid
     * @param clkHz
     * @return
     */
-  def midiLookupTable(phaseWid: Int = 32, clkHz: Int = Nexys4.clockFrequency): Vec[UInt] = {
+  def midiLookupTable(
+      phaseWid: Int = 32,
+      clkHz: Int = Nexys4.clockFrequency
+  ): Vec[UInt] = {
     val incLut: Seq[BigInt] = (0 until 128).map { i =>
       val hz = midiToFreqDouble(i)
-      BigInt(math.round(hz * math.pow(2, phaseWid) / clkHz))
+      midiIncrement(hz, phaseWid, clkHz)
     }
     VecInit(incLut.map(_.U(phaseWid.W)))
   }

@@ -1,3 +1,4 @@
+import MidiUtils.maxIncrement
 import chisel3._
 import chisel3.util.{PriorityEncoder, log2Ceil}
 
@@ -7,19 +8,24 @@ class SynthTopIO extends Bundle {
   val heldBin = Output(UInt(7.W))
 }
 
-class SynthTop(clockFrequency: Int = Nexys4.clockFrequency) extends Module {
+class SynthTop(
+    clockFrequency: Int = Nexys4.clockFrequency,
+    midiBaudRate: Int = Midi.midiBaudRate
+) extends Module {
   val io = IO(new SynthTopIO())
-  val midi = Module(new MidiTop(clkHz = clockFrequency, baud = Midi.midiBaudRate))
-  val audio = Module(new SynthAudio(Env.voices, Env.polyphonyCount, clockFrequency))
+  val midi = Module(new MidiTop(clkHz = clockFrequency, baud = midiBaudRate))
+  val audio = Module(
+    new SynthAudio(Env.voices, Env.polyphonyCount, clockFrequency)
+  )
   midi.io.rx := io.rx
   audio.io.held := midi.io.held
   io.heldBin := midi.io.data1
   io.out := audio.io.out
 }
 
-/** Keep each note in its assigned oscillator slot through its release.
-  * Each configured waveform contributes one bank of slots. When all slots
-  * are occupied, additional held notes wait for a slot instead of stealing it.
+/** Keep each note in its assigned oscillator slot through its release. Each
+  * configured waveform contributes one bank of slots. When all slots are
+  * occupied, additional held notes wait for a slot instead of stealing it.
   */
 class SynthAudio(
     voices: Seq[VoiceConfig],
@@ -29,6 +35,13 @@ class SynthAudio(
 ) extends Module {
   private val count = voices.size * slotsPerVoice
   require(count >= 1 && count <= 128)
+  // Reject increments that cannot fit the oscillator input at this clock rate.
+  private val phaseWid = 32 // Match SynthIO and the oscillator accumulator.
+  private val maxInc = maxIncrement(phaseWid, clockFrequency)
+  require(
+    maxInc.bitLength <= phaseWid,
+    s"Increase clock Frequency or phaseWid. maxIncrement=${maxInc}=${maxInc.bitLength}.W, phaseWid=$phaseWid"
+  )
 
   val io = IO(new Bundle {
     val held = Input(UInt(128.W))
@@ -38,7 +51,8 @@ class SynthAudio(
   val notes = RegInit(VecInit(Seq.fill(count)(0.U(7.W))))
   val assigned = RegInit(VecInit(Seq.fill(count)(false.B)))
   val busy = Wire(Vec(count, Bool()))
-  val midiIncrements = MidiUtils.midiLookupTable(phaseWid = 32, clkHz = clockFrequency)
+  val midiIncrements =
+    MidiUtils.midiLookupTable(phaseWid = phaseWid, clkHz = clockFrequency)
   val pwm = Module(new PWMGenerator(sampleWid, count))
 
   for ((config, bank) <- voices.zipWithIndex; slot <- 0 until slotsPerVoice) {
@@ -49,7 +63,9 @@ class SynthAudio(
       case Waveform.Sawtooth => OscillatorType.Saw
       case Waveform.Triangle => OscillatorType.Triangle
     }
-    val synth = Module(new Synth(sampleWid, clockFrequency, waveform, config.envelope))
+    val synth = Module(
+      new Synth(sampleWid, clockFrequency, waveform, config.envelope)
+    )
     val gate = assigned(index) && io.held(notes(index))
     synth.io.gate := gate
     synth.io.increment := midiIncrements(notes(index))
@@ -93,8 +109,11 @@ class SynthAudio(
     for ((index, slot) <- indices.zipWithIndex) {
       val allocate = selector.io.out.fire && selectedBank === bank.U && !busy(index) && remaining(slot).orR
       val chosen = PriorityEncoder(remaining(slot))
-      remaining(slot + 1) := Mux(allocate,
-        remaining(slot) & (remaining(slot) - 1.U), remaining(slot))
+      remaining(slot + 1) := Mux(
+        allocate,
+        remaining(slot) & (remaining(slot) - 1.U),
+        remaining(slot)
+      )
       when(!busy(index)) {
         assigned(index) := allocate
         when(allocate) { notes(index) := selector.io.out.bits.idx(chosen) }

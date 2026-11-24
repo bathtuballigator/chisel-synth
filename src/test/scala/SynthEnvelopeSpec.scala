@@ -52,12 +52,25 @@ class SynthEnvelopeSpec extends AnyFlatSpec with ChiselScalatestTester {
 
   private class AudioProbe(
       voices: Seq[VoiceConfig] = Seq(VoiceConfig(Waveform.Square, envelope)),
-      slots: Int = 2
+      slots: Int = 2,
+      clockRate: Int = clockHz
   ) extends SynthAudio(
-    voices, slots, clockHz, sampleWid = 4
+    voices, slots, clockRate, sampleWid = 4
   ) {
     val slotNotes = expose(notes)
     val slotAssigned = expose(assigned)
+    val slotIncrement = expose(midiIncrements(notes(0)))
+  }
+
+  "The MIDI pitch lookup" should "tune A4 to 440 Hz with the 32-bit oscillator at 25 MHz" in {
+    test(new AudioProbe(slots = 1, clockRate = 25000000)) { dut =>
+      dut.io.held.poke((BigInt(1) << 69).U)
+      dut.clock.step(32)
+      dut.slotAssigned(0).expect(true.B)
+      dut.slotNotes(0).expect(69.U)
+      // round(440 Hz * 2^32 / 25 MHz); a 40-bit lookup would change the pitch.
+      dut.slotIncrement.expect(75591.U)
+    }
   }
 
   "The PWM audio path" should "keep note assignments stable and play the final release tail" in {
