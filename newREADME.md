@@ -237,6 +237,7 @@ endmodule
 ## Future prospects
 
 ## AI Acknowledgements
+Copilot in VSCode was used intermittently to auto-complete code.
 
 
 # Sources
