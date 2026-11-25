@@ -21,10 +21,15 @@ jobs:
         with:
           jvm: adopt:11
           apps: sbt
+      - name: Setup Python
+        uses: actions/setup-python@v7.1.0
       - name: Setup Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y verilator
           verilator --version
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
       - name: SBT Test
         run: sbt test
