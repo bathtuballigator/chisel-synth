@@ -1,5 +1,6 @@
 vivado/*
 !vivado/create_project.tcl
+!vivado/create_polyphony_project.tcl
 !vivado/MVP.xdc
 !vivado/README.md
 /MVP.sv
@@ -541,3 +542,4 @@ coursier
 # Sourcegraph specific
 index.scip
 CLAUDE.md
+.jvmopts

@@ -1,28 +1,49 @@
 import chisel3._
-import chisel3.util.Cat
-import chisel3.util.log2Ceil
 
-class SynthIO extends Bundle {
-  val play = Input(Bool())
-  val out = Output(Bool())
+class SynthIO(sampleWid: Int) extends Bundle {
+  val increment = Input(UInt(32.W)) // Precomputed phase increment, as on main.
+  val gate = Input(Bool())
+  val sample=Output(SInt(sampleWid.W))
+  val active = Output(Bool())
 }
 
+// A precomputed phase increment drives the oscillator; ADSR scales its sample.
 class Synth(
-    frequency: Int = 440, // Frequency to play square wave in Hz,
+    sampleWid: Int = 8, // default to 8 bit
     clockFrequency: Int = Nexys4.clockFrequency, // Hz
-    voice: OscillatorType = OscillatorType.Square
+    voice: OscillatorType = OscillatorType.Square,
+    envelope: AdsrConfig = AdsrConfig()
 ) extends Module {
-  val io = IO(new SynthIO())
+  val io = IO(new SynthIO(sampleWid))
 
   val osc =
     Module(
-      new PWMGenerator(
-        freq = frequency,
-        clock_speed = clockFrequency,
-        voice = voice
+      new Oscillator(
+        sampleWid = sampleWid,
+        clkFreq = clockFrequency,
+        oscType = voice,
+        amp=((1 << (sampleWid - 1)) - 1),
+        phaseWid=32
       )
     )
     
-  osc.io.PWM_en := io.play
-  io.out := osc.io.PWM_out
+  val active = if (envelope.enabled) {
+    val adsr = Module(new ADSREnvelope(
+      envelope.attackMs, envelope.decayMs, envelope.sustain.toDouble,
+      envelope.releaseMs, clockHz = clockFrequency
+    ))
+    adsr.io.gate := io.gate
+    val level = adsr.io.level
+    // Widen the unsigned gain before treating it as signed. This keeps the
+    // oscillator's negative samples negative and maps full gain to unity.
+    val fullScale = ((BigInt(1) << level.getWidth) - 1).S
+    val scaled = (osc.io.sample * level.zext) / fullScale
+    io.sample := Mux(adsr.io.active, scaled, 0.S)
+    adsr.io.active
+  } else {
+    io.sample := Mux(io.gate, osc.io.sample, 0.S)
+    io.gate
+  }
+  osc.io.increment := Mux(io.gate || active, io.increment, 0.U)
+  io.active := active
 }

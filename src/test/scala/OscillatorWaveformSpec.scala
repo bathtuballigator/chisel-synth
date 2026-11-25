@@ -55,6 +55,9 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
     it should "match the expected samples over three complete periods" in {
       test(wave.create(amplitude, sampleWidth, phaseWidth)) { dut =>
         dut.io.increment.poke(1.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
         for (cycle <- 0 until 3 * wave.samples.length) {
           val phase = cycle % wave.samples.length
           dut.io.sample.expect(wave.samples(phase).S,
@@ -66,8 +69,12 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
     }
 
     it should "select the correct waveform through the Oscillator wrapper" in {
-      test(new Oscillator(wave.kind, amplitude, sampleWidth, phaseWidth)) { dut =>
+      test(new Oscillator(wave.kind, amplitude, sampleWidth, phaseWidth,clkFreq=16)) { dut =>
         dut.io.increment.poke(1.U)
+        dut.reset.poke(true.B)
+        dut.clock.step(2) // fill both registered increment stages with phase held at zero
+        dut.reset.poke(false.B)
+        dut.io.valid.expect(1.B)
         for ((expected, phase) <- wave.samples.zipWithIndex) {
           dut.io.sample.expect(expected.S, s"${wave.name} wrapper: phase=$phase")
           dut.clock.step()
@@ -78,6 +85,11 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
     it should "follow changing increments, hold at zero increment, and wrap modulo 16" in {
       test(wave.create(amplitude, sampleWidth, phaseWidth)) { dut =>
         var phase = 0
+        var previousIncrement = 0
+        dut.io.increment.poke(0.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
         // Includes skipped samples, half-period steps, maximum increments,
         // overflow, and zero increments at nonzero phase.
         val increments = Vector(1, 3, 0, 0, 5, 15, 8, 0, 2, 7, 4, 9, 1, 0, 6, 11)
@@ -86,7 +98,8 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
           dut.io.sample.expect(wave.samples(phase).S,
             s"${wave.name}: phase=$phase before increment=$increment")
           dut.clock.step()
-          phase = (phase + increment) % wave.samples.length
+          phase = (phase + previousIncrement) % wave.samples.length
+          previousIncrement = increment
           dut.io.sample.expect(wave.samples(phase).S,
             s"${wave.name}: phase=$phase after increment=$increment")
         }
@@ -96,6 +109,9 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
     it should "restart at phase zero after a reset during playback" in {
       test(wave.create(amplitude, sampleWidth, phaseWidth)) { dut =>
         dut.io.increment.poke(1.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
         dut.clock.step(5)
         dut.io.sample.expect(wave.samples(5).S)
 
@@ -122,6 +138,9 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
       // Amplitude 15 fits in five signed bits (-16 to 15).
       test(wave.create(amplitude, 5, phaseWidth)) { dut =>
         dut.io.increment.poke(1.U)
+        dut.reset.poke(true.B)
+        dut.clock.step()
+        dut.reset.poke(false.B)
         for (expected <- wave.samples) {
           dut.io.sample.expect(expected.S)
           dut.clock.step()
@@ -136,6 +155,9 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
     // Twelve phase bits and a 1024-entry table: phases 0 through 3 share entry 0.
     test(new SineOscillator(127, 8, 12)) { dut =>
       dut.io.increment.poke(1.U)
+      dut.reset.poke(true.B)
+      dut.clock.step()
+      dut.reset.poke(false.B)
       dut.clock.step(4 * 128)
       for (phase <- 4 * 128 until 4 * 128 + 8) {
         // Ideal sine with phase truncated to the table's 1024 positions.
@@ -153,7 +175,7 @@ class OscillatorWaveformSpec extends AnyFlatSpec with ChiselScalatestTester {
       dut.clock.step()
       dut.reset.poke(false.B)
       dut.io.increment.poke(1024.U)
-      dut.clock.step()
+      dut.clock.step(2)
       dut.io.sample.expect(127.S)
       dut.clock.step(2)
       dut.io.sample.expect((-127).S)

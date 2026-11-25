@@ -3,14 +3,27 @@ import time
 import mido
 import serial
 from pynput import keyboard
+from pathlib import Path
 
 SERIAL_PORT = "COM11"   # the Nexys COM port, see Device Manager.
 # WARN: wrong port will freeze the program after first input.
 BAUD = 115200
 
+PLAY_CHANNELS: list[int] = [0,1]  # List of channels to play  # empty means all channels  # only applies to midi files
+MIDI_FOLDER = Path(__file__).parent / "midi"
+RUSH_E = MIDI_FOLDER / "RushE.mid"
+CELADON_CITY = MIDI_FOLDER / "celadon-city.mid"
+POKEMON_TOWER = MIDI_FOLDER / "pokemon-tower-v1-1-.mid"
+MARIO_TITLE = MIDI_FOLDER / "mario-title-screen.mid"
+NYAN_CAT = MIDI_FOLDER / "nyan.mid"
+POKEMON_BATTLE = MIDI_FOLDER / "PokemonBattle.mid"
+MIDI_FILE = RUSH_E
+
 VELOCITY = 100
 TOGGLE_KEY = keyboard.Key.f2   # switch between MIDI in and PC keyboard
 QUIT_KEY = keyboard.Key.esc
+RESET_KEY = keyboard.Key.f3
+SEND_FILE_KEY = keyboard.Key.f1
 
 # Tracker-style piano layout: bottom row starts at Z = C4 (MIDI 60),
 # top row starts at Q = C5. Black keys sit on the row above.
@@ -56,6 +69,7 @@ class PcKeyboard:
     def __init__(self, out: queue.Queue, start_enabled: bool):
         self.out = out
         self.enabled = start_enabled
+        self.send_file = False
         self.held: dict[str, int] = {}   # key char -> note, ignores OS key repeat
         self.quit = False
 
@@ -63,6 +77,11 @@ class PcKeyboard:
     def _char(key) -> str | None:
         ch = getattr(key, "char", None)
         return ch.lower() if ch else None
+
+    def force_release_all(self) -> None:
+        for note in range(128):
+            self.out.put(mido.Message("note_off", note=note, velocity=0))
+        self.held.clear()
 
     def release_all(self) -> None:
         for note in self.held.values():
@@ -78,6 +97,15 @@ class PcKeyboard:
             return
         if key == QUIT_KEY:
             self.quit = True
+            self.force_release_all()
+            return
+        if key == RESET_KEY:
+            self.force_release_all()
+            return
+        if key == SEND_FILE_KEY:
+            self.send_file = not self.send_file
+            self.release_all()
+            print(f"Mode: {'Sending file' if self.send_file else 'MIDI in'}")
             return
         ch = self._char(key)
         if not self.enabled or ch not in KEYMAP or ch in self.held:
@@ -110,6 +138,11 @@ def main() -> None:
           f"{'F2 toggles MIDI in / PC keyboard, ' if name else ''}Esc or Ctrl+C to stop")
     print(f"Mode: {'PC keyboard' if use_pc else 'MIDI in'}")
 
+    print("Loading MIDI file", MIDI_FILE)
+    midi_file = mido.MidiFile(MIDI_FILE).play()
+    print("Done loading MIDI file")
+
+
     pc_msgs: queue.Queue = queue.Queue()
     pc = PcKeyboard(pc_msgs, start_enabled=use_pc)
 
@@ -117,7 +150,17 @@ def main() -> None:
             keyboard.Listener(on_press=pc.on_press, on_release=pc.on_release):
         try:
             while not pc.quit:
-                if port is not None:
+                if pc.send_file:
+                    msg = next(midi_file, None)  # play() waits inside
+                    if msg is None:
+                        pc.release_all()
+                        continue
+                    if PLAY_CHANNELS and msg.channel not in PLAY_CHANNELS:
+                        continue
+                    ser.write(bytes(msg.bytes()))
+                    print(msg)
+                    continue
+                elif port is not None:
                     for msg in port.iter_pending():   # non-blocking, so Ctrl+C works
                         if pc.enabled or msg.type == "sysex":
                             continue                  # drain, but don't forward

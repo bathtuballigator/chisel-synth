@@ -1,5 +1,36 @@
 # Configuration guide and voice format
 
+## ADSR on the MIDI synth
+
+`SynthTop` uses the configured waveform and envelope for each voice bank.
+The repository's `synth.env` enables the envelope for voice 0.
+Regenerate the board RTL with `sbt "runMain Nexys4Gen"` and rebuild the FPGA
+design to apply the setting.
+
+Each configured voice bank provides `Env.polyphonyCount` note slots (currently
+four, matching main). Held notes keep their
+assigned slots; a released note keeps its pitch and slot until the envelope
+reaches zero. Additional held notes wait when all slots are occupied. The
+envelope scales the signed oscillator sample before PWM mixing; a disabled
+envelope passes the original sample while the key is held. The square-wave
+switch MVP (`MVP_Top`) still has its own configuration restrictions.
+
+The MIDI synth now uses main's registered phase-increment oscillator interface,
+sequential decoupled note selector, and pipelined PWM mixer. Pitch increments
+are calculated in the Scala MIDI lookup table for a 25 MHz clock. The wrapper
+uses a 7-series MMCM and global clock buffers to divide the board's 100 MHz
+oscillator to 25 MHz. The XDC constrains the physical input to 10 ns; Vivado
+derives the internal 40 ns clock from the MMCM. Core reset stays asserted until
+the MMCM locks and then releases synchronously to the 25 MHz clock.
+The generator writes `generated/polyphonyWithEnvelope.sv`. Use this file for
+the enveloped MIDI synth; `polyphony.sv` is maintained separately.
+
+One note selector serves the waveform banks in round-robin order, excluding
+each bank's reserved notes so held keys play all configured waveforms without
+stealing release slots. Notes released while selection is in
+progress are rechecked before assignment. Release tails retain their pitch and
+continue through PWM after the last key is released.
+
 This implements the configuration-file work in issue #18, with usage documentation
 for #30 and a parsed, validated voice format for #36. The ADSR implementation is separate work
 in #28. This document can be shared at a group meeting or in Discord.
@@ -72,10 +103,9 @@ Remove-Item Env:SYNTH_CONFIG
 ```
 
 `ShowSynthConfig` only prints settings. `Nexys4Gen` writes
-`generated/MVP_Octave.sv`, whose board top module is `Nexys4Wrapper`.
-The board constraints are in `xdc_files/Nexys4DDR_octave.xdc`. That file maps all
-16 switch inputs; if `AMOUNT_FREQ` is smaller, use a copy with constraints only
-for the generated input ports. No pin constraints are generated automatically.
+`generated/polyphonyWithEnvelope.sv`, whose board top module is `Nexys4Wrapper`.
+Use `xdc_files/Nexys4DDR_polyphony_with_envelope.xdc` for this MIDI design.
+The switch-based MVP is a separate design with its own constraints.
 
 Scala reads the configuration once when `Env` is initialized. Restart the sbt JVM
 to reload edits, then regenerate SystemVerilog, synthesize, and program the FPGA.
