@@ -59,12 +59,14 @@ It can be played live with a MIDI controller by connecting the FPGA to a compute
     - [Python](#python)
     - [Venv](#venv)
   - [Requirements](#requirements)
+  - [How to Run](#how-to-run)
   - [File Structure](#file-structure)
 - [Using the Synthesizer](#using-the-synthesizer)
   - [Configuration](#configuration)
 - [Implementation](#implementation)
   - [Schematic](#schematic)
   - [Nexys DDR4 Audio Output Specs](#nexys-ddr4-audio-output-specs)
+  - [](#)
   - [Testing](#testing)
 - [Discussion](#discussion)
   - [Future prospects](#future-prospects)
@@ -79,7 +81,7 @@ It can be played live with a MIDI controller by connecting the FPGA to a compute
 
 | Term            | Alias     | Description                                                                                                                               |
 | --------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Config file     | .env file | A file configuring the synthesizer. Voice types and Envelope                                                                              |
+| Config file     | .env file, spreadsheet | A file configuring the synthesizer. Voice types and Envelope                                                                              |
 | MIDI            | midi      | Serial protocol. Here used for sending on/off signals for specific notes. Protocol also has 16 channels and velocity which is unused here |
 | Midi Controller | Keyboard  | A device capable of sending Midi signals through a cable. Usually a Piano or Drumpad layout                                               |
 | ADSR Envelope   | Envelope  | Describing volume over time. Measured in ms. Attack, Decay, Sustain, Release. ![alt text](docs/adsr_envelope.png)[^envelopeImg]           |
@@ -140,6 +142,23 @@ pip install -r ./scripts/requirements.txt
 - [Nexys4 DDR FPGA board](https://digilent.com/reference/programmable-logic/nexys-4-ddr/reference-manual)
 - Midi Keyboard (optional)
 - Aux cable
+
+## How to Run
+
+Look at [Configuration](#configuration) for how to configure the synth sound.
+
+1. Run
+```
+sbt "runMain Nexys4Gen"
+```
+This writes a `.sv` file to `generated/`.
+
+2. Synthesize and program onto FPGA
+3. (Optional) Plug Midi controller into PC
+4. Run
+```
+
+```
 
 ## File Structure
 
@@ -231,6 +250,8 @@ endmodule
   - PWM frequency at least one order of magnitude higher than produced audio
   - System clock in the MHz should meet this constraint with plenty of room
 
+## 
+
 
 ## Testing
 
@@ -262,8 +283,12 @@ endmodule
 
 
 ## AI Acknowledgements
+
 Copilot in VSCode was used intermittently to auto-complete code.
 
+Claude Opus was used to create the SevenSeg functionality
+
+Claude Sonnet was used to create the VerilogGen object
 
 # Sources
 
