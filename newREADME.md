@@ -258,8 +258,12 @@ endmodule
 ## Future prospects
 
 ## AI Acknowledgements
+
 Copilot in VSCode was used intermittently to auto-complete code.
 
+Claude Opus was used to create the SevenSeg functionality
+
+Claude Sonnet was used to create the VerilogGen object
 
 # Sources
 
