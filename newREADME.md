@@ -174,7 +174,54 @@ The rest is typical chisel file structure
 
 ## Configuration
 
-<!-- LUBABA PUT Synthesizer configuration HERE -->
+The synthesizer is configured through `synth.env` in the root of the project.
+Each voice can have its own waveform and ADSR settings.
+
+**Example for one voice**
+
+```dotenv
+VOICE_COUNT=1
+VOICE_0_TYPE=square
+VOICE_0_ENVELOPE_ENABLED=true
+VOICE_0_ATTACK_MS=10
+VOICE_0_DECAY_MS=100
+VOICE_0_SUSTAIN=0.7
+VOICE_0_RELEASE_MS=200
+```
+
+- Up to 3 voices can be configured
+- Waveforms can be `square`, `sine`, `sawtooth` or `triangle`
+- Attack, decay and release are given in milliseconds
+- Sustain is a level between 0 and 1
+- Setting `ENVELOPE_ENABLED=false` turns off the envelope for that voice
+
+To add another voice, we would have to increase `VOICE_COUNT` and add the same settings with
+`VOICE_1_` and use `VOICE_2_` for a third voice, etc.
+
+**Check the settings**
+
+The terminal needs to be in the root of the project, then:
+
+```sh
+sbt "runMain ShowSynthConfig"
+```
+
+**Generate the hardware**
+
+```sh
+sbt "runMain Nexys4Gen"
+```
+
+This generates `generated/threeVoices.sv`.
+
+In Vivado, we can then use:
+
+- Design source: `generated/threeVoices.sv`
+- Constraints: `xdc_files/Nexys4DDR_three_voices.xdc`
+- Top module: `Nexys4Wrapper`
+
+After changing the config we can then regenerate the hardware, rebuild the bitstream
+in Vivado and program the FPGA.
 
 # Implementation
 
@@ -233,6 +280,59 @@ endmodule
 
 
 ## Testing
+
+Run all tests from the root of the project:
+
+```sh
+sbt test
+```
+
+The test groups can also be run separately:
+
+**Configuration loading**
+
+Checks that settings load correctly, invalid values are rejected and the older
+MVP's configured note bank works.
+
+```sh
+sbt "testOnly SynthConfigSpec SynthConfigHardwareSpec"
+```
+
+**Oscillator waveforms**
+
+Checks that all four waveforms produce the expected output and respond
+correctly to pitch changes and reset.
+
+```sh
+sbt "testOnly OscillatorWaveformSpec SquareOscSpec"
+```
+
+**MIDI input**
+
+Checks that MIDI messages are decoded correctly and that held notes update
+when keys are pressed or released.
+
+```sh
+sbt "testOnly MidiTopSpec MidiParserSpec"
+```
+
+**ADSR envelopes**
+
+Checks the attack, decay, sustain and release stages, including that notes
+fade out correctly after release.
+
+```sh
+sbt "testOnly ADSREnvelopeSpec SynthEnvelopeSpec"
+```
+
+**PWM mixing**
+
+Checks that multiple voices mix correctly and that different sample levels
+produce the expected PWM duty cycle.
+
+```sh
+sbt "testOnly PWMGeneratorSpec PWMSpec"
+```
 
 # Discussion
 
